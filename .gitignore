@@ -1,0 +1,11 @@
+*.h5
+*.hdf5
+*.mseed
+dataset_processed_hdfs/
+output/
+preproc/
+__pycache__/
+*.pyc
+.conda/
+*.zip
+temp_*/
