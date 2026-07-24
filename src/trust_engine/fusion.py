@@ -103,7 +103,7 @@ def build_fusion_candidates(
             )
             reasons = ["MODEL_CONSENSUS"]
         else:
-            fused_time_s = None
+            fused_time_s = -1.0
             contributors = []
             excluded_models = sorted(all_phase_models)
             reasons = list(consensus.reasons)
