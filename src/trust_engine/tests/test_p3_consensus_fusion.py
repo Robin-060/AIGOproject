@@ -36,7 +36,8 @@ def test_consensus_and_fusion():
         ModelSuitability(model_name="PickBlue", eligible=True),
         ModelSuitability(model_name="OBSTransformer", eligible=True),
     ]
-      consensus_results = analyze_multi_model_consensus(
+
+    consensus_results = analyze_multi_model_consensus(
         predictions=predictions,
         suitability=suitability,
         physics_checks=[],
