@@ -161,7 +161,7 @@ def analyze_multi_model_consensus(
         else:
             status = "DISAGREEMENT"
             reasons = [f"MODEL_DISAGREEMENT_{phase}"]
-                  inlier_times = [
+        inlier_times = [
             prediction.time_s
             for prediction in inliers
         ]
