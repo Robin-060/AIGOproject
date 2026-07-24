@@ -46,13 +46,13 @@ def _same_fusion_group(
         return False
 
     first = predictions[0]
-    first_time_basis = getattr(first, "time_basis", None)
+    first_time_basis = first.source_time_basis
 
     return all(
         prediction.sample_id == first.sample_id
         and prediction.window_id == first.window_id
         and prediction.phase == first.phase
-        and getattr(prediction, "time_basis", None) == first_time_basis
+        and prediction.source_time_basis == first_time_basis
         for prediction in predictions
     )
 
