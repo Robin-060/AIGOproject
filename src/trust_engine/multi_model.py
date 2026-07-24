@@ -97,6 +97,7 @@ def _same_comparison_group(
         prediction.sample_id == first.sample_id
         and prediction.window_id == first.window_id
         and prediction.phase == first.phase
+        and prediction.source_time_basis == first.source_time_basis
         for prediction in predictions
     )
 
