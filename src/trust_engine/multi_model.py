@@ -168,7 +168,7 @@ def analyze_multi_model_consensus(
         center_time_s = (
             median(inlier_times)
             if inlier_times
-            else None
+            else -1.0
         )
 
         spread_s = (
