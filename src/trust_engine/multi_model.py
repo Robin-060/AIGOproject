@@ -1,9 +1,8 @@
 """
-P3：多模型一致性分析。
+P3 multi-model consensus analysis.
 
-负责比较不同模型的 P/S 拾取时间，
-识别共识模型、离群模型和模型冲突。
-不负责最终的 ACCEPT、FUSE 或 ABSTAIN 决策。
+Compares P/S pick times, identifies consensus models and outliers.
+This module does not make final policy decisions.
 """
 
 from __future__ import annotations
@@ -30,11 +29,13 @@ SEVERE_DISAGREEMENT = {
 }
 
 VERSION = "heuristic_v0.1"
+
+
 def _get_usable_models(
     suitability: List[ModelSuitability],
     physics_checks: List[PhysicsCheck],
 ) -> set[str]:
-    """返回 eligible 且没有物理 hard fail 的模型名称。"""
+    """Return eligible models without physics hard failures."""
 
     eligible_models = {
         item.model_name
@@ -55,13 +56,13 @@ def _find_largest_cluster(
     predictions: List[ModelPrediction],
     tolerance: float,
 ) -> tuple[List[ModelPrediction], List[ModelPrediction]]:
-    """寻找时间跨度不超过 tolerance 的最大模型簇。"""
+    """Find the largest pick-time cluster within tolerance."""
 
     ordered = sorted(predictions, key=lambda item: item.time_s)
     best_cluster: List[ModelPrediction] = []
 
     for start_index in range(len(ordered)):
-        current_cluster = []
+        current_cluster: List[ModelPrediction] = []
 
         for prediction in ordered[start_index:]:
             if prediction.time_s - ordered[start_index].time_s <= tolerance:
@@ -81,12 +82,10 @@ def _find_largest_cluster(
     return best_cluster, outliers
 
 
-
-
 def _same_comparison_group(
     predictions: List[ModelPrediction],
 ) -> bool:
-    """确认所有预测属于同一个 sample、window 和 phase。"""
+    """Check sample, window, phase and time basis."""
 
     if not predictions:
         return True
@@ -107,14 +106,16 @@ def _get_phase_predictions(
     usable_models: set[str],
     phase: str,
 ) -> List[ModelPrediction]:
-    """筛选指定 phase 中可以参与比较的预测。"""
+    """Return valid predictions for one phase."""
 
     return [
         prediction
         for prediction in predictions
         if prediction.model_name in usable_models
         and prediction.phase == phase
+        and prediction.adapter_status == "OK"
         and isinstance(prediction.time_s, (int, float))
+        and not isinstance(prediction.time_s, bool)
         and prediction.time_s >= 0
     ]
 
@@ -124,7 +125,7 @@ def analyze_multi_model_consensus(
     suitability: List[ModelSuitability],
     physics_checks: List[PhysicsCheck],
 ) -> List[ConsensusResult]:
-    """分别分析 P 波和 S 波的多模型一致性。"""
+    """Analyze P and S consensus separately."""
 
     usable_models = _get_usable_models(
         suitability,
@@ -138,12 +139,38 @@ def analyze_multi_model_consensus(
             usable_models,
             phase,
         )
+
+        eligible_models = sorted(
+            {
+                prediction.model_name
+                for prediction in phase_predictions
+            }
+        )
+
+        missing_models = sorted(
+            usable_models - set(eligible_models)
+        )
+
         if not _same_comparison_group(phase_predictions):
-            raise ValueError(
-                "Predictions must share sample_id, window_id, and phase."
+            results.append(
+                ConsensusResult(
+                    phase=phase,
+                    status="DISAGREEMENT",
+                    eligible_models=eligible_models,
+                    inlier_models=[],
+                    outlier_models=eligible_models,
+                    missing_models=missing_models,
+                    center_time_s=-1.0,
+                    spread_s=-1.0,
+                    score=0.0,
+                    reasons=["COMPARISON_GROUP_MISMATCH"],
+                    version=VERSION,
+                )
             )
+            continue
 
         tolerance = CONSENSUS_TOLERANCE[phase]
+
         inliers, outliers = _find_largest_cluster(
             phase_predictions,
             tolerance,
@@ -152,15 +179,18 @@ def analyze_multi_model_consensus(
         if len(phase_predictions) < 2:
             status = "INSUFFICIENT"
             reasons = ["INSUFFICIENT_MODEL_COUNT"]
+
         elif len(inliers) >= 2:
             status = "CONSENSUS"
             reasons = ["MODEL_CONSENSUS"]
 
             if outliers:
                 reasons.append("MODEL_OUTLIER_DETECTED")
+
         else:
             status = "DISAGREEMENT"
             reasons = [f"MODEL_DISAGREEMENT_{phase}"]
+
         inlier_times = [
             prediction.time_s
             for prediction in inliers
@@ -176,24 +206,11 @@ def analyze_multi_model_consensus(
             max(inlier_times) - min(inlier_times)
             if len(inlier_times) >= 2
             else 0.0
+            if len(inlier_times) == 1
+            else -1.0
         )
 
-        eligible_models = sorted({
-            prediction.model_name
-            for prediction in phase_predictions
-        })
-        inlier_models = sorted({
-            prediction.model_name
-            for prediction in inliers
-        })
-        outlier_models = sorted({
-            prediction.model_name
-            for prediction in outliers
-        })
-        missing_models = sorted(
-            usable_models - set(eligible_models)
-        )
-              score = (
+        score = (
             len(inliers) / len(phase_predictions)
             if phase_predictions
             else 0.0
@@ -204,13 +221,20 @@ def analyze_multi_model_consensus(
                 phase=phase,
                 status=status,
                 eligible_models=eligible_models,
-                inlier_models=inlier_models,
-                outlier_models=outlier_models,
+                inlier_models=[
+                    prediction.model_name
+                    for prediction in inliers
+                ],
+                outlier_models=[
+                    prediction.model_name
+                    for prediction in outliers
+                ],
                 missing_models=missing_models,
                 center_time_s=center_time_s,
                 spread_s=spread_s,
                 score=score,
                 reasons=reasons,
+                version=VERSION,
             )
         )
 
