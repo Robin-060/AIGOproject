@@ -122,13 +122,13 @@ def run_pipeline(
     consensus_results = None
     fusion_candidates = None
     try:
-        from src.trust_engine.multi_model import evaluate_consensus
-        from src.trust_engine.fusion import generate_fusion_candidates
+        from src.trust_engine.multi_model import analyze_multi_model_consensus
+        from src.trust_engine.fusion import build_fusion_candidates
 
-        consensus_results = evaluate_consensus(
+        consensus_results = analyze_multi_model_consensus(
             predictions, suitabilities or [], physics_checks or [],
         )
-        fusion_candidates = generate_fusion_candidates(
+        fusion_candidates = build_fusion_candidates(
             predictions, consensus_results,
         )
     except ImportError:
@@ -164,5 +164,5 @@ if __name__ == "__main__":
         print("Trust Engine pipeline ready.")
         print("用法:")
         print("  python -m src.trust_engine.pipeline --input result.json")
-        print()
-        print("当前: P4 已就绪，等 P1/P2/P3 代码合入后全链路跑通")
+        print(f'当前: P1/P2/P3/P4 全模块已合入，等数据组产出 result.json 即可全链路跑通')
+
