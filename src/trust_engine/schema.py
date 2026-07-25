@@ -68,12 +68,17 @@ class SampleMetadata:
     canonical_time_basis: str = "WINDOW_SECONDS"
     expected_event: Optional[bool] = None
     data_source: str = "REAL"
+    # P1 扩展字段
+    preprocessing_version: str = ""
+    resampling_applied: bool = False
+    resampling_trace_id: Optional[str] = None
 
 
 @dataclass
 class QualityReport:
     available_channels: List[str] = field(default_factory=list)
     missing_channels: List[str] = field(default_factory=list)
+    required_channels_for_task: List[str] = field(default_factory=lambda: ["Z", "N", "E"])
     sampling_rate_hz: float = 100.0
     gap_ratio: float = 0.0
     clipping_ratio: float = 0.0
@@ -105,6 +110,7 @@ class ModelProfile:
     resampling_supported: bool = False
     required_preprocessing_version: str = ""
     validation_profile_id: Optional[str] = None
+    validation_domain_known: bool = False
     profile_source: str = "REAL_ADAPTER"
 
 
@@ -122,6 +128,15 @@ class ModelPrediction:
     adapter_status: str = "OK"
     preprocessing_version: str = ""
     prediction_source: str = "REAL_MODEL"
+
+
+# P1 扩展: Adapter 状态
+@dataclass
+class AdapterStatus:
+    model_name: str = ""
+    loaded: bool = False
+    run_succeeded: bool = False
+    output_comparable: bool = False
 
 
 # ═══════════════════════════════════════

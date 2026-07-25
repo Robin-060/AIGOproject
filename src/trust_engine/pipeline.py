@@ -1,88 +1,140 @@
 """
-主流程 — 串联 P1+P2+P3+P4
+主流程 — 串联 P1+P2+P3+P4 + 数据组接入
 
 负责人: P4
 
 用法:
     python -m src.trust_engine.pipeline
 
-当前状态: P1/P2/P3 待实现，Demo Fixture 已清除，等组员交付后接入
+数据组交付 data_layer.py 产出四合一 JSON 后:
+    python data_layer.py --trace 0 --output result.json
+    python -m src.trust_engine.pipeline --input result.json
 """
 
+import sys, json
+from typing import List, Optional
 from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
-    TrustConfig, ReliabilityResult,
-    ModelSuitability, PhysicsCheck, ConsensusResult, FusedPickCandidate,
-    SingleModelEvidence, DEMO_MODEL_PROFILES, DEMO_CONFIG,
+    TrustConfig, ReliabilityResult, AdapterStatus,
+    DEMO_CONFIG,
 )
 from src.trust_engine.reliability import evaluate_reliability
 
 
-def analyze_sample(
+# ═══════════════════════════════════════
+# 数据组 data_layer.py 输出 → Trust Engine 输入
+# ═══════════════════════════════════════
+
+def load_from_data_team(json_path: str) -> dict:
+    """
+    读取数据组 data_layer.py 产出的四合一 JSON，
+    转换为 Trust Engine 能直接消费的对象。
+    """
+    with open(json_path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+
+    # 1. SampleMetadata
+    meta_raw = raw.get("sample_metadata", {})
+    metadata = SampleMetadata(**meta_raw)
+
+    # 2. QualityReport
+    quality_raw = raw.get("quality_report", {})
+    quality = QualityReport(**quality_raw)
+
+    # 3. ModelProfile[]
+    profiles = []
+    for name, prof in raw.get("model_profiles", {}).items():
+        if isinstance(prof, dict):
+            profiles.append(ModelProfile(**prof))
+
+    # 4. ModelPrediction[]
+    predictions = [
+        ModelPrediction(**p) for p in raw.get("model_predictions", [])
+    ]
+
+    # 5. AdapterStatus[]
+    adapter_statuses = [
+        AdapterStatus(**s) for s in raw.get("adapter_statuses", [])
+    ]
+
+    return {
+        "metadata": metadata,
+        "quality": quality,
+        "profiles": profiles,
+        "predictions": predictions,
+        "adapter_statuses": adapter_statuses,
+    }
+
+
+# ═══════════════════════════════════════
+# 正式入口 — 等 P1/P2/P3 代码合入后取消注释
+# ═══════════════════════════════════════
+
+def run_pipeline(
     metadata: SampleMetadata,
     quality: QualityReport,
-    model_profiles: list,
+    profiles: list,
     predictions: list,
-    config: TrustConfig,
-    suitabilities: list = None,
-    single_evidences: list = None,
-    physics_checks: list = None,
-    consensus_results: list = None,
-    fusion_candidates: list = None,
+    adapter_statuses: list = None,
+    config: TrustConfig = None,
 ) -> ReliabilityResult:
     """
     完整分析流程:
-    1. Schema 校验 (P4)
-    2. P1 数据/适配/单模型证据
-    3. P2 单模型物理检查
-    4. P3 共识分析与融合候选
-    5. P4 汇总 → 路由 → 最终P/S成对检查
+    1. P1 数据/适配/单模型证据
+    2. P2 单模型物理检查
+    3. P3 共识分析与融合候选
+    4. P4 汇总 → 路由 → 最终P/S成对检查
     """
-    return evaluate_reliability(
-        metadata=metadata,
-        quality=quality,
-        model_profiles=model_profiles,
-        predictions=predictions,
-        config=config,
-        suitabilities=suitabilities,
-        single_evidences=single_evidences,
-        physics_checks=physics_checks,
-        consensus_results=consensus_results,
-        fusion_candidates=fusion_candidates,
-    )
-
-
-# ═══════════════════════════════════════
-# P1/P2/P3 接入点（待组员交付后填写）
-# ═══════════════════════════════════════
-
-def run_pipeline(sample_id: str, quality: QualityReport,
-                 predictions: list) -> ReliabilityResult:
-    """
-    正式入口 — 等 P1/P2/P3 交付后取消注释
-    """
-    metadata = SampleMetadata(sample_id=sample_id)
-    # ── 模拟配置，等数据组交付真实参数后替换 ──────
-    config = DEMO_CONFIG
-    profiles = list(DEMO_MODEL_PROFILES.values())
+    if config is None:
+        config = DEMO_CONFIG
 
     # ── P1 ──────────────────────────────────────
-    # suitabilities = p1.check_model_suitability(quality, profiles, predictions)
-    # single_evidences = p1.evaluate_single_models(predictions)
     suitabilities = None
     single_evidences = None
+    try:
+        from src.trust_engine.data_evidence import evaluate_data_evidence
+        from src.trust_engine.model_suitability import evaluate_model_suitability
+        from src.trust_engine.single_model import evaluate_single_model_evidence
+
+        suitabilities = evaluate_model_suitability(
+            metadata, quality, profiles,
+            adapter_statuses or [],
+        )
+        single_evidences = evaluate_single_model_evidence(predictions)
+    except ImportError:
+        pass
 
     # ── P2 ──────────────────────────────────────
-    # physics_checks = p2.check_all_models(predictions, config)
     physics_checks = None
+    try:
+        from src.trust_engine.physics import check_model_prediction
+        physics_checks = []
+        for p in predictions:
+            if p.phase == "P":
+                s_preds = [x for x in predictions
+                           if x.phase == "S" and x.model_name == p.model_name]
+                s_pred = s_preds[0] if s_preds else None
+                physics_checks.append(check_model_prediction(p, s_pred, config))
+    except ImportError:
+        pass
 
     # ── P3 ──────────────────────────────────────
-    # consensus_results = p3.evaluate_consensus(predictions, suitabilities, physics_checks)
-    # fusion_candidates = p3.generate_fusion_candidates(consensus_results)
     consensus_results = None
     fusion_candidates = None
+    try:
+        from src.trust_engine.multi_model import evaluate_consensus
+        from src.trust_engine.fusion import generate_fusion_candidates
 
-    return analyze_sample(
+        consensus_results = evaluate_consensus(
+            predictions, suitabilities or [], physics_checks or [],
+        )
+        fusion_candidates = generate_fusion_candidates(
+            predictions, consensus_results,
+        )
+    except ImportError:
+        pass
+
+    return evaluate_reliability(
         metadata=metadata,
         quality=quality,
         model_profiles=profiles,
@@ -97,7 +149,20 @@ def run_pipeline(sample_id: str, quality: QualityReport,
 
 
 if __name__ == "__main__":
-    print("Trust Engine pipeline ready.")
-    print("P1/P2/P3 待实现。届时取消 run_pipeline() 中的注释即可接入。")
-    print()
-    print("当前可用: schema.py / reliability.py / policy_router.py / pipeline.py")
+    if len(sys.argv) > 2 and sys.argv[1] == "--input":
+        # 从数据组 JSON 直接接入
+        data = load_from_data_team(sys.argv[2])
+        result = run_pipeline(
+            metadata=data["metadata"],
+            quality=data["quality"],
+            profiles=data["profiles"],
+            predictions=data["predictions"],
+            adapter_statuses=data["adapter_statuses"],
+        )
+        print(result.to_json())
+    else:
+        print("Trust Engine pipeline ready.")
+        print("用法:")
+        print("  python -m src.trust_engine.pipeline --input result.json")
+        print()
+        print("当前: P4 已就绪，等 P1/P2/P3 代码合入后全链路跑通")
