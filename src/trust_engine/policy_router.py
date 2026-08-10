@@ -73,6 +73,20 @@ def route_phase(
         decision.reason_codes = reasons + ["NO_DECISIVE_EVIDENCE_BETWEEN_MODELS"]
         return decision
 
+    # ── 第 4.5 步: 多模型共识但无显式融合候选 → 选 primary 或首个
+    if consensus and consensus.status == "CONSENSUS" and len(survivors) >= 2:
+        # 所有 survivor 都在共识簇内 → ACCEPT primary 或 FUSE 首个
+        primary = config.primary_model
+        if primary in survivors:
+            decision.action = Action.ACCEPT.value
+            decision.selected_model = primary
+        else:
+            decision.action = Action.FUSE.value
+            decision.selected_model = None
+            decision.selected_time_s = consensus.center_time_s
+        decision.reason_codes = reasons + ["MODEL_CONSENSUS"]
+        return decision
+
     # ── 第 5 步: 有其他证据支持某模型？(暂无验证档案 → ABSTAIN)
     decision.action = Action.ABSTAIN.value
     decision.reason_codes = reasons + ["INSUFFICIENT_EVIDENCE_FOR_SELECTION"]

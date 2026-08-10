@@ -9,6 +9,9 @@ output/
 preproc/
 dataset/
 
+# Generated synthetic data (too many files)
+data/synthetic/events/
+
 # Python
 __pycache__/
 *.pyc
@@ -17,3 +20,4 @@ __pycache__/
 *.zip
 temp_*/
 models/
+result.json
