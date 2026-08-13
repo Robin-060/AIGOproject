@@ -1,0 +1,16 @@
+{
+  "version": "calibrated_v1.0",
+  "source": "grid_search_on_synthetic",
+  "parameters": {
+    "consensus_tolerance_p_s": 0.2,
+    "consensus_tolerance_s_s": 0.2,
+    "risk_low_max": 20,
+    "risk_medium_max": 50
+  },
+  "performance": {
+    "error_detection_rate": 1.0,
+    "auto_coverage": 1.046,
+    "total_samples": 65.0,
+    "error_count": 16.0
+  }
+}
