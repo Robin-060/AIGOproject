@@ -21,6 +21,18 @@ from src.trust_engine.schema import (
 from src.trust_engine.reliability import evaluate_reliability
 
 
+def _load_config() -> TrustConfig:
+    """优先读校准后的参数，没有则用 Demo 默认值"""
+    from pathlib import Path
+    calib_path = Path("src/calibrate/thresholds_calibrated.json")
+    if calib_path.exists():
+        with open(calib_path, "r", encoding="utf-8") as f:
+            calib = json.load(f)
+        params = calib.get("parameters", {})
+        return TrustConfig(**params, config_version="calibrated_v1.0")
+    return DEMO_CONFIG
+
+
 # ═══════════════════════════════════════
 # 数据组 data_layer.py 输出 → Trust Engine 输入
 # ═══════════════════════════════════════
@@ -86,7 +98,7 @@ def run_pipeline(
     4. P4 汇总 → 路由 → 最终P/S成对检查
     """
     if config is None:
-        config = DEMO_CONFIG
+        config = _load_config()
 
     # ── P1 ──────────────────────────────────────
     suitabilities = None

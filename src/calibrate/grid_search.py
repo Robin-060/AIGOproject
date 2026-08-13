@@ -217,11 +217,6 @@ def run_one_config(config: TrustConfig, labels: List[Dict],
 
         action = result.phase_decisions.get("P")
         if action:
-            is_auto = action.action != "ABSTAIN"
-            if is_auto:
-                auto_count += 1
-
-            # 判断是否正确
             is_auto = action.action in ("ACCEPT", "FUSE", "ROUTE")
             if is_auto:
                 auto_count += 1
