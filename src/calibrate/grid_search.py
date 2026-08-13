@@ -123,8 +123,15 @@ def simulate_predictions(truth: Dict, disagreement: bool = False) -> List[ModelP
     return preds
 
 
-def run_one_config(config: TrustConfig, labels: List[Dict],
-                   noise_levels: List[str] = None) -> Dict[str, float]:
+def run_one_config(
+    config: TrustConfig,
+    labels: List[Dict],
+    noise_levels: List[str] = None,
+    enable_data: bool = True,
+    enable_single: bool = True,
+    enable_multi: bool = True,
+    enable_physics: bool = True,
+) -> Dict[str, float]:
     """
     用一组配置跑全部仿真数据，统计指标
     """
