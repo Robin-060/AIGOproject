@@ -6,6 +6,7 @@ v2 要求: 证据缺失必须报 INCOMPLETE，不能用占位函数返回 0
 """
 
 from typing import List, Optional, Dict, Any
+from dataclasses import replace
 from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
     TrustConfig, ReliabilityResult, ModelAssessment,
