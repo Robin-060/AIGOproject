@@ -61,6 +61,50 @@ def evaluate_reliability(
     consensus_results = consensus_results or []
     fusion_candidates = fusion_candidates or []
     single_evidences = single_evidences or []
+        # ── Phase 2 Ablation ─────────────────────────────
+
+    # 关闭数据/适配证据：
+    # 不再因为数据适配问题淘汰模型，也不增加 suitability penalty
+    if not enable_data:
+        suitabilities = [
+            replace(
+                s,
+                eligible=True,
+                penalty=0,
+            )
+            for s in suitabilities
+        ]
+
+    # 关闭单模型证据
+    if not enable_single:
+        single_evidences = []
+
+    # 关闭物理证据
+    if not enable_physics:
+        physics_checks = []
+
+    # 关闭多模型一致性证据和融合
+    if not enable_multi:
+        consensus_results = [
+            replace(
+                c,
+                status="INSUFFICIENT",
+                inlier_models=[],
+                outlier_models=[],
+                score=0,
+                reasons=list(c.reasons) + ["ABLATION_MULTI_DISABLED"],
+            )
+            for c in consensus_results
+        ]
+
+        fusion_candidates = [
+            replace(
+                f,
+                fusion_allowed=False,
+                reasons=list(f.reasons) + ["ABLATION_MULTI_DISABLED"],
+            )
+            for f in fusion_candidates
+        ]
 
     # 2. 模型评估 (每个模型一张评估卡)
     assessments = _build_model_assessments(
