@@ -28,8 +28,14 @@ def evaluate_reliability(
     # P2 产出
     physics_checks: Optional[List[PhysicsCheck]] = None,
     # P3 产出
-    consensus_results: Optional[List[ConsensusResult]] = None,
+        consensus_results: Optional[List[ConsensusResult]] = None,
     fusion_candidates: Optional[List[FusedPickCandidate]] = None,
+
+    # Phase 2 ablation switches
+    enable_data: bool = True,
+    enable_single: bool = True,
+    enable_multi: bool = True,
+    enable_physics: bool = True,
 ) -> ReliabilityResult:
     """
     主入口: 汇总 P1/P2/P3 证据 → 可靠性与决策
