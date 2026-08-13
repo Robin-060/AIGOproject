@@ -149,6 +149,10 @@ def run_pipeline(
         physics_checks=physics_checks,
         consensus_results=consensus_results,
         fusion_candidates=fusion_candidates,
+                enable_data=enable_data,
+        enable_single=enable_single,
+        enable_multi=enable_multi,
+        enable_physics=enable_physics,
     )
 
 
