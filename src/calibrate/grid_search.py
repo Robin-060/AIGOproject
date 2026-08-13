@@ -215,13 +215,21 @@ def run_one_config(
                 status="AVAILABLE",
             ))
 
-        result = evaluate_reliability(
-            metadata=metadata, quality=quality,
-            model_profiles=DEMO_PROFILES, predictions=preds,
-            config=config, suitabilities=suits, physics_checks=physics,
-            consensus_results=consensus, single_evidences=single_ev,
-        )
-
+       result = evaluate_reliability(
+    metadata=metadata,
+    quality=quality,
+    model_profiles=DEMO_PROFILES,
+    predictions=preds,
+    config=config,
+    suitabilities=suits,
+    physics_checks=physics,
+    consensus_results=consensus,
+    single_evidences=single_ev,
+    enable_data=enable_data,
+    enable_single=enable_single,
+    enable_multi=enable_multi,
+    enable_physics=enable_physics,
+)
         action = result.phase_decisions.get("P")
         if action:
             is_auto = action.action != "ABSTAIN"
