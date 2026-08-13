@@ -1,0 +1,99 @@
+{
+  "experiment": "P3 SeisBench OBS noise robustness",
+  "generated_at": "2026-08-14",
+  "environment": {
+    "python": "3.12.13",
+    "seisbench": "0.12.3",
+    "torch": "2.13.0",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "SeisBench OBS",
+    "chunk": "201805",
+    "split": "test",
+    "sample_count": 20,
+    "selection": "deterministic sort; Z12H; non-null P/S; no spike flag",
+    "metadata_sha256": "041c27cd8b1867002acafd8cfad51d3b03ade2888ca258e43908c045c4e12f90",
+    "waveforms_sha256": "a737513d6c315539b42ddb267a7ff3bf6896a84d6492b3fd47997fdbf1343cb6"
+  },
+  "models": [
+    {
+      "name": "PhaseNet",
+      "weights": "geofon",
+      "version": "2",
+      "sha256": "e9d91bb76d61e94c8cd2b903c1258803ecb0ad60866905ed8cd99f7471283b47"
+    },
+    {
+      "name": "PickBlue",
+      "base": "phasenet",
+      "weights": "obs",
+      "version": "1",
+      "sha256": "4b41a83c80bf31b4ae9564fa48df1e0ad90a897fa4969e19d44633a43ebff62f"
+    },
+    {
+      "name": "OBSTransformer",
+      "weights": "obst2024",
+      "version": "1",
+      "sha256": "46f0c424a0747f2f85df254f8cc7764b076290f627624ddb6bb28d4e7cadeaf0"
+    }
+  ],
+  "noise_levels": {
+    "L0": "original waveform",
+    "L1": "10 dB additive Gaussian noise",
+    "L2": "5 dB additive Gaussian noise",
+    "L3": "2 dB additive Gaussian noise"
+  },
+  "evaluation": {
+    "p_tolerance_seconds": 0.5,
+    "s_tolerance_seconds": 1.0,
+    "single_model": "OBSTransformer/obst2024",
+    "safe_outcome": "both phases correct, or incomplete pair is safely abstained",
+    "unsafe_outcome": "complete P/S pair with either phase outside tolerance",
+    "reported_metrics": [
+      "accuracy_rate",
+      "coverage_rate",
+      "selective_accuracy",
+      "abstention_rate",
+      "unsafe_output_rate",
+      "safe_handling_rate",
+      "p_mae_s_on_emitted",
+      "s_mae_s_on_emitted",
+      "safe_handling_ci95"
+    ]
+  },
+  "samples": [
+    "XO.LT07..HH.2018.05.12.20.49.55",
+    "XO.LT07..HH.2018.05.16.12.54.57",
+    "XO.LT10..HH.2018.05.16.21.10.06",
+    "XO.LT10..HH.2018.05.18.16.34.36",
+    "XO.LT07..HH.2018.05.18.22.11.25",
+    "XO.LT17..HH.2018.05.19.02.03.22",
+    "XO.LT12..HH.2018.05.19.17.46.44",
+    "XO.LT17..HH.2018.05.19.22.03.45",
+    "XO.LT17..HH.2018.05.20.00.22.24",
+    "XO.LA33..HH.2018.05.21.19.58.59",
+    "XO.LT17..HH.2018.05.22.23.57.56",
+    "XO.LT04..HH.2018.05.25.08.10.32",
+    "XO.LT04..HH.2018.05.25.08.40.15",
+    "XO.LT04..HH.2018.05.25.12.35.31",
+    "XO.LA23..HH.2018.05.27.18.30.11",
+    "XO.LT13..HH.2018.05.27.23.08.14",
+    "XO.LA29..HH.2018.05.28.09.24.23",
+    "XO.LA32..HH.2018.05.28.09.24.25",
+    "XO.LT09..HH.2018.05.28.09.24.23",
+    "XO.LT04..HH.2018.05.28.22.01.04"
+  ],
+  "outputs": {
+    "raw_prediction_records": 153,
+    "evaluated_method_records": 240,
+    "records": "noise_records_seisbench.csv",
+    "summary": "noise_summary_seisbench.csv",
+    "predictions": "noise_predictions_seisbench.json",
+    "figure": "noise_curve.png"
+  },
+  "supplementary_outputs": {
+    "stalta_records": "stalta_records.csv",
+    "stalta_summary": "stalta_summary.json",
+    "cpu_benchmark": "cpu_benchmark.json"
+  }
+}

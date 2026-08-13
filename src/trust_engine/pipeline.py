@@ -12,7 +12,8 @@
 """
 
 import sys, json
-from typing import List, Optional
+from pathlib import Path
+from typing import Any, Mapping, Union
 from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
     TrustConfig, ReliabilityResult, AdapterStatus,
@@ -25,37 +26,39 @@ from src.trust_engine.reliability import evaluate_reliability
 # 数据组 data_layer.py 输出 → Trust Engine 输入
 # ═══════════════════════════════════════
 
-def load_from_data_team(json_path: str) -> dict:
-    """
-    读取数据组 data_layer.py 产出的四合一 JSON，
-    转换为 Trust Engine 能直接消费的对象。
-    """
-    with open(json_path, "r", encoding="utf-8") as f:
-        raw = json.load(f)
+def load_from_mapping(raw: Mapping[str, Any]) -> dict:
+    """Convert a decoded data-team payload into Trust Engine inputs."""
+    required_sections = (
+        "sample_metadata",
+        "quality_report",
+        "model_profiles",
+        "model_predictions",
+    )
+    missing = [section for section in required_sections if section not in raw]
+    if missing:
+        raise ValueError(f"Missing required section(s): {', '.join(missing)}")
 
-    # 1. SampleMetadata
-    meta_raw = raw.get("sample_metadata", {})
-    metadata = SampleMetadata(**meta_raw)
+    metadata = SampleMetadata(**raw["sample_metadata"])
+    quality = QualityReport(**raw["quality_report"])
 
-    # 2. QualityReport
-    quality_raw = raw.get("quality_report", {})
-    quality = QualityReport(**quality_raw)
-
-    # 3. ModelProfile[]
     profiles = []
-    for name, prof in raw.get("model_profiles", {}).items():
-        if isinstance(prof, dict):
-            profiles.append(ModelProfile(**prof))
+    for profile in raw["model_profiles"].values():
+        if isinstance(profile, dict):
+            profiles.append(ModelProfile(**profile))
 
-    # 4. ModelPrediction[]
     predictions = [
-        ModelPrediction(**p) for p in raw.get("model_predictions", [])
+        ModelPrediction(**prediction)
+        for prediction in raw["model_predictions"]
+    ]
+    adapter_statuses = [
+        AdapterStatus(**status)
+        for status in raw.get("adapter_statuses", [])
     ]
 
-    # 5. AdapterStatus[]
-    adapter_statuses = [
-        AdapterStatus(**s) for s in raw.get("adapter_statuses", [])
-    ]
+    if not profiles:
+        raise ValueError("model_profiles must contain at least one profile")
+    if not predictions:
+        raise ValueError("model_predictions must contain at least one prediction")
 
     return {
         "metadata": metadata,
@@ -64,6 +67,17 @@ def load_from_data_team(json_path: str) -> dict:
         "predictions": predictions,
         "adapter_statuses": adapter_statuses,
     }
+
+
+def load_from_data_team(json_path: Union[str, Path]) -> dict:
+    """
+    读取数据组 data_layer.py 产出的四合一 JSON，
+    转换为 Trust Engine 能直接消费的对象。
+    """
+    with open(json_path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+
+    return load_from_mapping(raw)
 
 
 # ═══════════════════════════════════════
@@ -90,12 +104,14 @@ def run_pipeline(
 
     # ── P1 ──────────────────────────────────────
     suitabilities = None
+    data_evidence = None
     single_evidences = None
     try:
         from src.trust_engine.data_evidence import evaluate_data_evidence
         from src.trust_engine.model_suitability import evaluate_model_suitability
         from src.trust_engine.single_model import evaluate_single_model_evidence
 
+        data_evidence = evaluate_data_evidence(quality)
         suitabilities = evaluate_model_suitability(
             metadata, quality, profiles,
             adapter_statuses or [],
@@ -140,6 +156,7 @@ def run_pipeline(
         model_profiles=profiles,
         predictions=predictions,
         config=config,
+        data_evidence=data_evidence,
         suitabilities=suitabilities,
         single_evidences=single_evidences,
         physics_checks=physics_checks,
@@ -165,4 +182,3 @@ if __name__ == "__main__":
         print("用法:")
         print("  python -m src.trust_engine.pipeline --input result.json")
         print(f'当前: P1/P2/P3/P4 全模块已合入，等数据组产出 result.json 即可全链路跑通')
-

@@ -22,11 +22,14 @@ def route_phase(
     fusion_candidate: Optional[FusedPickCandidate],
     single_model_evidences: list,
     config: TrustConfig,
+    phase_risk: float = 0.0,
 ) -> PhaseDecision:
     """
     对单个 phase (P 或 S) 执行 6 步决策
     """
     decision = PhaseDecision(phase=phase, action=Action.ABSTAIN.value)
+    decision.risk_score = round(phase_risk, 1)
+    decision.risk_level = _risk_level(phase_risk, config)
     reasons = []
 
     # ── 第 0 步: 可比性 + 硬门槛 ──────────────────────
@@ -52,6 +55,9 @@ def route_phase(
         fused_contributors = set(fusion_candidate.contributors)
         surviving_set = set(survivors)
         if fused_contributors.issubset(surviving_set):
+            if phase_risk > config.automatic_risk_threshold:
+                decision.reason_codes = reasons + ["RISK_ABOVE_AUTO_THRESHOLD"]
+                return decision
             decision.action = Action.FUSE.value
             decision.selected_model = None
             decision.selected_time_s = fusion_candidate.fused_time_s
@@ -62,6 +68,9 @@ def route_phase(
     # ── 第 3 步: 只剩一个 survivor → 选它 ─────────────
     if len(survivors) == 1:
         model = survivors[0]
+        if phase_risk > config.automatic_risk_threshold:
+            decision.reason_codes = reasons + ["RISK_ABOVE_AUTO_THRESHOLD"]
+            return decision
         decision.action = Action.ACCEPT.value if model == config.primary_model else Action.ROUTE.value
         decision.selected_model = model
         decision.reason_codes = reasons + [f"ONLY_SURVIVOR_{model}"]
@@ -77,6 +86,14 @@ def route_phase(
     decision.action = Action.ABSTAIN.value
     decision.reason_codes = reasons + ["INSUFFICIENT_EVIDENCE_FOR_SELECTION"]
     return decision
+
+
+def _risk_level(score: float, config: TrustConfig) -> str:
+    if score <= config.risk_low_max:
+        return "LOW"
+    if score <= config.risk_medium_max:
+        return "MEDIUM"
+    return "HIGH"
 
 
 def _eligible_models(

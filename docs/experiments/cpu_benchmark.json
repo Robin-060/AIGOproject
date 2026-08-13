@@ -1,0 +1,45 @@
+{
+  "scope": "single public OBS waveform; CPU; warm cache; batch size 64",
+  "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+  "waveform_duration_s": 150.0,
+  "environment": {
+    "platform": "macOS-14.1-arm64-arm-64bit",
+    "python": "3.12.13",
+    "torch": "2.13.0",
+    "device": "cpu"
+  },
+  "combined_model_load_s": 0.07809429103508592,
+  "models": [
+    {
+      "model": "PhaseNet",
+      "parameters": 268443,
+      "state_dict_mib": 1.0288658142089844,
+      "median_inference_s": 0.006118041463196278,
+      "min_inference_s": 0.005244750063866377,
+      "repeats": 2
+    },
+    {
+      "model": "PickBlue",
+      "parameters": 268499,
+      "state_dict_mib": 1.0290794372558594,
+      "median_inference_s": 0.006303625646978617,
+      "min_inference_s": 0.006286917254328728,
+      "repeats": 2
+    },
+    {
+      "model": "OBSTransformer",
+      "parameters": 372023,
+      "state_dict_mib": 1.4263572692871094,
+      "median_inference_s": 0.021443374920636415,
+      "min_inference_s": 0.021253916900604963,
+      "repeats": 2
+    }
+  ],
+  "trust_layer_median_ms": 0.029624905437231064,
+  "trust_layer_p95_ms": 0.03937492147088051,
+  "limitations": [
+    "This is a local engineering measurement, not a cross-device benchmark.",
+    "Model storage uses state-dict tensor bytes and excludes Python/runtime dependencies.",
+    "No quantization or pruning claim is made."
+  ]
+}

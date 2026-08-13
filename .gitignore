@@ -17,3 +17,13 @@ __pycache__/
 *.zip
 temp_*/
 models/
+
+# Local environments and tool caches
+.venv/
+.venv312/
+.pytest_cache/
+.streamlit/
+tmp/
+
+# Downloaded public waveforms and model caches
+data/seisbench/

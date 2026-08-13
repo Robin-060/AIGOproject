@@ -10,7 +10,7 @@ from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
     TrustConfig, ReliabilityResult, ModelAssessment,
     ModelSuitability, PhysicsCheck, ConsensusResult, FusedPickCandidate,
-    SingleModelEvidence, PhaseDecision, FinalPairStatus, risk_level,
+    SingleModelEvidence, PhaseDecision, FinalPairStatus, EvidenceScore,
 )
 from src.trust_engine.policy_router import route_phase
 
@@ -21,6 +21,7 @@ def evaluate_reliability(
     model_profiles: List[ModelProfile],
     predictions: List[ModelPrediction],
     config: TrustConfig,
+    data_evidence: Optional[EvidenceScore] = None,
     # P1 产出
     suitabilities: Optional[List[ModelSuitability]] = None,
     single_evidences: Optional[List[SingleModelEvidence]] = None,
@@ -42,7 +43,8 @@ def evaluate_reliability(
 
     # 1. 证据完整性检查
     missing = _check_evidence_completeness(
-        suitabilities, physics_checks, consensus_results
+        data_evidence, suitabilities, single_evidences,
+        physics_checks, consensus_results
     )
     if missing:
         result.evidence_status = "INCOMPLETE"
@@ -66,10 +68,15 @@ def evaluate_reliability(
     fusion_map = {f.phase: f for f in fusion_candidates}
 
     for phase in ["P", "S"]:
-        phase_preds = [p for p in predictions if p.phase == phase]
-
         # 找出该 phase 的单模型证据
         phase_single = [s for s in single_evidences if s.phase == phase]
+
+        breakdown = _compute_phase_risk(
+            data_evidence=data_evidence,
+            single_evidences=phase_single,
+            consensus=consensus_map.get(phase),
+            physics_checks=physics_checks,
+        )
 
         decision = route_phase(
             phase=phase,
@@ -79,8 +86,10 @@ def evaluate_reliability(
             fusion_candidate=fusion_map.get(phase),
             single_model_evidences=phase_single,
             config=config,
+            phase_risk=breakdown["total"],
         )
         result.phase_decisions[phase] = decision
+        result.evidence_breakdown[phase] = breakdown
 
     # 4. 整体风险
     all_scores = []
@@ -88,7 +97,18 @@ def evaluate_reliability(
         all_scores.append(d.risk_score)
     if all_scores:
         result.overall_risk_score = round(sum(all_scores) / len(all_scores), 1)
-    result.overall_risk_level = risk_level(result.overall_risk_score)
+    result.overall_risk_level = _risk_level_from_config(
+        result.overall_risk_score, config
+    )
+
+    categories = ("data", "single_model", "multi_model", "physics")
+    result.evidence_breakdown["overall"] = {
+        category: round(
+            sum(result.evidence_breakdown[p][category] for p in ("P", "S")) / 2,
+            1,
+        )
+        for category in categories
+    }
 
     # 5. P/S 成对状态
     result.final_pair_status = _pair_status(result.phase_decisions)
@@ -103,19 +123,71 @@ def evaluate_reliability(
 
 
 def _check_evidence_completeness(
+    data_evidence: Optional[EvidenceScore],
     suitabilities: Optional[List],
+    single_evidences: Optional[List],
     physics_checks: Optional[List],
     consensus_results: Optional[List],
 ) -> List[str]:
     """检查证据模块是否齐全"""
     missing = []
+    if data_evidence is None:
+        missing.append("P1_DATA")
     if suitabilities is None:
         missing.append("P1_SUITABILITY")
+    if single_evidences is None:
+        missing.append("P1_SINGLE_MODEL")
     if physics_checks is None:
         missing.append("P2_PHYSICS")
     if consensus_results is None:
         missing.append("P3_CONSENSUS")
     return missing
+
+
+def _compute_phase_risk(
+    data_evidence: EvidenceScore,
+    single_evidences: List[SingleModelEvidence],
+    consensus: Optional[ConsensusResult],
+    physics_checks: List[PhysicsCheck],
+) -> Dict[str, float]:
+    """Return an auditable four-evidence risk decomposition (0-100)."""
+    data_risk = min(float(data_evidence.score or 0.0), 30.0)
+    single_risk = min(
+        sum(float(item.score or 0.0) for item in single_evidences),
+        15.0,
+    )
+
+    multi_risk = 20.0
+    if consensus is not None:
+        if consensus.status == "DISAGREEMENT":
+            multi_risk = 40.0
+        elif consensus.status == "INSUFFICIENT":
+            multi_risk = 20.0
+        else:
+            # consensus.score is the fraction of usable models in the inlier set.
+            multi_risk = min(max((1.0 - consensus.score) * 40.0, 0.0), 40.0)
+
+    physics_risk = min(
+        sum(float(check.score or 0.0) for check in physics_checks),
+        15.0,
+    )
+    total = min(data_risk + single_risk + multi_risk + physics_risk, 100.0)
+
+    return {
+        "data": round(data_risk, 1),
+        "single_model": round(single_risk, 1),
+        "multi_model": round(multi_risk, 1),
+        "physics": round(physics_risk, 1),
+        "total": round(total, 1),
+    }
+
+
+def _risk_level_from_config(score: float, config: TrustConfig) -> str:
+    if score <= config.risk_low_max:
+        return "LOW"
+    if score <= config.risk_medium_max:
+        return "MEDIUM"
+    return "HIGH"
 
 
 def _build_model_assessments(

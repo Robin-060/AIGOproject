@@ -1,7 +1,7 @@
 from src.trust_engine.model_suitability import evaluate_model_suitability
 from src.trust_engine.schema import AdapterStatus, QualityReport, SampleMetadata
 
-from tests.fixtures.demo_profiles import DEMO_MODEL_PROFILES
+from src.trust_engine.tests.fixtures.demo_profiles import DEMO_MODEL_PROFILES
 
 
 def make_quality(sampling_rate_hz=100.0):
