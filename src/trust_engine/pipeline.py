@@ -77,6 +77,10 @@ def run_pipeline(
     predictions: list,
     adapter_statuses: list = None,
     config: TrustConfig = None,
+    enable_data: bool = True,
+    enable_single: bool = True,
+    enable_multi: bool = True,
+    enable_physics: bool = True,
 ) -> ReliabilityResult:
     """
     完整分析流程:
