@@ -1,8 +1,15 @@
 """
-可靠性引擎 — 汇总 P1/P2/P3 证据 → 风险评估
+可靠性引擎 — 汇总 P1/P2/P3 证据 → 风险评估（三版合并版）
 
-负责人: P4
-支持消融实验: enable 开关可单独关闭 data / single_model / multi_model / physics
+合并来源:
+  - phase2-calibration: enable 字典开关 + single_model 接入决策
+  - phase2-baseline:    ablation 实验需求 (开关禁用时中性化证据)
+  - phase3:             data_evidence 参数 + 证据分解 evidence_breakdown
+
+约定:
+  - enable 用字典: {"data", "single_model", "multi_model", "physics"}
+  - ConsensusResult.score 语义 = 一致比例 (0-1), 1.0 = 完全一致
+  - 风险分解记录在 result.evidence_breakdown (每 phase + overall)
 """
 
 from typing import List, Optional, Dict
@@ -10,7 +17,7 @@ from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
     TrustConfig, ReliabilityResult, ModelAssessment,
     ModelSuitability, PhysicsCheck, ConsensusResult, FusedPickCandidate,
-    SingleModelEvidence, PhaseDecision, FinalPairStatus,
+    SingleModelEvidence, PhaseDecision, FinalPairStatus, EvidenceScore,
 )
 from src.trust_engine.policy_router import route_phase
 
@@ -29,6 +36,8 @@ def evaluate_reliability(
     model_profiles: List[ModelProfile],
     predictions: List[ModelPrediction],
     config: TrustConfig,
+    # P1 数据证据 (P1 的 data_evidence.py 产出)
+    data_evidence: Optional[EvidenceScore] = None,
     # P1 产出
     suitabilities: Optional[List[ModelSuitability]] = None,
     single_evidences: Optional[List[SingleModelEvidence]] = None,
@@ -44,6 +53,7 @@ def evaluate_reliability(
     主入口: 汇总 P1/P2/P3 证据 → 可靠性与决策
 
     Args:
+        data_evidence: P1 数据质量证据 (EvidenceScore, 满分30)
         enable: 消融实验开关，如 {"multi_model": False} 关闭多模型证据。
                 关闭的证据不参与风险评分，也不参与模型筛选。
     """
@@ -59,8 +69,8 @@ def evaluate_reliability(
 
     # 1. 证据完整性检查 (关闭的证据不检查)
     missing = _check_evidence_completeness(
-        suitabilities, single_evidences, physics_checks,
-        consensus_results, enable,
+        data_evidence, suitabilities, single_evidences,
+        physics_checks, consensus_results, enable,
     )
     if missing:
         result.evidence_status = "INCOMPLETE"
@@ -72,6 +82,30 @@ def evaluate_reliability(
     consensus_results = consensus_results or []
     fusion_candidates = fusion_candidates or []
     single_evidences = single_evidences or []
+
+    # ── 消融: 禁用证据中性化 ───────────────────────────
+    if not enable["data"]:
+        from dataclasses import replace
+        suitabilities = [
+            replace(s, eligible=True, penalty=0.0) for s in suitabilities
+        ]
+        data_evidence = EvidenceScore(score=0.0, reasons=["ABLATION_DATA_DISABLED"])
+
+    if not enable["single_model"]:
+        single_evidences = []
+
+    if not enable["physics"]:
+        physics_checks = []
+
+    if not enable["multi_model"]:
+        from dataclasses import replace
+        consensus_results = [
+            replace(c, status="INSUFFICIENT", inlier_models=[],
+                    outlier_models=[], score=1.0,
+                    reasons=list(c.reasons) + ["ABLATION_MULTI_DISABLED"])
+            for c in consensus_results
+        ]
+        fusion_candidates = []
 
     # 2. 模型评估 (每个模型一张评估卡)
     assessments = _build_model_assessments(
@@ -86,10 +120,12 @@ def evaluate_reliability(
     for phase in ["P", "S"]:
         phase_single = [s for s in single_evidences if s.phase == phase]
 
-        # 计算该 phase 的风险分数 (四证据加权, 关闭的不计)
-        phase_risk = _compute_phase_risk(
-            suitabilities, phase_single,
-            consensus_map.get(phase), physics_checks, enable,
+        breakdown = _compute_phase_risk(
+            data_evidence=data_evidence,
+            single_evidences=phase_single,
+            consensus=consensus_map.get(phase) if enable["multi_model"] else None,
+            physics_checks=physics_checks,
+            enable=enable,
         )
 
         decision = route_phase(
@@ -101,9 +137,10 @@ def evaluate_reliability(
             single_model_evidences=phase_single,
             config=config,
             enable=enable,
-            phase_risk=phase_risk,
+            phase_risk=breakdown["total"],
         )
         result.phase_decisions[phase] = decision
+        result.evidence_breakdown[phase] = breakdown
 
     # 4. 整体风险
     all_scores = [d.risk_score for d in result.phase_decisions.values()]
@@ -112,6 +149,15 @@ def evaluate_reliability(
     result.overall_risk_level = _risk_level_from_config(
         result.overall_risk_score, config
     )
+
+    categories = ("data", "single_model", "multi_model", "physics")
+    result.evidence_breakdown["overall"] = {
+        category: round(
+            sum(result.evidence_breakdown[p][category] for p in ("P", "S")) / 2,
+            1,
+        )
+        for category in categories
+    }
 
     # 5. P/S 成对状态
     result.final_pair_status = _pair_status(result.phase_decisions)
@@ -126,35 +172,63 @@ def evaluate_reliability(
 
 
 def _compute_phase_risk(
-    suitabilities: List[ModelSuitability],
-    phase_single: List[SingleModelEvidence],
+    data_evidence: Optional[EvidenceScore],
+    single_evidences: List[SingleModelEvidence],
     consensus: Optional[ConsensusResult],
     physics_checks: List[PhysicsCheck],
     enable: Dict[str, bool],
-) -> float:
-    """四类证据加权求和 (0-100)，关闭的证据记 0"""
-    risk = 0.0
-
-    # 数据证据 (0-30): 模型适配惩罚
-    if enable["data"]:
-        risk += min(sum(s.penalty for s in suitabilities), 30)
+) -> Dict[str, float]:
+    """四类证据风险分解 (0-100)，关闭的证据记 0"""
+    # 数据证据 (0-30)
+    if enable["data"] and data_evidence is not None:
+        data_risk = min(float(data_evidence.score or 0.0), 30.0)
+    else:
+        data_risk = 0.0
 
     # 单模型证据 (0-15): 低置信度惩罚
     if enable["single_model"]:
-        risk += min(sum(sv.score or 0 for sv in phase_single), 15)
+        single_risk = min(
+            sum(float(sv.score or 0.0) for sv in single_evidences), 15.0
+        )
+    else:
+        single_risk = 0.0
 
-    # 多模型证据 (0-40): 分歧分数
-    if enable["multi_model"] and consensus:
-        risk += min(consensus.score or 0, 40)
+    # 多模型证据 (0-40): consensus.score 是"一致比例"(0-1)
+    if enable["multi_model"] and consensus is not None:
+        if consensus.status == "DISAGREEMENT":
+            multi_risk = 40.0
+        elif consensus.status == "INSUFFICIENT":
+            multi_risk = 20.0
+        else:
+            # score=1.0 完全一致 → 0 风险; score=0 → 40 风险
+            multi_risk = min(max((1.0 - consensus.score) * 40.0, 0.0), 40.0)
+    else:
+        multi_risk = 0.0
 
-    # 物理证据 (0-15): hard fail 分数
+    # 物理证据 (0-15): FAIL 检查的分数累计
     if enable["physics"]:
-        risk += min(sum(pc.score for pc in physics_checks if pc.hard_fail), 15)
+        physics_risk = min(
+            sum(float(check.score or 0.0)
+                for check in physics_checks
+                if check.status == "FAIL"),
+            15.0,
+        )
+    else:
+        physics_risk = 0.0
 
-    return min(risk, 100)
+    total = min(data_risk + single_risk + multi_risk + physics_risk, 100.0)
+
+    return {
+        "data": round(data_risk, 1),
+        "single_model": round(single_risk, 1),
+        "multi_model": round(multi_risk, 1),
+        "physics": round(physics_risk, 1),
+        "total": round(total, 1),
+    }
 
 
 def _check_evidence_completeness(
+    data_evidence: Optional[EvidenceScore],
     suitabilities: Optional[List],
     single_evidences: Optional[List],
     physics_checks: Optional[List],
@@ -163,6 +237,8 @@ def _check_evidence_completeness(
 ) -> List[str]:
     """检查证据模块是否齐全 (关闭的证据不检查)"""
     missing = []
+    if enable["data"] and data_evidence is None:
+        missing.append("P1_DATA")
     if enable["data"] and suitabilities is None:
         missing.append("P1_SUITABILITY")
     if enable["single_model"] and single_evidences is None:
