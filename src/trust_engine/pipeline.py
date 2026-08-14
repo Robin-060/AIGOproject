@@ -178,10 +178,12 @@ def run_pipeline(
         physics_checks=physics_checks,
         consensus_results=consensus_results,
         fusion_candidates=fusion_candidates,
-                enable_data=enable_data,
-        enable_single=enable_single,
-        enable_multi=enable_multi,
-        enable_physics=enable_physics,
+        enable={
+            "data": enable_data,
+            "single_model": enable_single,
+            "multi_model": enable_multi,
+            "physics": enable_physics,
+        },
     )
 
 
