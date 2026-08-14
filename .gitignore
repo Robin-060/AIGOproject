@@ -21,3 +21,13 @@ __pycache__/
 temp_*/
 models/
 result.json
+
+# Local environments and tool caches
+.venv/
+.venv312/
+.pytest_cache/
+.streamlit/
+tmp/
+
+# Downloaded public waveforms and model caches
+data/seisbench/

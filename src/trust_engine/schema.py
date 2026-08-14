@@ -274,7 +274,7 @@ class ReliabilityResult:
     data_source: str = ""
 
     def to_json(self, indent: int = 2) -> str:
-        return json.dumps(self, indent=indent, ensure_ascii=False, default=str)
+        return json.dumps(asdict(self), indent=indent, ensure_ascii=False)
 
 
 # ═══════════════════════════════════════
