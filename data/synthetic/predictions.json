@@ -1,0 +1,1692 @@
+[
+  {
+    "sample_id": "syn_0000",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "11.84",
+      "S_time_s": "28.44"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 49.2,
+        "confidence": 0.137
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 49.2,
+        "confidence": 0.137
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 28.27,
+        "confidence": 0.799
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0001",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "25.1",
+      "S_time_s": "38.44"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 38.25,
+        "confidence": 0.814
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0002",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "12.57",
+      "S_time_s": "31.51"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 31.36,
+        "confidence": 0.728
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0003",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "29.48",
+      "S_time_s": "38.95"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": 29.3,
+        "S_pick": null,
+        "confidence": 0.373
+      },
+      "PickBlue": {
+        "P_pick": 29.3,
+        "S_pick": null,
+        "confidence": 0.373
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 38.77,
+        "confidence": 0.799
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0004",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "23.26",
+      "S_time_s": "35.04"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 34.94,
+        "confidence": 0.82
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0005",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "15.96",
+      "S_time_s": "30.44"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 30.2,
+        "confidence": 0.809
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0006",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "14.21",
+      "S_time_s": "27.59"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 27.38,
+        "confidence": 0.829
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0007",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "16.7",
+      "S_time_s": "27.59"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 27.4,
+        "confidence": 0.806
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0008",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "17.52",
+      "S_time_s": "28.54"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 28.32,
+        "confidence": 0.816
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0009",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "12.99",
+      "S_time_s": "26.6"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 26.37,
+        "confidence": 0.827
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0010",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "19.92",
+      "S_time_s": "38.44"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 38.23,
+        "confidence": 0.749
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0011",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "28.04",
+      "S_time_s": "36.21"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 36.0,
+        "confidence": 0.801
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0012",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "11.58",
+      "S_time_s": "22.77"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 44.3,
+        "confidence": 0.106
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 44.3,
+        "confidence": 0.106
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 22.6,
+        "confidence": 0.724
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0013",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "20.04",
+      "S_time_s": "35.12"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 34.99,
+        "confidence": 0.764
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0014",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "13.3",
+      "S_time_s": "24.73"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 24.56,
+        "confidence": 0.838
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0015",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "18.63",
+      "S_time_s": "46.03"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 45.79,
+        "confidence": 0.388
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 45.79,
+        "confidence": 0.388
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0016",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "15.74",
+      "S_time_s": "30.88"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0017",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "11.87",
+      "S_time_s": "25.73"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 25.54,
+        "confidence": 0.297
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 25.54,
+        "confidence": 0.297
+      },
+      "OBSTransformer": {
+        "P_pick": 11.6,
+        "S_pick": 25.58,
+        "confidence": 0.866
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0018",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "16.39",
+      "S_time_s": "25.66"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0019",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "29.71",
+      "S_time_s": "43.05"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 42.87,
+        "confidence": 0.102
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 42.87,
+        "confidence": 0.102
+      },
+      "OBSTransformer": {
+        "P_pick": 29.65,
+        "S_pick": 42.84,
+        "confidence": 0.692
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0020",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "31.67",
+      "S_time_s": "46.28"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 31.52,
+        "confidence": 0.21
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 31.52,
+        "confidence": 0.21
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 46.15,
+        "confidence": 0.702
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0021",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "22.0",
+      "S_time_s": "33.38"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 21.85,
+        "confidence": 0.782
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 21.85,
+        "confidence": 0.782
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0022",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "30.7",
+      "S_time_s": "42.0"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": 30.6,
+        "S_pick": null,
+        "confidence": 0.658
+      },
+      "PickBlue": {
+        "P_pick": 30.6,
+        "S_pick": null,
+        "confidence": 0.658
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0023",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "34.72",
+      "S_time_s": "61.08"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 34.55,
+        "confidence": 0.129
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0024",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "11.77",
+      "S_time_s": "31.04"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 11.68,
+        "confidence": 0.316
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0025",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "12.26",
+      "S_time_s": "22.95"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 12.06,
+        "confidence": 0.137
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 12.06,
+        "confidence": 0.137
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 12.2,
+        "confidence": 0.174
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0026",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "11.47",
+      "S_time_s": "17.09"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 11.33,
+        "confidence": 0.584
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 11.33,
+        "confidence": 0.584
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0027",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "32.45",
+      "S_time_s": "47.83"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 47.7,
+        "confidence": 0.396
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0028",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "16.52",
+      "S_time_s": "35.85"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 16.36,
+        "confidence": 0.18
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 16.36,
+        "confidence": 0.18
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 35.65,
+        "confidence": 0.423
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0029",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "ground_truth": {
+      "P_time_s": "28.31",
+      "S_time_s": "51.61"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 51.33,
+        "confidence": 0.415
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 51.33,
+        "confidence": 0.415
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 28.17,
+        "confidence": 0.81
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0030",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0031",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0032",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0033",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0034",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0035",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0036",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0037",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0038",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0039",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0040",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0041",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0042",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0043",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 33.15,
+        "confidence": 0.204
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 33.15,
+        "confidence": 0.204
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0044",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "-1",
+      "S_time_s": "-1"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0045",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "15.18",
+      "S_time_s": "28.26"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 28.04,
+        "confidence": 0.804
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0046",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "17.98",
+      "S_time_s": "31.84"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 31.61,
+        "confidence": 0.835
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0047",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "18.44",
+      "S_time_s": "34.2"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 34.0,
+        "confidence": 0.753
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0048",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "24.82",
+      "S_time_s": "43.32"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 43.11,
+        "confidence": 0.824
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0049",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "23.13",
+      "S_time_s": "31.48"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": 25.9,
+        "S_pick": 31.3,
+        "confidence": 0.878
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0050",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "18.96",
+      "S_time_s": "37.41"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 37.18,
+        "confidence": 0.807
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0051",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "26.15",
+      "S_time_s": "42.39"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 42.23,
+        "confidence": 0.838
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0052",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "28.09",
+      "S_time_s": "46.54"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 46.36,
+        "confidence": 0.832
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0053",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "27.72",
+      "S_time_s": "40.63"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": 27.73,
+        "S_pick": 40.41,
+        "confidence": 0.83
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0054",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "25.95",
+      "S_time_s": "42.35"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 42.11,
+        "confidence": 0.792
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0055",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "25.85",
+      "S_time_s": "45.08"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 44.8,
+        "confidence": 0.826
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 44.8,
+        "confidence": 0.826
+      },
+      "OBSTransformer": {
+        "P_pick": 25.69,
+        "S_pick": 44.83,
+        "confidence": 0.809
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0056",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "24.04",
+      "S_time_s": "38.64"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 38.41,
+        "confidence": 0.811
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0057",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "11.53",
+      "S_time_s": "22.79"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 22.6,
+        "confidence": 0.137
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 22.6,
+        "confidence": 0.137
+      },
+      "OBSTransformer": {
+        "P_pick": 11.61,
+        "S_pick": 22.59,
+        "confidence": 0.776
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0058",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "11.16",
+      "S_time_s": "25.83"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 25.58,
+        "confidence": 0.803
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0059",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "28.78",
+      "S_time_s": "48.72"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 48.49,
+        "confidence": 0.819
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0060",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "22.91",
+      "S_time_s": "33.56"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": 33.28,
+        "confidence": 0.143
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": 33.28,
+        "confidence": 0.143
+      },
+      "OBSTransformer": {
+        "P_pick": 22.98,
+        "S_pick": 33.36,
+        "confidence": 0.896
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0061",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "26.51",
+      "S_time_s": "42.92"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 42.72,
+        "confidence": 0.831
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0062",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "24.08",
+      "S_time_s": "38.8"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 38.57,
+        "confidence": 0.767
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0063",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "ground_truth": {
+      "P_time_s": "21.56",
+      "S_time_s": "34.9"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "PickBlue": {
+        "P_pick": null,
+        "S_pick": null,
+        "confidence": null
+      },
+      "OBSTransformer": {
+        "P_pick": null,
+        "S_pick": 34.7,
+        "confidence": 0.802
+      }
+    }
+  },
+  {
+    "sample_id": "syn_0064",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "ground_truth": {
+      "P_time_s": "29.75",
+      "S_time_s": "39.25"
+    },
+    "predictions": {
+      "PhaseNet": {
+        "P_pick": 29.62,
+        "S_pick": 38.98,
+        "confidence": 0.392
+      },
+      "PickBlue": {
+        "P_pick": 29.62,
+        "S_pick": 38.98,
+        "confidence": 0.392
+      },
+      "OBSTransformer": {
+        "P_pick": 29.5,
+        "S_pick": 38.97,
+        "confidence": 0.843
+      }
+    }
+  }
+]

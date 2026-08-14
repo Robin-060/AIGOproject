@@ -1,0 +1,1032 @@
+[
+  {
+    "sample_id": "syn_0000",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.84",
+    "S_time_s": "28.44",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0000.mseed"
+  },
+  {
+    "sample_id": "syn_0001",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "25.1",
+    "S_time_s": "38.44",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0001.mseed"
+  },
+  {
+    "sample_id": "syn_0002",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "12.57",
+    "S_time_s": "31.51",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0002.mseed"
+  },
+  {
+    "sample_id": "syn_0003",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "29.48",
+    "S_time_s": "38.95",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0003.mseed"
+  },
+  {
+    "sample_id": "syn_0004",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "23.26",
+    "S_time_s": "35.04",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0004.mseed"
+  },
+  {
+    "sample_id": "syn_0005",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "15.96",
+    "S_time_s": "30.44",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0005.mseed"
+  },
+  {
+    "sample_id": "syn_0006",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "14.21",
+    "S_time_s": "27.59",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0006.mseed"
+  },
+  {
+    "sample_id": "syn_0007",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "16.7",
+    "S_time_s": "27.59",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0007.mseed"
+  },
+  {
+    "sample_id": "syn_0008",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "17.52",
+    "S_time_s": "28.54",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0008.mseed"
+  },
+  {
+    "sample_id": "syn_0009",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "12.99",
+    "S_time_s": "26.6",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0009.mseed"
+  },
+  {
+    "sample_id": "syn_0010",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "19.92",
+    "S_time_s": "38.44",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0010.mseed"
+  },
+  {
+    "sample_id": "syn_0011",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "28.04",
+    "S_time_s": "36.21",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0011.mseed"
+  },
+  {
+    "sample_id": "syn_0012",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.58",
+    "S_time_s": "22.77",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0012.mseed"
+  },
+  {
+    "sample_id": "syn_0013",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "20.04",
+    "S_time_s": "35.12",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0013.mseed"
+  },
+  {
+    "sample_id": "syn_0014",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "13.3",
+    "S_time_s": "24.73",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0014.mseed"
+  },
+  {
+    "sample_id": "syn_0015",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "18.63",
+    "S_time_s": "46.03",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0015.mseed"
+  },
+  {
+    "sample_id": "syn_0016",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "15.74",
+    "S_time_s": "30.88",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0016.mseed"
+  },
+  {
+    "sample_id": "syn_0017",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.87",
+    "S_time_s": "25.73",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0017.mseed"
+  },
+  {
+    "sample_id": "syn_0018",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "16.39",
+    "S_time_s": "25.66",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0018.mseed"
+  },
+  {
+    "sample_id": "syn_0019",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "29.71",
+    "S_time_s": "43.05",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0019.mseed"
+  },
+  {
+    "sample_id": "syn_0020",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "31.67",
+    "S_time_s": "46.28",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0020.mseed"
+  },
+  {
+    "sample_id": "syn_0021",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "22.0",
+    "S_time_s": "33.38",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0021.mseed"
+  },
+  {
+    "sample_id": "syn_0022",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "30.7",
+    "S_time_s": "42.0",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0022.mseed"
+  },
+  {
+    "sample_id": "syn_0023",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "34.72",
+    "S_time_s": "61.08",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0023.mseed"
+  },
+  {
+    "sample_id": "syn_0024",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.77",
+    "S_time_s": "31.04",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0024.mseed"
+  },
+  {
+    "sample_id": "syn_0025",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "12.26",
+    "S_time_s": "22.95",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0025.mseed"
+  },
+  {
+    "sample_id": "syn_0026",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.47",
+    "S_time_s": "17.09",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0026.mseed"
+  },
+  {
+    "sample_id": "syn_0027",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "32.45",
+    "S_time_s": "47.83",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0027.mseed"
+  },
+  {
+    "sample_id": "syn_0028",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "16.52",
+    "S_time_s": "35.85",
+    "label": "EARTHQUAKE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0028.mseed"
+  },
+  {
+    "sample_id": "syn_0029",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "28.31",
+    "S_time_s": "51.61",
+    "label": "EARTHQUAKE",
+    "noise_level": "L3",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0029.mseed"
+  },
+  {
+    "sample_id": "syn_0030",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0030.mseed"
+  },
+  {
+    "sample_id": "syn_0031",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0031.mseed"
+  },
+  {
+    "sample_id": "syn_0032",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0032.mseed"
+  },
+  {
+    "sample_id": "syn_0033",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0033.mseed"
+  },
+  {
+    "sample_id": "syn_0034",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0034.mseed"
+  },
+  {
+    "sample_id": "syn_0035",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0035.mseed"
+  },
+  {
+    "sample_id": "syn_0036",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0036.mseed"
+  },
+  {
+    "sample_id": "syn_0037",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0037.mseed"
+  },
+  {
+    "sample_id": "syn_0038",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0038.mseed"
+  },
+  {
+    "sample_id": "syn_0039",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L2",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0039.mseed"
+  },
+  {
+    "sample_id": "syn_0040",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0040.mseed"
+  },
+  {
+    "sample_id": "syn_0041",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0041.mseed"
+  },
+  {
+    "sample_id": "syn_0042",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0042.mseed"
+  },
+  {
+    "sample_id": "syn_0043",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0043.mseed"
+  },
+  {
+    "sample_id": "syn_0044",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "-1",
+    "S_time_s": "-1",
+    "label": "NOISE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0044.mseed"
+  },
+  {
+    "sample_id": "syn_0045",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "15.18",
+    "S_time_s": "28.26",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0045.mseed"
+  },
+  {
+    "sample_id": "syn_0046",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "17.98",
+    "S_time_s": "31.84",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0046.mseed"
+  },
+  {
+    "sample_id": "syn_0047",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "18.44",
+    "S_time_s": "34.2",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0047.mseed"
+  },
+  {
+    "sample_id": "syn_0048",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "24.82",
+    "S_time_s": "43.32",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0048.mseed"
+  },
+  {
+    "sample_id": "syn_0049",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "23.13",
+    "S_time_s": "31.48",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0049.mseed"
+  },
+  {
+    "sample_id": "syn_0050",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "18.96",
+    "S_time_s": "37.41",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0050.mseed"
+  },
+  {
+    "sample_id": "syn_0051",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "26.15",
+    "S_time_s": "42.39",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0051.mseed"
+  },
+  {
+    "sample_id": "syn_0052",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "28.09",
+    "S_time_s": "46.54",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0052.mseed"
+  },
+  {
+    "sample_id": "syn_0053",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "27.72",
+    "S_time_s": "40.63",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0053.mseed"
+  },
+  {
+    "sample_id": "syn_0054",
+    "n_channels": 3,
+    "channels": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "25.95",
+    "S_time_s": "42.35",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0054.mseed"
+  },
+  {
+    "sample_id": "syn_0055",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "25.85",
+    "S_time_s": "45.08",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0055.mseed"
+  },
+  {
+    "sample_id": "syn_0056",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "24.04",
+    "S_time_s": "38.64",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0056.mseed"
+  },
+  {
+    "sample_id": "syn_0057",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.53",
+    "S_time_s": "22.79",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0057.mseed"
+  },
+  {
+    "sample_id": "syn_0058",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "11.16",
+    "S_time_s": "25.83",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0058.mseed"
+  },
+  {
+    "sample_id": "syn_0059",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "28.78",
+    "S_time_s": "48.72",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0059.mseed"
+  },
+  {
+    "sample_id": "syn_0060",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "22.91",
+    "S_time_s": "33.56",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0060.mseed"
+  },
+  {
+    "sample_id": "syn_0061",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "26.51",
+    "S_time_s": "42.92",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0061.mseed"
+  },
+  {
+    "sample_id": "syn_0062",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "24.08",
+    "S_time_s": "38.8",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0062.mseed"
+  },
+  {
+    "sample_id": "syn_0063",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "21.56",
+    "S_time_s": "34.9",
+    "label": "EARTHQUAKE",
+    "noise_level": "L0",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0063.mseed"
+  },
+  {
+    "sample_id": "syn_0064",
+    "n_channels": 4,
+    "channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "sampling_rate_hz": 100.0,
+    "P_time_s": "29.75",
+    "S_time_s": "39.25",
+    "label": "EARTHQUAKE",
+    "noise_level": "L1",
+    "mseed_path": "D:\\Uni\\AIGO\\OBSTransformer-main\\data\\synthetic\\streams\\syn_0064.mseed"
+  }
+]

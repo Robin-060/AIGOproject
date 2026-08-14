@@ -123,8 +123,15 @@ def simulate_predictions(truth: Dict, disagreement: bool = False) -> List[ModelP
     return preds
 
 
-def run_one_config(config: TrustConfig, labels: List[Dict],
-                   noise_levels: List[str] = None) -> Dict[str, float]:
+def run_one_config(
+    config: TrustConfig,
+    labels: List[Dict],
+    noise_levels: List[str] = None,
+    enable_data: bool = True,
+    enable_single: bool = True,
+    enable_multi: bool = True,
+    enable_physics: bool = True,
+) -> Dict[str, float]:
     """
     用一组配置跑全部仿真数据，统计指标
     """
@@ -198,6 +205,22 @@ def run_one_config(config: TrustConfig, labels: List[Dict],
                     center_time_s=pred_list[0].time_s, spread_s=0, score=5,
                 ))
 
+        # 根据多模型共识生成融合候选
+        fusion_candidates = []
+        for c in consensus:
+            if len(c.inlier_models) >= 2 and c.center_time_s >= 0:
+                fusion_candidates.append(FusedPickCandidate(
+                    phase=c.phase,
+                    fusion_allowed=True,
+                    fused_time_s=c.center_time_s,
+                    contributors=list(c.inlier_models),
+                    excluded_models=list(c.outlier_models),
+                    spread_s=c.spread_s,
+                    fusion_method="MEDIAN_INLIERS",
+                    threshold_version=c.version,
+                    reasons=["CONSENSUS_CLUSTER"],
+                ))
+
         # 模拟单模型证据
         single_ev = []
         for p in preds:
@@ -209,33 +232,46 @@ def run_one_config(config: TrustConfig, labels: List[Dict],
             ))
 
         result = evaluate_reliability(
-            metadata=metadata, quality=quality,
-            model_profiles=DEMO_PROFILES, predictions=preds,
-            config=config, suitabilities=suits, physics_checks=physics,
-            consensus_results=consensus, single_evidences=single_ev,
+            metadata=metadata,
+            quality=quality,
+            model_profiles=DEMO_PROFILES,
+            predictions=preds,
+            config=config,
+            suitabilities=suits,
+            physics_checks=physics,
+            consensus_results=consensus,
+            fusion_candidates=fusion_candidates,
+            single_evidences=single_ev,
+            enable={
+                "data": enable_data,
+                "single_model": enable_single,
+                "multi_model": enable_multi,
+                "physics": enable_physics,
+            },
         )
 
         action = result.phase_decisions.get("P")
-        if action:
-            is_auto = action.action in ("ACCEPT", "FUSE", "ROUTE")
-            if is_auto:
-                auto_count += 1
+        is_auto = bool(action and action.action in ("ACCEPT", "FUSE", "ROUTE"))
+        if is_auto:
+            auto_count += 1
 
-            if not is_earthquake and preds:
-                errors_total += 1
-                if not is_auto:
-                    errors_caught += 1
-            elif disagreement and is_earthquake:
-                p_times = [p.time_s for p in preds if p.phase == "P" and p.time_s > 0]
-                if p_times:
-                    max_diff = max(p_times) - min(p_times)
-                    if max_diff > 0.5:
-                        errors_total += 1
-                        if not is_auto:
-                            errors_caught += 1
-            elif is_earthquake and not disagreement:
-                # 正常地震 + 正常预测 → 没问题
-                pass
+        # 错误样本统计
+        if not is_earthquake and preds:
+            errors_total += 1
+            if not is_auto:
+                errors_caught += 1
+
+        elif disagreement and is_earthquake:
+            p_times = [p.time_s for p in preds if p.phase == "P" and p.time_s > 0]
+            if p_times:
+                max_diff = max(p_times) - min(p_times)
+                if max_diff > 0.5:
+                    errors_total += 1
+                    if not is_auto:
+                        errors_caught += 1
+
+        elif is_earthquake and not disagreement:
+            pass
 
     error_rate = errors_caught / errors_total if errors_total > 0 else 0
     coverage = auto_count / total if total > 0 else 0

@@ -103,6 +103,10 @@ def run_pipeline(
     predictions: list,
     adapter_statuses: list = None,
     config: TrustConfig = None,
+    enable_data: bool = True,
+    enable_single: bool = True,
+    enable_multi: bool = True,
+    enable_physics: bool = True,
 ) -> ReliabilityResult:
     """
     完整分析流程:
@@ -174,6 +178,10 @@ def run_pipeline(
         physics_checks=physics_checks,
         consensus_results=consensus_results,
         fusion_candidates=fusion_candidates,
+                enable_data=enable_data,
+        enable_single=enable_single,
+        enable_multi=enable_multi,
+        enable_physics=enable_physics,
     )
 
 
