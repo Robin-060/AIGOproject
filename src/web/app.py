@@ -230,7 +230,7 @@ def _render_waveform(raw: Dict[str, Any], bundle: WaveformBundle) -> None:
                 axis.axvline(float(item["time_s"]), color=colors.get(item.get("phase"), "#f59e0b"), alpha=0.35, linewidth=1)
             axis.set_ylabel(channel)
             axis.grid(alpha=0.15)
-        axes[-1].set_xlabel("时间 (s)")
+        axes[-1].set_xlabel("Time (s)")
         figure.tight_layout()
         st.pyplot(figure, clear_figure=True)
         st.caption("红线为各模型 P 拾取，蓝线为各模型 S 拾取；相近竖线表示模型共识。")
