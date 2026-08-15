@@ -204,11 +204,11 @@ def main():
 
     # ── 基线对比 (严格 vs 放宽) ──
     methods = {
-        "单模型(OBST)": lambda s: baseline_single(s),
-        "最高置信度": baseline_max_conf,
-        "简单投票": baseline_vote,
-        "Trust Layer 严格": lambda s: trust_layer_pick(run_trust_layer(s, config=STRICT_CONFIG)),
-        "Trust Layer 放宽": lambda s: trust_layer_pick(run_trust_layer(s, config=RELAXED_CONFIG)),
+        "Single(OBST)": lambda s: baseline_single(s),
+        "Max-Conf": baseline_max_conf,
+        "Voting": baseline_vote,
+        "TL Strict": lambda s: trust_layer_pick(run_trust_layer(s, config=STRICT_CONFIG)),
+        "TL Relaxed": lambda s: trust_layer_pick(run_trust_layer(s, config=RELAXED_CONFIG)),
     }
 
     print("基线对比:")
@@ -270,17 +270,17 @@ def main():
         wrong_rates.append(r["wrong"] / total if total else 0)
     bars = ax.bar(names, wrong_rates, color="#4CAF50")
     ax.set_ylabel("Wrong-pass rate (higher = evidence is more important)")
-    ax.set_title("Ablation on Real Predictions (relaxed config)")
+    ax.set_title("Ablation on Synthetic Ricker Data (demo)")
     for bar, v in zip(bars, wrong_rates):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01,
                 f"{v:.1%}", ha="center", fontsize=10)
     fig.tight_layout()
-    fig.savefig(OUT_DIR / "real_ablation.png", dpi=150)
+    fig.savefig(OUT_DIR / "real_ablation_ricker.png", dpi=150)
     plt.close(fig)
 
     print(f"\n✅ 图表已保存:")
     print(f"  {OUT_DIR / 'real_baseline.png'}")
-    print(f"  {OUT_DIR / 'real_ablation.png'}")
+    print(f"  {OUT_DIR / 'real_ablation_ricker.png'}")
 
 
 if __name__ == "__main__":
