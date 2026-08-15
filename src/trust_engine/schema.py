@@ -147,15 +147,15 @@ class AdapterStatus:
 class TrustConfig:
     primary_model: str = ""
     fusion_enabled: bool = True
-    consensus_tolerance_p_s: float = 0.578   # calibrated: 95%分位 (n=14)
-    consensus_tolerance_s_s: float = 0.340   # calibrated: 95%分位 (n=36)
+    consensus_tolerance_p_s: float = 0.34    # calibrated: 95%分位 (n=674)
+    consensus_tolerance_s_s: float = 0.51    # calibrated: 95%分位 (n=455)
     severe_disagreement_p_s: float = 1.00
     severe_disagreement_s_s: float = 2.00
     automatic_risk_threshold: float = 30.0
     risk_low_max: float = 20.0               # calibrated (放宽口径网格扫描)
     risk_medium_max: float = 60.0            # calibrated
-    min_sp_s: float = 5.11                   # calibrated: 2.5%分位 (n=80)
-    max_sp_s: float = 30.21                  # calibrated: 97.5%分位 (n=80)
+    min_sp_s: float = 5.7                     # calibrated: 2.5%分位 (n=411)
+    max_sp_s: float = 33.42                   # calibrated: 97.5%分位 (n=411)
     required_channels_for_task: List[str] = field(default_factory=lambda: ["Z", "N", "E"])
     # 证据权重上限 (四类证据各自的风险分满分)
     data_weight: float = 30.0                 # 保留启发式: 批量数据无质量失败样本, 故障注入验证有效性

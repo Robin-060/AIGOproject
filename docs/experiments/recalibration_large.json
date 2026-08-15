@@ -1,0 +1,27 @@
+{
+  "n_samples": 895,
+  "tolerance": {
+    "P": {
+      "n": 674,
+      "p95": 0.34,
+      "median": 0.08
+    },
+    "S": {
+      "n": 455,
+      "p95": 0.51,
+      "median": 0.12
+    }
+  },
+  "physics_boundary": {
+    "n": 411,
+    "min_sp_2p5": 5.7,
+    "max_sp_97p5": 33.42,
+    "median": 15.38
+  },
+  "old_values": {
+    "p_tol": 0.578,
+    "s_tol": 0.34,
+    "min_sp": 5.11,
+    "max_sp": 30.21
+  }
+}
