@@ -8,13 +8,14 @@ This module does not make final policy decisions.
 from __future__ import annotations
 
 from statistics import median
-from typing import List
+from typing import List, Optional
 
 from .schema import (
     ConsensusResult,
     ModelPrediction,
     ModelSuitability,
     PhysicsCheck,
+    TrustConfig,
 )
 
 
@@ -124,8 +125,27 @@ def analyze_multi_model_consensus(
     predictions: List[ModelPrediction],
     suitability: List[ModelSuitability],
     physics_checks: List[PhysicsCheck],
+    config: Optional["TrustConfig"] = None,
 ) -> List[ConsensusResult]:
-    """Analyze P and S consensus separately."""
+    """Analyze P and S consensus separately.
+
+    Tolerances are read from TrustConfig (calibrated values);
+    fall back to the module constants when no config is given.
+    """
+    if config is None:
+        tolerance_map = dict(CONSENSUS_TOLERANCE)
+        severe_map = dict(SEVERE_DISAGREEMENT)
+        version = VERSION
+    else:
+        tolerance_map = {
+            "P": config.consensus_tolerance_p_s,
+            "S": config.consensus_tolerance_s_s,
+        }
+        severe_map = {
+            "P": config.severe_disagreement_p_s,
+            "S": config.severe_disagreement_s_s,
+        }
+        version = config.config_version
 
     usable_models = _get_usable_models(
         suitability,
@@ -164,12 +184,12 @@ def analyze_multi_model_consensus(
                     spread_s=-1.0,
                     score=0.0,
                     reasons=["COMPARISON_GROUP_MISMATCH"],
-                    version=VERSION,
+                    version=version,
                 )
             )
             continue
 
-        tolerance = CONSENSUS_TOLERANCE[phase]
+        tolerance = tolerance_map[phase]
 
         inliers, outliers = _find_largest_cluster(
             phase_predictions,
@@ -234,7 +254,7 @@ def analyze_multi_model_consensus(
                 spread_s=spread_s,
                 score=score,
                 reasons=reasons,
-                version=VERSION,
+                version=version,
             )
         )
 

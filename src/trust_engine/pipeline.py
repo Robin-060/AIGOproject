@@ -159,6 +159,7 @@ def run_pipeline(
 
         consensus_results = analyze_multi_model_consensus(
             predictions, suitabilities or [], physics_checks or [],
+            config=config,
         )
         fusion_candidates = build_fusion_candidates(
             predictions, consensus_results,
