@@ -396,8 +396,20 @@ def main() -> None:
                           "analysis": uploaded_analysis}]
                 raw = items[0]["raw"]
                 analysis = items[0]["analysis"]
+                # 加载配套波形 CSV (若存在)
+                waveform = None
+                csv_path = example_path.with_suffix(".csv")
+                if csv_path.exists():
+                    try:
+                        waveform = read_waveform_bytes(
+                            csv_path.read_bytes(),
+                            csv_path.name,
+                            sampling_rate_hz=float(raw["quality_report"]["sampling_rate_hz"]),
+                        )
+                    except Exception:
+                        waveform = None
                 st.success(f"已加载内置示例：{example_file}（{len(analysis['inputs']['predictions'])} 条模型预测）")
-                _render_full(raw, analysis, None)
+                _render_full(raw, analysis, waveform)
             except Exception as exc:
                 st.exception(exc)
         else:
