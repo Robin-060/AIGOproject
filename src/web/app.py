@@ -377,9 +377,32 @@ def main() -> None:
         type=["csv", "mseed", "miniseed", "sgy", "segy"],
         help="CSV 需要 time_s 列，或使用左侧 JSON 中的采样率。MiniSEED/SEG-Y 由 ObsPy 读取。",
     )
+
     if not uploaded_files:
-        st.info("请上传 JSON 文件开始分析。")
-        _render_experiments()
+        # 一键示例
+        example_cols = st.columns([1, 1, 3])
+        if example_cols[0].button("示例 1：三模型共识 → 融合"):
+            st.session_state["example_file"] = "example_1.json"
+        if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
+            st.session_state["example_file"] = "example_2.json"
+
+        example_file = st.session_state.get("example_file")
+        example_path = ROOT / "data" / "examples" / example_file if example_file else None
+        if example_path and example_path.exists():
+            try:
+                uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
+                uploaded_analysis = run_analysis(uploaded_raw)
+                items = [{"name": example_file, "raw": uploaded_raw,
+                          "analysis": uploaded_analysis}]
+                raw = items[0]["raw"]
+                analysis = items[0]["analysis"]
+                st.success(f"已加载内置示例：{example_file}（{len(analysis['predictions'])} 条模型预测）")
+                _render_full(raw, analysis, None)
+            except Exception as exc:
+                st.exception(exc)
+        else:
+            st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
+            _render_experiments()
         return
 
     items = []
@@ -424,6 +447,46 @@ def main() -> None:
     )
     with overview:
         _render_batch_statistics(items)
+        _render_overview(raw, analysis)
+        _render_decisions(analysis)
+    with waveform_tab:
+        if waveform is None:
+            st.info("上传对应 CSV、MiniSEED 或 SEG-Y 波形后，可查看预处理前后、拾取点和 STA/LTA 触发结果。")
+        else:
+            _render_waveform(raw, waveform)
+    with models:
+        _render_models(raw, analysis)
+    with evidence:
+        _render_risk(analysis)
+        with st.expander("查看共识与物理证据"):
+            st.json(
+                {
+                    "data_evidence": analysis["data_evidence"],
+                    "consensus": analysis["consensus"],
+                    "physics": analysis["physics"],
+                }
+            )
+    with experiments:
+        _render_experiments()
+    with raw_tab:
+        st.download_button(
+            "下载 Trust Engine 结果",
+            json.dumps(analysis["result"], ensure_ascii=False, indent=2),
+            file_name=f"{analysis['result']['sample_id']}_trust_result.json",
+            mime="application/json",
+        )
+        st.json(analysis["result"])
+
+
+def _render_full(raw: Dict[str, Any], analysis: Dict[str, Any],
+                 waveform: Any) -> None:
+    """渲染完整分析视图 (示例按钮和上传文件共用)"""
+    overview, waveform_tab, models, evidence, experiments, raw_tab = st.tabs(
+        ["总览", "波形", "模型状态", "风险分解", "实验结果", "JSON 结果"]
+    )
+    with overview:
+        _render_batch_statistics([{"name": "当前样本", "raw": raw,
+                                   "analysis": analysis}])
         _render_overview(raw, analysis)
         _render_decisions(analysis)
     with waveform_tab:

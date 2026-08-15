@@ -1,0 +1,176 @@
+{
+  "sample_metadata": {
+    "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+    "deployment_id": "201805",
+    "station_id": "XO.LT07",
+    "window_id": "XO.LT07..HH.2018.05.12.20.49.55",
+    "start_time_utc": "",
+    "duration_s": 60.0,
+    "canonical_time_basis": "WINDOW_SECONDS",
+    "expected_event": null,
+    "data_source": "REAL",
+    "preprocessing_version": "synthetic_v1",
+    "resampling_applied": false,
+    "resampling_trace_id": null
+  },
+  "quality_report": {
+    "available_channels": [
+      "Z",
+      "N",
+      "E",
+      "H"
+    ],
+    "missing_channels": [],
+    "required_channels_for_task": [
+      "Z",
+      "N",
+      "E"
+    ],
+    "sampling_rate_hz": 100.0,
+    "gap_ratio": 0.0,
+    "clipping_ratio": 0.0,
+    "snr_db": 20.0,
+    "metric_version": "v0.1",
+    "source": "REAL_CALCULATION"
+  },
+  "model_profiles": {
+    "PhaseNet": {
+      "model_name": "PhaseNet",
+      "model_version": "geofon",
+      "model_family": "phasenet_land",
+      "required_channels": [
+        "Z",
+        "N",
+        "E"
+      ],
+      "preferred_channels": [],
+      "accepted_sampling_rates_hz": [
+        100.0
+      ],
+      "resampling_supported": true,
+      "required_preprocessing_version": "synthetic_v1",
+      "validation_profile_id": null,
+      "validation_domain_known": true,
+      "profile_source": "REAL_ADAPTER"
+    },
+    "PickBlue": {
+      "model_name": "PickBlue",
+      "model_version": "obs-phasenet",
+      "model_family": "obs_specialized",
+      "required_channels": [
+        "Z",
+        "N",
+        "E",
+        "H"
+      ],
+      "preferred_channels": [],
+      "accepted_sampling_rates_hz": [
+        100.0
+      ],
+      "resampling_supported": true,
+      "required_preprocessing_version": "synthetic_v1",
+      "validation_profile_id": null,
+      "validation_domain_known": true,
+      "profile_source": "REAL_ADAPTER"
+    },
+    "OBSTransformer": {
+      "model_name": "OBSTransformer",
+      "model_version": "obst2024",
+      "model_family": "transformer_multicomponent",
+      "required_channels": [
+        "H"
+      ],
+      "preferred_channels": [
+        "Z",
+        "N",
+        "E"
+      ],
+      "accepted_sampling_rates_hz": [
+        100.0
+      ],
+      "resampling_supported": true,
+      "required_preprocessing_version": "synthetic_v1",
+      "validation_profile_id": null,
+      "validation_domain_known": true,
+      "profile_source": "REAL_ADAPTER"
+    }
+  },
+  "model_predictions": [
+    {
+      "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "window_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "model_name": "PickBlue",
+      "model_version": "obs-phasenet",
+      "phase": "P",
+      "time_s": 45.02,
+      "pick_time_utc": null,
+      "source_time_basis": "WINDOW_SECONDS",
+      "score": 0.638,
+      "adapter_status": "OK",
+      "preprocessing_version": "synthetic_v1",
+      "prediction_source": "REAL_MODEL"
+    },
+    {
+      "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "window_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "model_name": "PickBlue",
+      "model_version": "obs-phasenet",
+      "phase": "S",
+      "time_s": 58.74,
+      "pick_time_utc": null,
+      "source_time_basis": "WINDOW_SECONDS",
+      "score": 0.638,
+      "adapter_status": "OK",
+      "preprocessing_version": "synthetic_v1",
+      "prediction_source": "REAL_MODEL"
+    },
+    {
+      "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "window_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "model_name": "OBSTransformer",
+      "model_version": "obst2024",
+      "phase": "P",
+      "time_s": 45.07,
+      "pick_time_utc": null,
+      "source_time_basis": "WINDOW_SECONDS",
+      "score": 0.928,
+      "adapter_status": "OK",
+      "preprocessing_version": "synthetic_v1",
+      "prediction_source": "REAL_MODEL"
+    },
+    {
+      "sample_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "window_id": "XO.LT07..HH.2018.05.12.20.49.55",
+      "model_name": "OBSTransformer",
+      "model_version": "obst2024",
+      "phase": "S",
+      "time_s": 58.83,
+      "pick_time_utc": null,
+      "source_time_basis": "WINDOW_SECONDS",
+      "score": 0.928,
+      "adapter_status": "OK",
+      "preprocessing_version": "synthetic_v1",
+      "prediction_source": "REAL_MODEL"
+    }
+  ],
+  "adapter_statuses": [
+    {
+      "model_name": "PhaseNet",
+      "loaded": true,
+      "run_succeeded": true,
+      "output_comparable": true
+    },
+    {
+      "model_name": "PickBlue",
+      "loaded": true,
+      "run_succeeded": true,
+      "output_comparable": true
+    },
+    {
+      "model_name": "OBSTransformer",
+      "loaded": true,
+      "run_succeeded": true,
+      "output_comparable": true
+    }
+  ]
+}
