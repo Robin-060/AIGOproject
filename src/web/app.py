@@ -280,17 +280,8 @@ def _render_risk(analysis: Dict[str, Any]) -> None:
         })
     frame = pd.DataFrame(rows)
     st.dataframe(frame, hide_index=True, use_container_width=True)
-
-    # 简洁条形图: 每个证据取 P/S 最大值, 横向
-    chart_rows = []
-    for key, label in labels.items():
-        p_val = breakdown.get("P", {}).get(key, 0.0)
-        s_val = breakdown.get("S", {}).get(key, 0.0)
-        chart_rows.append({"证据": label, "风险分": max(p_val, s_val)})
-    chart = pd.DataFrame(chart_rows)
-    st.bar_chart(chart, x="证据", y="风险分", horizontal=True)
     st.caption("各证据独立计分封顶（数据 30 / 单模型 24 / 多模型 37 / 物理 40），"
-               "总风险分封顶 100。条形图显示 P/S 两相位中的较高分。")
+               "总风险分封顶 100。")
 
 
 def _render_models(raw: Dict[str, Any], analysis: Dict[str, Any]) -> None:
