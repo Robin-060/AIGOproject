@@ -29,9 +29,9 @@ NOISE_SUMMARY = ROOT / "docs" / "experiments" / "noise_summary_seisbench.csv"
 STALTA_SUMMARY = ROOT / "docs" / "experiments" / "stalta_summary.json"
 CPU_BENCHMARK = ROOT / "docs" / "experiments" / "cpu_benchmark.json"
 BASELINE_CHARTS = (
-    ROOT / "docs" / "experiments" / "baseline_final_comparison.png",
-    ROOT / "docs" / "experiments" / "risk_coverage_curve.png",
-    ROOT / "docs" / "experiments" / "ablation.png",
+    ROOT / "docs" / "experiments" / "real_baseline.png",
+    ROOT / "docs" / "experiments" / "real_ablation.png",
+    ROOT / "docs" / "experiments" / "calibration_curve.png",
 )
 
 STATUS_LABELS = {
