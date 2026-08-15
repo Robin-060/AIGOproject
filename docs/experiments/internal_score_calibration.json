@@ -1,0 +1,23 @@
+{
+  "method": "fault harm rate × data evidence budget",
+  "data_budget": 30.0,
+  "fault_error_rates": {
+    "channel_missing": 0.2860335195530726,
+    "clipping": 0.3575418994413408,
+    "gap": 0.32849162011173183,
+    "strong_noise": 0.9128491620111732
+  },
+  "current_scores": {
+    "channel_missing": 12.0,
+    "clipping": 10.0,
+    "gap": 15.0,
+    "strong_noise": 15.0
+  },
+  "calibrated_scores": {
+    "channel_missing": 8.6,
+    "clipping": 10.7,
+    "gap": 9.9,
+    "strong_noise": 27.4
+  },
+  "caveat": "注入故障 vs 自然故障的边界需声明"
+}

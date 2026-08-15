@@ -42,13 +42,13 @@ def test_pipeline_serializes_object_and_exposes_risk_breakdown():
     assert decoded["evidence_status"] == "COMPLETE"
     assert decoded["phase_decisions"]["P"]["action"] == "FUSE"
     assert decoded["evidence_breakdown"]["P"] == {
-        "data": 8.0,
+        "data": 13.7,      # snr 7.5 → MODERATE_SIGNAL (calibrated)
         "single_model": 0.0,
         "multi_model": 0.0,
         "physics": 0.0,
-        "total": 8.0,
+        "total": 13.7,
     }
-    assert decoded["overall_risk_score"] == 8.0
+    assert decoded["overall_risk_score"] == 13.7
 
 
 def test_missing_required_section_is_rejected():

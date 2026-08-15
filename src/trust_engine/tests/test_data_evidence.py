@@ -23,23 +23,23 @@ def test_normal_data_has_zero_risk():
     assert evidence.reasons == ["DATA_QUALITY_OK"]
 
 
-def test_one_required_channel_missing_adds_at_least_twelve():
+def test_one_required_channel_missing_adds_calibrated_score():
     evidence = evaluate_data_evidence(
         make_report(available_channels=["Z", "N"], missing_channels=["E"])
     )
-    assert evidence.score is not None and evidence.score >= 12
+    assert evidence.score is not None and evidence.score >= 8
     assert "CHANNEL_MISSING" in evidence.reasons
 
 
-def test_low_snr_adds_at_least_fifteen():
+def test_low_snr_adds_calibrated_score():
     evidence = evaluate_data_evidence(make_report(snr_db=2.9))
-    assert evidence.score is not None and evidence.score >= 15
+    assert evidence.score is not None and evidence.score >= 20
     assert "LOW_SIGNAL" in evidence.reasons
 
 
 def test_severe_gap_does_not_also_add_moderate_gap():
     evidence = evaluate_data_evidence(make_report(gap_ratio=0.11))
-    assert evidence.score == 15
+    assert evidence.score == 9.9
     assert "GAP_SEVERE" in evidence.reasons
     assert "GAP_MODERATE" not in evidence.reasons
 
