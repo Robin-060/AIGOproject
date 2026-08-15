@@ -1,0 +1,21 @@
+{
+  "physics_boundary": {
+    "n": 80,
+    "min_sp_s": 5.11,
+    "max_sp_s": 30.21,
+    "median_sp_s": 11.61
+  },
+  "risk_thresholds": {
+    "risk_low_max": 20,
+    "risk_medium_max": 50,
+    "wrong_rate": 0.0,
+    "coverage": 0.125
+  },
+  "ablation_evidence_importance": {
+    "data": 0.0,
+    "single_model": 0.0,
+    "multi_model": 0.0,
+    "physics": 0.0
+  },
+  "note": "n=64, 初步校准, 需更大样本验证"
+}

@@ -1,0 +1,41 @@
+{
+  "note": "放宽口径(单相位也计), 仅用于参数识别, 不代表产品行为",
+  "best_risk_thresholds": {
+    "risk_low_max": 20,
+    "risk_medium_max": 60
+  },
+  "best_wrong_rate": 0.0,
+  "best_coverage": 0.625,
+  "ablation": {
+    "data": {
+      "wrong_rate": 0.0,
+      "correct": 40,
+      "wrong": 0,
+      "reject": 24
+    },
+    "single_model": {
+      "wrong_rate": 0.0,
+      "correct": 40,
+      "wrong": 0,
+      "reject": 24
+    },
+    "multi_model": {
+      "wrong_rate": 0.0,
+      "correct": 0,
+      "wrong": 0,
+      "reject": 64
+    },
+    "physics": {
+      "wrong_rate": 0.0,
+      "correct": 40,
+      "wrong": 0,
+      "reject": 24
+    },
+    "full": {
+      "wrong_rate": 0.0,
+      "correct": 40,
+      "wrong": 0,
+      "reject": 24
+    }
+  }
+}

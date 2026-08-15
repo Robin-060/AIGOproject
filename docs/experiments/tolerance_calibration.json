@@ -1,0 +1,16 @@
+{
+  "method": "both-correct-difference 95th percentile",
+  "data": "SeisBench OBS test split, 20 windows, official P/S labels",
+  "n_both_correct_pairs": {
+    "P": 14,
+    "S": 36
+  },
+  "suggested_tolerance_s": {
+    "P": 0.578,
+    "S": 0.34
+  },
+  "current_heuristic_s": {
+    "P": 0.3,
+    "S": 0.5
+  }
+}

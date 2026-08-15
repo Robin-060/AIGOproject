@@ -1,0 +1,20 @@
+{
+  "method": "logistic regression on evidence scores",
+  "n_samples": 64,
+  "n_wrong": 32,
+  "coefficients": {
+    "bias": -0.6591524081131204,
+    "data": 0.07295680829921206,
+    "single_model": 0.13194105039823817,
+    "multi_model": 0.0073994192482889675,
+    "physics": 1.4264179306571896
+  },
+  "normalized_weights": {
+    "data": 0.04452073668212959,
+    "single_model": 0.08051493615582128,
+    "multi_model": 0.004515378394881239,
+    "physics": 0.8704489487671678
+  },
+  "fit_accuracy": 0.625,
+  "note": "n=64, 初步估计, 置信区间宽"
+}
