@@ -151,9 +151,9 @@ class TrustConfig:
     consensus_tolerance_s_s: float = 0.51    # calibrated: 95%分位 (n=455)
     severe_disagreement_p_s: float = 1.00
     severe_disagreement_s_s: float = 2.00
-    automatic_risk_threshold: float = 30.0
-    risk_low_max: float = 20.0               # calibrated (放宽口径网格扫描)
-    risk_medium_max: float = 60.0            # calibrated
+    automatic_risk_threshold: float = 10.0     # 风险分 ≤10 自动处理 (错误率 ≤12.6%)
+    risk_low_max: float = 10.0               # calibrated: 风险校准曲线 (n=891, 10分处错误率12.6%)
+    risk_medium_max: float = 30.0            # calibrated: 风险校准曲线 (30分处错误率76.5%)
     min_sp_s: float = 5.7                     # calibrated: 2.5%分位 (n=411)
     max_sp_s: float = 33.42                   # calibrated: 97.5%分位 (n=411)
     required_channels_for_task: List[str] = field(default_factory=lambda: ["Z", "N", "E"])

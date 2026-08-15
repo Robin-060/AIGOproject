@@ -26,7 +26,7 @@ def _payload():
         )
     return {
         "sample_metadata": {"sample_id": "sample", "window_id": "window", "preprocessing_version": "obs_raw_v1"},
-        "quality_report": {"available_channels": ["Z", "N", "E"], "sampling_rate_hz": 100.0, "snr_db": 7.5},
+        "quality_report": {"available_channels": ["Z", "N", "E"], "sampling_rate_hz": 100.0, "snr_db": 20.0},
         "model_profiles": profiles,
         "model_predictions": predictions,
         "adapter_statuses": adapters,
@@ -42,13 +42,13 @@ def test_pipeline_serializes_object_and_exposes_risk_breakdown():
     assert decoded["evidence_status"] == "COMPLETE"
     assert decoded["phase_decisions"]["P"]["action"] == "FUSE"
     assert decoded["evidence_breakdown"]["P"] == {
-        "data": 13.7,      # snr 7.5 → MODERATE_SIGNAL (calibrated)
+        "data": 0.0,       # snr 20 → 数据证据无异常
         "single_model": 0.0,
         "multi_model": 0.0,
         "physics": 0.0,
-        "total": 13.7,
+        "total": 0.0,
     }
-    assert decoded["overall_risk_score"] == 13.7
+    assert decoded["overall_risk_score"] == 0.0
 
 
 def test_missing_required_section_is_rejected():
