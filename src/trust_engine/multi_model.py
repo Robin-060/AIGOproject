@@ -134,16 +134,11 @@ def analyze_multi_model_consensus(
     """
     if config is None:
         tolerance_map = dict(CONSENSUS_TOLERANCE)
-        severe_map = dict(SEVERE_DISAGREEMENT)
         version = VERSION
     else:
         tolerance_map = {
             "P": config.consensus_tolerance_p_s,
             "S": config.consensus_tolerance_s_s,
-        }
-        severe_map = {
-            "P": config.severe_disagreement_p_s,
-            "S": config.severe_disagreement_s_s,
         }
         version = config.config_version
 
