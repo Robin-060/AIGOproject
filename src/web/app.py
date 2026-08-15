@@ -145,7 +145,8 @@ def _render_overview(raw: Dict[str, Any], analysis: Dict[str, Any]) -> None:
     cols = st.columns(5)
     cols[0].metric("样本", metadata.get("sample_id", "—"))
     cols[1].metric("总体风险", f"{result['overall_risk_score']:.1f} / 100")
-    cols[2].metric("风险等级", result["overall_risk_level"])
+    cols[2].markdown("**风险等级**")
+    cols[2].markdown(_risk_badge(result["overall_risk_level"]), unsafe_allow_html=True)
     cols[3].metric("P/S 完整性", result["final_pair_status"])
     cols[4].metric("证据状态", result["evidence_status"])
 
@@ -237,6 +238,16 @@ def _render_waveform(raw: Dict[str, Any], bundle: WaveformBundle) -> None:
         st.dataframe(picks[["model_name", "phase", "time_s", "score"]], hide_index=True, use_container_width=True)
 
 
+RISK_COLORS = {"LOW": "#2E7D32", "MEDIUM": "#F57F17", "HIGH": "#C62828"}
+
+
+def _risk_badge(level: str) -> str:
+    """彩色风险等级徽标"""
+    color = RISK_COLORS.get(level, "#666666")
+    return (f"<span style='background:{color}; color:white; "
+            f"padding:2px 10px; border-radius:10px; font-weight:bold'>{level}</span>")
+
+
 def _render_decisions(analysis: Dict[str, Any]) -> None:
     st.subheader("P / S 最终决策")
     columns = st.columns(2)
@@ -249,6 +260,7 @@ def _render_decisions(analysis: Dict[str, Any]) -> None:
             st.caption(
                 f"风险 {decision['risk_score']:.1f}（{decision['risk_level']}）"
             )
+            st.markdown(_risk_badge(decision["risk_level"]), unsafe_allow_html=True)
             contributors = (decision.get("fused_pick") or {}).get("contributors", [])
             if contributors:
                 st.write("融合模型：" + "、".join(contributors))
@@ -371,7 +383,11 @@ def main() -> None:
         layout="wide",
     )
     st.title("OBS Trust Layer 可信分析台")
-    st.caption("上传数据组产出的 result.json，查看模型状态、最终决策与风险依据。")
+    st.markdown(
+        "**模型无关的可信 AI 调度层** —— 综合数据质量、多模型一致性与物理约束，"
+        "对每次拾取结果给出风险等级与决策：自动接受（ACCEPT）、模型融合（FUSE）或人工复核（ABSTAIN）。"
+    )
+    st.caption("上传数据组产出的 result.json，或点击下方示例按钮体验完整流程。")
 
     upload_columns = st.columns(2)
     uploaded_files = upload_columns[0].file_uploader(
