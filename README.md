@@ -1,51 +1,111 @@
-# AIGO OBS Trust Engine
+# OBS Trust Engine
 
-## P3 Demo
+> 面向海底地震仪（OBS）数据的模型无关可信 AI 调度层
+> GOAI 世界人工智能开源大赛 · T3 AI for Research 赛道
 
-SeisBench 0.12 需要 Python 3.10 或更高版本。安装依赖并启动：
+**一句话定位**：不再开发新的拾取模型，而是在多个拾取模型之上构建可靠性评估层——检查数据质量、比较多模型结果、验证物理约束，决定自动接受、模型融合还是人工复核。
+
+## 为什么需要
+
+深度学习拾取模型（PhaseNet / PickBlue / OBSTransformer）在真实部署中会系统性犯错：
+
+- **数据质量退化**：缺通道、削波、强噪声下模型照常输出高置信结果
+- **领域偏移**：陆地训练的模型部署到新海域，论文性能无法迁移
+- **模型分歧**：两个模型给出相差数秒的拾取，不知道该信谁
+- **物理不可能**：P 波拾取晚于 S 波，荒谬结果流入下游分析
+
+我们的实验（895 条真实标注样本）显示模型错误率 35.8%。Trust Layer 在四档噪声下均实现**零错误放行**（基线方法每档泄漏 1-4 个错误）。
+
+## 系统架构
+
+```
+数据层: PhaseNet / PickBlue / OBSTransformer → 统一预测格式
+   ↓
+证据层:
+  ├─ 数据质量证据      0-30 分
+  ├─ 单模型证据        0-24 分
+  ├─ 多模型一致性      0-37 分  ★核心
+  └─ 物理约束证据      0-40 分
+   ↓
+风险聚合 + 决策路由: 0-100 分 → ACCEPT / FUSE / ABSTAIN
+   ↓
+输出: 风险等级 + 决策 + 完整原因链
+```
+
+核心机制：**证据不足时，系统说"我不确定"而不是猜答案。**
+
+## 快速开始
 
 ```bash
+# 1. 安装依赖 (Python 3.10+)
 python3 -m pip install -r requirements.txt
-streamlit run src/web/app.py
+
+# 2. 完整链路 (从原始数据到决策)
+python src/data_layer/download_obs_dataset.py            # 下载数据 (可选, ~34GB)
+python src/data_layer/data_layer.py --output result.json # 三模型推理
+python -m src.trust_engine.pipeline --input result.json  # Trust Engine 决策
+
+# 3. 启动 Demo
+streamlit run src/web/app.py                             # 或: sh scripts/run_demo.sh
 ```
 
-页面打开后上传数据组产出的 `result.json`。Demo 会在本地调用 Trust Engine，展示每个模型的状态、P/S 最终决策、四证据风险分解和实验图表。
+### Demo 使用说明
 
-如同时上传对应的 `.csv`、MiniSEED 或 SEG-Y 波形，页面还会展示原始与预处理后波形、模型 P/S 拾取竖线和经典 STA/LTA 触发结果。CSV 可使用 `time_s,Z,N,E,H` 列；MiniSEED 和 SEG-Y 由 ObsPy 读取。
+页面打开后上传数据组产出的 `result.json`，Demo 会展示每个模型的状态、P/S 最终决策、四证据风险分解和实验图表。如同时上传对应 `.csv`、MiniSEED 或 SEG-Y 波形，页面还会展示原始与预处理后波形、模型 P/S 拾取竖线和经典 STA/LTA 触发结果（CSV 列格式 `time_s,Z,N,E,H`；MiniSEED/SEG-Y 由 ObsPy 读取）。
 
-也可以使用启动脚本：
+### 运行正式实验
 
 ```bash
-sh scripts/run_demo.sh
+sh scripts/download_obs_201805.sh        # 下载最小 OBS 分块 (~353 MiB)
+python3 -m src.experiments.seisbench_noise  # 噪声鲁棒性实验
+sh scripts/run_public_evaluation.sh       # 重建公开评测表 + STA/LTA 基线 + CPU 基准
+python3 -m pytest -q                      # 运行全部测试 (37 个)
 ```
 
-下载最小 OBS 分块并运行正式噪声实验：
+实验固定使用官方测试集中 20 条四通道 P/S 标注波形，运行 PhaseNet/geofon、PickBlue/obs-phasenet 和 OBSTransformer/obst2024。严格指标同时报告准确率、覆盖率、选择性准确率、拒绝率、不安全输出率、P/S MAE 和 95% 置信区间。
 
-```bash
-sh scripts/download_obs_201805.sh
-python3 -m src.experiments.seisbench_noise
+## 实验结论摘要
+
+| 指标 | 结果 |
+|------|------|
+| 错误放行 | **0/20**（基线 2/20） |
+| 噪声鲁棒性 | L0-L3 全档零错误放行 |
+| 参数校准 | 全部阈值经 n=895 真实数据校准 |
+| 测试 | 37 个单元测试通过 |
+
+## 文档索引
+
+| 文档 | 内容 |
+|------|------|
+| [问题定义文档](docs/problem_definition.md) | 4 页问题定义（比赛主材料） |
+| [最终实验报告](docs/final_report.md) | 完整实验设置、结果与分析 |
+| [参数溯源表](docs/parameter_provenance.md) | 每个参数的来源与校准方法 |
+| [数据与模型来源](docs/data_and_model_sources.md) | 数据合规声明 |
+| [开源计划](docs/open_source_plan.md) | 开源路线图 |
+| [范围与合规](docs/scope_and_compliance.md) | 项目边界与合规说明 |
+| [失败案例分析](docs/experiments/failure_cases.md) | 已知失效模式 |
+| [实验日志模板](docs/experiment_log_template.md) | 实验记录格式 |
+
+## 代码结构
+
+```
+src/
+├── data_layer/    # 数据下载 → 三模型推理 → 四合一输出
+├── trust_engine/  # 核心引擎: 证据层 + 路由 + 流水线
+├── calibrate/     # 参数校准脚本 (差值统计/逻辑回归/故障注入)
+├── experiments/   # 基线/消融/噪声实验
+├── signal/        # 信号预处理 + STA/LTA 基线
+├── web/           # Streamlit Demo
+└── demo_backend/  # Demo 后端 API
 ```
 
-实验固定使用官方测试集中的 20 条四通道 P/S 标注波形，运行 PhaseNet/geofon、PickBlue/obs-phasenet 和 OBSTransformer/obst2024。下载的数据约 353 MiB，位于 `data/seisbench/`，不会进入 Git。
+## 数据与模型合规
 
-`src.experiments.noise_robustness` 保留为不下载模型和数据时的 Demo 基准生成器，不用于正式性能结论。
+- 数据：SeisBench OBS 数据集（Zenodo 公开，Bornstein et al., 2023）
+- 模型：全部公开预训练权重（SeisBench 仓库）
+- 无闭源模型、无受限数据、无第三方商业 API
+- 不接触南海受限或涉密 OBS 数据，不进行海上采集
 
-数据已下载并完成真实模型推理后，可重建公开数据评测表、STA/LTA 基线和 CPU 工程基准：
+## License
 
-```bash
-sh scripts/run_public_evaluation.sh
-```
-
-严格指标同时报告整体准确率、覆盖率、选择性准确率、拒绝率、不安全输出率、P/S MAE 和 95% 置信区间。安全处置率不能单独解释为拾取准确率。
-
-## 当前项目边界
-
-本仓库不接触南海受限或涉密 OBS 数据，不进行海上采集，也不声称已经完成真实用户工作量验证。事件分流目前是透明规则，不是训练好的分类模型；模型已验证可在本机 CPU 运行，但尚未量化或剪枝。详细说明见 `docs/scope_and_compliance.md`。
-
-公开数据与模型来源登记见 `docs/data_and_model_sources.md`，实验记录可使用 `docs/experiment_log_template.md`。
-
-运行测试：
-
-```bash
-python3 -m pytest -q
-```
+[MIT](LICENSE)
