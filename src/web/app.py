@@ -265,16 +265,32 @@ def _render_risk(analysis: Dict[str, Any]) -> None:
         "multi_model": "多模型一致性",
         "physics": "物理约束",
     }
-    records = []
-    for phase in ("P", "S"):
-        values = analysis["result"]["evidence_breakdown"][phase]
-        records.extend(
-            {"相位": phase, "证据": label, "风险分": values[key]}
-            for key, label in labels.items()
-        )
-    frame = pd.DataFrame(records)
-    st.bar_chart(frame, x="证据", y="风险分", color="相位", horizontal=True)
-    st.caption("风险预算：数据 30 + 单模型 15 + 多模型 40 + 物理 15 = 100。")
+    budgets = {"data": 30, "single_model": 24, "multi_model": 37, "physics": 40}
+
+    breakdown = analysis["result"]["evidence_breakdown"]
+    rows = []
+    for key, label in labels.items():
+        p_val = breakdown.get("P", {}).get(key, 0.0)
+        s_val = breakdown.get("S", {}).get(key, 0.0)
+        rows.append({
+            "证据": label,
+            "P 风险分": p_val,
+            "S 风险分": s_val,
+            "预算": budgets[key],
+        })
+    frame = pd.DataFrame(rows)
+    st.dataframe(frame, hide_index=True, use_container_width=True)
+
+    # 简洁条形图: 每个证据取 P/S 最大值, 横向
+    chart_rows = []
+    for key, label in labels.items():
+        p_val = breakdown.get("P", {}).get(key, 0.0)
+        s_val = breakdown.get("S", {}).get(key, 0.0)
+        chart_rows.append({"证据": label, "风险分": max(p_val, s_val)})
+    chart = pd.DataFrame(chart_rows)
+    st.bar_chart(chart, x="证据", y="风险分", horizontal=True)
+    st.caption("各证据独立计分封顶（数据 30 / 单模型 24 / 多模型 37 / 物理 40），"
+               "总风险分封顶 100。条形图显示 P/S 两相位中的较高分。")
 
 
 def _render_models(raw: Dict[str, Any], analysis: Dict[str, Any]) -> None:
