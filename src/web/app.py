@@ -32,6 +32,7 @@ BASELINE_CHARTS = (
     ROOT / "docs" / "experiments" / "real_baseline.png",
     ROOT / "docs" / "experiments" / "real_ablation.png",
     ROOT / "docs" / "experiments" / "calibration_curve.png",
+    ROOT / "docs" / "experiments" / "risk_calibration_curve.png",
 )
 
 STATUS_LABELS = {
