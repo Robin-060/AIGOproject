@@ -1,0 +1,21 @@
+{
+  "method": "logistic regression, clean + fault-injected",
+  "n_clean": 895,
+  "n_injected": 3580,
+  "n_total": 4475,
+  "n_wrong": 2007,
+  "std_coefficients": {
+    "data": 1.0096299342089778,
+    "single_model": 0.07301221700725051,
+    "multi_model": 0.7635560798321998,
+    "physics": 0.23403270781608138
+  },
+  "normalized_weights": {
+    "data": 0.4853451197875572,
+    "single_model": 0.03509813052155839,
+    "multi_model": 0.36705351582213536,
+    "physics": 0.11250323386874908
+  },
+  "fit_accuracy": 0.7705027932960894,
+  "caveat": "data 证据分来自注入故障模拟, 自然故障需另行验证"
+}
