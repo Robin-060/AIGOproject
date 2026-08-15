@@ -147,17 +147,22 @@ class AdapterStatus:
 class TrustConfig:
     primary_model: str = ""
     fusion_enabled: bool = True
-    consensus_tolerance_p_s: float = 0.30
-    consensus_tolerance_s_s: float = 0.50
+    consensus_tolerance_p_s: float = 0.578   # calibrated: 95%分位 (n=14)
+    consensus_tolerance_s_s: float = 0.340   # calibrated: 95%分位 (n=36)
     severe_disagreement_p_s: float = 1.00
     severe_disagreement_s_s: float = 2.00
     automatic_risk_threshold: float = 30.0
-    risk_low_max: float = 30.0
-    risk_medium_max: float = 60.0
-    min_sp_s: float = 0.1
-    max_sp_s: float = 60.0
+    risk_low_max: float = 20.0               # calibrated (放宽口径网格扫描)
+    risk_medium_max: float = 60.0            # calibrated
+    min_sp_s: float = 5.11                   # calibrated: 2.5%分位 (n=80)
+    max_sp_s: float = 30.21                  # calibrated: 97.5%分位 (n=80)
     required_channels_for_task: List[str] = field(default_factory=lambda: ["Z", "N", "E"])
-    config_version: str = "heuristic_v0.1"
+    # 证据权重上限 (四类证据各自的风险分满分)
+    data_weight: float = 30.0                 # 保留启发式: 批量数据无质量失败样本, 故障注入验证有效性
+    single_model_weight: float = 24.0         # calibrated: 逻辑回归拟合 (n=895)
+    multi_model_weight: float = 37.0          # calibrated: 逻辑回归拟合 (n=895)
+    physics_weight: float = 40.0              # calibrated: 逻辑回归拟合 (n=895)
+    config_version: str = "calibrated_v1.0"
 
 
 # ═══════════════════════════════════════

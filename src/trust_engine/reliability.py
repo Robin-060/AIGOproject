@@ -126,6 +126,7 @@ def evaluate_reliability(
             consensus=consensus_map.get(phase) if enable["multi_model"] else None,
             physics_checks=physics_checks,
             enable=enable,
+            config=config,
         )
 
         decision = route_phase(
@@ -177,41 +178,47 @@ def _compute_phase_risk(
     consensus: Optional[ConsensusResult],
     physics_checks: List[PhysicsCheck],
     enable: Dict[str, bool],
+    config: TrustConfig = None,
 ) -> Dict[str, float]:
-    """四类证据风险分解 (0-100)，关闭的证据记 0"""
-    # 数据证据 (0-30)
+    """四类证据风险分解 (0-100)，关闭的证据记 0。权重上限取自 config。"""
+    if config is None:
+        config = TrustConfig()
+
+    # 数据证据 (上限 config.data_weight)
     if enable["data"] and data_evidence is not None:
-        data_risk = min(float(data_evidence.score or 0.0), 30.0)
+        data_risk = min(float(data_evidence.score or 0.0), config.data_weight)
     else:
         data_risk = 0.0
 
-    # 单模型证据 (0-15): 低置信度惩罚
+    # 单模型证据 (上限 config.single_model_weight)
     if enable["single_model"]:
         single_risk = min(
-            sum(float(sv.score or 0.0) for sv in single_evidences), 15.0
+            sum(float(sv.score or 0.0) for sv in single_evidences),
+            config.single_model_weight,
         )
     else:
         single_risk = 0.0
 
-    # 多模型证据 (0-40): consensus.score 是"一致比例"(0-1)
+    # 多模型证据 (上限 config.multi_model_weight)
+    mw = config.multi_model_weight
     if enable["multi_model"] and consensus is not None:
         if consensus.status == "DISAGREEMENT":
-            multi_risk = 40.0
+            multi_risk = mw
         elif consensus.status == "INSUFFICIENT":
-            multi_risk = 20.0
+            multi_risk = mw * 0.5
         else:
-            # score=1.0 完全一致 → 0 风险; score=0 → 40 风险
-            multi_risk = min(max((1.0 - consensus.score) * 40.0, 0.0), 40.0)
+            # score=1.0 完全一致 → 0 风险; score=0 → 满风险
+            multi_risk = min(max((1.0 - consensus.score) * mw, 0.0), mw)
     else:
         multi_risk = 0.0
 
-    # 物理证据 (0-15): FAIL 检查的分数累计
+    # 物理证据 (上限 config.physics_weight)
     if enable["physics"]:
         physics_risk = min(
             sum(float(check.score or 0.0)
                 for check in physics_checks
                 if check.status == "FAIL"),
-            15.0,
+            config.physics_weight,
         )
     else:
         physics_risk = 0.0

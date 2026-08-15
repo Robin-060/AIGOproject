@@ -1,0 +1,36 @@
+{
+  "method": "fault injection on 895 real labeled samples",
+  "faults": [
+    "channel_missing",
+    "clipping",
+    "gap",
+    "strong_noise"
+  ],
+  "per_fault_stats": {
+    "channel_missing": {
+      "n": 895,
+      "evidence_triggered": 895,
+      "wrong": 256
+    },
+    "clipping": {
+      "n": 895,
+      "evidence_triggered": 895,
+      "wrong": 320
+    },
+    "gap": {
+      "n": 895,
+      "evidence_triggered": 895,
+      "wrong": 294
+    },
+    "strong_noise": {
+      "n": 895,
+      "evidence_triggered": 895,
+      "wrong": 817
+    }
+  },
+  "wrong_rate_evidence_triggered": 0.4712290502793296,
+  "wrong_rate_evidence_silent": 0,
+  "ratio": 471229050.2793296,
+  "suggestion": "保留 30 分上限 (启发式值), 待自然故障样本进一步校准",
+  "caveat": "注入故障 vs 自然故障的边界需声明"
+}

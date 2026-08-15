@@ -1,0 +1,25 @@
+{
+  "method": "logistic regression, 895 real labeled samples",
+  "n_samples": 895,
+  "n_wrong": 320,
+  "coefficients_raw": {
+    "bias": -1.9325505116233452,
+    "data": 0.0,
+    "single_model": 1.636139861805503,
+    "multi_model": 0.021143571748070782,
+    "physics": 1.310361464042837
+  },
+  "coefficients_standardized": {
+    "data": 0.0,
+    "single_model": 0.3169222788338964,
+    "multi_model": 0.49195235520900404,
+    "physics": 0.5329441908144573
+  },
+  "normalized_weights": {
+    "data": 0.0,
+    "single_model": 0.23618857699927323,
+    "multi_model": 0.3666309833306304,
+    "physics": 0.39718043967009625
+  },
+  "fit_accuracy": 0.7273743016759776
+}
