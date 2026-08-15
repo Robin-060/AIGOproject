@@ -396,7 +396,7 @@ def main() -> None:
                           "analysis": uploaded_analysis}]
                 raw = items[0]["raw"]
                 analysis = items[0]["analysis"]
-                st.success(f"已加载内置示例：{example_file}（{len(analysis['predictions'])} 条模型预测）")
+                st.success(f"已加载内置示例：{example_file}（{len(analysis['inputs']['predictions'])} 条模型预测）")
                 _render_full(raw, analysis, None)
             except Exception as exc:
                 st.exception(exc)
