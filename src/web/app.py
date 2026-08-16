@@ -3,12 +3,19 @@
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict, List
 
 import pandas as pd
 import streamlit as st
+
+# `src.*` imports require the repo root on sys.path; Streamlit Cloud does not
+# add it automatically (a local `python -m streamlit run` does).
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from src.signal.io import WaveformBundle, read_waveform_bytes
 from src.signal.preprocessing import PreprocessConfig, preprocess_waveform
@@ -23,7 +30,6 @@ from src.trust_engine.schema import DEMO_CONFIG
 from src.trust_engine.single_model import evaluate_single_model_evidence
 
 
-ROOT = Path(__file__).resolve().parents[2]
 NOISE_CURVE = ROOT / "docs" / "experiments" / "noise_curve.png"
 NOISE_SUMMARY = ROOT / "docs" / "experiments" / "noise_summary_seisbench.csv"
 STALTA_SUMMARY = ROOT / "docs" / "experiments" / "stalta_summary.json"
