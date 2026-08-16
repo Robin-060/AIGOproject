@@ -411,8 +411,9 @@ def main() -> None:
     if not uploaded_files:
         if waveform_upload is not None:
             st.warning(
-                "波形文件需配合左侧的 result.json 一起上传：SEG-Y/MiniSEED/CSV 仅用于绘制波形，"
-                "分析所需的模型预测来自 result.json（数据层产出）。"
+                "边界提示：原始波形文件（SEG-Y/MiniSEED/CSV）不含模型预测，无法直接分析。"
+                "请先在左侧上传数据层产出的 result.json（含三模型 P/S 预测），"
+                "再上传波形用于绘制与拾取位置标注。"
             )
         # 一键示例
         example_cols = st.columns([1, 1, 3])
