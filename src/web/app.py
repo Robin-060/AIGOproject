@@ -355,7 +355,8 @@ def _render_batch_statistics(items: List[Dict[str, Any]]) -> None:
 
 
 def _render_experiments() -> None:
-    st.subheader("实验图表")
+    st.subheader("离线实验证据")
+    st.caption("以下为离线实验固定结果：基于 895 条真实标注数据预先计算，与上传文件无关。")
     existing = [path for path in (NOISE_CURVE,) + BASELINE_CHARTS if path.exists()]
     if not existing:
         st.info("实验图尚未生成。请先运行噪声实验脚本。")
@@ -484,7 +485,7 @@ def main() -> None:
             st.error(f"波形文件无法读取：{exc}")
 
     overview, waveform_tab, models, evidence, experiments, raw_tab = st.tabs(
-        ["总览", "波形", "模型状态", "风险分解", "实验结果", "JSON 结果"]
+        ["总览", "波形", "模型状态", "风险分解", "离线实验证据", "JSON 结果"]
     )
     with overview:
         _render_batch_statistics(items)
@@ -523,7 +524,7 @@ def _render_full(raw: Dict[str, Any], analysis: Dict[str, Any],
                  waveform: Any) -> None:
     """渲染完整分析视图 (示例按钮和上传文件共用)"""
     overview, waveform_tab, models, evidence, experiments, raw_tab = st.tabs(
-        ["总览", "波形", "模型状态", "风险分解", "实验结果", "JSON 结果"]
+        ["总览", "波形", "模型状态", "风险分解", "离线实验证据", "JSON 结果"]
     )
     with overview:
         _render_batch_statistics([{"name": "当前样本", "raw": raw,
