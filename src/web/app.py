@@ -409,6 +409,11 @@ def main() -> None:
     )
 
     if not uploaded_files:
+        if waveform_upload is not None:
+            st.warning(
+                "波形文件需配合左侧的 result.json 一起上传：SEG-Y/MiniSEED/CSV 仅用于绘制波形，"
+                "分析所需的模型预测来自 result.json（数据层产出）。"
+            )
         # 一键示例
         example_cols = st.columns([1, 1, 3])
         if example_cols[0].button("示例 1：三模型共识 → 融合"):
