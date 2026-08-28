@@ -492,7 +492,7 @@ def main() -> None:
         if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
             st.session_state["example_file"] = "example_2.json"
 
-                example_file = st.session_state.get("example_file")
+        example_file = st.session_state.get("example_file")
         example_path = (
             ROOT / "data" / "examples" / example_file
             if example_file

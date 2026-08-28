@@ -84,7 +84,7 @@ Backend mapping:
 - Risk threshold -> automatic_risk_threshold
 - P tolerance -> consensus_tolerance_p_s
 - S tolerance -> consensus_tolerance_s_s
-- Evidence weight -> final approved backend evidence-weight field
+- Evidence weight -> data_weight
 
 Available backend weight fields are:
 
@@ -93,7 +93,8 @@ Available backend weight fields are:
 - multi_model_weight
 - physics_weight
 
-The final evidence-weight field must be confirmed with A before wiring.
+The final evidence-weight field was confirmed with A on 2026-08-28: `data_weight`.
+Other weights stay fixed at backend values unless explicitly exposed later.
 
 ## 6. Backend Recalculation Entry Point
 
@@ -237,3 +238,44 @@ The Demo must display the `config_version` returned by the active backend result
 **FROZEN**
 
 The Environment Spec, backend schema contract, control mapping, recalculation entry point, and result mapping are defined from the current repository implementation.
+
+## 12. A-side contract additions (merged 2026-08-28)
+
+The following A-owned content was merged from the parallel draft
+`docs/experiments/output_schema.md` (that duplicate file is removed; this is the
+single canonical contract).
+
+### 12.1 Action values
+
+Confirmed from `src/trust_engine/schema.py` (`class Action`): the router emits
+exactly four values — `ACCEPT`, `ROUTE`, `FUSE`, `ABSTAIN`. `ROUTE` is emitted
+when a single non-primary model is selected (`policy_router.py`).
+
+### 12.2 Weight calibration provenance (for slider labels)
+
+| Parameter | Frozen default | Provenance |
+|---|---|---|
+| automatic_risk_threshold | 10.0 | risk calibration curve, n=891 (≤10 → 12.6% error) |
+| consensus_tolerance_p_s | 0.34 | 95th percentile, n=674 |
+| consensus_tolerance_s_s | 0.51 | 95th percentile, n=455 |
+| data_weight | 30.0 | conservative floor |
+| single_model_weight | 24.0 | logistic regression, n=895 |
+| multi_model_weight | 37.0 | logistic regression, n=895 |
+| physics_weight | 40.0 | logistic regression, n=895 |
+
+The Demo must label each slider with its frozen default and provenance, and mark
+"偏离 calibrated_v1.0" with the deviation list after any user change.
+
+### 12.3 Batch metrics source (Feedback panel)
+
+Coverage / Unsafe Output Rate / Interception / Review Burden are batch
+statistics. They are NOT part of a single `run_pipeline()` return. The Feedback
+panel reads A's batch result files:
+
+- `results/baseline_results.csv` — five baselines × 5 coverage points
+- `results/main_results.csv` — Trust main experiment per-sample decisions
+- `results/risk_bins.csv` — risk-bin error rates
+
+Metric definitions and pairing rules: `docs/experiments/evaluation_protocol.md`.
+Evaluation subset: 411 records with complete P+S truth (see
+`configs/semifinal_main.yaml`). The frontend must not recompute these metrics.
