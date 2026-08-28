@@ -25,7 +25,7 @@ from src.trust_engine.data_evidence import evaluate_data_evidence
 from src.trust_engine.model_suitability import evaluate_model_suitability
 from src.trust_engine.multi_model import analyze_multi_model_consensus
 from src.trust_engine.physics import check_model_prediction
-from src.trust_engine.pipeline import load_from_mapping, run_pipeline
+from src.trust_engine.pipeline import load_from_mapping, run_pipeline, _load_config
 from src.trust_engine.schema import DEMO_CONFIG
 from src.trust_engine.single_model import evaluate_single_model_evidence
 
@@ -55,9 +55,21 @@ STATUS_LABELS = {
 }
 
 
-def run_analysis(raw: Dict[str, Any]) -> Dict[str, Any]:
+def run_analysis(
+    raw: Dict[str, Any],
+    risk_threshold: float = 10.0,
+    p_tolerance: float = 0.34,
+    s_tolerance: float = 0.51,
+    data_weight: float = 30.0,
+) -> Dict[str, Any]:
     """Pure analysis entry point used by the UI and integration tests."""
-    return analyze_payload(raw)
+    return analyze_payload(
+        raw,
+        risk_threshold,
+        p_tolerance,
+        s_tolerance,
+        data_weight,
+    )
 
 
 def _to_dict(value: Any) -> Dict[str, Any]:
@@ -65,9 +77,22 @@ def _to_dict(value: Any) -> Dict[str, Any]:
 
 
 @st.cache_data(show_spinner=False)
-def analyze_payload(raw: Dict[str, Any]) -> Dict[str, Any]:
+def analyze_payload(
+    raw: Dict[str, Any],
+    risk_threshold: float,
+    p_tolerance: float,
+    s_tolerance: float,
+    data_weight: float,
+) -> Dict[str, Any]:
     inputs = load_from_mapping(raw)
-    result = run_pipeline(**inputs)
+
+    config = _load_config()
+    config.automatic_risk_threshold = risk_threshold
+    config.consensus_tolerance_p_s = p_tolerance
+    config.consensus_tolerance_s_s = s_tolerance
+    config.data_weight = data_weight
+
+    result = run_pipeline(**inputs, config=config)
 
     data_evidence = evaluate_data_evidence(inputs["quality"])
     suitabilities = evaluate_model_suitability(
@@ -396,6 +421,51 @@ def main() -> None:
     )
     st.caption("上传数据组产出的 result.json，或点击下方示例按钮体验完整流程。")
 
+
+        # ---------------------------------------------------------
+    # Exploration Environment - Gate 0 control skeleton
+    # ---------------------------------------------------------
+    st.divider()
+    st.subheader("Exploration Controls")
+
+    st.caption(
+        "Gate 0 control skeleton. "
+        "Backend recalculation wiring will use the frozen A-side schema."
+    )
+
+    control_cols = st.columns(4)
+
+    risk_threshold = control_cols[0].slider(
+        "Risk threshold",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.50,
+        step=0.05,
+    )
+
+    p_tolerance = control_cols[1].slider(
+        "P tolerance (s)",
+        min_value=0.05,
+        max_value=1.00,
+        value=0.30,
+        step=0.05,
+    )
+
+    s_tolerance = control_cols[2].slider(
+        "S tolerance (s)",
+        min_value=0.05,
+        max_value=2.00,
+        value=0.50,
+        step=0.05,
+    )
+
+    evidence_weight = control_cols[3].slider(
+        "Evidence weight",
+        min_value=0.0,
+        max_value=2.0,
+        value=1.0,
+        step=0.1,
+    )
     upload_columns = st.columns(2)
     uploaded_files = upload_columns[0].file_uploader(
         "上传一个或多个 result.json",
@@ -427,7 +497,13 @@ def main() -> None:
         if example_path and example_path.exists():
             try:
                 uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
-                uploaded_analysis = run_analysis(uploaded_raw)
+              uploaded_analysis = run_analysis(
+    uploaded_raw,
+    risk_threshold=risk_threshold,
+    p_tolerance=p_tolerance,
+    s_tolerance=s_tolerance,
+    data_weight=data_weight,
+)
                 items = [{"name": example_file, "raw": uploaded_raw,
                           "analysis": uploaded_analysis}]
                 raw = items[0]["raw"]
@@ -457,7 +533,13 @@ def main() -> None:
     for uploaded in uploaded_files:
         try:
             uploaded_raw = json.loads(uploaded.getvalue().decode("utf-8-sig"))
-            uploaded_analysis = run_analysis(uploaded_raw)
+           uploaded_analysis = run_analysis(
+    uploaded_raw,
+    risk_threshold=risk_threshold,
+    p_tolerance=p_tolerance,
+    s_tolerance=s_tolerance,
+    data_weight=data_weight,
+)
             items.append({"name": uploaded.name, "raw": uploaded_raw, "analysis": uploaded_analysis})
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             st.error(f"{uploaded.name} 无法解析：{exc}")
