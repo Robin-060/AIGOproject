@@ -497,7 +497,13 @@ def main() -> None:
         if example_path and example_path.exists():
             try:
                 uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
-                uploaded_analysis = run_analysis(uploaded_raw)
+              uploaded_analysis = run_analysis(
+    uploaded_raw,
+    risk_threshold=risk_threshold,
+    p_tolerance=p_tolerance,
+    s_tolerance=s_tolerance,
+    data_weight=data_weight,
+)
                 items = [{"name": example_file, "raw": uploaded_raw,
                           "analysis": uploaded_analysis}]
                 raw = items[0]["raw"]
