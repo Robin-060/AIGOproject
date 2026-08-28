@@ -396,6 +396,51 @@ def main() -> None:
     )
     st.caption("上传数据组产出的 result.json，或点击下方示例按钮体验完整流程。")
 
+
+        # ---------------------------------------------------------
+    # Exploration Environment - Gate 0 control skeleton
+    # ---------------------------------------------------------
+    st.divider()
+    st.subheader("Exploration Controls")
+
+    st.caption(
+        "Gate 0 control skeleton. "
+        "Backend recalculation wiring will use the frozen A-side schema."
+    )
+
+    control_cols = st.columns(4)
+
+    risk_threshold = control_cols[0].slider(
+        "Risk threshold",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.50,
+        step=0.05,
+    )
+
+    p_tolerance = control_cols[1].slider(
+        "P tolerance (s)",
+        min_value=0.05,
+        max_value=1.00,
+        value=0.30,
+        step=0.05,
+    )
+
+    s_tolerance = control_cols[2].slider(
+        "S tolerance (s)",
+        min_value=0.05,
+        max_value=2.00,
+        value=0.50,
+        step=0.05,
+    )
+
+    evidence_weight = control_cols[3].slider(
+        "Evidence weight",
+        min_value=0.0,
+        max_value=2.0,
+        value=1.0,
+        step=0.1,
+    )
     upload_columns = st.columns(2)
     uploaded_files = upload_columns[0].file_uploader(
         "上传一个或多个 result.json",
