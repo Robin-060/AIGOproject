@@ -494,20 +494,23 @@ def main() -> None:
 
         example_file = st.session_state.get("example_file")
         example_path = ROOT / "data" / "examples" / example_file if example_file else None
-        if example_path and example_path.exists():
-            try:
-                uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
-              uploaded_analysis = run_analysis(
-    uploaded_raw,
-    risk_threshold=risk_threshold,
-    p_tolerance=p_tolerance,
-    s_tolerance=s_tolerance,
-    data_weight=data_weight,
-)
-                items = [{"name": example_file, "raw": uploaded_raw,
-                          "analysis": uploaded_analysis}]
-                raw = items[0]["raw"]
-                analysis = items[0]["analysis"]
+           if example_path and example_path.exists():
+        try:
+            uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
+            uploaded_analysis = run_analysis(
+                uploaded_raw,
+                risk_threshold=risk_threshold,
+                p_tolerance=p_tolerance,
+                s_tolerance=s_tolerance,
+                data_weight=data_weight,
+            )
+            items = [{
+                "name": example_file,
+                "raw": uploaded_raw,
+                "analysis": uploaded_analysis,
+            }]
+            raw = items[0]["raw"]
+            analysis = items[0]["analysis"]
                 # 加载配套波形 CSV (若存在)
                 waveform = None
                 csv_path = example_path.with_suffix(".csv")
