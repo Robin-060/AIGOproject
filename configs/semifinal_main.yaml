@@ -24,7 +24,7 @@ dataset:
     p_truth_units: 657
     s_truth_units: 649
     secondary: "成对判定 (P+S 均 correct) 仅用于事件级完整性声明, 不作主指标"
-    noise_windows: "expected_event=False 的单元: 无拾取计 correct, 虚假拾取计 wrong; 待数据组确认后补充"
+    noise_windows: "已自查 (2026-08-28): 895 条全部有 source_id, 均为事件窗口, 无噪声窗口; 无拾取=正确规则不适用"
     no_pick_rule: "真值要求该相位时 NO_PICK 计错误 (拦截口径); 不进入自动输出"
     cluster_unit: "station (60 个独立台站, 部署 XO) — cluster paired-bootstrap 重采样单元"
 

@@ -38,8 +38,9 @@ def build_phase_units(records: List[dict]) -> List[dict]:
     """
     把样本级记录展开为相位级评估单元。
 
-    primary_inclusion=True 当且仅当该相位存在参考到时;
-    真值缺失的相位原因暂记 expected_event_unknown (待数据组确认噪声/缺失标注),
+    primary_inclusion=True 当且仅当该相位存在参考到时。
+    已自查 (2026-08-28): 全部 895 条均有 source_id, 均为事件窗口;
+    真值缺失 = 事件窗口但该相位在源数据集中无标注 (trace_*_status 为空),
     按 C 契约 Unknown 不进入 primary。
     """
     units = []
@@ -60,12 +61,12 @@ def build_phase_units(records: List[dict]) -> List[dict]:
                 "deployment": deployment,
                 "phase": phase,
                 "reference_time_s": truth,
-                "expected_event": "EVENT" if truth is not None else "UNKNOWN",
+                "expected_event": "EVENT",
                 "predictions": preds,
                 "primary_inclusion": truth is not None,
                 "exclusion_reason": (
                     None if truth is not None
-                    else "expected_event_unknown_pending_data_team"
+                    else "event_phase_unpicked_in_source_dataset"
                 ),
             })
     return units

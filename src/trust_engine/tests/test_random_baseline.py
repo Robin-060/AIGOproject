@@ -46,8 +46,9 @@ def test_build_phase_units_excluded_have_reason():
     units = build_phase_units(load_records())
     excluded = [u for u in units if not u["primary_inclusion"]]
     assert excluded
-    assert all(u["exclusion_reason"] == "expected_event_unknown_pending_data_team"
+    assert all(u["exclusion_reason"] == "event_phase_unpicked_in_source_dataset"
                for u in excluded)
+    assert all(u["expected_event"] == "EVENT" for u in units)
 
 
 # ── evaluate_units / 随机门控 ──

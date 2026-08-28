@@ -10,7 +10,8 @@
 - 完整性指纹：sha256 `738e46aa...29d25699`，相位级清单见 `data/manifest_phase.csv`
 - chunk 分布：201805 × 116、201806 × 288、201807 × 491；部署 XO，独立台站 60 个
 - **主评估单位 `(sample_id, phase)`：N_eval = 1306**（P 真值 657 + S 真值 649）
-- 真值缺失的相位：expected_event 未知（待数据组确认是噪声窗口还是缺失标注），按 C 契约 Unknown 不进入 primary，排除原因写入 manifest
+- 真值缺失的相位：**已自查（2026-08-28）**——895 条全部有 source_id（事件目录），均为事件窗口、无噪声窗口；缺失真值 = 该相位在源数据集中无标注（trace_*_status 为空），按 C 契约 Unknown 不进入 primary，排除原因见 manifest 的 exclusion_reason
+- label_source：seisbench OBS 数据集参考拾取（Zenodo 10277799），411 条真值与元数据 arrival_sample 100% 吻合；label_quality：manual / automatic 两档（见 manifest）
 - 留出子集：按 chunk 分层 20%（seed 42，358 个单元）作稳健性交叉检查，不作主结论
 - cluster 重采样单元：station（60 个）——统计检验时避免把同一台站的相关窗口当独立样本
 
