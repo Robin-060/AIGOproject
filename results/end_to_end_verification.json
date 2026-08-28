@@ -1,0 +1,178 @@
+{
+  "sample_id": "XO.LA39..HH.2018.06.23.22.50.05",
+  "frozen_truth": {
+    "P": 44.99,
+    "S": 59.4
+  },
+  "comparison": {
+    "PhaseNet": {
+      "P": {
+        "frozen": 44.84,
+        "local": 45.02,
+        "delta_s": 0.18
+      },
+      "S": {
+        "frozen": 59.72,
+        "local": 59.42,
+        "delta_s": -0.3
+      }
+    },
+    "PickBlue": {
+      "P": {
+        "frozen": 45.02,
+        "local": 45.02,
+        "delta_s": 0.0
+      },
+      "S": {
+        "frozen": 59.4,
+        "local": 59.42,
+        "delta_s": 0.02
+      }
+    },
+    "OBSTransformer": {
+      "P": {
+        "frozen": 45.13,
+        "local": 45.13,
+        "delta_s": 0.0
+      },
+      "S": {
+        "frozen": 59.56,
+        "local": 59.56,
+        "delta_s": 0.0
+      }
+    }
+  },
+  "trust_result": {
+    "sample_id": "XO.LA39..HH.2018.06.23.22.50.05",
+    "evidence_status": "COMPLETE",
+    "overall_risk_score": 0.0,
+    "overall_risk_level": "LOW",
+    "phase_decisions": {
+      "P": {
+        "phase": "P",
+        "action": "FUSE",
+        "selected_model": null,
+        "selected_time_s": 45.02,
+        "fused_pick": {
+          "phase": "P",
+          "fusion_allowed": true,
+          "fused_time_s": 45.02,
+          "contributors": [
+            "PhaseNet",
+            "PickBlue",
+            "OBSTransformer"
+          ],
+          "excluded_models": [],
+          "spread_s": 0.10999999999999943,
+          "fusion_method": "MEDIAN_INLIERS",
+          "threshold_version": "heuristic_v0.1",
+          "reasons": [
+            "MODEL_CONSENSUS"
+          ]
+        },
+        "rejected_models": [],
+        "risk_score": 0.0,
+        "risk_level": "LOW",
+        "reason_codes": [
+          "FUSE_CONSENSUS_CLUSTER"
+        ]
+      },
+      "S": {
+        "phase": "S",
+        "action": "FUSE",
+        "selected_model": null,
+        "selected_time_s": 59.42,
+        "fused_pick": {
+          "phase": "S",
+          "fusion_allowed": true,
+          "fused_time_s": 59.42,
+          "contributors": [
+            "PhaseNet",
+            "PickBlue",
+            "OBSTransformer"
+          ],
+          "excluded_models": [],
+          "spread_s": 0.14000000000000057,
+          "fusion_method": "MEDIAN_INLIERS",
+          "threshold_version": "heuristic_v0.1",
+          "reasons": [
+            "MODEL_CONSENSUS"
+          ]
+        },
+        "rejected_models": [],
+        "risk_score": 0.0,
+        "risk_level": "LOW",
+        "reason_codes": [
+          "FUSE_CONSENSUS_CLUSTER"
+        ]
+      }
+    },
+    "model_assessments": [
+      {
+        "model_name": "PhaseNet",
+        "eligible": true,
+        "suitability_level": "DEGRADED",
+        "model_risk_score": 0.0,
+        "hard_fail": false,
+        "consensus_role": "INLIER",
+        "reasons": [
+          "MODEL_VALIDATION_DOMAIN_UNKNOWN"
+        ],
+        "selection_supported": true
+      },
+      {
+        "model_name": "PickBlue",
+        "eligible": true,
+        "suitability_level": "DEGRADED",
+        "model_risk_score": 0.0,
+        "hard_fail": false,
+        "consensus_role": "INLIER",
+        "reasons": [
+          "MODEL_VALIDATION_DOMAIN_UNKNOWN"
+        ],
+        "selection_supported": true
+      },
+      {
+        "model_name": "OBSTransformer",
+        "eligible": true,
+        "suitability_level": "DEGRADED",
+        "model_risk_score": 0.0,
+        "hard_fail": false,
+        "consensus_role": "INLIER",
+        "reasons": [
+          "MODEL_VALIDATION_DOMAIN_UNKNOWN"
+        ],
+        "selection_supported": true
+      }
+    ],
+    "final_pair_status": "COMPLETE",
+    "evidence_breakdown": {
+      "P": {
+        "data": 0.0,
+        "single_model": 0.0,
+        "multi_model": 0.0,
+        "physics": 0,
+        "total": 0.0
+      },
+      "S": {
+        "data": 0.0,
+        "single_model": 0.0,
+        "multi_model": 0.0,
+        "physics": 0,
+        "total": 0.0
+      },
+      "overall": {
+        "data": 0.0,
+        "single_model": 0.0,
+        "multi_model": 0.0,
+        "physics": 0.0
+      }
+    },
+    "reason_codes": [
+      "FUSE_CONSENSUS_CLUSTER",
+      "FUSE_CONSENSUS_CLUSTER"
+    ],
+    "config_version": "calibrated_v1.0",
+    "data_source": "REAL"
+  }
+}
