@@ -169,12 +169,71 @@ Confirmed from the current repository:
 - Real pipeline entry point
 - Existing analysis chain
 
-Still requiring final A-side confirmation:
+## 11. Gate 0 Final Interface Freeze
 
-- Exact evidence-weight field exposed to the Demo
-- Final output location for risk / action / metrics
-- Exact config/version ID returned with each run
+The B-side interface is frozen against the current backend implementation.
 
-Status:
+### Demo control mapping
 
-Gate 0 interface contract drafted from the current repository implementation.
+The initial Demo exposes:
+
+- `automatic_risk_threshold`
+- `consensus_tolerance_p_s`
+- `consensus_tolerance_s_s`
+- `data_weight`
+
+Other evidence weights remain fixed at their backend configuration values unless explicitly exposed later.
+
+### Backend result contract
+
+The Demo calls:
+
+`run_pipeline(...) -> ReliabilityResult`
+
+Final outputs are read directly from the backend result:
+
+- Risk score: `overall_risk_score`
+- Risk level: `overall_risk_level`
+- Phase action: `phase_decisions[phase].action`
+- Evidence: `evidence_breakdown`
+- Reasons: `reason_codes`
+- Configuration version: `config_version`
+
+Phase actions are:
+
+- `ACCEPT`
+- `ROUTE`
+- `FUSE`
+- `ABSTAIN`
+
+### Metrics
+
+Input/data quality metrics are provided by `QualityReport`, including:
+
+- `sampling_rate_hz`
+- `gap_ratio`
+- `clipping_ratio`
+- `snr_db`
+- `metric_version`
+
+The frontend displays backend-provided values and does not independently recompute scientific metrics.
+
+### Configuration version behaviour
+
+The pipeline loads calibrated parameters from:
+
+`src/calibrate/thresholds_calibrated.json`
+
+when available and uses:
+
+`config_version = "calibrated_v1.0"`
+
+Otherwise it falls back to `DEMO_CONFIG`.
+
+The Demo must display the `config_version` returned by the active backend result rather than hard-coding a version.
+
+### Gate 0 Status
+
+**FROZEN**
+
+The Environment Spec, backend schema contract, control mapping, recalculation entry point, and result mapping are defined from the current repository implementation.
