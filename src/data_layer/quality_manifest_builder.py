@@ -90,7 +90,8 @@ def build_quality_manifest() -> bool:
     print("加载 OBS 数据集 (3 个 chunk)...")
     obs = OBS(chunks=available)
     meta_df = obs.metadata
-    trace_index = {name: idx for idx, name in enumerate(meta_df["trace_name"])}
+    # 数据组的 sample_id 来自 trace_name_original (trace_name 是 bucket 编号, 不能用于匹配)
+    trace_index = {name: idx for idx, name in enumerate(meta_df["trace_name_original"])}
     print(f"数据集 trace 总数: {len(trace_index)}")
 
     records = json.loads(RECORDS_PATH.read_text(encoding="utf-8"))
