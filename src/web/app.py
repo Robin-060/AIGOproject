@@ -25,7 +25,7 @@ from src.trust_engine.data_evidence import evaluate_data_evidence
 from src.trust_engine.model_suitability import evaluate_model_suitability
 from src.trust_engine.multi_model import analyze_multi_model_consensus
 from src.trust_engine.physics import check_model_prediction
-from src.trust_engine.pipeline import load_from_mapping, run_pipeline
+from src.trust_engine.pipeline import load_from_mapping, run_pipeline, _load_config
 from src.trust_engine.schema import DEMO_CONFIG
 from src.trust_engine.single_model import evaluate_single_model_evidence
 
@@ -55,9 +55,21 @@ STATUS_LABELS = {
 }
 
 
-def run_analysis(raw: Dict[str, Any]) -> Dict[str, Any]:
+def run_analysis(
+    raw: Dict[str, Any],
+    risk_threshold: float = 10.0,
+    p_tolerance: float = 0.34,
+    s_tolerance: float = 0.51,
+    data_weight: float = 30.0,
+) -> Dict[str, Any]:
     """Pure analysis entry point used by the UI and integration tests."""
-    return analyze_payload(raw)
+    return analyze_payload(
+        raw,
+        risk_threshold,
+        p_tolerance,
+        s_tolerance,
+        data_weight,
+    )
 
 
 def _to_dict(value: Any) -> Dict[str, Any]:
@@ -65,9 +77,22 @@ def _to_dict(value: Any) -> Dict[str, Any]:
 
 
 @st.cache_data(show_spinner=False)
-def analyze_payload(raw: Dict[str, Any]) -> Dict[str, Any]:
+def analyze_payload(
+    raw: Dict[str, Any],
+    risk_threshold: float,
+    p_tolerance: float,
+    s_tolerance: float,
+    data_weight: float,
+) -> Dict[str, Any]:
     inputs = load_from_mapping(raw)
-    result = run_pipeline(**inputs)
+
+    config = _load_config()
+    config.automatic_risk_threshold = risk_threshold
+    config.consensus_tolerance_p_s = p_tolerance
+    config.consensus_tolerance_s_s = s_tolerance
+    config.data_weight = data_weight
+
+    result = run_pipeline(**inputs, config=config)
 
     data_evidence = evaluate_data_evidence(inputs["quality"])
     suitabilities = evaluate_model_suitability(
