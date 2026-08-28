@@ -492,11 +492,75 @@ def main() -> None:
         if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
             st.session_state["example_file"] = "example_2.json"
 
-        example_file = st.session_state.get("example_file")
-        example_path = ROOT / "data" / "examples" / example_file if example_file else None
-           if example_path and example_path.exists():
+                example_file = st.session_state.get("example_file")
+        example_path = (
+            ROOT / "data" / "examples" / example_file
+            if example_file
+            else None
+        )
+
+        if example_path and example_path.exists():
+            try:
+                uploaded_raw = json.loads(
+                    example_path.read_text(encoding="utf-8-sig")
+                )
+
+                uploaded_analysis = run_analysis(
+                    uploaded_raw,
+                    risk_threshold=risk_threshold,
+                    p_tolerance=p_tolerance,
+                    s_tolerance=s_tolerance,
+                    data_weight=data_weight,
+                )
+
+                items = [{
+                    "name": example_file,
+                    "raw": uploaded_raw,
+                    "analysis": uploaded_analysis,
+                }]
+
+                raw = items[0]["raw"]
+                analysis = items[0]["analysis"]
+
+                # 加载配套波形 CSV（若存在）
+                waveform = None
+                csv_path = example_path.with_suffix(".csv")
+
+                if csv_path.exists():
+                    try:
+                        waveform = read_waveform_bytes(
+                            csv_path.read_bytes(),
+                            csv_path.name,
+                            sampling_rate_hz=float(
+                                raw["quality_report"]["sampling_rate_hz"]
+                            ),
+                        )
+                    except Exception:
+                        waveform = None
+
+                st.success(
+                    f"已加载内置示例：{example_file}"
+                    f"（{len(analysis['inputs']['predictions'])} 条模型预测）"
+                )
+                _render_full(raw, analysis, waveform)
+
+            except Exception as exc:
+                st.exception(exc)
+
+        else:
+            st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
+            _render_experiments()
+
+        return
+
+    items = []
+
+    for uploaded in uploaded_files:
         try:
-            uploaded_raw = json.loads(example_path.read_text(encoding="utf-8-sig"))
+            uploaded_raw = json.loads(
+                uploaded.getvalue().decode("utf-8-sig")
+            )
+
             uploaded_analysis = run_analysis(
                 uploaded_raw,
                 risk_threshold=risk_threshold,
@@ -504,63 +568,34 @@ def main() -> None:
                 s_tolerance=s_tolerance,
                 data_weight=data_weight,
             )
-            items = [{
-                "name": example_file,
+
+            items.append({
+                "name": uploaded.name,
                 "raw": uploaded_raw,
                 "analysis": uploaded_analysis,
-            }]
-            raw = items[0]["raw"]
-            analysis = items[0]["analysis"]
-                # 加载配套波形 CSV (若存在)
-                waveform = None
-                csv_path = example_path.with_suffix(".csv")
-                if csv_path.exists():
-                    try:
-                        waveform = read_waveform_bytes(
-                            csv_path.read_bytes(),
-                            csv_path.name,
-                            sampling_rate_hz=float(raw["quality_report"]["sampling_rate_hz"]),
-                        )
-                    except Exception:
-                        waveform = None
-                st.success(f"已加载内置示例：{example_file}（{len(analysis['inputs']['predictions'])} 条模型预测）")
-                _render_full(raw, analysis, waveform)
-            except Exception as exc:
-                st.exception(exc)
-        else:
-            st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
-            _render_experiments()
-        return
+            })
 
-    items = []
-    for uploaded in uploaded_files:
-        try:
-            uploaded_raw = json.loads(uploaded.getvalue().decode("utf-8-sig"))
-           uploaded_analysis = run_analysis(
-    uploaded_raw,
-    risk_threshold=risk_threshold,
-    p_tolerance=p_tolerance,
-    s_tolerance=s_tolerance,
-    data_weight=data_weight,
-)
-            items.append({"name": uploaded.name, "raw": uploaded_raw, "analysis": uploaded_analysis})
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             st.error(f"{uploaded.name} 无法解析：{exc}")
             return
+
         except (TypeError, ValueError, KeyError) as exc:
             st.error(f"{uploaded.name} 不符合数据契约：{exc}")
             return
-        except Exception as exc:  # UI boundary: preserve details for demo diagnosis.
+
+        except Exception as exc:
             st.exception(exc)
             return
 
     selected = 0
+
     if len(items) > 1:
         selected = st.selectbox(
             "当前查看样本",
             range(len(items)),
             format_func=lambda index: items[index]["analysis"]["result"]["sample_id"],
         )
+
     raw = items[selected]["raw"]
     analysis = items[selected]["analysis"]
 
