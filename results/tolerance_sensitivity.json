@@ -1,0 +1,450 @@
+{
+  "tolerance_grid": [
+    {
+      "p_tol": 0.2,
+      "s_tol": 0.5,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 202,
+          "wrong": 202,
+          "reject": 7,
+          "unsafe_rate": 0.5,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 219,
+          "wrong": 191,
+          "reject": 1,
+          "unsafe_rate": 0.4658536585365854,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 198,
+          "wrong": 212,
+          "reject": 1,
+          "unsafe_rate": 0.5170731707317073,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 165,
+          "wrong": 52,
+          "reject": 194,
+          "unsafe_rate": 0.23963133640552994,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.2,
+      "s_tol": 1.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 233,
+          "wrong": 171,
+          "reject": 7,
+          "unsafe_rate": 0.42326732673267325,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 249,
+          "wrong": 161,
+          "reject": 1,
+          "unsafe_rate": 0.3926829268292683,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 229,
+          "wrong": 181,
+          "reject": 1,
+          "unsafe_rate": 0.44146341463414634,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 185,
+          "wrong": 32,
+          "reject": 194,
+          "unsafe_rate": 0.14746543778801843,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.2,
+      "s_tol": 2.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 254,
+          "wrong": 150,
+          "reject": 7,
+          "unsafe_rate": 0.3712871287128713,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 269,
+          "wrong": 141,
+          "reject": 1,
+          "unsafe_rate": 0.3439024390243902,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 244,
+          "wrong": 166,
+          "reject": 1,
+          "unsafe_rate": 0.40487804878048783,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 195,
+          "wrong": 22,
+          "reject": 194,
+          "unsafe_rate": 0.10138248847926268,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.3,
+      "s_tol": 0.5,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 212,
+          "wrong": 192,
+          "reject": 7,
+          "unsafe_rate": 0.4752475247524752,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 231,
+          "wrong": 179,
+          "reject": 1,
+          "unsafe_rate": 0.43658536585365854,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 211,
+          "wrong": 199,
+          "reject": 1,
+          "unsafe_rate": 0.4853658536585366,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 169,
+          "wrong": 48,
+          "reject": 194,
+          "unsafe_rate": 0.22119815668202766,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.3,
+      "s_tol": 1.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 244,
+          "wrong": 160,
+          "reject": 7,
+          "unsafe_rate": 0.39603960396039606,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 262,
+          "wrong": 148,
+          "reject": 1,
+          "unsafe_rate": 0.36097560975609755,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 247,
+          "wrong": 163,
+          "reject": 1,
+          "unsafe_rate": 0.3975609756097561,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 190,
+          "wrong": 27,
+          "reject": 194,
+          "unsafe_rate": 0.12442396313364056,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.3,
+      "s_tol": 2.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 269,
+          "wrong": 135,
+          "reject": 7,
+          "unsafe_rate": 0.3341584158415842,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 285,
+          "wrong": 125,
+          "reject": 1,
+          "unsafe_rate": 0.3048780487804878,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 264,
+          "wrong": 146,
+          "reject": 1,
+          "unsafe_rate": 0.35609756097560974,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 201,
+          "wrong": 16,
+          "reject": 194,
+          "unsafe_rate": 0.07373271889400922,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.5,
+      "s_tol": 0.5,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 230,
+          "wrong": 174,
+          "reject": 7,
+          "unsafe_rate": 0.4306930693069307,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 247,
+          "wrong": 163,
+          "reject": 1,
+          "unsafe_rate": 0.3975609756097561,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 228,
+          "wrong": 182,
+          "reject": 1,
+          "unsafe_rate": 0.44390243902439025,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 174,
+          "wrong": 43,
+          "reject": 194,
+          "unsafe_rate": 0.19815668202764977,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.5,
+      "s_tol": 1.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 265,
+          "wrong": 139,
+          "reject": 7,
+          "unsafe_rate": 0.34405940594059403,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 281,
+          "wrong": 129,
+          "reject": 1,
+          "unsafe_rate": 0.3146341463414634,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 265,
+          "wrong": 145,
+          "reject": 1,
+          "unsafe_rate": 0.35365853658536583,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 195,
+          "wrong": 22,
+          "reject": 194,
+          "unsafe_rate": 0.10138248847926268,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 0.5,
+      "s_tol": 2.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 291,
+          "wrong": 113,
+          "reject": 7,
+          "unsafe_rate": 0.27970297029702973,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 305,
+          "wrong": 105,
+          "reject": 1,
+          "unsafe_rate": 0.25609756097560976,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 285,
+          "wrong": 125,
+          "reject": 1,
+          "unsafe_rate": 0.3048780487804878,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 206,
+          "wrong": 11,
+          "reject": 194,
+          "unsafe_rate": 0.05069124423963134,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 1.0,
+      "s_tol": 0.5,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 234,
+          "wrong": 170,
+          "reject": 7,
+          "unsafe_rate": 0.4207920792079208,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 252,
+          "wrong": 158,
+          "reject": 1,
+          "unsafe_rate": 0.3853658536585366,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 236,
+          "wrong": 174,
+          "reject": 1,
+          "unsafe_rate": 0.424390243902439,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 178,
+          "wrong": 39,
+          "reject": 194,
+          "unsafe_rate": 0.17972350230414746,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 1.0,
+      "s_tol": 1.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 270,
+          "wrong": 134,
+          "reject": 7,
+          "unsafe_rate": 0.3316831683168317,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 287,
+          "wrong": 123,
+          "reject": 1,
+          "unsafe_rate": 0.3,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 273,
+          "wrong": 137,
+          "reject": 1,
+          "unsafe_rate": 0.33414634146341465,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 199,
+          "wrong": 18,
+          "reject": 194,
+          "unsafe_rate": 0.08294930875576037,
+          "coverage": 0.5279805352798054
+        }
+      }
+    },
+    {
+      "p_tol": 1.0,
+      "s_tol": 2.0,
+      "methods": {
+        "Single(OBST)": {
+          "correct": 298,
+          "wrong": 106,
+          "reject": 7,
+          "unsafe_rate": 0.2623762376237624,
+          "coverage": 0.9829683698296837
+        },
+        "MaxConf": {
+          "correct": 313,
+          "wrong": 97,
+          "reject": 1,
+          "unsafe_rate": 0.23658536585365852,
+          "coverage": 0.9975669099756691
+        },
+        "Vote": {
+          "correct": 294,
+          "wrong": 116,
+          "reject": 1,
+          "unsafe_rate": 0.28292682926829266,
+          "coverage": 0.9975669099756691
+        },
+        "TrustLayer": {
+          "correct": 210,
+          "wrong": 7,
+          "reject": 194,
+          "unsafe_rate": 0.03225806451612903,
+          "coverage": 0.5279805352798054
+        }
+      }
+    }
+  ],
+  "residuals": {
+    "PhaseNet-P": {
+      "n": 85,
+      "p50": 0.1599999999999966,
+      "p90": 2.530000000000001,
+      "p95": 28.87
+    },
+    "PhaseNet-S": {
+      "n": 12,
+      "p50": 0.490000000000002,
+      "p90": 0.8900000000000006,
+      "p95": 27.669999999999995
+    },
+    "PickBlue-P": {
+      "n": 396,
+      "p50": 0.030000000000001137,
+      "p90": 0.4799999999999969,
+      "p95": 0.759999999999998
+    },
+    "PickBlue-S": {
+      "n": 405,
+      "p50": 0.19999999999999574,
+      "p90": 1.0200000000000031,
+      "p95": 2.1599999999999966
+    },
+    "OBSTransformer-P": {
+      "n": 405,
+      "p50": 0.07000000000000028,
+      "p90": 0.4799999999999969,
+      "p95": 1.1099999999999994
+    },
+    "OBSTransformer-S": {
+      "n": 409,
+      "p50": 0.3100000000000023,
+      "p90": 26.240000000000002,
+      "p95": 36.25
+    }
+  }
+}
