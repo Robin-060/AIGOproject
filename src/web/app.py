@@ -533,7 +533,13 @@ def main() -> None:
     for uploaded in uploaded_files:
         try:
             uploaded_raw = json.loads(uploaded.getvalue().decode("utf-8-sig"))
-            uploaded_analysis = run_analysis(uploaded_raw)
+           uploaded_analysis = run_analysis(
+    uploaded_raw,
+    risk_threshold=risk_threshold,
+    p_tolerance=p_tolerance,
+    s_tolerance=s_tolerance,
+    data_weight=data_weight,
+)
             items.append({"name": uploaded.name, "raw": uploaded_raw, "analysis": uploaded_analysis})
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             st.error(f"{uploaded.name} 无法解析：{exc}")
