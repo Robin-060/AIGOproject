@@ -4,7 +4,14 @@
 #           禁止因结果不理想改动数据/seed/模型/判据/指标。
 # v1.1 变更 (2026-08-28 晚): 评价单位按 C 契约 v1.2 改为相位级 Primary;
 #       N_eval = 1306; 成对判定降级为 Secondary。参见 evaluation_protocol.md。
-config_version: semifinal_v1.1
+# v1.2 变更 (2026-08-29): 适用性配置走 C 契约 6.2 选择程序 — 预声明准则
+#       "main 上 50% 覆盖率点 Unsafe 更低者胜"。
+#       history_v1 (PickBlue 要求 ZNEH): 9.2% → 淘汰;
+#       hydrophone_v2 (PickBlue 要求 Z,H, 优先 N,E): 5.0% → 选定;
+#       holdout 确认 17.0% (选择不稳定, 如实记录);
+#       依据: 冻结数据证明 PickBlue 在缺 E 样本上仍有预测且常正确,
+#       seisbench 对缺通道做掩码处理, OBS 权重以水听器 H 为主。
+config_version: semifinal_v1.2
 
 dataset:
   file: data/batch_calibration/records_all.json
