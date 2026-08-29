@@ -114,6 +114,31 @@ def strat_vote():
     return output, risk
 
 
+def strat_traditional():
+    """STA/LTA 传统基线 (协议见 sta_lta_baseline.py)."""
+    picks_path = ROOT / "data" / "sta_lta_picks.csv"
+    rows = {row["sample_id"]: row
+            for row in csv.DictReader(picks_path.read_text(encoding="utf-8").splitlines())}
+
+    def output(unit):
+        row = rows.get(unit["sample_id"])
+        if row is None:
+            return None
+        value = row["p_onset_s"] if unit["phase"] == "P" else row["s_onset_s"]
+        return float(value) if value else None
+
+    def risk(unit):
+        row = rows.get(unit["sample_id"])
+        if row is None:
+            return 1.0
+        ratio = row["p_peak_ratio"] if unit["phase"] == "P" else row["s_peak_ratio"]
+        if not ratio:
+            return 1.0
+        return float(1.0 / (1.0 + float(ratio)))
+
+    return output, risk
+
+
 # ── 风险排序门控对齐 coverage ──
 
 def top_k_gate(units, risks, target_frac):
@@ -150,6 +175,7 @@ def main():
         "Single-OBSTransformer": strat_single("OBSTransformer"),
         "MaxConf": strat_maxconf(),
         "Voting": strat_vote(),
+        "Traditional-STA/LTA": strat_traditional(),
     }
 
     rows = []
@@ -206,6 +232,7 @@ def main():
         "Single-PhaseNet": "#9E9E9E", "Single-PickBlue": "#9E9E9E",
         "Single-OBSTransformer": "#607D8B", "MaxConf": "#FF9800",
         "Voting": "#2196F3", "Random": "#F44336",
+        "Traditional-STA/LTA": "#795548",
     }
     fig, ax = plt.subplots(figsize=(10, 6))
     for name, data in chart.items():
