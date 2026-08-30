@@ -10,6 +10,7 @@ from __future__ import annotations
 from statistics import median
 from typing import List
 
+from .confidence_calibration import CALIBRATED_CONFIDENCE_FLOOR, calibrated_prob
 from .multi_model import CONSENSUS_TOLERANCE
 from .schema import (
     ConsensusResult,
@@ -99,12 +100,23 @@ def build_fusion_candidates(
             -1.0,
         )
 
+        # 第二刀: FUSE 需额外满足校准置信度条件 (一致 ≠ 可信, 治"抱团一起错")
+        calibrated_ok = (
+            len(inliers) >= 2
+            and all(
+                (cp := calibrated_prob(prediction.model_name, prediction.score)) is not None
+                and cp >= CALIBRATED_CONFIDENCE_FLOOR
+                for prediction in inliers
+            )
+        )
+
         fusion_allowed = (
             consensus.status == "CONSENSUS"
             and len(inliers) >= 2
             and tolerance >= 0
             and spread_s <= tolerance
             and _same_fusion_group(inliers)
+            and calibrated_ok
         )
 
         if fusion_allowed:
@@ -133,6 +145,9 @@ def build_fusion_candidates(
             ]
 
             reasons = list(consensus.reasons)
+
+            if not calibrated_ok and "FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR" not in reasons:
+                reasons.append("FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR")
 
             if "FUSION_NOT_ALLOWED" not in reasons:
                 reasons.append("FUSION_NOT_ALLOWED")

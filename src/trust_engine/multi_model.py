@@ -205,6 +205,20 @@ def analyze_multi_model_consensus(
         else:
             status = "DISAGREEMENT"
             reasons = [f"MODEL_DISAGREEMENT_{phase}"]
+            # 第二刀: 分歧粗分三级 — SEVERE(超严重阈值) / MINOR(其余分歧)
+            usable_times = [
+                prediction.time_s
+                for prediction in phase_predictions
+                if isinstance(prediction.time_s, (int, float))
+                and not isinstance(prediction.time_s, bool)
+                and prediction.time_s >= 0
+            ]
+            if len(usable_times) >= 2:
+                full_spread = max(usable_times) - min(usable_times)
+                if full_spread > SEVERE_DISAGREEMENT.get(phase, 2.0):
+                    reasons.append("SEVERE_DISAGREEMENT")
+                else:
+                    reasons.append("MINOR_DISAGREEMENT")
 
         inlier_times = [
             prediction.time_s

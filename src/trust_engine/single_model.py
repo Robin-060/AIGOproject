@@ -1,7 +1,11 @@
-"""P1 per-model, per-phase confidence evidence."""
+"""P1 per-model, per-phase confidence evidence (v1.5 校准语义)."""
 
 from typing import List
 
+from src.trust_engine.confidence_calibration import (
+    CALIBRATED_CONFIDENCE_FLOOR,
+    calibrated_prob,
+)
 from src.trust_engine.schema import (
     EvidenceStatus,
     ModelPrediction,
@@ -9,13 +13,15 @@ from src.trust_engine.schema import (
 )
 
 
-CONFIDENCE_THRESHOLD = 0.30
-
-
 def evaluate_single_model_evidence(
     predictions: List[ModelPrediction],
 ) -> List[SingleModelEvidence]:
-    """Preserve one evidence result for each supplied model and phase pair."""
+    """Preserve one evidence result for each supplied model and phase pair.
+
+    v1.5: 置信度经 Platt 校准 (PickBlue/OBSTransformer/EQT);
+    PhaseNet(geofon) 样本不足保留 raw 并如实标注。
+    校准正确率 < 0.70 → 警示分 5; 否则 0。
+    """
 
     results = []
 
@@ -32,14 +38,16 @@ def evaluate_single_model_evidence(
             )
             continue
 
-        if prediction.score < CONFIDENCE_THRESHOLD:
+        calibrated = calibrated_prob(prediction.model_name, prediction.score)
+
+        if calibrated < CALIBRATED_CONFIDENCE_FLOOR:
             risk_score = 5
             reasons = [
-                f"LOW_CONFIDENCE_{prediction.model_name}_{prediction.phase}"
+                f"LOW_CALIBRATED_CONFIDENCE_{prediction.model_name}_{prediction.phase}"
             ]
         else:
             risk_score = 0
-            reasons = ["CONFIDENCE_AVAILABLE"]
+            reasons = ["CONFIDENCE_CALIBRATED_AVAILABLE"]
 
         results.append(
             SingleModelEvidence(

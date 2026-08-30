@@ -203,12 +203,21 @@ def _compute_phase_risk(
     mw = config.multi_model_weight
     if enable["multi_model"] and consensus is not None:
         if consensus.status == "DISAGREEMENT":
-            multi_risk = mw
+            if ("SEVERE_DISAGREEMENT" in consensus.reasons
+                    or "COMPARISON_GROUP_MISMATCH" in consensus.reasons):
+                multi_risk = mw          # SEVERE → 满档
+            else:
+                multi_risk = mw * 0.5    # MINOR → 半档
         elif consensus.status == "INSUFFICIENT":
             multi_risk = mw * 0.5
+        elif consensus.status == "CONSENSUS":
+            if consensus.score >= 1.0:
+                multi_risk = 0.0         # 完全一致 → 无分歧罚分 (无负分)
+            else:
+                # 有离群模型时保留离群罚 (与离群占比成正比)
+                multi_risk = min(max((1.0 - consensus.score) * mw, 0.0), mw)
         else:
-            # score=1.0 完全一致 → 0 风险; score=0 → 满风险
-            multi_risk = min(max((1.0 - consensus.score) * mw, 0.0), mw)
+            multi_risk = 0.0
     else:
         multi_risk = 0.0
 
