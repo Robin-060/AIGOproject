@@ -36,7 +36,7 @@ from src.experiments.phase_evaluation import (  # noqa: E402
 from src.experiments.run_baselines import strat_vote, with_confidence  # noqa: E402
 
 OUT_JSON = ROOT / "results" / "bootstrap_ci.json"
-COVERAGE_PCT = 46.7
+COVERAGE_PCT = 50.0   # v1.4 天花板 54.2%, 50% 标准点位可达 (v1.2 时为 46.7%)
 N_REPLICATES = 1000
 SEED = 42
 

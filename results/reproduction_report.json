@@ -1,0 +1,46 @@
+{
+  "config_version": "semifinal_v1.4",
+  "seed": 42,
+  "environment": {
+    "seisbench": "0.12.3",
+    "torch": "2.13.0",
+    "obspy": "1.5.0",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "pandas": "3.0.5"
+  },
+  "frozen_inputs": {
+    "data/batch_calibration/records_all_v2.json": {
+      "sha256_prefix": "e5cc0a28a61a4a91",
+      "verified": true
+    },
+    "data/quality_manifest.csv": {
+      "sha256_prefix": "2a1dcb8c135ce2db",
+      "verified": true
+    },
+    "data/sta_lta_picks.csv": {
+      "sha256_prefix": "7dcaf65d73f061e9",
+      "verified": true
+    },
+    "data/manifest_phase.csv": {
+      "sha256_prefix": "db5c71d712f36b43",
+      "verified": true
+    },
+    "data/eqt_predictions.json": {
+      "sha256_prefix": "fee504eab17aaa78",
+      "verified": true
+    }
+  },
+  "core_numbers": {
+    "trust_unsafe_pct_at_50": 5.36,
+    "voting_unsafe_pct_at_50": 4.59,
+    "delta_trust_minus_voting_pp": 0.77,
+    "ci95": [
+      -1.42,
+      3.41
+    ],
+    "verdict": "INCONCLUSIVE (CI 包含 0)"
+  },
+  "duration_s": 41.1,
+  "timestamp_utc": "2026-08-30T09:12:31.931465+00:00"
+}

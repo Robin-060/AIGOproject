@@ -1,0 +1,3 @@
+# 冻结数据与配置文件强制 LF 换行 (复现校验跨平台稳定)
+data/*.json text eol=lf
+configs/*.yaml text eol=lf
