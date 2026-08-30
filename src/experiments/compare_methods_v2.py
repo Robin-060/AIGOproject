@@ -68,6 +68,7 @@ def main():
     strategies = {
         "Single-PickBlue": strat_single("PickBlue"),
         "Single-OBSTransformer": strat_single("OBSTransformer"),
+        "Single-EQTransformer": strat_single("EQTransformer"),
         "Single-PhaseNet": strat_single("PhaseNet"),
         "MaxConf": strat_maxconf(),
         "Voting": strat_vote(),
@@ -103,23 +104,33 @@ def main():
     print(f"{'Random':>22} | {rand_cells[46.7][0]:>9.1f}% | {rand_cells[46.7][1]:>6.1f}% | "
           f"{rand_cells[50.0][0]:>8.1f}% | {rand_cells[50.0][1]:>6.1f}%")
 
-    # Trust v2 (from v2 主实验结果)
-    trust = {}
-    with open(ROOT / "results" / "equal_coverage_trust.csv", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            trust[row["target_coverage_pct"]] = (
-                float(row["unsafe_output_rate_pct"]),
-                float(row["coverage_pct"]),
-            )
-    t_unsafe, t_cov = trust["50"]  # v2 全部点位都落在天花板 46.7%
+    # Trust v1.3 (从 main_results.csv 直接算两个点位, 与基线同口径)
+    import csv as _csv
+    trust_rows = list(_csv.DictReader(
+        open(ROOT / "results" / "main_results.csv", encoding="utf-8")))
+    output_rows = [r for r in trust_rows if r["verdict"] in ("correct", "wrong")]
+    output_sorted = sorted(output_rows,
+                           key=lambda r: (float(r["risk"]), r["sample_id"], r["phase"]))
+    t_cells = {}
+    for point in POINTS:
+        k = min(int(round(point / 100 * len(trust_rows))), len(output_sorted))
+        accepted = {(r["sample_id"], r["phase"]) for r in output_sorted[:k]}
+        wrong = total = 0
+        for row in trust_rows:
+            if (row["sample_id"], row["phase"]) in accepted:
+                total += 1
+                if row["verdict"] == "wrong":
+                    wrong += 1
+        t_cells[point] = (wrong / total * 100 if total else float("nan"),
+                          total / len(trust_rows) * 100)
     rows.append({
-        "method": "TrustLayer(v2)",
-        "unsafe_46.7": round(t_unsafe, 2), "cov_46.7": round(t_cov, 2),
-        "unsafe_50": "", "cov_50": "不可达",
+        "method": "TrustLayer(v1.3)",
+        "unsafe_46.7": round(t_cells[46.7][0], 2), "cov_46.7": round(t_cells[46.7][1], 2),
+        "unsafe_50": round(t_cells[50.0][0], 2), "cov_50": round(t_cells[50.0][1], 2),
     })
     print("-" * 72)
-    print(f"{'TrustLayer(v2)':>22} | {t_unsafe:>9.1f}% | {t_cov:>6.1f}% | "
-          f"{'(覆盖率天花板 46.7%)':>8}")
+    print(f"{'TrustLayer(v1.3)':>22} | {t_cells[46.7][0]:>9.1f}% | {t_cells[46.7][1]:>6.1f}% | "
+          f"{t_cells[50.0][0]:>8.1f}% | {t_cells[50.0][1]:>6.1f}%")
 
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))

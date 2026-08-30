@@ -1,0 +1,4477 @@
+{
+ "XO.LT07..HH.2018.05.12.20.49.55": {
+  "P_pick": 44.93,
+  "S_pick": 58.76,
+  "confidence": 0.852
+ },
+ "XO.LT06..HH.2018.05.12.20.49.48": {
+  "P_pick": 45.0,
+  "S_pick": 52.74,
+  "confidence": 0.909
+ },
+ "XO.LT07..HH.2018.05.13.11.47.49": {
+  "P_pick": 24.14,
+  "S_pick": 95.0,
+  "confidence": 0.581
+ },
+ "XO.LT14..HH.2018.05.13.16.49.13": {
+  "P_pick": 45.11,
+  "S_pick": 57.62,
+  "confidence": 0.694
+ },
+ "XO.LT14..HH.2018.05.13.18.48.42": {
+  "P_pick": 45.09,
+  "S_pick": 54.41,
+  "confidence": 0.782
+ },
+ "XO.LT06..HH.2018.05.14.09.20.39": {
+  "P_pick": 45.04,
+  "S_pick": 54.94,
+  "confidence": 0.729
+ },
+ "XO.LT07..HH.2018.05.15.13.02.52": {
+  "P_pick": 45.11,
+  "S_pick": 74.5,
+  "confidence": 0.74
+ },
+ "XO.LD36..HH.2018.05.15.13.54.09": {
+  "P_pick": 45.03,
+  "S_pick": 52.01,
+  "confidence": 0.728
+ },
+ "XO.LA25..HH.2018.05.15.13.54.12": {
+  "P_pick": 45.04,
+  "S_pick": null,
+  "confidence": 0.616
+ },
+ "XO.LT07..HH.2018.05.15.10.17.37": {
+  "P_pick": 33.33,
+  "S_pick": 45.06,
+  "confidence": 0.443
+ },
+ "XO.LT14..HH.2018.05.15.19.26.15": {
+  "P_pick": 44.99,
+  "S_pick": 56.59,
+  "confidence": 0.762
+ },
+ "XO.LT07..HH.2018.05.16.12.54.57": {
+  "P_pick": 44.9,
+  "S_pick": 52.88,
+  "confidence": 0.917
+ },
+ "XO.LT07..HH.2018.05.18.22.11.25": {
+  "P_pick": 44.87,
+  "S_pick": 55.22,
+  "confidence": 0.605
+ },
+ "XO.LT17..HH.2018.05.19.02.03.22": {
+  "P_pick": 45.03,
+  "S_pick": 60.66,
+  "confidence": 0.308
+ },
+ "XO.LT18..HH.2018.05.19.02.03.22": {
+  "P_pick": 44.87,
+  "S_pick": null,
+  "confidence": 0.78
+ },
+ "XO.LT12..HH.2018.05.19.17.46.44": {
+  "P_pick": 44.69,
+  "S_pick": 53.63,
+  "confidence": 0.667
+ },
+ "XO.LT14..HH.2018.05.19.17.46.44": {
+  "P_pick": 108.01,
+  "S_pick": 54.58,
+  "confidence": 0.455
+ },
+ "XO.LT20..HH.2018.05.19.19.23.05": {
+  "P_pick": 45.05,
+  "S_pick": 53.47,
+  "confidence": 0.868
+ },
+ "XO.LT17..HH.2018.05.19.22.03.45": {
+  "P_pick": 44.97,
+  "S_pick": 57.7,
+  "confidence": 0.682
+ },
+ "XO.LT17..HH.2018.05.20.00.22.24": {
+  "P_pick": 44.95,
+  "S_pick": 57.38,
+  "confidence": 0.632
+ },
+ "XO.LT20..HH.2018.05.20.00.22.19": {
+  "P_pick": 44.99,
+  "S_pick": 53.15,
+  "confidence": 0.885
+ },
+ "XO.LA25..HH.2018.05.21.03.48.10": {
+  "P_pick": 45.04,
+  "S_pick": 80.74,
+  "confidence": 0.881
+ },
+ "XO.LT10..HH.2018.05.21.03.48.30": {
+  "P_pick": 39.85,
+  "S_pick": 44.66,
+  "confidence": 0.527
+ },
+ "XO.LT14..HH.2018.05.21.04.42.07": {
+  "P_pick": 44.81,
+  "S_pick": 75.62,
+  "confidence": 0.608
+ },
+ "XO.LA30..HH.2018.05.21.04.42.52": {
+  "P_pick": null,
+  "S_pick": 44.75,
+  "confidence": 0.304
+ },
+ "XO.LA33..HH.2018.05.21.19.58.59": {
+  "P_pick": 44.85,
+  "S_pick": 70.52,
+  "confidence": 0.732
+ },
+ "XO.LT18..HH.2018.05.22.23.57.53": {
+  "P_pick": 45.03,
+  "S_pick": 54.67,
+  "confidence": 0.861
+ },
+ "XO.LT17..HH.2018.05.22.23.57.56": {
+  "P_pick": 44.46,
+  "S_pick": 56.3,
+  "confidence": 0.422
+ },
+ "XO.LT18..HH.2018.05.22.05.23.43": {
+  "P_pick": 44.92,
+  "S_pick": 50.96,
+  "confidence": 0.921
+ },
+ "XO.LT18..HH.2018.05.22.11.57.00": {
+  "P_pick": 44.89,
+  "S_pick": 52.58,
+  "confidence": 0.902
+ },
+ "XO.LT13..HH.2018.05.22.11.57.14": {
+  "P_pick": 44.35,
+  "S_pick": 63.28,
+  "confidence": 0.298
+ },
+ "XO.LT14..HH.2018.05.23.05.00.54": {
+  "P_pick": 45.09,
+  "S_pick": null,
+  "confidence": 0.725
+ },
+ "XO.LT15..HH.2018.05.23.00.51.43": {
+  "P_pick": null,
+  "S_pick": 44.78,
+  "confidence": 0.103
+ },
+ "XO.LA25..HH.2018.05.23.00.51.49": {
+  "P_pick": 45.01,
+  "S_pick": 66.17,
+  "confidence": 0.771
+ },
+ "XO.LD36..HH.2018.05.23.00.51.50": {
+  "P_pick": 45.07,
+  "S_pick": 66.02,
+  "confidence": 0.854
+ },
+ "XO.LD41..HH.2018.05.24.03.19.38": {
+  "P_pick": 43.93,
+  "S_pick": 70.02,
+  "confidence": 0.514
+ },
+ "XO.LD41..HH.2018.05.24.12.30.13": {
+  "P_pick": 44.73,
+  "S_pick": 73.78,
+  "confidence": 0.513
+ },
+ "XO.LT20..HH.2018.05.25.06.03.39": {
+  "P_pick": 46.41,
+  "S_pick": null,
+  "confidence": 0.333
+ },
+ "XO.LD45..HH.2018.05.25.06.30.42": {
+  "P_pick": 45.05,
+  "S_pick": null,
+  "confidence": 0.856
+ },
+ "XO.LA26..HH.2018.05.25.06.30.46": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA34..HH.2018.05.25.06.30.56": {
+  "P_pick": 30.14,
+  "S_pick": 45.18,
+  "confidence": 0.642
+ },
+ "XO.LA29..HH.2018.05.25.06.30.57": {
+  "P_pick": null,
+  "S_pick": 45.23,
+  "confidence": 0.655
+ },
+ "XO.LD41..HH.2018.05.25.04.54.19": {
+  "P_pick": 45.7,
+  "S_pick": 76.3,
+  "confidence": 0.413
+ },
+ "XO.LD41..HH.2018.05.25.05.36.36": {
+  "P_pick": 44.9,
+  "S_pick": 71.98,
+  "confidence": 0.347
+ },
+ "XO.LT04..HH.2018.05.25.08.10.32": {
+  "P_pick": 44.65,
+  "S_pick": 58.24,
+  "confidence": 0.515
+ },
+ "XO.LT04..HH.2018.05.25.08.40.15": {
+  "P_pick": 44.96,
+  "S_pick": 52.11,
+  "confidence": 0.924
+ },
+ "XO.LT18..HH.2018.05.26.11.55.24": {
+  "P_pick": 44.93,
+  "S_pick": null,
+  "confidence": 0.864
+ },
+ "XO.LD44..HH.2018.05.26.11.58.59": {
+  "P_pick": 45.18,
+  "S_pick": 60.35,
+  "confidence": 0.408
+ },
+ "XO.LA33..HH.2018.05.26.11.59.11": {
+  "P_pick": 44.73,
+  "S_pick": 68.24,
+  "confidence": 0.607
+ },
+ "XO.LD38..HH.2018.05.26.19.37.24": {
+  "P_pick": 44.91,
+  "S_pick": 58.8,
+  "confidence": 0.8
+ },
+ "XO.LD41..HH.2018.05.26.10.39.55": {
+  "P_pick": 45.01,
+  "S_pick": 76.99,
+  "confidence": 0.836
+ },
+ "XO.LD40..HH.2018.05.26.14.57.05": {
+  "P_pick": null,
+  "S_pick": 45.7,
+  "confidence": 0.418
+ },
+ "XO.LD41..HH.2018.05.27.16.25.34": {
+  "P_pick": 45.17,
+  "S_pick": 76.26,
+  "confidence": 0.724
+ },
+ "XO.LA23..HH.2018.05.27.18.30.11": {
+  "P_pick": 44.33,
+  "S_pick": null,
+  "confidence": 0.839
+ },
+ "XO.LT06..HH.2018.05.27.18.30.20": {
+  "P_pick": 44.89,
+  "S_pick": 64.03,
+  "confidence": 0.889
+ },
+ "XO.LA29..HH.2018.05.27.18.30.30": {
+  "P_pick": 44.0,
+  "S_pick": 70.79,
+  "confidence": 0.856
+ },
+ "XO.LT20..HH.2018.05.27.14.38.01": {
+  "P_pick": 32.86,
+  "S_pick": 45.06,
+  "confidence": 0.679
+ },
+ "XO.LA32..HH.2018.05.28.07.33.19": {
+  "P_pick": 44.89,
+  "S_pick": 76.87,
+  "confidence": 0.594
+ },
+ "XO.LT20..HH.2018.05.28.07.32.51": {
+  "P_pick": 44.73,
+  "S_pick": 56.74,
+  "confidence": 0.854
+ },
+ "XO.LD40..HH.2018.05.28.04.25.32": {
+  "P_pick": null,
+  "S_pick": 44.42,
+  "confidence": 0.53
+ },
+ "XO.LT01..HH.2018.05.28.08.07.29": {
+  "P_pick": null,
+  "S_pick": 98.68,
+  "confidence": 0.224
+ },
+ "XO.LD41..HH.2018.05.28.12.50.00": {
+  "P_pick": 19.29,
+  "S_pick": 44.72,
+  "confidence": 0.342
+ },
+ "XO.LA39..HH.2018.05.28.12.49.32": {
+  "P_pick": 30.93,
+  "S_pick": 96.81,
+  "confidence": 0.275
+ },
+ "XO.LD38..HH.2018.05.29.03.57.24": {
+  "P_pick": 45.08,
+  "S_pick": 65.52,
+  "confidence": 0.914
+ },
+ "XO.LT20..HH.2018.05.29.21.25.20": {
+  "P_pick": 44.96,
+  "S_pick": 53.05,
+  "confidence": 0.866
+ },
+ "XO.LT06..HH.2018.05.29.04.40.08": {
+  "P_pick": 44.85,
+  "S_pick": 58.65,
+  "confidence": 0.748
+ },
+ "XO.LT04..HH.2018.05.29.04.40.11": {
+  "P_pick": 44.93,
+  "S_pick": 61.64,
+  "confidence": 0.903
+ },
+ "XO.LT07..HH.2018.05.29.04.40.03": {
+  "P_pick": 44.77,
+  "S_pick": 55.37,
+  "confidence": 0.824
+ },
+ "XO.LA39..HH.2018.05.29.10.05.54": {
+  "P_pick": 45.08,
+  "S_pick": 59.96,
+  "confidence": 0.879
+ },
+ "XO.LT16..HH.2018.05.30.02.35.18": {
+  "P_pick": 44.93,
+  "S_pick": 54.94,
+  "confidence": 0.826
+ },
+ "XO.LA26..HH.2018.05.30.02.35.28": {
+  "P_pick": 45.03,
+  "S_pick": 62.51,
+  "confidence": 0.475
+ },
+ "XO.LT20..HH.2018.05.30.02.35.41": {
+  "P_pick": 44.95,
+  "S_pick": null,
+  "confidence": 0.611
+ },
+ "XO.LA39..HH.2018.05.30.05.12.11": {
+  "P_pick": null,
+  "S_pick": 45.37,
+  "confidence": 0.596
+ },
+ "XO.LD41..HH.2018.05.30.20.36.25": {
+  "P_pick": 43.77,
+  "S_pick": 77.38,
+  "confidence": 0.905
+ },
+ "XO.LA39..HH.2018.05.30.08.25.25": {
+  "P_pick": null,
+  "S_pick": 72.28,
+  "confidence": 0.134
+ },
+ "XO.LT01..HH.2018.05.30.09.48.51": {
+  "P_pick": null,
+  "S_pick": 44.74,
+  "confidence": 0.394
+ },
+ "XO.LA39..HH.2018.05.30.10.57.15": {
+  "P_pick": 44.99,
+  "S_pick": 63.2,
+  "confidence": 0.894
+ },
+ "XO.LD41..HH.2018.05.30.15.34.41": {
+  "P_pick": 45.13,
+  "S_pick": 73.69,
+  "confidence": 0.399
+ },
+ "XO.LA39..HH.2018.05.30.19.04.27": {
+  "P_pick": 44.95,
+  "S_pick": 59.15,
+  "confidence": 0.859
+ },
+ "XO.LA39..HH.2018.05.30.21.27.46": {
+  "P_pick": 25.93,
+  "S_pick": 44.99,
+  "confidence": 0.683
+ },
+ "XO.LT04..HH.2018.05.31.01.58.18": {
+  "P_pick": 44.78,
+  "S_pick": 80.64,
+  "confidence": 0.482
+ },
+ "XO.LD40..HH.2018.05.31.08.14.27": {
+  "P_pick": 44.99,
+  "S_pick": 69.47,
+  "confidence": 0.657
+ },
+ "XO.LT06..HH.2018.05.31.10.11.26": {
+  "P_pick": null,
+  "S_pick": 45.3,
+  "confidence": 0.425
+ },
+ "XO.LD40..HH.2018.05.31.19.02.50": {
+  "P_pick": 45.26,
+  "S_pick": 70.79,
+  "confidence": 0.4
+ },
+ "XO.LT18..HH.2018.05.31.17.51.09": {
+  "P_pick": 45.12,
+  "S_pick": 55.0,
+  "confidence": 0.769
+ },
+ "XO.LD41..HH.2018.05.25.12.35.29": {
+  "P_pick": 43.48,
+  "S_pick": null,
+  "confidence": 0.389
+ },
+ "XO.LT04..HH.2018.05.25.12.35.31": {
+  "P_pick": 45.62,
+  "S_pick": 75.28,
+  "confidence": 0.483
+ },
+ "XO.LT01..HH.2018.05.25.23.04.56": {
+  "P_pick": null,
+  "S_pick": 44.49,
+  "confidence": 0.321
+ },
+ "XO.LD38..HH.2018.05.27.10.36.29": {
+  "P_pick": 44.99,
+  "S_pick": 68.36,
+  "confidence": 0.892
+ },
+ "XO.LA39..HH.2018.05.29.06.56.15": {
+  "P_pick": 44.99,
+  "S_pick": 60.0,
+  "confidence": 0.87
+ },
+ "XO.LT14..HH.2018.05.30.01.52.09": {
+  "P_pick": 44.17,
+  "S_pick": null,
+  "confidence": 0.276
+ },
+ "XO.LA28..HH.2018.05.30.01.52.24": {
+  "P_pick": null,
+  "S_pick": 44.98,
+  "confidence": 0.444
+ },
+ "XO.LA39..HH.2018.05.30.08.39.12": {
+  "P_pick": null,
+  "S_pick": 44.93,
+  "confidence": 0.57
+ },
+ "XO.LD36..HH.2018.05.29.00.36.40": {
+  "P_pick": 45.82,
+  "S_pick": null,
+  "confidence": 0.209
+ },
+ "XO.LD41..HH.2018.05.29.07.10.38": {
+  "P_pick": 43.64,
+  "S_pick": 72.14,
+  "confidence": 0.326
+ },
+ "XO.LT06..HH.2018.05.29.15.14.24": {
+  "P_pick": 45.09,
+  "S_pick": 55.05,
+  "confidence": 0.849
+ },
+ "XO.LT10..HH.2018.05.29.15.14.28": {
+  "P_pick": 44.87,
+  "S_pick": 58.24,
+  "confidence": 0.631
+ },
+ "XO.LD38..HH.2018.05.29.16.20.11": {
+  "P_pick": 45.04,
+  "S_pick": 50.35,
+  "confidence": 0.919
+ },
+ "XO.LA32..HH.2018.05.29.23.28.31": {
+  "P_pick": 45.01,
+  "S_pick": 71.22,
+  "confidence": 0.733
+ },
+ "XO.LT09..HH.2018.05.28.09.24.23": {
+  "P_pick": 44.96,
+  "S_pick": 53.3,
+  "confidence": 0.865
+ },
+ "XO.LA29..HH.2018.05.28.09.24.23": {
+  "P_pick": 45.13,
+  "S_pick": 53.39,
+  "confidence": 0.688
+ },
+ "XO.LA32..HH.2018.05.28.09.24.25": {
+  "P_pick": 44.62,
+  "S_pick": 55.04,
+  "confidence": 0.468
+ },
+ "XO.LT06..HH.2018.05.28.18.47.03": {
+  "P_pick": 45.01,
+  "S_pick": 53.14,
+  "confidence": 0.545
+ },
+ "XO.LT04..HH.2018.05.28.22.01.04": {
+  "P_pick": 44.81,
+  "S_pick": 59.36,
+  "confidence": 0.807
+ },
+ "XO.LD38..HH.2018.05.27.04.41.02": {
+  "P_pick": 45.08,
+  "S_pick": 123.47,
+  "confidence": 0.519
+ },
+ "XO.LA21..HH.2018.05.27.04.41.09": {
+  "P_pick": 43.85,
+  "S_pick": null,
+  "confidence": 0.735
+ },
+ "XO.LA25..HH.2018.05.27.04.41.28": {
+  "P_pick": 25.29,
+  "S_pick": 45.57,
+  "confidence": 0.317
+ },
+ "XO.LD40..HH.2018.05.27.15.40.08": {
+  "P_pick": null,
+  "S_pick": 46.25,
+  "confidence": 0.271
+ },
+ "XO.LD40..HH.2018.05.27.17.21.08": {
+  "P_pick": 121.05,
+  "S_pick": 44.96,
+  "confidence": 0.497
+ },
+ "XO.LT13..HH.2018.05.27.23.08.14": {
+  "P_pick": 44.87,
+  "S_pick": 54.97,
+  "confidence": 0.836
+ },
+ "XO.LT07..HH.2018.05.24.21.33.57": {
+  "P_pick": 44.87,
+  "S_pick": null,
+  "confidence": 0.606
+ },
+ "XO.LD36..HH.2018.05.22.02.27.39": {
+  "P_pick": 45.45,
+  "S_pick": 78.96,
+  "confidence": 0.483
+ },
+ "XO.LT16..HH.2018.05.22.12.36.22": {
+  "P_pick": 44.91,
+  "S_pick": 67.85,
+  "confidence": 0.732
+ },
+ "XO.LT10..HH.2018.05.18.16.34.36": {
+  "P_pick": 44.87,
+  "S_pick": 50.11,
+  "confidence": 0.928
+ },
+ "XO.LT10..HH.2018.05.16.21.10.06": {
+  "P_pick": 44.83,
+  "S_pick": 56.11,
+  "confidence": 0.318
+ },
+ "XO.LD36..HH.2018.05.15.12.37.51": {
+  "P_pick": 43.78,
+  "S_pick": null,
+  "confidence": 0.503
+ },
+ "XO.LT17..HH.2018.06.01.15.49.14": {
+  "P_pick": 45.05,
+  "S_pick": 56.65,
+  "confidence": 0.547
+ },
+ "XO.LA39..HH.2018.06.01.17.32.37": {
+  "P_pick": null,
+  "S_pick": 45.06,
+  "confidence": 0.644
+ },
+ "XO.LT04..HH.2018.06.01.18.12.44": {
+  "P_pick": 44.99,
+  "S_pick": 61.24,
+  "confidence": 0.62
+ },
+ "XO.LD40..HH.2018.06.01.18.41.12": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.82
+ },
+ "XO.LA39..HH.2018.06.01.18.41.15": {
+  "P_pick": 45.07,
+  "S_pick": 58.42,
+  "confidence": 0.895
+ },
+ "XO.LA23..HH.2018.06.01.18.42.04": {
+  "P_pick": null,
+  "S_pick": 45.23,
+  "confidence": 0.301
+ },
+ "XO.LA39..HH.2018.06.01.22.02.14": {
+  "P_pick": 45.01,
+  "S_pick": 63.55,
+  "confidence": 0.912
+ },
+ "XO.LT04..HH.2018.06.01.22.02.35": {
+  "P_pick": 44.93,
+  "S_pick": 79.0,
+  "confidence": 0.51
+ },
+ "XO.LD40..HH.2018.06.01.18.36.01": {
+  "P_pick": null,
+  "S_pick": 45.14,
+  "confidence": 0.404
+ },
+ "XO.LA25..HH.2018.06.01.20.34.52": {
+  "P_pick": 45.07,
+  "S_pick": 66.34,
+  "confidence": 0.866
+ },
+ "XO.LT13..HH.2018.06.01.20.34.56": {
+  "P_pick": 44.87,
+  "S_pick": 67.28,
+  "confidence": 0.798
+ },
+ "XO.LT04..HH.2018.06.01.20.35.06": {
+  "P_pick": 27.13,
+  "S_pick": 45.36,
+  "confidence": 0.65
+ },
+ "XO.LA28..HH.2018.06.01.20.35.12": {
+  "P_pick": null,
+  "S_pick": 45.26,
+  "confidence": 0.592
+ },
+ "XO.LT16..HH.2018.06.01.20.34.51": {
+  "P_pick": 72.89,
+  "S_pick": 65.15,
+  "confidence": 0.36
+ },
+ "XO.LA39..HH.2018.06.01.21.46.51": {
+  "P_pick": null,
+  "S_pick": 44.9,
+  "confidence": 0.555
+ },
+ "XO.LT04..HH.2018.06.02.13.39.17": {
+  "P_pick": 119.88,
+  "S_pick": 43.76,
+  "confidence": 0.325
+ },
+ "XO.LD40..HH.2018.06.02.15.35.07": {
+  "P_pick": 45.22,
+  "S_pick": 68.2,
+  "confidence": 0.586
+ },
+ "XO.LT01..HH.2018.06.02.15.44.09": {
+  "P_pick": 20.73,
+  "S_pick": 45.45,
+  "confidence": 0.316
+ },
+ "XO.LA39..HH.2018.06.02.20.17.45": {
+  "P_pick": null,
+  "S_pick": 45.12,
+  "confidence": 0.445
+ },
+ "XO.LT01..HH.2018.06.02.21.04.45": {
+  "P_pick": null,
+  "S_pick": 75.17,
+  "confidence": 0.168
+ },
+ "XO.LA39..HH.2018.06.02.13.10.54": {
+  "P_pick": 27.53,
+  "S_pick": 82.82,
+  "confidence": 0.665
+ },
+ "XO.LT04..HH.2018.06.02.19.17.37": {
+  "P_pick": null,
+  "S_pick": 44.8,
+  "confidence": 0.544
+ },
+ "XO.LT06..HH.2018.06.03.04.44.01": {
+  "P_pick": 45.46,
+  "S_pick": 62.57,
+  "confidence": 0.493
+ },
+ "XO.LA39..HH.2018.06.03.07.11.07": {
+  "P_pick": 45.13,
+  "S_pick": 64.92,
+  "confidence": 0.86
+ },
+ "XO.LD40..HH.2018.06.03.16.09.02": {
+  "P_pick": 17.69,
+  "S_pick": 44.89,
+  "confidence": 0.315
+ },
+ "XO.LT01..HH.2018.06.03.16.08.35": {
+  "P_pick": 44.71,
+  "S_pick": 73.72,
+  "confidence": 0.587
+ },
+ "XO.LD38..HH.2018.06.03.21.07.13": {
+  "P_pick": 44.96,
+  "S_pick": 63.37,
+  "confidence": 0.851
+ },
+ "XO.LD41..HH.2018.06.03.05.04.35": {
+  "P_pick": 43.7,
+  "S_pick": 70.41,
+  "confidence": 0.891
+ },
+ "XO.LD38..HH.2018.06.03.06.45.02": {
+  "P_pick": 42.69,
+  "S_pick": 58.49,
+  "confidence": 0.836
+ },
+ "XO.LT18..HH.2018.06.03.08.02.03": {
+  "P_pick": 44.77,
+  "S_pick": null,
+  "confidence": 0.786
+ },
+ "XO.LA29..HH.2018.06.03.08.02.25": {
+  "P_pick": 43.89,
+  "S_pick": 75.63,
+  "confidence": 0.526
+ },
+ "XO.LD41..HH.2018.06.03.21.56.35": {
+  "P_pick": 42.85,
+  "S_pick": 73.85,
+  "confidence": 0.333
+ },
+ "XO.LT14..HH.2018.06.04.05.38.19": {
+  "P_pick": 45.01,
+  "S_pick": null,
+  "confidence": 0.904
+ },
+ "XO.LT06..HH.2018.06.04.07.27.46": {
+  "P_pick": 32.01,
+  "S_pick": 44.98,
+  "confidence": 0.53
+ },
+ "XO.LA39..HH.2018.06.04.08.53.49": {
+  "P_pick": 44.96,
+  "S_pick": 60.12,
+  "confidence": 0.912
+ },
+ "XO.LD40..HH.2018.06.04.08.53.55": {
+  "P_pick": 43.61,
+  "S_pick": 61.87,
+  "confidence": 0.36
+ },
+ "XO.LT01..HH.2018.06.04.08.53.58": {
+  "P_pick": null,
+  "S_pick": 65.55,
+  "confidence": 0.495
+ },
+ "XO.LA25..HH.2018.06.04.11.08.53": {
+  "P_pick": 44.97,
+  "S_pick": 72.85,
+  "confidence": 0.726
+ },
+ "XO.LT06..HH.2018.06.04.11.08.54": {
+  "P_pick": 28.77,
+  "S_pick": 44.8,
+  "confidence": 0.592
+ },
+ "XO.LD40..HH.2018.06.04.14.18.52": {
+  "P_pick": 26.24,
+  "S_pick": 44.9,
+  "confidence": 0.37
+ },
+ "XO.LD41..HH.2018.06.04.23.19.16": {
+  "P_pick": 45.08,
+  "S_pick": 74.92,
+  "confidence": 0.831
+ },
+ "XO.LT01..HH.2018.06.04.23.19.36": {
+  "P_pick": 126.25,
+  "S_pick": 129.22,
+  "confidence": 0.227
+ },
+ "XO.LT04..HH.2018.06.04.07.08.50": {
+  "P_pick": null,
+  "S_pick": 44.93,
+  "confidence": 0.566
+ },
+ "XO.LA39..HH.2018.06.04.09.04.57": {
+  "P_pick": 97.18,
+  "S_pick": 112.98,
+  "confidence": 0.485
+ },
+ "XO.LA39..HH.2018.06.04.09.06.39": {
+  "P_pick": null,
+  "S_pick": 136.89,
+  "confidence": 0.114
+ },
+ "XO.LT01..HH.2018.06.04.11.30.33": {
+  "P_pick": null,
+  "S_pick": 44.89,
+  "confidence": 0.349
+ },
+ "XO.LT17..HH.2018.06.05.18.26.28": {
+  "P_pick": 45.01,
+  "S_pick": 57.61,
+  "confidence": 0.831
+ },
+ "XO.LD40..HH.2018.06.05.13.17.40": {
+  "P_pick": 25.77,
+  "S_pick": 45.52,
+  "confidence": 0.401
+ },
+ "XO.LA39..HH.2018.06.05.14.06.23": {
+  "P_pick": 44.95,
+  "S_pick": 59.04,
+  "confidence": 0.709
+ },
+ "XO.LD36..HH.2018.06.05.15.48.02": {
+  "P_pick": 45.43,
+  "S_pick": 62.08,
+  "confidence": 0.62
+ },
+ "XO.LD41..HH.2018.06.05.15.48.13": {
+  "P_pick": 44.91,
+  "S_pick": 70.72,
+  "confidence": 0.8
+ },
+ "XO.LD38..HH.2018.06.06.02.46.26": {
+  "P_pick": 31.61,
+  "S_pick": 45.51,
+  "confidence": 0.55
+ },
+ "XO.LT07..HH.2018.06.06.09.33.43": {
+  "P_pick": 44.66,
+  "S_pick": 59.6,
+  "confidence": 0.529
+ },
+ "XO.LT01..HH.2018.06.07.03.06.19": {
+  "P_pick": 27.53,
+  "S_pick": 44.76,
+  "confidence": 0.475
+ },
+ "XO.LT04..HH.2018.06.07.03.06.30": {
+  "P_pick": 23.99,
+  "S_pick": 44.94,
+  "confidence": 0.683
+ },
+ "XO.LD40..HH.2018.06.07.08.49.44": {
+  "P_pick": 45.1,
+  "S_pick": 70.89,
+  "confidence": 0.415
+ },
+ "XO.LT20..HH.2018.06.07.12.05.57": {
+  "P_pick": 30.81,
+  "S_pick": 59.54,
+  "confidence": 0.42
+ },
+ "XO.LD38..HH.2018.06.07.16.10.19": {
+  "P_pick": 25.95,
+  "S_pick": 44.95,
+  "confidence": 0.765
+ },
+ "XO.LT04..HH.2018.06.07.00.12.59": {
+  "P_pick": 43.56,
+  "S_pick": 44.59,
+  "confidence": 0.278
+ },
+ "XO.LD40..HH.2018.06.07.01.10.09": {
+  "P_pick": 20.7,
+  "S_pick": 44.65,
+  "confidence": 0.247
+ },
+ "XO.LT01..HH.2018.06.07.04.18.38": {
+  "P_pick": null,
+  "S_pick": 44.66,
+  "confidence": 0.207
+ },
+ "XO.LT01..HH.2018.06.07.05.19.07": {
+  "P_pick": null,
+  "S_pick": 45.39,
+  "confidence": 0.291
+ },
+ "XO.LT01..HH.2018.06.07.07.54.27": {
+  "P_pick": null,
+  "S_pick": 46.0,
+  "confidence": 0.475
+ },
+ "XO.LA39..HH.2018.06.07.09.02.11": {
+  "P_pick": 45.01,
+  "S_pick": 62.66,
+  "confidence": 0.908
+ },
+ "XO.LT16..HH.2018.06.07.10.21.53": {
+  "P_pick": 44.87,
+  "S_pick": 54.83,
+  "confidence": 0.83
+ },
+ "XO.LT14..HH.2018.06.07.10.21.56": {
+  "P_pick": 44.88,
+  "S_pick": 56.04,
+  "confidence": 0.903
+ },
+ "XO.LD41..HH.2018.06.07.10.22.20": {
+  "P_pick": 44.87,
+  "S_pick": 75.14,
+  "confidence": 0.82
+ },
+ "XO.LT06..HH.2018.06.07.14.11.41": {
+  "P_pick": 46.1,
+  "S_pick": 51.39,
+  "confidence": 0.628
+ },
+ "XO.LA34..HH.2018.06.07.18.32.01": {
+  "P_pick": 44.91,
+  "S_pick": 78.59,
+  "confidence": 0.895
+ },
+ "XO.LA28..HH.2018.06.07.18.32.07": {
+  "P_pick": 44.89,
+  "S_pick": 83.22,
+  "confidence": 0.846
+ },
+ "XO.LA29..HH.2018.06.07.18.32.42": {
+  "P_pick": 8.61,
+  "S_pick": 45.23,
+  "confidence": 0.619
+ },
+ "XO.LD40..HH.2018.06.07.20.53.26": {
+  "P_pick": null,
+  "S_pick": 96.03,
+  "confidence": 0.395
+ },
+ "XO.LT13..HH.2018.06.07.22.52.30": {
+  "P_pick": 44.45,
+  "S_pick": 68.11,
+  "confidence": 0.249
+ },
+ "XO.LA39..HH.2018.06.09.08.03.20": {
+  "P_pick": 19.94,
+  "S_pick": 44.84,
+  "confidence": 0.55
+ },
+ "XO.LD40..HH.2018.06.09.09.54.02": {
+  "P_pick": 82.34,
+  "S_pick": 71.14,
+  "confidence": 0.589
+ },
+ "XO.LD40..HH.2018.06.09.14.56.05": {
+  "P_pick": 44.91,
+  "S_pick": 60.99,
+  "confidence": 0.609
+ },
+ "XO.LA39..HH.2018.06.09.08.43.43": {
+  "P_pick": 79.93,
+  "S_pick": 59.7,
+  "confidence": 0.619
+ },
+ "XO.LA39..HH.2018.06.09.09.39.43": {
+  "P_pick": 25.87,
+  "S_pick": 44.96,
+  "confidence": 0.678
+ },
+ "XO.LD40..HH.2018.06.09.12.03.23": {
+  "P_pick": null,
+  "S_pick": 45.23,
+  "confidence": 0.424
+ },
+ "XO.LA39..HH.2018.06.09.16.14.01": {
+  "P_pick": null,
+  "S_pick": 45.32,
+  "confidence": 0.607
+ },
+ "XO.LT18..HH.2018.06.09.17.49.02": {
+  "P_pick": 44.98,
+  "S_pick": 51.19,
+  "confidence": 0.916
+ },
+ "XO.LT17..HH.2018.06.09.17.49.04": {
+  "P_pick": 44.87,
+  "S_pick": 52.97,
+  "confidence": 0.888
+ },
+ "XO.LA28..HH.2018.06.09.23.45.12": {
+  "P_pick": null,
+  "S_pick": 45.21,
+  "confidence": 0.344
+ },
+ "XO.LD36..HH.2018.06.10.09.41.22": {
+  "P_pick": null,
+  "S_pick": 44.78,
+  "confidence": 0.544
+ },
+ "XO.LA39..HH.2018.06.10.18.56.24": {
+  "P_pick": 23.21,
+  "S_pick": 44.83,
+  "confidence": 0.516
+ },
+ "XO.LT12..HH.2018.06.11.01.19.00": {
+  "P_pick": 45.13,
+  "S_pick": 64.41,
+  "confidence": 0.785
+ },
+ "XO.LT13..HH.2018.06.11.01.19.05": {
+  "P_pick": 45.15,
+  "S_pick": null,
+  "confidence": 0.511
+ },
+ "XO.LT16..HH.2018.06.11.01.18.55": {
+  "P_pick": 81.77,
+  "S_pick": 60.33,
+  "confidence": 0.281
+ },
+ "XO.LA33..HH.2018.06.11.01.19.13": {
+  "P_pick": 46.02,
+  "S_pick": null,
+  "confidence": 0.505
+ },
+ "XO.LT04..HH.2018.06.11.01.19.42": {
+  "P_pick": 16.26,
+  "S_pick": null,
+  "confidence": 0.275
+ },
+ "XO.LT06..HH.2018.06.11.16.27.35": {
+  "P_pick": 44.72,
+  "S_pick": 61.13,
+  "confidence": 0.631
+ },
+ "XO.LD36..HH.2018.06.11.16.27.43": {
+  "P_pick": 44.93,
+  "S_pick": 68.26,
+  "confidence": 0.915
+ },
+ "XO.LA28..HH.2018.06.11.16.27.43": {
+  "P_pick": 44.96,
+  "S_pick": 68.5,
+  "confidence": 0.552
+ },
+ "XO.LA32..HH.2018.06.11.16.27.47": {
+  "P_pick": 44.97,
+  "S_pick": 71.31,
+  "confidence": 0.909
+ },
+ "XO.LT18..HH.2018.06.11.16.27.52": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.897
+ },
+ "XO.LA39..HH.2018.06.11.04.58.13": {
+  "P_pick": 19.59,
+  "S_pick": 44.87,
+  "confidence": 0.614
+ },
+ "XO.LD41..HH.2018.06.11.10.42.15": {
+  "P_pick": 44.97,
+  "S_pick": 76.59,
+  "confidence": 0.678
+ },
+ "XO.LD41..HH.2018.06.11.11.37.35": {
+  "P_pick": 43.66,
+  "S_pick": 74.91,
+  "confidence": 0.217
+ },
+ "XO.LT18..HH.2018.06.11.14.24.15": {
+  "P_pick": 44.7,
+  "S_pick": 59.53,
+  "confidence": 0.391
+ },
+ "XO.LT01..HH.2018.06.12.07.45.33": {
+  "P_pick": 45.22,
+  "S_pick": null,
+  "confidence": 0.57
+ },
+ "XO.LD40..HH.2018.06.12.11.07.57": {
+  "P_pick": 44.85,
+  "S_pick": 66.66,
+  "confidence": 0.717
+ },
+ "XO.LT01..HH.2018.06.12.23.24.29": {
+  "P_pick": 44.87,
+  "S_pick": 66.43,
+  "confidence": 0.484
+ },
+ "XO.LA39..HH.2018.06.12.02.22.21": {
+  "P_pick": 44.98,
+  "S_pick": 60.09,
+  "confidence": 0.913
+ },
+ "XO.LT01..HH.2018.06.12.16.24.38": {
+  "P_pick": 43.13,
+  "S_pick": 71.08,
+  "confidence": 0.376
+ },
+ "XO.LT01..HH.2018.06.12.18.57.46": {
+  "P_pick": 23.27,
+  "S_pick": 45.8,
+  "confidence": 0.393
+ },
+ "XO.LT04..HH.2018.06.13.07.42.57": {
+  "P_pick": 15.84,
+  "S_pick": 44.76,
+  "confidence": 0.444
+ },
+ "XO.LD38..HH.2018.06.13.18.40.04": {
+  "P_pick": 45.15,
+  "S_pick": 54.41,
+  "confidence": 0.737
+ },
+ "XO.LT04..HH.2018.06.13.18.40.27": {
+  "P_pick": 45.14,
+  "S_pick": 70.94,
+  "confidence": 0.469
+ },
+ "XO.LA39..HH.2018.06.13.05.20.42": {
+  "P_pick": 44.99,
+  "S_pick": 63.53,
+  "confidence": 0.878
+ },
+ "XO.LT04..HH.2018.06.13.09.46.21": {
+  "P_pick": 44.37,
+  "S_pick": 85.63,
+  "confidence": 0.333
+ },
+ "XO.LD38..HH.2018.06.13.16.20.04": {
+  "P_pick": 29.07,
+  "S_pick": 45.02,
+  "confidence": 0.72
+ },
+ "XO.LT04..HH.2018.06.13.16.20.36": {
+  "P_pick": null,
+  "S_pick": 44.8,
+  "confidence": 0.557
+ },
+ "XO.LD40..HH.2018.06.13.23.44.16": {
+  "P_pick": 45.01,
+  "S_pick": null,
+  "confidence": 0.862
+ },
+ "XO.LT04..HH.2018.06.14.16.48.05": {
+  "P_pick": 44.75,
+  "S_pick": 77.76,
+  "confidence": 0.709
+ },
+ "XO.LD40..HH.2018.06.14.16.47.48": {
+  "P_pick": 45.03,
+  "S_pick": 66.49,
+  "confidence": 0.881
+ },
+ "XO.LT01..HH.2018.06.14.16.47.51": {
+  "P_pick": 45.01,
+  "S_pick": 68.56,
+  "confidence": 0.847
+ },
+ "XO.LA39..HH.2018.06.15.00.14.28": {
+  "P_pick": 45.09,
+  "S_pick": 60.01,
+  "confidence": 0.855
+ },
+ "XO.LA39..HH.2018.06.15.00.21.01": {
+  "P_pick": 44.85,
+  "S_pick": 59.46,
+  "confidence": 0.862
+ },
+ "XO.LT18..HH.2018.06.15.14.32.38": {
+  "P_pick": 44.89,
+  "S_pick": 59.95,
+  "confidence": 0.694
+ },
+ "XO.LA29..HH.2018.06.16.02.51.48": {
+  "P_pick": 44.15,
+  "S_pick": 66.5,
+  "confidence": 0.796
+ },
+ "XO.LA33..HH.2018.06.16.02.51.50": {
+  "P_pick": 44.96,
+  "S_pick": 70.17,
+  "confidence": 0.917
+ },
+ "XO.LD45..HH.2018.06.16.02.51.59": {
+  "P_pick": 45.14,
+  "S_pick": 77.7,
+  "confidence": 0.473
+ },
+ "XO.LT07..HH.2018.06.16.14.37.30": {
+  "P_pick": 45.14,
+  "S_pick": 55.82,
+  "confidence": 0.656
+ },
+ "XO.LD40..HH.2018.06.16.18.21.43": {
+  "P_pick": 44.42,
+  "S_pick": 64.75,
+  "confidence": 0.413
+ },
+ "XO.LD38..HH.2018.06.17.04.31.57": {
+  "P_pick": 44.14,
+  "S_pick": 62.05,
+  "confidence": 0.895
+ },
+ "XO.LT14..HH.2018.06.17.20.38.39": {
+  "P_pick": 44.83,
+  "S_pick": null,
+  "confidence": 0.595
+ },
+ "XO.LT01..HH.2018.06.18.21.45.13": {
+  "P_pick": null,
+  "S_pick": 45.05,
+  "confidence": 0.676
+ },
+ "XO.LT12..HH.2018.06.18.21.44.44": {
+  "P_pick": 44.77,
+  "S_pick": 76.38,
+  "confidence": 0.54
+ },
+ "XO.LD40..HH.2018.06.18.21.44.45": {
+  "P_pick": 44.98,
+  "S_pick": 78.98,
+  "confidence": 0.824
+ },
+ "XO.LA32..HH.2018.06.18.22.15.30": {
+  "P_pick": null,
+  "S_pick": 44.74,
+  "confidence": 0.503
+ },
+ "XO.LA39..HH.2018.06.19.19.12.37": {
+  "P_pick": 45.04,
+  "S_pick": 60.86,
+  "confidence": 0.867
+ },
+ "XO.LT15..HH.2018.06.19.20.20.15": {
+  "P_pick": 45.02,
+  "S_pick": 49.94,
+  "confidence": 0.918
+ },
+ "XO.LT10..HH.2018.06.19.20.20.27": {
+  "P_pick": 44.99,
+  "S_pick": 60.01,
+  "confidence": 0.782
+ },
+ "XO.LA34..HH.2018.06.19.20.20.37": {
+  "P_pick": null,
+  "S_pick": 45.04,
+  "confidence": 0.574
+ },
+ "XO.LA33..HH.2018.06.19.12.25.09": {
+  "P_pick": 32.17,
+  "S_pick": 44.81,
+  "confidence": 0.711
+ },
+ "XO.LA25..HH.2018.06.19.18.55.00": {
+  "P_pick": null,
+  "S_pick": 44.52,
+  "confidence": 0.142
+ },
+ "XO.LD40..HH.2018.06.19.19.45.46": {
+  "P_pick": 27.73,
+  "S_pick": 45.14,
+  "confidence": 0.37
+ },
+ "XO.LA39..HH.2018.06.20.11.36.52": {
+  "P_pick": 44.85,
+  "S_pick": 62.52,
+  "confidence": 0.702
+ },
+ "XO.LT01..HH.2018.06.20.15.31.21": {
+  "P_pick": null,
+  "S_pick": 44.88,
+  "confidence": 0.54
+ },
+ "XO.LT04..HH.2018.06.20.21.38.21": {
+  "P_pick": 45.03,
+  "S_pick": 57.21,
+  "confidence": 0.88
+ },
+ "XO.LD36..HH.2018.06.20.21.38.27": {
+  "P_pick": 45.01,
+  "S_pick": 62.24,
+  "confidence": 0.893
+ },
+ "XO.LD40..HH.2018.06.20.21.38.34": {
+  "P_pick": 45.44,
+  "S_pick": 67.29,
+  "confidence": 0.738
+ },
+ "XO.LT01..HH.2018.06.20.21.38.34": {
+  "P_pick": 45.05,
+  "S_pick": 66.73,
+  "confidence": 0.604
+ },
+ "XO.LD41..HH.2018.06.20.21.38.40": {
+  "P_pick": 45.0,
+  "S_pick": 70.9,
+  "confidence": 0.892
+ },
+ "XO.LA39..HH.2018.06.20.21.38.44": {
+  "P_pick": 45.31,
+  "S_pick": 75.74,
+  "confidence": 0.685
+ },
+ "XO.LT17..HH.2018.06.20.23.01.47": {
+  "P_pick": 47.01,
+  "S_pick": null,
+  "confidence": 0.225
+ },
+ "XO.LT09..HH.2018.06.20.04.53.40": {
+  "P_pick": 95.13,
+  "S_pick": null,
+  "confidence": 0.245
+ },
+ "XO.LA33..HH.2018.06.20.04.54.02": {
+  "P_pick": 13.01,
+  "S_pick": 116.67,
+  "confidence": 0.339
+ },
+ "XO.LA21..HH.2018.06.20.05.24.43": {
+  "P_pick": 44.93,
+  "S_pick": 66.9,
+  "confidence": 0.927
+ },
+ "XO.LT14..HH.2018.06.20.05.24.56": {
+  "P_pick": 43.75,
+  "S_pick": 73.22,
+  "confidence": 0.267
+ },
+ "XO.LA39..HH.2018.06.20.10.34.37": {
+  "P_pick": 52.82,
+  "S_pick": 44.94,
+  "confidence": 0.578
+ },
+ "XO.LD40..HH.2018.06.20.10.34.49": {
+  "P_pick": 23.95,
+  "S_pick": 44.9,
+  "confidence": 0.618
+ },
+ "XO.LT10..HH.2018.06.20.11.13.26": {
+  "P_pick": 44.92,
+  "S_pick": 66.88,
+  "confidence": 0.578
+ },
+ "XO.LD40..HH.2018.06.20.11.13.16": {
+  "P_pick": 44.88,
+  "S_pick": 60.52,
+  "confidence": 0.737
+ },
+ "XO.LA25..HH.2018.06.20.11.13.35": {
+  "P_pick": 22.17,
+  "S_pick": 108.21,
+  "confidence": 0.315
+ },
+ "XO.LD40..HH.2018.06.20.10.19.47": {
+  "P_pick": 28.45,
+  "S_pick": 44.76,
+  "confidence": 0.464
+ },
+ "XO.LT06..HH.2018.06.20.12.57.38": {
+  "P_pick": null,
+  "S_pick": 44.93,
+  "confidence": 0.188
+ },
+ "XO.LT04..HH.2018.06.20.16.18.30": {
+  "P_pick": null,
+  "S_pick": 44.82,
+  "confidence": 0.574
+ },
+ "XO.LT09..HH.2018.06.20.20.00.10": {
+  "P_pick": 44.92,
+  "S_pick": 57.29,
+  "confidence": 0.875
+ },
+ "XO.LA39..HH.2018.06.21.11.26.32": {
+  "P_pick": 44.95,
+  "S_pick": 59.95,
+  "confidence": 0.93
+ },
+ "XO.LA26..HH.2018.06.21.02.35.46": {
+  "P_pick": 45.53,
+  "S_pick": 60.01,
+  "confidence": 0.519
+ },
+ "XO.LT10..HH.2018.06.21.02.35.55": {
+  "P_pick": 44.89,
+  "S_pick": 67.37,
+  "confidence": 0.417
+ },
+ "XO.LA29..HH.2018.06.21.02.36.18": {
+  "P_pick": null,
+  "S_pick": 44.58,
+  "confidence": 0.168
+ },
+ "XO.LA39..HH.2018.06.21.03.49.21": {
+  "P_pick": 45.05,
+  "S_pick": 59.86,
+  "confidence": 0.898
+ },
+ "XO.LD40..HH.2018.06.21.09.58.37": {
+  "P_pick": 23.74,
+  "S_pick": 44.91,
+  "confidence": 0.272
+ },
+ "XO.LT04..HH.2018.06.22.06.57.04": {
+  "P_pick": 44.87,
+  "S_pick": 73.9,
+  "confidence": 0.881
+ },
+ "XO.LT12..HH.2018.06.22.21.22.21": {
+  "P_pick": 44.81,
+  "S_pick": 70.1,
+  "confidence": 0.43
+ },
+ "XO.LD41..HH.2018.06.22.03.32.52": {
+  "P_pick": null,
+  "S_pick": 44.95,
+  "confidence": 0.33
+ },
+ "XO.LD38..HH.2018.06.22.14.46.31": {
+  "P_pick": null,
+  "S_pick": 64.14,
+  "confidence": 0.121
+ },
+ "XO.LT04..HH.2018.06.22.16.56.20": {
+  "P_pick": 29.42,
+  "S_pick": 44.85,
+  "confidence": 0.636
+ },
+ "XO.LA39..HH.2018.06.23.02.56.00": {
+  "P_pick": 44.93,
+  "S_pick": 58.9,
+  "confidence": 0.784
+ },
+ "XO.LD40..HH.2018.06.23.09.28.37": {
+  "P_pick": 45.05,
+  "S_pick": 66.66,
+  "confidence": 0.769
+ },
+ "XO.LA39..HH.2018.06.23.09.28.49": {
+  "P_pick": 22.0,
+  "S_pick": 44.9,
+  "confidence": 0.547
+ },
+ "XO.LT06..HH.2018.06.23.11.18.23": {
+  "P_pick": 45.15,
+  "S_pick": 57.63,
+  "confidence": 0.605
+ },
+ "XO.LT12..HH.2018.06.23.11.18.26": {
+  "P_pick": 45.05,
+  "S_pick": 59.52,
+  "confidence": 0.494
+ },
+ "XO.LT01..HH.2018.06.23.22.50.12": {
+  "P_pick": 78.89,
+  "S_pick": 68.4,
+  "confidence": 0.422
+ },
+ "XO.LA39..HH.2018.06.23.22.50.05": {
+  "P_pick": 45.08,
+  "S_pick": 59.49,
+  "confidence": 0.847
+ },
+ "XO.LD40..HH.2018.06.23.03.58.02": {
+  "P_pick": 18.78,
+  "S_pick": 46.04,
+  "confidence": 0.398
+ },
+ "XO.LT01..HH.2018.06.23.03.58.04": {
+  "P_pick": null,
+  "S_pick": 45.2,
+  "confidence": 0.503
+ },
+ "XO.LD40..HH.2018.06.23.09.03.32": {
+  "P_pick": 21.29,
+  "S_pick": 45.15,
+  "confidence": 0.359
+ },
+ "XO.LD41..HH.2018.06.23.09.03.50": {
+  "P_pick": 15.13,
+  "S_pick": 43.42,
+  "confidence": 0.337
+ },
+ "XO.LA39..HH.2018.06.23.10.49.45": {
+  "P_pick": 25.03,
+  "S_pick": 44.98,
+  "confidence": 0.646
+ },
+ "XO.LD41..HH.2018.06.23.10.49.49": {
+  "P_pick": 45.15,
+  "S_pick": 75.33,
+  "confidence": 0.621
+ },
+ "XO.LD41..HH.2018.06.23.11.26.22": {
+  "P_pick": 45.29,
+  "S_pick": 78.81,
+  "confidence": 0.321
+ },
+ "XO.LT18..HH.2018.06.23.21.11.07": {
+  "P_pick": 45.03,
+  "S_pick": 56.02,
+  "confidence": 0.73
+ },
+ "XO.LD41..HH.2018.06.24.21.53.25": {
+  "P_pick": 45.09,
+  "S_pick": 76.32,
+  "confidence": 0.645
+ },
+ "XO.LD40..HH.2018.06.24.21.53.31": {
+  "P_pick": 24.7,
+  "S_pick": 44.58,
+  "confidence": 0.385
+ },
+ "XO.LD40..HH.2018.06.24.03.05.14": {
+  "P_pick": null,
+  "S_pick": 45.23,
+  "confidence": 0.284
+ },
+ "XO.LD40..HH.2018.06.24.06.41.24": {
+  "P_pick": 45.09,
+  "S_pick": 68.31,
+  "confidence": 0.719
+ },
+ "XO.LD41..HH.2018.06.24.06.41.33": {
+  "P_pick": 44.22,
+  "S_pick": 73.33,
+  "confidence": 0.428
+ },
+ "XO.LT20..HH.2018.06.24.07.28.52": {
+  "P_pick": 44.99,
+  "S_pick": 51.71,
+  "confidence": 0.839
+ },
+ "XO.LD40..HH.2018.06.24.11.28.11": {
+  "P_pick": null,
+  "S_pick": 45.29,
+  "confidence": 0.309
+ },
+ "XO.LA39..HH.2018.06.24.13.18.58": {
+  "P_pick": 45.01,
+  "S_pick": 92.42,
+  "confidence": 0.873
+ },
+ "XO.LT14..HH.2018.06.24.20.52.29": {
+  "P_pick": 44.89,
+  "S_pick": 64.76,
+  "confidence": 0.676
+ },
+ "XO.LA39..HH.2018.06.25.06.46.14": {
+  "P_pick": 27.77,
+  "S_pick": 45.39,
+  "confidence": 0.444
+ },
+ "XO.LA39..HH.2018.06.25.13.30.18": {
+  "P_pick": 44.97,
+  "S_pick": 59.84,
+  "confidence": 0.869
+ },
+ "XO.LD41..HH.2018.06.25.15.05.48": {
+  "P_pick": 44.91,
+  "S_pick": 73.68,
+  "confidence": 0.821
+ },
+ "XO.LT18..HH.2018.06.25.20.45.33": {
+  "P_pick": 44.72,
+  "S_pick": null,
+  "confidence": 0.834
+ },
+ "XO.LT14..HH.2018.06.26.04.06.48": {
+  "P_pick": 44.96,
+  "S_pick": 103.08,
+  "confidence": 0.321
+ },
+ "XO.LT01..HH.2018.06.26.04.07.06": {
+  "P_pick": null,
+  "S_pick": 110.18,
+  "confidence": 0.121
+ },
+ "XO.LD45..HH.2018.06.26.23.50.41": {
+  "P_pick": 45.01,
+  "S_pick": 57.87,
+  "confidence": 0.782
+ },
+ "XO.LD45..HH.2018.06.27.00.26.02": {
+  "P_pick": 44.9,
+  "S_pick": null,
+  "confidence": 0.857
+ },
+ "XO.LD38..HH.2018.06.27.15.38.33": {
+  "P_pick": 44.97,
+  "S_pick": 63.14,
+  "confidence": 0.875
+ },
+ "XO.LD40..HH.2018.06.27.15.38.37": {
+  "P_pick": 45.01,
+  "S_pick": 66.65,
+  "confidence": 0.903
+ },
+ "XO.LD44..HH.2018.06.27.16.31.44": {
+  "P_pick": 44.97,
+  "S_pick": 63.3,
+  "confidence": 0.916
+ },
+ "XO.LT13..HH.2018.06.27.16.31.58": {
+  "P_pick": 44.79,
+  "S_pick": 73.21,
+  "confidence": 0.607
+ },
+ "XO.LT14..HH.2018.06.27.16.32.06": {
+  "P_pick": 44.95,
+  "S_pick": null,
+  "confidence": 0.604
+ },
+ "XO.LA39..HH.2018.06.27.21.35.03": {
+  "P_pick": 45.09,
+  "S_pick": 65.77,
+  "confidence": 0.902
+ },
+ "XO.LD40..HH.2018.06.27.21.35.07": {
+  "P_pick": 44.1,
+  "S_pick": 68.9,
+  "confidence": 0.354
+ },
+ "XO.LD41..HH.2018.06.27.21.35.14": {
+  "P_pick": 45.09,
+  "S_pick": 72.89,
+  "confidence": 0.842
+ },
+ "XO.LA39..HH.2018.06.27.01.14.12": {
+  "P_pick": 45.07,
+  "S_pick": 59.52,
+  "confidence": 0.865
+ },
+ "XO.LT17..HH.2018.06.27.14.35.14": {
+  "P_pick": 45.14,
+  "S_pick": 60.5,
+  "confidence": 0.421
+ },
+ "XO.LT12..HH.2018.06.27.14.35.49": {
+  "P_pick": 21.45,
+  "S_pick": 45.46,
+  "confidence": 0.307
+ },
+ "XO.LA39..HH.2018.06.27.15.03.47": {
+  "P_pick": 44.93,
+  "S_pick": 60.13,
+  "confidence": 0.88
+ },
+ "XO.LA39..HH.2018.06.27.18.15.52": {
+  "P_pick": 44.93,
+  "S_pick": 62.34,
+  "confidence": 0.833
+ },
+ "XO.LT01..HH.2018.06.27.18.42.22": {
+  "P_pick": 17.96,
+  "S_pick": 45.35,
+  "confidence": 0.571
+ },
+ "XO.LD40..HH.2018.06.27.19.46.48": {
+  "P_pick": 20.46,
+  "S_pick": 45.39,
+  "confidence": 0.505
+ },
+ "XO.LT01..HH.2018.06.27.19.46.50": {
+  "P_pick": 42.88,
+  "S_pick": 45.06,
+  "confidence": 0.308
+ },
+ "XO.LT10..HH.2018.06.27.21.27.30": {
+  "P_pick": 45.04,
+  "S_pick": 55.79,
+  "confidence": 0.888
+ },
+ "XO.LT16..HH.2018.06.27.21.27.36": {
+  "P_pick": 44.97,
+  "S_pick": 60.56,
+  "confidence": 0.448
+ },
+ "XO.LT04..HH.2018.06.29.01.00.03": {
+  "P_pick": 45.17,
+  "S_pick": 75.9,
+  "confidence": 0.378
+ },
+ "XO.LD40..HH.2018.06.29.00.59.59": {
+  "P_pick": 45.06,
+  "S_pick": 72.1,
+  "confidence": 0.926
+ },
+ "XO.LT01..HH.2018.06.29.02.22.56": {
+  "P_pick": 44.94,
+  "S_pick": 67.29,
+  "confidence": 0.428
+ },
+ "XO.LT16..HH.2018.06.29.05.18.13": {
+  "P_pick": 45.01,
+  "S_pick": 56.09,
+  "confidence": 0.728
+ },
+ "XO.LA39..HH.2018.06.29.13.41.44": {
+  "P_pick": 44.8,
+  "S_pick": 59.36,
+  "confidence": 0.756
+ },
+ "XO.LT17..HH.2018.06.29.18.55.25": {
+  "P_pick": 44.94,
+  "S_pick": 51.24,
+  "confidence": 0.94
+ },
+ "XO.LT12..HH.2018.06.29.18.55.46": {
+  "P_pick": 44.89,
+  "S_pick": 66.34,
+  "confidence": 0.368
+ },
+ "XO.LD41..HH.2018.06.29.21.37.47": {
+  "P_pick": 44.41,
+  "S_pick": 75.78,
+  "confidence": 0.529
+ },
+ "XO.LT01..HH.2018.06.30.03.05.03": {
+  "P_pick": 44.75,
+  "S_pick": 70.7,
+  "confidence": 0.568
+ },
+ "XO.LT04..HH.2018.06.30.22.09.27": {
+  "P_pick": null,
+  "S_pick": 44.98,
+  "confidence": 0.648
+ },
+ "XO.LT12..HH.2018.06.30.03.41.12": {
+  "P_pick": 44.92,
+  "S_pick": 52.57,
+  "confidence": 0.911
+ },
+ "XO.LD36..HH.2018.06.30.03.41.20": {
+  "P_pick": 45.01,
+  "S_pick": 58.64,
+  "confidence": 0.83
+ },
+ "XO.LT06..HH.2018.06.30.03.41.20": {
+  "P_pick": 45.12,
+  "S_pick": null,
+  "confidence": 0.871
+ },
+ "XO.LT20..HH.2018.06.30.11.21.06": {
+  "P_pick": 45.02,
+  "S_pick": 51.14,
+  "confidence": 0.907
+ },
+ "XO.LD38..HH.2018.06.15.22.30.17": {
+  "P_pick": 29.2,
+  "S_pick": 44.87,
+  "confidence": 0.631
+ },
+ "XO.LT04..HH.2018.06.19.13.54.29": {
+  "P_pick": 44.33,
+  "S_pick": 75.39,
+  "confidence": 0.412
+ },
+ "XO.LD41..HH.2018.06.23.15.10.44": {
+  "P_pick": 44.99,
+  "S_pick": 72.59,
+  "confidence": 0.708
+ },
+ "XO.LT17..HH.2018.06.24.21.03.43": {
+  "P_pick": null,
+  "S_pick": 44.84,
+  "confidence": 0.598
+ },
+ "XO.LD40..HH.2018.06.26.19.40.45": {
+  "P_pick": 45.33,
+  "S_pick": 69.69,
+  "confidence": 0.406
+ },
+ "XO.LT09..HH.2018.06.27.22.25.46": {
+  "P_pick": 45.05,
+  "S_pick": 79.94,
+  "confidence": 0.851
+ },
+ "XO.LT01..HH.2018.06.27.22.26.10": {
+  "P_pick": null,
+  "S_pick": 98.17,
+  "confidence": 0.16
+ },
+ "XO.LD38..HH.2018.06.28.19.05.54": {
+  "P_pick": 44.97,
+  "S_pick": 61.55,
+  "confidence": 0.904
+ },
+ "XO.LA39..HH.2018.06.01.05.03.57": {
+  "P_pick": 42.33,
+  "S_pick": 58.99,
+  "confidence": 0.599
+ },
+ "XO.LA39..HH.2018.06.01.17.07.48": {
+  "P_pick": 31.24,
+  "S_pick": 45.15,
+  "confidence": 0.852
+ },
+ "XO.LD40..HH.2018.06.02.04.57.00": {
+  "P_pick": 25.97,
+  "S_pick": 44.02,
+  "confidence": 0.277
+ },
+ "XO.LD40..HH.2018.06.02.15.42.51": {
+  "P_pick": 94.71,
+  "S_pick": 116.28,
+  "confidence": 0.637
+ },
+ "XO.LT06..HH.2018.06.03.22.39.34": {
+  "P_pick": 34.73,
+  "S_pick": 44.9,
+  "confidence": 0.347
+ },
+ "XO.LT01..HH.2018.06.06.02.15.01": {
+  "P_pick": null,
+  "S_pick": 50.99,
+  "confidence": 0.104
+ },
+ "XO.LA33..HH.2018.06.07.09.25.10": {
+  "P_pick": 44.95,
+  "S_pick": 58.41,
+  "confidence": 0.709
+ },
+ "XO.LA39..HH.2018.06.08.06.22.04": {
+  "P_pick": 44.97,
+  "S_pick": 63.48,
+  "confidence": 0.77
+ },
+ "XO.LD40..HH.2018.06.10.05.24.39": {
+  "P_pick": 27.49,
+  "S_pick": 44.56,
+  "confidence": 0.263
+ },
+ "XO.LT01..HH.2018.06.10.09.11.42": {
+  "P_pick": null,
+  "S_pick": 45.54,
+  "confidence": 0.439
+ },
+ "XO.LD40..HH.2018.06.05.03.55.20": {
+  "P_pick": null,
+  "S_pick": 45.58,
+  "confidence": 0.629
+ },
+ "XO.LA39..HH.2018.06.06.09.29.04": {
+  "P_pick": null,
+  "S_pick": 45.05,
+  "confidence": 0.42
+ },
+ "XO.LA39..HH.2018.06.06.10.41.24": {
+  "P_pick": 29.54,
+  "S_pick": 101.54,
+  "confidence": 0.483
+ },
+ "XO.LD40..HH.2018.06.06.13.51.38": {
+  "P_pick": null,
+  "S_pick": 45.23,
+  "confidence": 0.484
+ },
+ "XO.LD40..HH.2018.06.06.13.54.37": {
+  "P_pick": null,
+  "S_pick": 45.43,
+  "confidence": 0.331
+ },
+ "XO.LA29..HH.2018.06.16.10.24.41": {
+  "P_pick": null,
+  "S_pick": 44.86,
+  "confidence": 0.666
+ },
+ "XO.LT13..HH.2018.06.16.10.24.26": {
+  "P_pick": 45.09,
+  "S_pick": 55.16,
+  "confidence": 0.869
+ },
+ "XO.LD45..HH.2018.06.16.10.24.25": {
+  "P_pick": 45.19,
+  "S_pick": 55.76,
+  "confidence": 0.646
+ },
+ "XO.LA34..HH.2018.06.16.10.24.21": {
+  "P_pick": 45.14,
+  "S_pick": 52.42,
+  "confidence": 0.902
+ },
+ "XO.LT17..HH.2018.06.16.10.24.29": {
+  "P_pick": 44.89,
+  "S_pick": 57.38,
+  "confidence": 0.517
+ },
+ "XO.LD40..HH.2018.06.17.05.47.57": {
+  "P_pick": null,
+  "S_pick": 127.85,
+  "confidence": 0.328
+ },
+ "XO.LD40..HH.2018.06.19.16.54.03": {
+  "P_pick": 23.86,
+  "S_pick": 45.08,
+  "confidence": 0.409
+ },
+ "XO.LT01..HH.2018.06.20.09.27.13": {
+  "P_pick": 44.7,
+  "S_pick": 61.34,
+  "confidence": 0.246
+ },
+ "XO.LD40..HH.2018.06.20.12.34.19": {
+  "P_pick": null,
+  "S_pick": 44.8,
+  "confidence": 0.444
+ },
+ "XO.LT01..HH.2018.06.15.09.47.11": {
+  "P_pick": 43.97,
+  "S_pick": 53.29,
+  "confidence": 0.347
+ },
+ "XO.LA39..HH.2018.06.15.09.47.18": {
+  "P_pick": 44.98,
+  "S_pick": 95.0,
+  "confidence": 0.877
+ },
+ "XO.LD41..HH.2018.06.15.09.47.29": {
+  "P_pick": 44.89,
+  "S_pick": 66.38,
+  "confidence": 0.634
+ },
+ "XO.LT07..HH.2018.06.21.04.29.40": {
+  "P_pick": 44.69,
+  "S_pick": 55.78,
+  "confidence": 0.723
+ },
+ "XO.LA34..HH.2018.06.22.16.31.13": {
+  "P_pick": 44.85,
+  "S_pick": 75.53,
+  "confidence": 0.587
+ },
+ "XO.LD44..HH.2018.06.22.16.31.39": {
+  "P_pick": 16.98,
+  "S_pick": 44.88,
+  "confidence": 0.77
+ },
+ "XO.LD38..HH.2018.06.23.03.56.47": {
+  "P_pick": 87.25,
+  "S_pick": 117.29,
+  "confidence": 0.521
+ },
+ "XO.LA39..HH.2018.06.23.08.23.45": {
+  "P_pick": 45.07,
+  "S_pick": 59.37,
+  "confidence": 0.883
+ },
+ "XO.LD41..HH.2018.06.24.13.36.09": {
+  "P_pick": 44.11,
+  "S_pick": 72.18,
+  "confidence": 0.376
+ },
+ "XO.LA21..HH.2018.06.25.11.14.34": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.917
+ },
+ "XO.LD40..HH.2018.06.25.11.14.59": {
+  "P_pick": null,
+  "S_pick": 45.15,
+  "confidence": 0.549
+ },
+ "XO.LT09..HH.2018.06.25.11.15.04": {
+  "P_pick": 24.63,
+  "S_pick": 45.2,
+  "confidence": 0.318
+ },
+ "XO.LA21..HH.2018.06.27.13.14.06": {
+  "P_pick": 44.89,
+  "S_pick": 104.99,
+  "confidence": 0.871
+ },
+ "XO.LD40..HH.2018.06.27.13.14.18": {
+  "P_pick": 44.92,
+  "S_pick": 65.0,
+  "confidence": 0.608
+ },
+ "XO.LD41..HH.2018.06.28.02.12.16": {
+  "P_pick": 44.53,
+  "S_pick": 73.35,
+  "confidence": 0.837
+ },
+ "XO.LD38..HH.2018.06.28.02.12.16": {
+  "P_pick": 28.64,
+  "S_pick": 44.64,
+  "confidence": 0.582
+ },
+ "XO.LT01..HH.2018.06.28.16.18.09": {
+  "P_pick": null,
+  "S_pick": 45.04,
+  "confidence": 0.51
+ },
+ "XO.LT06..HH.2018.06.28.23.10.28": {
+  "P_pick": 45.19,
+  "S_pick": 52.58,
+  "confidence": 0.607
+ },
+ "XO.LD40..HH.2018.06.29.02.18.17": {
+  "P_pick": 45.37,
+  "S_pick": 66.2,
+  "confidence": 0.438
+ },
+ "XO.LT12..HH.2018.06.29.12.37.02": {
+  "P_pick": 45.17,
+  "S_pick": 53.3,
+  "confidence": 0.775
+ },
+ "XO.LT07..HH.2018.06.29.16.32.47": {
+  "P_pick": 44.01,
+  "S_pick": 52.98,
+  "confidence": 0.451
+ },
+ "XO.LD40..HH.2018.06.30.20.21.29": {
+  "P_pick": 25.29,
+  "S_pick": 45.21,
+  "confidence": 0.607
+ },
+ "XO.LA39..HH.2018.07.01.04.04.30": {
+  "P_pick": 44.94,
+  "S_pick": 59.52,
+  "confidence": 0.929
+ },
+ "XO.LA25..HH.2018.07.01.19.54.40": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.872
+ },
+ "XO.LT16..HH.2018.07.01.19.54.44": {
+  "P_pick": 44.82,
+  "S_pick": null,
+  "confidence": 0.864
+ },
+ "XO.LA39..HH.2018.07.01.01.03.07": {
+  "P_pick": 44.95,
+  "S_pick": 58.65,
+  "confidence": 0.911
+ },
+ "XO.LA39..HH.2018.07.01.06.47.58": {
+  "P_pick": 44.89,
+  "S_pick": 60.78,
+  "confidence": 0.899
+ },
+ "XO.LT07..HH.2018.07.01.19.09.26": {
+  "P_pick": 44.91,
+  "S_pick": 52.82,
+  "confidence": 0.692
+ },
+ "XO.LT01..HH.2018.07.02.14.22.32": {
+  "P_pick": null,
+  "S_pick": 63.7,
+  "confidence": 0.361
+ },
+ "XO.LD41..HH.2018.07.02.14.22.35": {
+  "P_pick": 43.65,
+  "S_pick": 64.66,
+  "confidence": 0.892
+ },
+ "XO.LD40..HH.2018.07.02.14.22.26": {
+  "P_pick": 44.98,
+  "S_pick": 60.81,
+  "confidence": 0.9
+ },
+ "XO.LT01..HH.2018.07.02.00.06.04": {
+  "P_pick": null,
+  "S_pick": 44.81,
+  "confidence": 0.303
+ },
+ "XO.LT17..HH.2018.07.02.03.50.52": {
+  "P_pick": 44.95,
+  "S_pick": 49.36,
+  "confidence": 0.934
+ },
+ "XO.LA39..HH.2018.07.03.01.45.18": {
+  "P_pick": 44.95,
+  "S_pick": 59.98,
+  "confidence": 0.882
+ },
+ "XO.LT01..HH.2018.07.03.07.07.13": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.352
+ },
+ "XO.LT10..HH.2018.07.03.07.06.51": {
+  "P_pick": 45.19,
+  "S_pick": 66.76,
+  "confidence": 0.855
+ },
+ "XO.LT12..HH.2018.07.03.07.06.57": {
+  "P_pick": 45.39,
+  "S_pick": null,
+  "confidence": 0.698
+ },
+ "XO.LD36..HH.2018.07.03.07.07.02": {
+  "P_pick": 44.73,
+  "S_pick": null,
+  "confidence": 0.606
+ },
+ "XO.LT13..HH.2018.07.03.07.11.22": {
+  "P_pick": 44.94,
+  "S_pick": 45.88,
+  "confidence": 0.312
+ },
+ "XO.LD40..HH.2018.07.03.07.23.47": {
+  "P_pick": 44.88,
+  "S_pick": 66.12,
+  "confidence": 0.902
+ },
+ "XO.LD36..HH.2018.07.03.08.46.32": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LT06..HH.2018.07.03.08.46.40": {
+  "P_pick": 25.37,
+  "S_pick": 44.49,
+  "confidence": 0.337
+ },
+ "XO.LT04..HH.2018.07.03.09.05.05": {
+  "P_pick": 44.39,
+  "S_pick": null,
+  "confidence": 0.343
+ },
+ "XO.LT14..HH.2018.07.03.09.04.52": {
+  "P_pick": 44.58,
+  "S_pick": 65.53,
+  "confidence": 0.515
+ },
+ "XO.LT14..HH.2018.07.03.11.25.10": {
+  "P_pick": 44.65,
+  "S_pick": null,
+  "confidence": 0.68
+ },
+ "XO.LT13..HH.2018.07.03.11.53.32": {
+  "P_pick": 44.27,
+  "S_pick": 45.77,
+  "confidence": 0.289
+ },
+ "XO.LA21..HH.2018.07.03.19.18.22": {
+  "P_pick": 44.9,
+  "S_pick": 51.93,
+  "confidence": 0.921
+ },
+ "XO.LD36..HH.2018.07.03.19.18.32": {
+  "P_pick": 44.96,
+  "S_pick": 60.99,
+  "confidence": 0.924
+ },
+ "XO.LD38..HH.2018.07.03.19.18.32": {
+  "P_pick": 44.93,
+  "S_pick": 61.31,
+  "confidence": 0.862
+ },
+ "XO.LA32..HH.2018.07.03.19.18.46": {
+  "P_pick": 44.84,
+  "S_pick": 71.46,
+  "confidence": 0.851
+ },
+ "XO.LT12..HH.2018.07.03.19.18.46": {
+  "P_pick": 44.8,
+  "S_pick": 71.05,
+  "confidence": 0.794
+ },
+ "XO.LT14..HH.2018.07.03.19.18.51": {
+  "P_pick": 45.04,
+  "S_pick": null,
+  "confidence": 0.822
+ },
+ "XO.LT09..HH.2018.07.03.19.19.04": {
+  "P_pick": 21.95,
+  "S_pick": null,
+  "confidence": 0.87
+ },
+ "XO.LT10..HH.2018.07.03.21.06.52": {
+  "P_pick": 44.8,
+  "S_pick": 65.0,
+  "confidence": 0.747
+ },
+ "XO.LT04..HH.2018.07.03.22.14.09": {
+  "P_pick": 44.88,
+  "S_pick": 76.2,
+  "confidence": 0.796
+ },
+ "XO.LT14..HH.2018.07.03.00.22.38": {
+  "P_pick": 44.29,
+  "S_pick": 57.53,
+  "confidence": 0.6
+ },
+ "XO.LT16..HH.2018.07.03.07.21.29": {
+  "P_pick": 32.41,
+  "S_pick": 73.46,
+  "confidence": 0.29
+ },
+ "XO.LT14..HH.2018.07.03.10.14.00": {
+  "P_pick": 99.49,
+  "S_pick": 67.54,
+  "confidence": 0.244
+ },
+ "XO.LT07..HH.2018.07.03.13.10.52": {
+  "P_pick": 45.28,
+  "S_pick": 69.15,
+  "confidence": 0.551
+ },
+ "XO.LT10..HH.2018.07.03.13.11.01": {
+  "P_pick": 44.57,
+  "S_pick": 73.95,
+  "confidence": 0.886
+ },
+ "XO.LT14..HH.2018.07.03.13.11.01": {
+  "P_pick": 44.8,
+  "S_pick": 74.6,
+  "confidence": 0.8
+ },
+ "XO.LD36..HH.2018.07.03.13.11.07": {
+  "P_pick": 44.84,
+  "S_pick": 80.1,
+  "confidence": 0.775
+ },
+ "XO.LT01..HH.2018.07.03.13.11.44": {
+  "P_pick": null,
+  "S_pick": 45.07,
+  "confidence": 0.598
+ },
+ "XO.LT10..HH.2018.07.03.13.15.39": {
+  "P_pick": 25.45,
+  "S_pick": 45.54,
+  "confidence": 0.206
+ },
+ "XO.LT10..HH.2018.07.03.12.56.42": {
+  "P_pick": 44.47,
+  "S_pick": 65.22,
+  "confidence": 0.353
+ },
+ "XO.LA39..HH.2018.07.04.21.57.02": {
+  "P_pick": null,
+  "S_pick": 44.4,
+  "confidence": 0.535
+ },
+ "XO.LT06..HH.2018.07.04.05.55.42": {
+  "P_pick": null,
+  "S_pick": 44.72,
+  "confidence": 0.23
+ },
+ "XO.LA39..HH.2018.07.04.19.05.46": {
+  "P_pick": 44.94,
+  "S_pick": 79.53,
+  "confidence": 0.887
+ },
+ "XO.LT20..HH.2018.07.05.04.59.34": {
+  "P_pick": 12.88,
+  "S_pick": 44.82,
+  "confidence": 0.562
+ },
+ "XO.LT12..HH.2018.07.05.04.58.59": {
+  "P_pick": 29.06,
+  "S_pick": 135.42,
+  "confidence": 0.388
+ },
+ "XO.LT17..HH.2018.07.05.17.41.35": {
+  "P_pick": 45.01,
+  "S_pick": 61.06,
+  "confidence": 0.841
+ },
+ "XO.LD44..HH.2018.07.05.17.41.40": {
+  "P_pick": 45.41,
+  "S_pick": 63.54,
+  "confidence": 0.501
+ },
+ "XO.LA34..HH.2018.07.05.17.41.48": {
+  "P_pick": 44.89,
+  "S_pick": 67.8,
+  "confidence": 0.664
+ },
+ "XO.LD44..HH.2018.07.05.18.27.29": {
+  "P_pick": 29.84,
+  "S_pick": 44.65,
+  "confidence": 0.624
+ },
+ "XO.LA33..HH.2018.07.05.18.27.50": {
+  "P_pick": 20.65,
+  "S_pick": 44.59,
+  "confidence": 0.672
+ },
+ "XO.LA39..HH.2018.07.05.22.25.01": {
+  "P_pick": 15.12,
+  "S_pick": 95.0,
+  "confidence": 0.555
+ },
+ "XO.LT04..HH.2018.07.06.02.16.13": {
+  "P_pick": 45.13,
+  "S_pick": 76.48,
+  "confidence": 0.885
+ },
+ "XO.LT12..HH.2018.07.06.22.30.18": {
+  "P_pick": 44.65,
+  "S_pick": null,
+  "confidence": 0.534
+ },
+ "XO.LT18..HH.2018.07.06.19.37.10": {
+  "P_pick": 77.61,
+  "S_pick": null,
+  "confidence": 0.33
+ },
+ "XO.LD40..HH.2018.07.06.21.48.29": {
+  "P_pick": null,
+  "S_pick": 45.77,
+  "confidence": 0.24
+ },
+ "XO.LA39..HH.2018.07.07.11.31.21": {
+  "P_pick": 44.99,
+  "S_pick": 68.2,
+  "confidence": 0.895
+ },
+ "XO.LT13..HH.2018.07.07.20.45.50": {
+  "P_pick": 44.93,
+  "S_pick": 61.21,
+  "confidence": 0.696
+ },
+ "XO.LT18..HH.2018.07.07.20.45.37": {
+  "P_pick": 44.93,
+  "S_pick": 50.02,
+  "confidence": 0.936
+ },
+ "XO.LD40..HH.2018.07.08.11.02.55": {
+  "P_pick": 45.13,
+  "S_pick": 63.63,
+  "confidence": 0.898
+ },
+ "XO.LT04..HH.2018.07.08.03.13.53": {
+  "P_pick": 44.44,
+  "S_pick": 74.02,
+  "confidence": 0.591
+ },
+ "XO.LD41..HH.2018.07.08.05.42.20": {
+  "P_pick": 44.97,
+  "S_pick": 61.92,
+  "confidence": 0.916
+ },
+ "XO.LA32..HH.2018.07.08.15.13.51": {
+  "P_pick": 44.92,
+  "S_pick": 52.67,
+  "confidence": 0.924
+ },
+ "XO.LA26..HH.2018.07.08.15.13.51": {
+  "P_pick": null,
+  "S_pick": 53.21,
+  "confidence": 0.264
+ },
+ "XO.LA21..HH.2018.07.08.15.13.59": {
+  "P_pick": 44.93,
+  "S_pick": 57.83,
+  "confidence": 0.933
+ },
+ "XO.LD44..HH.2018.07.08.15.14.06": {
+  "P_pick": 44.93,
+  "S_pick": 63.07,
+  "confidence": 0.89
+ },
+ "XO.LA39..HH.2018.07.08.18.24.27": {
+  "P_pick": 27.67,
+  "S_pick": 45.12,
+  "confidence": 0.624
+ },
+ "XO.LT01..HH.2018.07.09.17.48.38": {
+  "P_pick": null,
+  "S_pick": 67.52,
+  "confidence": 0.418
+ },
+ "XO.LA39..HH.2018.07.09.17.48.29": {
+  "P_pick": 45.1,
+  "S_pick": 60.21,
+  "confidence": 0.901
+ },
+ "XO.LT04..HH.2018.07.09.20.54.09": {
+  "P_pick": 45.61,
+  "S_pick": 75.37,
+  "confidence": 0.366
+ },
+ "XO.LT01..HH.2018.07.10.23.35.34": {
+  "P_pick": 19.05,
+  "S_pick": 45.13,
+  "confidence": 0.487
+ },
+ "XO.LT01..HH.2018.07.10.16.43.25": {
+  "P_pick": null,
+  "S_pick": 45.08,
+  "confidence": 0.522
+ },
+ "XO.LD40..HH.2018.07.10.18.19.05": {
+  "P_pick": 21.53,
+  "S_pick": 44.98,
+  "confidence": 0.369
+ },
+ "XO.LA39..HH.2018.07.10.21.15.46": {
+  "P_pick": null,
+  "S_pick": 59.26,
+  "confidence": 0.201
+ },
+ "XO.LD40..HH.2018.07.10.21.16.19": {
+  "P_pick": 20.94,
+  "S_pick": 45.29,
+  "confidence": 0.361
+ },
+ "XO.LT14..HH.2018.07.11.10.03.31": {
+  "P_pick": 44.47,
+  "S_pick": 76.91,
+  "confidence": 0.573
+ },
+ "XO.LT04..HH.2018.07.11.10.03.42": {
+  "P_pick": 21.45,
+  "S_pick": 44.74,
+  "confidence": 0.559
+ },
+ "XO.LT12..HH.2018.07.11.17.34.32": {
+  "P_pick": 17.11,
+  "S_pick": 44.02,
+  "confidence": 0.595
+ },
+ "XO.LD41..HH.2018.07.11.17.45.47": {
+  "P_pick": 44.75,
+  "S_pick": 70.99,
+  "confidence": 0.457
+ },
+ "XO.LT04..HH.2018.07.11.17.50.27": {
+  "P_pick": 15.66,
+  "S_pick": 44.62,
+  "confidence": 0.41
+ },
+ "XO.LT06..HH.2018.07.11.19.58.12": {
+  "P_pick": 44.89,
+  "S_pick": 63.19,
+  "confidence": 0.645
+ },
+ "XO.LT20..HH.2018.07.11.07.48.46": {
+  "P_pick": null,
+  "S_pick": 45.14,
+  "confidence": 0.219
+ },
+ "XO.LD44..HH.2018.07.11.07.48.16": {
+  "P_pick": 44.88,
+  "S_pick": 60.55,
+  "confidence": 0.678
+ },
+ "XO.LD41..HH.2018.07.11.17.47.02": {
+  "P_pick": 46.68,
+  "S_pick": 71.07,
+  "confidence": 0.497
+ },
+ "XO.LD41..HH.2018.07.12.00.45.58": {
+  "P_pick": 45.04,
+  "S_pick": 70.69,
+  "confidence": 0.845
+ },
+ "XO.LT04..HH.2018.07.12.02.05.29": {
+  "P_pick": 44.87,
+  "S_pick": 76.16,
+  "confidence": 0.797
+ },
+ "XO.LD38..HH.2018.07.12.02.05.23": {
+  "P_pick": 30.0,
+  "S_pick": 45.06,
+  "confidence": 0.718
+ },
+ "XO.LT06..HH.2018.07.12.02.57.14": {
+  "P_pick": 44.93,
+  "S_pick": 53.29,
+  "confidence": 0.928
+ },
+ "XO.LT09..HH.2018.07.12.02.57.23": {
+  "P_pick": 44.92,
+  "S_pick": null,
+  "confidence": 0.918
+ },
+ "XO.LD41..HH.2018.07.12.02.57.39": {
+  "P_pick": 44.83,
+  "S_pick": 72.4,
+  "confidence": 0.911
+ },
+ "XO.LA34..HH.2018.07.12.02.57.39": {
+  "P_pick": 44.83,
+  "S_pick": 71.62,
+  "confidence": 0.815
+ },
+ "XO.LD41..HH.2018.07.12.08.20.27": {
+  "P_pick": 44.97,
+  "S_pick": 60.5,
+  "confidence": 0.875
+ },
+ "XO.LA39..HH.2018.07.12.08.20.45": {
+  "P_pick": null,
+  "S_pick": 44.99,
+  "confidence": 0.387
+ },
+ "XO.LT07..HH.2018.07.12.21.03.00": {
+  "P_pick": 44.09,
+  "S_pick": null,
+  "confidence": 0.346
+ },
+ "XO.LT12..HH.2018.07.12.21.03.12": {
+  "P_pick": 45.05,
+  "S_pick": null,
+  "confidence": 0.428
+ },
+ "XO.LT06..HH.2018.07.12.23.34.15": {
+  "P_pick": 44.89,
+  "S_pick": 51.47,
+  "confidence": 0.917
+ },
+ "XO.LD40..HH.2018.07.12.00.37.42": {
+  "P_pick": null,
+  "S_pick": 44.74,
+  "confidence": 0.39
+ },
+ "XO.LT01..HH.2018.07.12.00.47.49": {
+  "P_pick": null,
+  "S_pick": 45.33,
+  "confidence": 0.168
+ },
+ "XO.LD41..HH.2018.07.12.00.47.35": {
+  "P_pick": 44.74,
+  "S_pick": 69.6,
+  "confidence": 0.348
+ },
+ "XO.LA39..HH.2018.07.12.00.47.36": {
+  "P_pick": null,
+  "S_pick": 45.14,
+  "confidence": 0.394
+ },
+ "XO.LD41..HH.2018.07.12.01.45.08": {
+  "P_pick": 43.86,
+  "S_pick": 73.42,
+  "confidence": 0.397
+ },
+ "XO.LT01..HH.2018.07.12.06.43.21": {
+  "P_pick": null,
+  "S_pick": 44.77,
+  "confidence": 0.116
+ },
+ "XO.LD40..HH.2018.07.12.07.07.16": {
+  "P_pick": null,
+  "S_pick": 45.16,
+  "confidence": 0.164
+ },
+ "XO.LT04..HH.2018.07.12.08.32.02": {
+  "P_pick": null,
+  "S_pick": 44.84,
+  "confidence": 0.492
+ },
+ "XO.LT01..HH.2018.07.12.09.38.55": {
+  "P_pick": 29.83,
+  "S_pick": 42.09,
+  "confidence": 0.329
+ },
+ "XO.LT17..HH.2018.07.12.10.25.09": {
+  "P_pick": 33.65,
+  "S_pick": 45.86,
+  "confidence": 0.496
+ },
+ "XO.LA39..HH.2018.07.12.14.39.37": {
+  "P_pick": null,
+  "S_pick": 44.84,
+  "confidence": 0.577
+ },
+ "XO.LA33..HH.2018.07.13.07.11.32": {
+  "P_pick": 44.83,
+  "S_pick": 63.48,
+  "confidence": 0.862
+ },
+ "XO.LT01..HH.2018.07.13.10.08.23": {
+  "P_pick": null,
+  "S_pick": 45.05,
+  "confidence": 0.279
+ },
+ "XO.LA39..HH.2018.07.13.21.32.30": {
+  "P_pick": 44.97,
+  "S_pick": 60.82,
+  "confidence": 0.904
+ },
+ "XO.LD41..HH.2018.07.13.21.32.49": {
+  "P_pick": 45.14,
+  "S_pick": 74.58,
+  "confidence": 0.917
+ },
+ "XO.LD41..HH.2018.07.13.22.30.43": {
+  "P_pick": 44.92,
+  "S_pick": 74.95,
+  "confidence": 0.859
+ },
+ "XO.WD46..HH.2018.07.13.22.30.13": {
+  "P_pick": null,
+  "S_pick": 5.17,
+  "confidence": 0.139
+ },
+ "XO.LA39..HH.2018.07.13.11.44.00": {
+  "P_pick": 21.82,
+  "S_pick": 44.6,
+  "confidence": 0.545
+ },
+ "XO.LD40..HH.2018.07.14.15.38.46": {
+  "P_pick": 44.81,
+  "S_pick": 66.58,
+  "confidence": 0.812
+ },
+ "XO.LA39..HH.2018.07.14.19.00.28": {
+  "P_pick": 44.95,
+  "S_pick": 62.33,
+  "confidence": 0.782
+ },
+ "XO.LD40..HH.2018.07.14.19.27.17": {
+  "P_pick": null,
+  "S_pick": 44.64,
+  "confidence": 0.462
+ },
+ "XO.LD41..HH.2018.07.14.19.27.36": {
+  "P_pick": 19.93,
+  "S_pick": 44.42,
+  "confidence": 0.316
+ },
+ "XO.LA33..HH.2018.07.15.00.14.08": {
+  "P_pick": 44.96,
+  "S_pick": 56.18,
+  "confidence": 0.918
+ },
+ "XO.LA29..HH.2018.07.15.00.14.14": {
+  "P_pick": 44.99,
+  "S_pick": 60.08,
+  "confidence": 0.699
+ },
+ "XO.LT14..HH.2018.07.15.00.14.28": {
+  "P_pick": 44.87,
+  "S_pick": 72.11,
+  "confidence": 0.672
+ },
+ "XO.LT10..HH.2018.07.15.00.14.29": {
+  "P_pick": 45.07,
+  "S_pick": 71.7,
+  "confidence": 0.534
+ },
+ "XO.LA23..HH.2018.07.15.00.15.03": {
+  "P_pick": 15.41,
+  "S_pick": 44.07,
+  "confidence": 0.291
+ },
+ "XO.LA34..HH.2018.07.15.01.52.47": {
+  "P_pick": 45.06,
+  "S_pick": 55.87,
+  "confidence": 0.869
+ },
+ "XO.LD36..HH.2018.07.15.01.53.00": {
+  "P_pick": 44.89,
+  "S_pick": 64.52,
+  "confidence": 0.712
+ },
+ "XO.LT04..HH.2018.07.16.00.19.34": {
+  "P_pick": null,
+  "S_pick": 45.21,
+  "confidence": 0.62
+ },
+ "XO.WD49..HH.2018.07.16.08.15.57": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA39..HH.2018.07.16.22.51.24": {
+  "P_pick": 45.02,
+  "S_pick": 63.08,
+  "confidence": 0.886
+ },
+ "XO.LT17..HH.2018.07.16.07.24.24": {
+  "P_pick": 44.93,
+  "S_pick": 49.73,
+  "confidence": 0.937
+ },
+ "XO.LT20..HH.2018.07.16.07.24.44": {
+  "P_pick": 31.57,
+  "S_pick": 45.18,
+  "confidence": 0.228
+ },
+ "XO.LD40..HH.2018.07.16.11.35.05": {
+  "P_pick": 27.13,
+  "S_pick": 45.15,
+  "confidence": 0.449
+ },
+ "XO.LT18..HH.2018.07.17.03.30.59": {
+  "P_pick": 44.87,
+  "S_pick": null,
+  "confidence": 0.906
+ },
+ "XO.LT12..HH.2018.07.17.03.31.00": {
+  "P_pick": 45.09,
+  "S_pick": 60.17,
+  "confidence": 0.871
+ },
+ "XO.LA34..HH.2018.07.17.03.31.05": {
+  "P_pick": 44.17,
+  "S_pick": 65.0,
+  "confidence": 0.329
+ },
+ "XO.LD36..HH.2018.07.17.03.31.15": {
+  "P_pick": 44.93,
+  "S_pick": 70.81,
+  "confidence": 0.866
+ },
+ "XO.LD44..HH.2018.07.17.03.31.27": {
+  "P_pick": 24.17,
+  "S_pick": 44.75,
+  "confidence": 0.746
+ },
+ "XO.WD49..HH.2018.07.17.02.33.12": {
+  "P_pick": 44.69,
+  "S_pick": 68.19,
+  "confidence": 0.496
+ },
+ "XO.LD41..HH.2018.07.17.02.33.20": {
+  "P_pick": 44.7,
+  "S_pick": 73.22,
+  "confidence": 0.512
+ },
+ "XO.LT06..HH.2018.07.17.17.34.45": {
+  "P_pick": 45.03,
+  "S_pick": 57.47,
+  "confidence": 0.667
+ },
+ "XO.LA26..HH.2018.07.17.17.35.05": {
+  "P_pick": 45.36,
+  "S_pick": 71.87,
+  "confidence": 0.532
+ },
+ "XO.LT20..HH.2018.07.17.21.17.43": {
+  "P_pick": 23.25,
+  "S_pick": null,
+  "confidence": 0.413
+ },
+ "XO.LA34..HH.2018.07.18.11.56.27": {
+  "P_pick": 44.92,
+  "S_pick": 71.63,
+  "confidence": 0.898
+ },
+ "XO.WD52..HH.2018.07.18.19.05.35": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA34..HH.2018.07.18.19.05.40": {
+  "P_pick": 44.91,
+  "S_pick": 61.52,
+  "confidence": 0.888
+ },
+ "XO.WD60..HH.2018.07.18.19.06.03": {
+  "P_pick": 44.43,
+  "S_pick": null,
+  "confidence": 0.897
+ },
+ "XO.LT18..HH.2018.07.18.19.19.45": {
+  "P_pick": 44.88,
+  "S_pick": 52.43,
+  "confidence": 0.906
+ },
+ "XO.LD44..HH.2018.07.18.19.19.52": {
+  "P_pick": 44.97,
+  "S_pick": 56.27,
+  "confidence": 0.857
+ },
+ "XO.LT20..HH.2018.07.18.19.23.10": {
+  "P_pick": 44.93,
+  "S_pick": null,
+  "confidence": 0.918
+ },
+ "XO.LT18..HH.2018.07.18.01.55.25": {
+  "P_pick": 32.74,
+  "S_pick": 45.59,
+  "confidence": 0.548
+ },
+ "XO.LA29..HH.2018.07.18.01.55.31": {
+  "P_pick": null,
+  "S_pick": 45.24,
+  "confidence": 0.693
+ },
+ "XO.WD58..HH.2018.07.18.14.07.46": {
+  "P_pick": 45.19,
+  "S_pick": 73.55,
+  "confidence": 0.757
+ },
+ "XO.LD40..HH.2018.07.18.18.47.37": {
+  "P_pick": 20.94,
+  "S_pick": 45.72,
+  "confidence": 0.519
+ },
+ "XO.WS75..HH.2018.07.19.02.27.41": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LT13..HH.2018.07.19.02.27.56": {
+  "P_pick": 44.93,
+  "S_pick": null,
+  "confidence": 0.866
+ },
+ "XO.LT16..HH.2018.07.19.02.27.59": {
+  "P_pick": 44.57,
+  "S_pick": null,
+  "confidence": 0.367
+ },
+ "XO.LT14..HH.2018.07.19.02.28.04": {
+  "P_pick": 45.13,
+  "S_pick": 71.7,
+  "confidence": 0.511
+ },
+ "XO.WD63..HH.2018.07.19.02.28.07": {
+  "P_pick": 44.93,
+  "S_pick": 70.91,
+  "confidence": 0.544
+ },
+ "XO.WD60..HH.2018.07.19.02.28.15": {
+  "P_pick": 44.43,
+  "S_pick": 77.71,
+  "confidence": 0.826
+ },
+ "XO.LD45..HH.2018.07.19.02.54.07": {
+  "P_pick": 44.97,
+  "S_pick": 55.14,
+  "confidence": 0.882
+ },
+ "XO.LT07..HH.2018.07.19.06.06.09": {
+  "P_pick": 44.95,
+  "S_pick": 53.1,
+  "confidence": 0.909
+ },
+ "XO.LT07..HH.2018.07.19.10.36.01": {
+  "P_pick": 45.03,
+  "S_pick": null,
+  "confidence": 0.652
+ },
+ "XO.LD36..HH.2018.07.19.10.36.09": {
+  "P_pick": 43.83,
+  "S_pick": null,
+  "confidence": 0.608
+ },
+ "XO.LA34..HH.2018.07.19.14.32.56": {
+  "P_pick": 44.95,
+  "S_pick": 61.62,
+  "confidence": 0.92
+ },
+ "XO.WD59..HH.2018.07.19.14.33.19": {
+  "P_pick": 45.07,
+  "S_pick": 79.68,
+  "confidence": 0.863
+ },
+ "XO.WD60..HH.2018.07.19.14.33.19": {
+  "P_pick": 44.31,
+  "S_pick": 77.92,
+  "confidence": 0.89
+ },
+ "XO.LA32..HH.2018.07.19.14.33.03": {
+  "P_pick": 44.93,
+  "S_pick": 65.93,
+  "confidence": 0.9
+ },
+ "XO.LA30..HH.2018.07.19.14.33.30": {
+  "P_pick": 20.97,
+  "S_pick": null,
+  "confidence": 0.677
+ },
+ "XO.LT20..HH.2018.07.19.14.32.44": {
+  "P_pick": 45.13,
+  "S_pick": null,
+  "confidence": 0.909
+ },
+ "XO.LD44..HH.2018.07.19.14.32.49": {
+  "P_pick": 44.98,
+  "S_pick": 56.57,
+  "confidence": 0.924
+ },
+ "XO.WD60..HH.2018.07.19.15.04.49": {
+  "P_pick": 11.17,
+  "S_pick": 44.11,
+  "confidence": 0.727
+ },
+ "XO.LT20..HH.2018.07.19.21.15.38": {
+  "P_pick": 45.07,
+  "S_pick": 53.77,
+  "confidence": 0.895
+ },
+ "XO.LT13..HH.2018.07.19.21.15.53": {
+  "P_pick": 44.93,
+  "S_pick": null,
+  "confidence": 0.837
+ },
+ "XO.LA28..HH.2018.07.19.21.16.06": {
+  "P_pick": 44.98,
+  "S_pick": 73.31,
+  "confidence": 0.882
+ },
+ "XO.WD49..HH.2018.07.19.03.27.23": {
+  "P_pick": 44.43,
+  "S_pick": 67.1,
+  "confidence": 0.923
+ },
+ "XO.LD41..HH.2018.07.19.09.30.03": {
+  "P_pick": 45.27,
+  "S_pick": 73.55,
+  "confidence": 0.548
+ },
+ "XO.WD46..HH.2018.07.19.12.43.41": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA39..HH.2018.07.19.12.43.50": {
+  "P_pick": 45.21,
+  "S_pick": 60.93,
+  "confidence": 0.725
+ },
+ "XO.LT17..HH.2018.07.19.14.15.51": {
+  "P_pick": 45.51,
+  "S_pick": 54.12,
+  "confidence": 0.621
+ },
+ "XO.LD44..HH.2018.07.19.14.15.56": {
+  "P_pick": 44.99,
+  "S_pick": 57.04,
+  "confidence": 0.883
+ },
+ "XO.WD62..HH.2018.07.19.14.16.15": {
+  "P_pick": 44.99,
+  "S_pick": 71.06,
+  "confidence": 0.866
+ },
+ "XO.WD64..HH.2018.07.19.14.16.20": {
+  "P_pick": 45.01,
+  "S_pick": 75.47,
+  "confidence": 0.884
+ },
+ "XO.LA25..HH.2018.07.19.14.16.25": {
+  "P_pick": 45.15,
+  "S_pick": null,
+  "confidence": 0.861
+ },
+ "XO.LT20..HH.2018.07.19.14.25.14": {
+  "P_pick": 44.89,
+  "S_pick": 59.47,
+  "confidence": 0.797
+ },
+ "XO.LT18..HH.2018.07.19.14.25.08": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA28..HH.2018.07.19.14.45.01": {
+  "P_pick": 44.89,
+  "S_pick": 73.52,
+  "confidence": 0.816
+ },
+ "XO.LD36..HH.2018.07.19.14.45.43": {
+  "P_pick": 10.25,
+  "S_pick": 45.62,
+  "confidence": 0.398
+ },
+ "XO.WS75..HH.2018.07.19.15.24.20": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LT12..HH.2018.07.19.15.43.52": {
+  "P_pick": 44.97,
+  "S_pick": 55.53,
+  "confidence": 0.857
+ },
+ "XO.LT17..HH.2018.07.19.16.46.04": {
+  "P_pick": 45.38,
+  "S_pick": 52.41,
+  "confidence": 0.766
+ },
+ "XO.LD40..HH.2018.07.19.17.25.06": {
+  "P_pick": 19.69,
+  "S_pick": 44.89,
+  "confidence": 0.309
+ },
+ "XO.LA39..HH.2018.07.20.10.42.20": {
+  "P_pick": 44.94,
+  "S_pick": 62.28,
+  "confidence": 0.911
+ },
+ "XO.LT18..HH.2018.07.20.16.23.18": {
+  "P_pick": 44.91,
+  "S_pick": 58.78,
+  "confidence": 0.897
+ },
+ "XO.LT17..HH.2018.07.20.16.23.20": {
+  "P_pick": 44.89,
+  "S_pick": 52.61,
+  "confidence": 0.857
+ },
+ "XO.LT20..HH.2018.07.20.16.23.14": {
+  "P_pick": 44.97,
+  "S_pick": 55.23,
+  "confidence": 0.909
+ },
+ "XO.WD68..HH.2018.07.20.16.23.27": {
+  "P_pick": 44.95,
+  "S_pick": 64.6,
+  "confidence": 0.907
+ },
+ "XO.LA29..HH.2018.07.20.16.23.42": {
+  "P_pick": 44.93,
+  "S_pick": 74.91,
+  "confidence": 0.884
+ },
+ "XO.LT12..HH.2018.07.20.16.23.42": {
+  "P_pick": 44.88,
+  "S_pick": 75.28,
+  "confidence": 0.726
+ },
+ "XO.WD62..HH.2018.07.20.18.01.13": {
+  "P_pick": 45.04,
+  "S_pick": 75.98,
+  "confidence": 0.891
+ },
+ "XO.LT10..HH.2018.07.20.18.01.18": {
+  "P_pick": 44.89,
+  "S_pick": 79.07,
+  "confidence": 0.658
+ },
+ "XO.WD47..HH.2018.07.20.20.46.07": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LT07..HH.2018.07.20.06.33.44": {
+  "P_pick": 44.87,
+  "S_pick": 55.78,
+  "confidence": 0.369
+ },
+ "XO.LT20..HH.2018.07.20.10.59.43": {
+  "P_pick": null,
+  "S_pick": 44.83,
+  "confidence": 0.386
+ },
+ "XO.LA39..HH.2018.07.20.16.07.41": {
+  "P_pick": 43.86,
+  "S_pick": 59.06,
+  "confidence": 0.518
+ },
+ "XO.LD45..HH.2018.07.21.07.58.08": {
+  "P_pick": 44.97,
+  "S_pick": 54.95,
+  "confidence": 0.886
+ },
+ "XO.WD67..HH.2018.07.21.07.58.28": {
+  "P_pick": 44.97,
+  "S_pick": 70.98,
+  "confidence": 0.901
+ },
+ "XO.WD61..HH.2018.07.21.07.58.32": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD63..HH.2018.07.21.07.58.32": {
+  "P_pick": 45.29,
+  "S_pick": 70.33,
+  "confidence": 0.623
+ },
+ "XO.LT18..HH.2018.07.21.08.02.29": {
+  "P_pick": 44.93,
+  "S_pick": 50.73,
+  "confidence": 0.936
+ },
+ "XO.LD45..HH.2018.07.21.08.02.34": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.752
+ },
+ "XO.LT13..HH.2018.07.21.08.02.47": {
+  "P_pick": 44.91,
+  "S_pick": null,
+  "confidence": 0.644
+ },
+ "XO.LT12..HH.2018.07.21.08.02.53": {
+  "P_pick": 44.81,
+  "S_pick": 68.44,
+  "confidence": 0.843
+ },
+ "XO.LT18..HH.2018.07.21.08.14.41": {
+  "P_pick": 44.92,
+  "S_pick": 51.45,
+  "confidence": 0.932
+ },
+ "XO.LD44..HH.2018.07.21.08.14.48": {
+  "P_pick": 44.97,
+  "S_pick": 56.36,
+  "confidence": 0.922
+ },
+ "XO.LA32..HH.2018.07.21.08.15.01": {
+  "P_pick": null,
+  "S_pick": 67.3,
+  "confidence": 0.165
+ },
+ "XO.WD67..HH.2018.07.21.08.15.06": {
+  "P_pick": 44.83,
+  "S_pick": 70.21,
+  "confidence": 0.854
+ },
+ "XO.LT10..HH.2018.07.21.08.15.11": {
+  "P_pick": 45.13,
+  "S_pick": 72.58,
+  "confidence": 0.328
+ },
+ "XO.LT17..HH.2018.07.21.08.28.08": {
+  "P_pick": 45.0,
+  "S_pick": 52.0,
+  "confidence": 0.895
+ },
+ "XO.WD68..HH.2018.07.21.08.28.22": {
+  "P_pick": 44.93,
+  "S_pick": 61.22,
+  "confidence": 0.863
+ },
+ "XO.LT18..HH.2018.07.21.10.05.24": {
+  "P_pick": 44.93,
+  "S_pick": 52.1,
+  "confidence": 0.92
+ },
+ "XO.LT20..HH.2018.07.21.10.05.27": {
+  "P_pick": 44.75,
+  "S_pick": 53.54,
+  "confidence": 0.79
+ },
+ "XO.WD69..HH.2018.07.21.10.05.28": {
+  "P_pick": 44.85,
+  "S_pick": null,
+  "confidence": 0.871
+ },
+ "XO.WD65..HH.2018.07.21.10.05.43": {
+  "P_pick": 44.92,
+  "S_pick": 66.34,
+  "confidence": 0.896
+ },
+ "XO.WD59..HH.2018.07.21.10.09.31": {
+  "P_pick": 44.43,
+  "S_pick": 78.24,
+  "confidence": 0.823
+ },
+ "XO.LD45..HH.2018.07.21.11.48.06": {
+  "P_pick": 44.92,
+  "S_pick": 56.18,
+  "confidence": 0.901
+ },
+ "XO.LT13..HH.2018.07.21.11.48.19": {
+  "P_pick": 44.81,
+  "S_pick": null,
+  "confidence": 0.693
+ },
+ "XO.LT16..HH.2018.07.21.11.48.22": {
+  "P_pick": 44.73,
+  "S_pick": 68.52,
+  "confidence": 0.316
+ },
+ "XO.LT01..HH.2018.07.21.06.55.54": {
+  "P_pick": null,
+  "S_pick": 44.58,
+  "confidence": 0.395
+ },
+ "XO.LD40..HH.2018.07.21.07.49.29": {
+  "P_pick": 45.17,
+  "S_pick": 67.22,
+  "confidence": 0.514
+ },
+ "XO.LT20..HH.2018.07.21.08.21.14": {
+  "P_pick": 45.27,
+  "S_pick": 53.76,
+  "confidence": 0.756
+ },
+ "XO.LT18..HH.2018.07.21.09.52.12": {
+  "P_pick": 44.82,
+  "S_pick": null,
+  "confidence": 0.868
+ },
+ "XO.LD44..HH.2018.07.21.09.52.29": {
+  "P_pick": null,
+  "S_pick": 45.12,
+  "confidence": 0.651
+ },
+ "XO.LA34..HH.2018.07.21.09.52.42": {
+  "P_pick": null,
+  "S_pick": 44.83,
+  "confidence": 0.524
+ },
+ "XO.LT04..HH.2018.07.21.16.10.26": {
+  "P_pick": 10.97,
+  "S_pick": 44.61,
+  "confidence": 0.261
+ },
+ "XO.WD49..HH.2018.07.21.22.57.32": {
+  "P_pick": 44.37,
+  "S_pick": 68.37,
+  "confidence": 0.856
+ },
+ "XO.LT01..HH.2018.07.21.22.57.52": {
+  "P_pick": null,
+  "S_pick": 45.4,
+  "confidence": 0.377
+ },
+ "XO.WS75..HH.2018.07.22.00.28.35": {
+  "P_pick": 14.8,
+  "S_pick": 44.8,
+  "confidence": 0.606
+ },
+ "XO.LT17..HH.2018.07.22.00.27.59": {
+  "P_pick": 44.99,
+  "S_pick": 70.78,
+  "confidence": 0.645
+ },
+ "XO.LT12..HH.2018.07.22.00.27.48": {
+  "P_pick": 44.89,
+  "S_pick": 63.54,
+  "confidence": 0.901
+ },
+ "XO.WD62..HH.2018.07.22.00.28.09": {
+  "P_pick": 44.96,
+  "S_pick": 79.12,
+  "confidence": 0.898
+ },
+ "XO.WD58..HH.2018.07.22.00.28.10": {
+  "P_pick": 44.88,
+  "S_pick": 79.04,
+  "confidence": 0.909
+ },
+ "XO.LT04..HH.2018.07.22.16.21.10": {
+  "P_pick": 44.96,
+  "S_pick": 65.12,
+  "confidence": 0.911
+ },
+ "XO.WS75..HH.2018.07.22.16.21.18": {
+  "P_pick": 45.1,
+  "S_pick": 73.14,
+  "confidence": 0.881
+ },
+ "XO.LD41..HH.2018.07.22.16.21.19": {
+  "P_pick": 44.92,
+  "S_pick": 73.78,
+  "confidence": 0.915
+ },
+ "XO.LT20..HH.2018.07.22.16.21.20": {
+  "P_pick": 44.99,
+  "S_pick": 74.57,
+  "confidence": 0.789
+ },
+ "XO.LT20..HH.2018.07.22.17.12.47": {
+  "P_pick": 45.01,
+  "S_pick": 53.78,
+  "confidence": 0.899
+ },
+ "XO.WD68..HH.2018.07.22.17.12.59": {
+  "P_pick": 44.93,
+  "S_pick": 62.54,
+  "confidence": 0.923
+ },
+ "XO.LA30..HH.2018.07.22.17.13.08": {
+  "P_pick": 44.95,
+  "S_pick": 68.29,
+  "confidence": 0.766
+ },
+ "XO.LD36..HH.2018.07.22.17.13.23": {
+  "P_pick": 76.95,
+  "S_pick": 78.85,
+  "confidence": 0.205
+ },
+ "XO.LT12..HH.2018.07.23.11.32.01": {
+  "P_pick": 44.94,
+  "S_pick": null,
+  "confidence": 0.889
+ },
+ "XO.WD61..HH.2018.07.23.11.32.03": {
+  "P_pick": 44.93,
+  "S_pick": 76.5,
+  "confidence": 0.894
+ },
+ "XO.LA21..HH.2018.07.23.11.32.04": {
+  "P_pick": 44.63,
+  "S_pick": 76.78,
+  "confidence": 0.835
+ },
+ "XO.LT18..HH.2018.07.23.14.43.47": {
+  "P_pick": 44.87,
+  "S_pick": null,
+  "confidence": 0.792
+ },
+ "XO.LT20..HH.2018.07.23.14.47.03": {
+  "P_pick": 44.55,
+  "S_pick": 53.86,
+  "confidence": 0.602
+ },
+ "XO.LT15..HH.2018.07.24.04.12.07": {
+  "P_pick": 101.47,
+  "S_pick": 107.83,
+  "confidence": 0.896
+ },
+ "XO.LT17..HH.2018.07.24.04.12.25": {
+  "P_pick": 44.87,
+  "S_pick": null,
+  "confidence": 0.795
+ },
+ "XO.WS75..HH.2018.07.24.04.12.27": {
+  "P_pick": 45.29,
+  "S_pick": 123.7,
+  "confidence": 0.879
+ },
+ "XO.WD63..HH.2018.07.24.04.12.34": {
+  "P_pick": 46.43,
+  "S_pick": 72.78,
+  "confidence": 0.637
+ },
+ "XO.LT09..HH.2018.07.24.04.16.32": {
+  "P_pick": 44.57,
+  "S_pick": 50.99,
+  "confidence": 0.893
+ },
+ "XO.LT15..HH.2018.07.24.04.16.32": {
+  "P_pick": 44.93,
+  "S_pick": 51.7,
+  "confidence": 0.919
+ },
+ "XO.LT10..HH.2018.07.24.04.16.34": {
+  "P_pick": 45.01,
+  "S_pick": 52.51,
+  "confidence": 0.907
+ },
+ "XO.LD45..HH.2018.07.24.04.16.50": {
+  "P_pick": 44.74,
+  "S_pick": 65.79,
+  "confidence": 0.491
+ },
+ "XO.LD44..HH.2018.07.24.04.16.51": {
+  "P_pick": 45.06,
+  "S_pick": 66.34,
+  "confidence": 0.559
+ },
+ "XO.WD58..HH.2018.07.24.04.16.52": {
+  "P_pick": 44.97,
+  "S_pick": 66.82,
+  "confidence": 0.91
+ },
+ "XO.WD53..HH.2018.07.24.04.17.03": {
+  "P_pick": 45.0,
+  "S_pick": 75.16,
+  "confidence": 0.879
+ },
+ "XO.LA25..HH.2018.07.24.14.29.30": {
+  "P_pick": 44.77,
+  "S_pick": null,
+  "confidence": 0.722
+ },
+ "XO.WD62..HH.2018.07.24.14.29.24": {
+  "P_pick": 45.04,
+  "S_pick": 74.27,
+  "confidence": 0.891
+ },
+ "XO.WD69..HH.2018.07.24.14.29.03": {
+  "P_pick": 44.97,
+  "S_pick": 57.7,
+  "confidence": 0.884
+ },
+ "XO.LA33..HH.2018.07.24.15.50.41": {
+  "P_pick": 44.92,
+  "S_pick": 57.49,
+  "confidence": 0.906
+ },
+ "XO.LA30..HH.2018.07.24.15.50.43": {
+  "P_pick": 44.83,
+  "S_pick": null,
+  "confidence": 0.746
+ },
+ "XO.LT14..HH.2018.07.24.15.50.44": {
+  "P_pick": 45.51,
+  "S_pick": 62.38,
+  "confidence": 0.719
+ },
+ "XO.LT15..HH.2018.07.24.15.50.47": {
+  "P_pick": 35.22,
+  "S_pick": 45.74,
+  "confidence": 0.564
+ },
+ "XO.WD68..HH.2018.07.24.15.50.55": {
+  "P_pick": 44.95,
+  "S_pick": 67.94,
+  "confidence": 0.568
+ },
+ "XO.WD63..HH.2018.07.24.15.50.59": {
+  "P_pick": 45.46,
+  "S_pick": 70.82,
+  "confidence": 0.42
+ },
+ "XO.WD67..HH.2018.07.24.15.51.05": {
+  "P_pick": 41.27,
+  "S_pick": 75.28,
+  "confidence": 0.606
+ },
+ "XO.WD64..HH.2018.07.24.15.51.38": {
+  "P_pick": null,
+  "S_pick": 44.91,
+  "confidence": 0.345
+ },
+ "XO.WD55..HH.2018.07.24.04.19.19": {
+  "P_pick": null,
+  "S_pick": 44.91,
+  "confidence": 0.382
+ },
+ "XO.LT12..HH.2018.07.24.04.18.21": {
+  "P_pick": 44.93,
+  "S_pick": 48.57,
+  "confidence": 0.931
+ },
+ "XO.LT14..HH.2018.07.24.04.18.28": {
+  "P_pick": 44.77,
+  "S_pick": null,
+  "confidence": 0.859
+ },
+ "XO.LA33..HH.2018.07.24.04.18.32": {
+  "P_pick": 44.95,
+  "S_pick": 58.07,
+  "confidence": 0.81
+ },
+ "XO.LT13..HH.2018.07.24.04.13.05": {
+  "P_pick": 44.85,
+  "S_pick": 54.17,
+  "confidence": 0.844
+ },
+ "XO.LT16..HH.2018.07.24.04.13.08": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD46..HH.2018.07.24.20.21.13": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD56..HH.2018.07.24.20.21.44": {
+  "P_pick": 44.83,
+  "S_pick": 75.7,
+  "confidence": 0.55
+ },
+ "XO.WS74..HH.2018.07.25.04.07.49": {
+  "P_pick": 44.81,
+  "S_pick": 62.55,
+  "confidence": 0.288
+ },
+ "XO.WD68..HH.2018.07.25.04.07.52": {
+  "P_pick": 44.95,
+  "S_pick": 64.73,
+  "confidence": 0.843
+ },
+ "XO.LA28..HH.2018.07.25.21.38.27": {
+  "P_pick": 44.79,
+  "S_pick": 71.05,
+  "confidence": 0.815
+ },
+ "XO.WD66..HH.2018.07.25.21.37.52": {
+  "P_pick": 45.1,
+  "S_pick": 47.63,
+  "confidence": 0.925
+ },
+ "XO.LD44..HH.2018.07.25.21.37.59": {
+  "P_pick": 45.12,
+  "S_pick": 52.65,
+  "confidence": 0.905
+ },
+ "XO.LT20..HH.2018.07.25.21.38.17": {
+  "P_pick": 47.33,
+  "S_pick": 67.97,
+  "confidence": 0.273
+ },
+ "XO.LA25..HH.2018.07.25.21.38.31": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.827
+ },
+ "XO.LT16..HH.2018.07.25.04.14.41": {
+  "P_pick": 45.09,
+  "S_pick": 55.08,
+  "confidence": 0.65
+ },
+ "XO.WD66..HH.2018.07.25.18.33.52": {
+  "P_pick": 45.04,
+  "S_pick": 47.59,
+  "confidence": 0.921
+ },
+ "XO.LD44..HH.2018.07.25.18.33.58": {
+  "P_pick": 45.11,
+  "S_pick": 53.06,
+  "confidence": 0.894
+ },
+ "XO.WD68..HH.2018.07.25.18.33.58": {
+  "P_pick": 44.93,
+  "S_pick": 52.47,
+  "confidence": 0.914
+ },
+ "XO.WD52..HH.2018.07.25.18.34.03": {
+  "P_pick": 44.77,
+  "S_pick": 55.04,
+  "confidence": 0.882
+ },
+ "XO.LA21..HH.2018.07.25.18.34.32": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.855
+ },
+ "XO.LD40..HH.2018.07.26.10.55.02": {
+  "P_pick": 45.61,
+  "S_pick": 67.04,
+  "confidence": 0.656
+ },
+ "XO.WD70..HH.2018.07.26.10.54.53": {
+  "P_pick": 44.93,
+  "S_pick": 60.02,
+  "confidence": 0.919
+ },
+ "XO.LA29..HH.2018.07.26.11.38.26": {
+  "P_pick": null,
+  "S_pick": 45.3,
+  "confidence": 0.514
+ },
+ "XO.LA29..HH.2018.07.26.08.11.03": {
+  "P_pick": 46.49,
+  "S_pick": 57.25,
+  "confidence": 0.657
+ },
+ "XO.LA26..HH.2018.07.26.08.11.23": {
+  "P_pick": null,
+  "S_pick": 44.81,
+  "confidence": 0.311
+ },
+ "XO.WD50..HH.2018.07.26.15.26.07": {
+  "P_pick": 44.95,
+  "S_pick": 67.42,
+  "confidence": 0.864
+ },
+ "XO.LD38..HH.2018.07.26.15.26.05": {
+  "P_pick": 45.07,
+  "S_pick": 65.69,
+  "confidence": 0.753
+ },
+ "XO.LA25..HH.2018.07.27.17.13.11": {
+  "P_pick": 44.88,
+  "S_pick": 77.86,
+  "confidence": 0.538
+ },
+ "XO.WD51..HH.2018.07.27.17.13.32": {
+  "P_pick": 17.82,
+  "S_pick": 44.68,
+  "confidence": 0.503
+ },
+ "XO.LA23..HH.2018.07.27.17.13.42": {
+  "P_pick": 14.65,
+  "S_pick": 45.4,
+  "confidence": 0.538
+ },
+ "XO.LA39..HH.2018.07.27.22.32.01": {
+  "P_pick": 44.97,
+  "S_pick": 68.39,
+  "confidence": 0.912
+ },
+ "XO.WD56..HH.2018.07.27.22.32.10": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD46..HH.2018.07.27.00.53.08": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD70..HH.2018.07.27.00.53.16": {
+  "P_pick": 45.02,
+  "S_pick": 60.26,
+  "confidence": 0.898
+ },
+ "XO.WD54..HH.2018.07.27.00.53.02": {
+  "P_pick": 45.02,
+  "S_pick": 49.79,
+  "confidence": 0.922
+ },
+ "XO.WS72..HH.2018.07.27.12.47.55": {
+  "P_pick": 44.91,
+  "S_pick": 70.81,
+  "confidence": 0.611
+ },
+ "XO.WD50..HH.2018.07.27.13.49.07": {
+  "P_pick": 45.08,
+  "S_pick": 66.56,
+  "confidence": 0.874
+ },
+ "XO.WD70..HH.2018.07.27.14.45.35": {
+  "P_pick": 45.03,
+  "S_pick": 60.82,
+  "confidence": 0.81
+ },
+ "XO.WS72..HH.2018.07.27.14.45.38": {
+  "P_pick": 45.04,
+  "S_pick": 62.63,
+  "confidence": 0.757
+ },
+ "XO.LT07..HH.2018.07.27.17.42.34": {
+  "P_pick": null,
+  "S_pick": 44.84,
+  "confidence": 0.496
+ },
+ "XO.LT20..HH.2018.07.27.20.02.37": {
+  "P_pick": 45.08,
+  "S_pick": 52.65,
+  "confidence": 0.761
+ },
+ "XO.LD45..HH.2018.07.28.12.21.53": {
+  "P_pick": 44.89,
+  "S_pick": null,
+  "confidence": 0.905
+ },
+ "XO.LT13..HH.2018.07.28.12.21.57": {
+  "P_pick": 44.96,
+  "S_pick": 57.45,
+  "confidence": 0.846
+ },
+ "XO.LA33..HH.2018.07.28.12.21.59": {
+  "P_pick": 44.89,
+  "S_pick": 58.52,
+  "confidence": 0.918
+ },
+ "XO.WD50..HH.2018.07.28.03.44.40": {
+  "P_pick": 44.97,
+  "S_pick": 62.02,
+  "confidence": 0.872
+ },
+ "XO.WS72..HH.2018.07.28.03.44.35": {
+  "P_pick": 44.93,
+  "S_pick": 59.36,
+  "confidence": 0.925
+ },
+ "XO.LT20..HH.2018.07.28.05.28.40": {
+  "P_pick": 79.76,
+  "S_pick": 52.47,
+  "confidence": 0.429
+ },
+ "XO.WD70..HH.2018.07.28.06.04.54": {
+  "P_pick": 45.75,
+  "S_pick": null,
+  "confidence": 0.631
+ },
+ "XO.WD54..HH.2018.07.28.06.04.55": {
+  "P_pick": 15.1,
+  "S_pick": 44.99,
+  "confidence": 0.873
+ },
+ "XO.LA39..HH.2018.07.28.06.14.22": {
+  "P_pick": 44.96,
+  "S_pick": 59.78,
+  "confidence": 0.918
+ },
+ "XO.LT06..HH.2018.07.29.12.23.19": {
+  "P_pick": 44.93,
+  "S_pick": 60.26,
+  "confidence": 0.91
+ },
+ "XO.WS71..HH.2018.07.29.12.23.26": {
+  "P_pick": 45.0,
+  "S_pick": 67.47,
+  "confidence": 0.92
+ },
+ "XO.LT14..HH.2018.07.29.12.23.33": {
+  "P_pick": 45.03,
+  "S_pick": null,
+  "confidence": 0.877
+ },
+ "XO.LT12..HH.2018.07.29.12.23.36": {
+  "P_pick": 44.97,
+  "S_pick": 72.67,
+  "confidence": 0.911
+ },
+ "XO.WD54..HH.2018.07.29.12.16.32": {
+  "P_pick": 44.96,
+  "S_pick": 50.75,
+  "confidence": 0.918
+ },
+ "XO.LT07..HH.2018.07.30.11.33.29": {
+  "P_pick": 44.93,
+  "S_pick": 53.08,
+  "confidence": 0.931
+ },
+ "XO.LA30..HH.2018.07.30.11.33.47": {
+  "P_pick": 44.89,
+  "S_pick": 64.54,
+  "confidence": 0.852
+ },
+ "XO.LA32..HH.2018.07.30.11.33.50": {
+  "P_pick": 44.93,
+  "S_pick": 69.46,
+  "confidence": 0.895
+ },
+ "XO.WD58..HH.2018.07.30.11.33.55": {
+  "P_pick": 44.98,
+  "S_pick": 72.55,
+  "confidence": 0.919
+ },
+ "XO.LT15..HH.2018.07.30.11.34.05": {
+  "P_pick": 25.18,
+  "S_pick": 45.29,
+  "confidence": 0.501
+ },
+ "XO.WS75..HH.2018.07.30.11.34.05": {
+  "P_pick": 45.03,
+  "S_pick": 80.53,
+  "confidence": 0.841
+ },
+ "XO.WS72..HH.2018.07.30.23.50.10": {
+  "P_pick": 44.94,
+  "S_pick": 61.11,
+  "confidence": 0.917
+ },
+ "XO.WS71..HH.2018.07.30.23.50.19": {
+  "P_pick": null,
+  "S_pick": 69.97,
+  "confidence": 0.25
+ },
+ "XO.LD41..HH.2018.07.30.23.50.28": {
+  "P_pick": 45.17,
+  "S_pick": null,
+  "confidence": 0.883
+ },
+ "XO.WD53..HH.2018.07.30.12.27.58": {
+  "P_pick": 44.54,
+  "S_pick": null,
+  "confidence": 0.357
+ },
+ "XO.WS71..HH.2018.07.30.12.28.04": {
+  "P_pick": 50.81,
+  "S_pick": 46.09,
+  "confidence": 0.527
+ },
+ "XO.LT01..HH.2018.07.31.12.25.28": {
+  "P_pick": null,
+  "S_pick": 68.57,
+  "confidence": 0.302
+ },
+ "XO.LD38..HH.2018.07.31.12.25.39": {
+  "P_pick": 28.14,
+  "S_pick": 44.68,
+  "confidence": 0.581
+ },
+ "XO.WD57..HH.2018.07.31.12.25.44": {
+  "P_pick": 44.95,
+  "S_pick": 77.92,
+  "confidence": 0.751
+ },
+ "XO.WD46..HH.2018.07.31.12.44.00": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WS72..HH.2018.07.31.12.44.12": {
+  "P_pick": 44.93,
+  "S_pick": 107.14,
+  "confidence": 0.906
+ },
+ "XO.LA39..HH.2018.07.31.06.49.44": {
+  "P_pick": 44.92,
+  "S_pick": 59.88,
+  "confidence": 0.918
+ },
+ "XO.WD57..HH.2018.07.31.06.59.56": {
+  "P_pick": 44.99,
+  "S_pick": 77.88,
+  "confidence": 0.645
+ },
+ "XO.WD70..HH.2018.07.31.06.59.30": {
+  "P_pick": 44.83,
+  "S_pick": 58.73,
+  "confidence": 0.762
+ },
+ "XO.WD48..HH.2018.07.31.06.59.34": {
+  "P_pick": 44.97,
+  "S_pick": 62.02,
+  "confidence": 0.7
+ },
+ "XO.WD49..HH.2018.07.31.06.59.43": {
+  "P_pick": 44.46,
+  "S_pick": 66.9,
+  "confidence": 0.86
+ },
+ "XO.LA39..HH.2018.07.31.07.01.07": {
+  "P_pick": null,
+  "S_pick": 45.27,
+  "confidence": 0.297
+ },
+ "XO.WS71..HH.2018.07.31.07.01.27": {
+  "P_pick": null,
+  "S_pick": 45.62,
+  "confidence": 0.191
+ },
+ "XO.WD70..HH.2018.07.31.07.03.13": {
+  "P_pick": null,
+  "S_pick": 44.83,
+  "confidence": 0.188
+ },
+ "XO.WD49..HH.2018.07.31.09.40.21": {
+  "P_pick": 44.45,
+  "S_pick": 66.99,
+  "confidence": 0.847
+ },
+ "XO.WD46..HH.2018.07.31.09.59.37": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD48..HH.2018.07.31.09.59.54": {
+  "P_pick": 44.89,
+  "S_pick": 62.1,
+  "confidence": 0.583
+ },
+ "XO.WD57..HH.2018.07.31.10.03.11": {
+  "P_pick": 45.02,
+  "S_pick": 74.97,
+  "confidence": 0.429
+ },
+ "XO.LA39..HH.2018.07.31.11.43.28": {
+  "P_pick": 7.42,
+  "S_pick": 44.92,
+  "confidence": 0.642
+ },
+ "XO.WD51..HH.2018.07.31.11.50.35": {
+  "P_pick": 45.09,
+  "S_pick": 66.11,
+  "confidence": 0.779
+ },
+ "XO.WS72..HH.2018.07.31.12.34.17": {
+  "P_pick": 28.73,
+  "S_pick": 109.86,
+  "confidence": 0.347
+ },
+ "XO.WS71..HH.2018.07.31.12.34.35": {
+  "P_pick": null,
+  "S_pick": 109.85,
+  "confidence": 0.317
+ },
+ "XO.WD48..HH.2018.07.31.13.23.26": {
+  "P_pick": 44.93,
+  "S_pick": 62.26,
+  "confidence": 0.899
+ },
+ "XO.LD41..HH.2018.07.31.13.24.04": {
+  "P_pick": 19.98,
+  "S_pick": 45.47,
+  "confidence": 0.405
+ },
+ "XO.WS72..HH.2018.07.31.13.48.03": {
+  "P_pick": 35.51,
+  "S_pick": 44.97,
+  "confidence": 0.713
+ },
+ "XO.LA39..HH.2018.07.31.13.47.46": {
+  "P_pick": 45.13,
+  "S_pick": 60.18,
+  "confidence": 0.882
+ },
+ "XO.LT07..HH.2018.07.31.14.34.07": {
+  "P_pick": 44.93,
+  "S_pick": 53.87,
+  "confidence": 0.914
+ },
+ "XO.LT12..HH.2018.07.31.14.34.22": {
+  "P_pick": 44.93,
+  "S_pick": 64.89,
+  "confidence": 0.872
+ },
+ "XO.WD57..HH.2018.07.31.14.34.27": {
+  "P_pick": 44.96,
+  "S_pick": 69.4,
+  "confidence": 0.925
+ },
+ "XO.WS72..HH.2018.07.31.14.34.33": {
+  "P_pick": 44.89,
+  "S_pick": 73.7,
+  "confidence": 0.903
+ },
+ "XO.LA33..HH.2018.07.31.14.34.33": {
+  "P_pick": 44.89,
+  "S_pick": 74.01,
+  "confidence": 0.843
+ },
+ "XO.LA39..HH.2018.07.31.14.32.05": {
+  "P_pick": 45.13,
+  "S_pick": 57.0,
+  "confidence": 0.342
+ },
+ "XO.WD51..HH.2018.07.31.17.09.43": {
+  "P_pick": 45.0,
+  "S_pick": 71.06,
+  "confidence": 0.884
+ },
+ "XO.WD70..HH.2018.07.31.17.09.31": {
+  "P_pick": 44.95,
+  "S_pick": 62.09,
+  "confidence": 0.793
+ },
+ "XO.WD49..HH.2018.07.31.17.09.48": {
+  "P_pick": 44.67,
+  "S_pick": 73.37,
+  "confidence": 0.462
+ },
+ "XO.WD48..HH.2018.07.31.23.43.46": {
+  "P_pick": 22.73,
+  "S_pick": 45.04,
+  "confidence": 0.299
+ },
+ "XO.LD40..HH.2018.07.01.15.44.41": {
+  "P_pick": 43.49,
+  "S_pick": 69.61,
+  "confidence": 0.516
+ },
+ "XO.LA39..HH.2018.07.01.15.44.48": {
+  "P_pick": 26.77,
+  "S_pick": 45.22,
+  "confidence": 0.524
+ },
+ "XO.LA39..HH.2018.07.02.10.27.32": {
+  "P_pick": 118.46,
+  "S_pick": 59.08,
+  "confidence": 0.436
+ },
+ "XO.LD45..HH.2018.07.07.12.17.44": {
+  "P_pick": 44.93,
+  "S_pick": 63.62,
+  "confidence": 0.921
+ },
+ "XO.LT16..HH.2018.07.07.12.17.52": {
+  "P_pick": 44.91,
+  "S_pick": 69.17,
+  "confidence": 0.899
+ },
+ "XO.LA34..HH.2018.07.07.12.17.52": {
+  "P_pick": 45.01,
+  "S_pick": 68.78,
+  "confidence": 0.916
+ },
+ "XO.LA33..HH.2018.07.07.12.17.55": {
+  "P_pick": 44.91,
+  "S_pick": 70.63,
+  "confidence": 0.917
+ },
+ "XO.LA28..HH.2018.07.07.12.18.05": {
+  "P_pick": 44.88,
+  "S_pick": 78.39,
+  "confidence": 0.866
+ },
+ "XO.LA39..HH.2018.07.12.06.51.24": {
+  "P_pick": 44.95,
+  "S_pick": 59.4,
+  "confidence": 0.747
+ },
+ "XO.LT01..HH.2018.07.12.06.51.58": {
+  "P_pick": null,
+  "S_pick": 45.06,
+  "confidence": 0.42
+ },
+ "XO.LD40..HH.2018.07.13.11.58.35": {
+  "P_pick": 18.61,
+  "S_pick": 44.1,
+  "confidence": 0.765
+ },
+ "XO.LT01..HH.2018.07.15.22.56.46": {
+  "P_pick": null,
+  "S_pick": 46.49,
+  "confidence": 0.272
+ },
+ "XO.LA39..HH.2018.07.21.22.22.28": {
+  "P_pick": null,
+  "S_pick": 45.15,
+  "confidence": 0.611
+ },
+ "XO.WS72..HH.2018.07.25.11.33.25": {
+  "P_pick": 44.94,
+  "S_pick": 62.82,
+  "confidence": 0.899
+ },
+ "XO.WD48..HH.2018.07.25.11.33.25": {
+  "P_pick": 44.91,
+  "S_pick": 63.54,
+  "confidence": 0.887
+ },
+ "XO.WD51..HH.2018.07.25.11.33.33": {
+  "P_pick": 44.87,
+  "S_pick": 68.0,
+  "confidence": 0.908
+ },
+ "XO.WD49..HH.2018.07.25.11.33.38": {
+  "P_pick": 44.47,
+  "S_pick": 71.12,
+  "confidence": 0.786
+ },
+ "XO.LD38..HH.2018.07.25.11.33.48": {
+  "P_pick": 24.94,
+  "S_pick": 44.91,
+  "confidence": 0.576
+ },
+ "XO.LT01..HH.2018.07.25.11.33.54": {
+  "P_pick": null,
+  "S_pick": 45.55,
+  "confidence": 0.468
+ },
+ "XO.LA33..HH.2018.07.26.07.31.37": {
+  "P_pick": 45.0,
+  "S_pick": 57.94,
+  "confidence": 0.665
+ },
+ "XO.LT13..HH.2018.07.26.07.31.29": {
+  "P_pick": 44.92,
+  "S_pick": 112.92,
+  "confidence": 0.924
+ },
+ "XO.WS74..HH.2018.07.26.07.31.39": {
+  "P_pick": 44.87,
+  "S_pick": 59.22,
+  "confidence": 0.681
+ },
+ "XO.LT04..HH.2018.07.01.20.57.50": {
+  "P_pick": 44.03,
+  "S_pick": 57.17,
+  "confidence": 0.235
+ },
+ "XO.LD40..HH.2018.07.01.21.11.45": {
+  "P_pick": null,
+  "S_pick": 46.97,
+  "confidence": 0.287
+ },
+ "XO.LA21..HH.2018.07.02.10.35.26": {
+  "P_pick": 43.47,
+  "S_pick": 54.38,
+  "confidence": 0.725
+ },
+ "XO.LA26..HH.2018.07.02.10.35.32": {
+  "P_pick": 45.01,
+  "S_pick": 58.83,
+  "confidence": 0.684
+ },
+ "XO.LT07..HH.2018.07.02.10.35.41": {
+  "P_pick": null,
+  "S_pick": 68.75,
+  "confidence": 0.128
+ },
+ "XO.LT13..HH.2018.07.03.07.10.15": {
+  "P_pick": 112.27,
+  "S_pick": null,
+  "confidence": 0.296
+ },
+ "XO.LT01..HH.2018.07.04.17.33.43": {
+  "P_pick": null,
+  "S_pick": 69.53,
+  "confidence": 0.182
+ },
+ "XO.LT07..HH.2018.07.05.00.42.23": {
+  "P_pick": 59.02,
+  "S_pick": null,
+  "confidence": 0.349
+ },
+ "XO.LA39..HH.2018.07.05.00.42.49": {
+  "P_pick": null,
+  "S_pick": 67.96,
+  "confidence": 0.163
+ },
+ "XO.LA29..HH.2018.07.05.19.54.01": {
+  "P_pick": null,
+  "S_pick": 46.44,
+  "confidence": 0.357
+ },
+ "XO.LT10..HH.2018.07.06.20.10.30": {
+  "P_pick": 44.88,
+  "S_pick": 55.76,
+  "confidence": 0.894
+ },
+ "XO.LT06..HH.2018.07.06.20.10.34": {
+  "P_pick": null,
+  "S_pick": 44.92,
+  "confidence": 0.49
+ },
+ "XO.LT04..HH.2018.07.07.07.33.12": {
+  "P_pick": 44.92,
+  "S_pick": 54.89,
+  "confidence": 0.597
+ },
+ "XO.LD45..HH.2018.07.10.18.47.50": {
+  "P_pick": 44.89,
+  "S_pick": null,
+  "confidence": 0.733
+ },
+ "XO.LA33..HH.2018.07.10.18.48.03": {
+  "P_pick": 83.13,
+  "S_pick": 74.65,
+  "confidence": 0.477
+ },
+ "XO.LT16..HH.2018.07.11.19.47.18": {
+  "P_pick": 45.01,
+  "S_pick": 51.06,
+  "confidence": 0.762
+ },
+ "XO.LT20..HH.2018.07.11.07.07.38": {
+  "P_pick": null,
+  "S_pick": 45.14,
+  "confidence": 0.47
+ },
+ "XO.LT12..HH.2018.07.11.07.07.41": {
+  "P_pick": 17.27,
+  "S_pick": 45.0,
+  "confidence": 0.585
+ },
+ "XO.LD45..HH.2018.07.11.07.07.50": {
+  "P_pick": 13.37,
+  "S_pick": 44.82,
+  "confidence": 0.734
+ },
+ "XO.LA32..HH.2018.07.11.07.07.52": {
+  "P_pick": 12.42,
+  "S_pick": 45.0,
+  "confidence": 0.592
+ },
+ "XO.LT16..HH.2018.07.12.04.09.09": {
+  "P_pick": 44.8,
+  "S_pick": 50.75,
+  "confidence": 0.771
+ },
+ "XO.LD40..HH.2018.07.15.02.04.38": {
+  "P_pick": 118.89,
+  "S_pick": 44.88,
+  "confidence": 0.376
+ },
+ "XO.LA39..HH.2018.07.20.18.44.31": {
+  "P_pick": 45.2,
+  "S_pick": 63.62,
+  "confidence": 0.899
+ },
+ "XO.WD46..HH.2018.07.14.19.25.48": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LA39..HH.2018.07.18.02.49.23": {
+  "P_pick": 44.25,
+  "S_pick": 63.62,
+  "confidence": 0.511
+ },
+ "XO.LT13..HH.2018.07.18.13.01.43": {
+  "P_pick": 44.67,
+  "S_pick": 95.73,
+  "confidence": 0.665
+ },
+ "XO.LT13..HH.2018.07.21.00.02.15": {
+  "P_pick": 45.15,
+  "S_pick": 56.88,
+  "confidence": 0.803
+ },
+ "XO.WD69..HH.2018.07.21.15.15.02": {
+  "P_pick": 44.93,
+  "S_pick": 56.93,
+  "confidence": 0.88
+ },
+ "XO.LT17..HH.2018.07.21.15.15.02": {
+  "P_pick": 45.03,
+  "S_pick": 56.99,
+  "confidence": 0.646
+ },
+ "XO.WS75..HH.2018.07.21.15.15.13": {
+  "P_pick": 32.93,
+  "S_pick": 44.8,
+  "confidence": 0.407
+ },
+ "XO.WS75..HH.2018.07.22.02.53.35": {
+  "P_pick": 44.79,
+  "S_pick": 67.86,
+  "confidence": 0.627
+ },
+ "XO.LT01..HH.2018.07.22.22.51.51": {
+  "P_pick": null,
+  "S_pick": 44.84,
+  "confidence": 0.613
+ },
+ "XO.LA39..HH.2018.07.22.22.51.22": {
+  "P_pick": 44.94,
+  "S_pick": 58.78,
+  "confidence": 0.905
+ },
+ "XO.WD67..HH.2018.07.24.19.14.03": {
+  "P_pick": 44.92,
+  "S_pick": 56.57,
+  "confidence": 0.891
+ },
+ "XO.WD53..HH.2018.07.25.00.59.51": {
+  "P_pick": 44.95,
+  "S_pick": null,
+  "confidence": 0.869
+ },
+ "XO.WD57..HH.2018.07.25.00.59.51": {
+  "P_pick": 43.49,
+  "S_pick": null,
+  "confidence": 0.306
+ },
+ "XO.LT15..HH.2018.07.25.03.30.53": {
+  "P_pick": 45.57,
+  "S_pick": 49.8,
+  "confidence": 0.618
+ },
+ "XO.LT14..HH.2018.07.25.03.31.03": {
+  "P_pick": null,
+  "S_pick": 53.57,
+  "confidence": 0.103
+ },
+ "XO.WD54..HH.2018.07.25.08.22.55": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.LD44..HH.2018.07.25.17.26.25": {
+  "P_pick": 45.04,
+  "S_pick": 50.73,
+  "confidence": 0.892
+ },
+ "XO.WD69..HH.2018.07.25.22.03.55": {
+  "P_pick": 44.83,
+  "S_pick": 53.93,
+  "confidence": 0.854
+ },
+ "XO.WS74..HH.2018.07.25.22.03.59": {
+  "P_pick": 46.97,
+  "S_pick": 60.25,
+  "confidence": 0.301
+ },
+ "XO.WD68..HH.2018.07.25.22.04.06": {
+  "P_pick": 44.89,
+  "S_pick": 62.42,
+  "confidence": 0.527
+ },
+ "XO.LA33..HH.2018.07.25.22.04.29": {
+  "P_pick": null,
+  "S_pick": 45.19,
+  "confidence": 0.559
+ },
+ "XO.LD36..HH.2018.07.25.06.12.34": {
+  "P_pick": 44.81,
+  "S_pick": 80.03,
+  "confidence": 0.708
+ },
+ "XO.LA28..HH.2018.07.25.06.12.35": {
+  "P_pick": 44.91,
+  "S_pick": 81.46,
+  "confidence": 0.893
+ },
+ "XO.WD56..HH.2018.07.25.06.12.38": {
+  "P_pick": 44.57,
+  "S_pick": 82.82,
+  "confidence": 0.869
+ },
+ "XO.LA23..HH.2018.07.25.06.12.38": {
+  "P_pick": 45.77,
+  "S_pick": 82.28,
+  "confidence": 0.409
+ },
+ "XO.LT16..HH.2018.07.25.06.13.01": {
+  "P_pick": 75.29,
+  "S_pick": 85.09,
+  "confidence": 0.456
+ },
+ "XO.WD61..HH.2018.07.25.14.10.24": {
+  "P_pick": 44.99,
+  "S_pick": 77.55,
+  "confidence": 0.777
+ },
+ "XO.LT01..HH.2018.07.26.13.34.31": {
+  "P_pick": null,
+  "S_pick": 45.47,
+  "confidence": 0.418
+ },
+ "XO.LA39..HH.2018.07.26.17.39.25": {
+  "P_pick": 44.61,
+  "S_pick": 60.01,
+  "confidence": 0.574
+ },
+ "XO.LD40..HH.2018.07.26.17.39.51": {
+  "P_pick": null,
+  "S_pick": 45.88,
+  "confidence": 0.567
+ },
+ "XO.LA33..HH.2018.07.26.19.18.07": {
+  "P_pick": 30.61,
+  "S_pick": 45.08,
+  "confidence": 0.759
+ },
+ "XO.WD64..HH.2018.07.26.19.17.55": {
+  "P_pick": null,
+  "S_pick": 62.65,
+  "confidence": 0.318
+ },
+ "XO.WS74..HH.2018.07.26.19.18.04": {
+  "P_pick": null,
+  "S_pick": 45.4,
+  "confidence": 0.624
+ },
+ "XO.WD70..HH.2018.07.26.21.48.46": {
+  "P_pick": 45.0,
+  "S_pick": 59.9,
+  "confidence": 0.887
+ },
+ "XO.WS72..HH.2018.07.26.21.48.50": {
+  "P_pick": 44.95,
+  "S_pick": 65.8,
+  "confidence": 0.884
+ },
+ "XO.WD49..HH.2018.07.26.21.49.02": {
+  "P_pick": 45.12,
+  "S_pick": 73.62,
+  "confidence": 0.82
+ },
+ "XO.WS72..HH.2018.07.26.07.31.27": {
+  "P_pick": 44.89,
+  "S_pick": 98.1,
+  "confidence": 0.88
+ },
+ "XO.LD45..HH.2018.07.27.05.54.23": {
+  "P_pick": 44.56,
+  "S_pick": null,
+  "confidence": 0.568
+ },
+ "XO.WD69..HH.2018.07.27.17.19.03": {
+  "P_pick": 44.81,
+  "S_pick": 54.66,
+  "confidence": 0.383
+ },
+ "XO.LD41..HH.2018.07.27.17.27.32": {
+  "P_pick": 44.85,
+  "S_pick": 59.35,
+  "confidence": 0.764
+ },
+ "XO.LD36..HH.2018.07.27.17.28.15": {
+  "P_pick": 18.62,
+  "S_pick": 44.97,
+  "confidence": 0.556
+ },
+ "XO.LD38..HH.2018.07.27.21.41.18": {
+  "P_pick": 44.9,
+  "S_pick": 59.66,
+  "confidence": 0.852
+ },
+ "XO.WS72..HH.2018.07.27.21.41.16": {
+  "P_pick": 44.93,
+  "S_pick": 59.32,
+  "confidence": 0.923
+ },
+ "XO.WD54..HH.2018.07.28.05.17.43": {
+  "P_pick": 44.95,
+  "S_pick": 50.67,
+  "confidence": 0.915
+ },
+ "XO.LD40..HH.2018.07.28.07.51.26": {
+  "P_pick": null,
+  "S_pick": 45.61,
+  "confidence": 0.514
+ },
+ "XO.WD50..HH.2018.07.28.15.41.40": {
+  "P_pick": 45.67,
+  "S_pick": 66.66,
+  "confidence": 0.759
+ },
+ "XO.WS72..HH.2018.07.29.05.06.35": {
+  "P_pick": 45.05,
+  "S_pick": 59.38,
+  "confidence": 0.89
+ },
+ "XO.WD54..HH.2018.07.29.05.06.27": {
+  "P_pick": 45.05,
+  "S_pick": 111.42,
+  "confidence": 0.824
+ },
+ "XO.LD38..HH.2018.07.29.06.15.18": {
+  "P_pick": 44.86,
+  "S_pick": 52.59,
+  "confidence": 0.873
+ },
+ "XO.LT14..HH.2018.07.29.08.44.57": {
+  "P_pick": 44.97,
+  "S_pick": null,
+  "confidence": 0.701
+ },
+ "XO.LA32..HH.2018.07.29.08.44.57": {
+  "P_pick": 44.93,
+  "S_pick": 60.96,
+  "confidence": 0.647
+ },
+ "XO.LT16..HH.2018.07.29.08.44.57": {
+  "P_pick": 45.01,
+  "S_pick": 55.3,
+  "confidence": 0.728
+ },
+ "XO.LT15..HH.2018.07.29.08.44.59": {
+  "P_pick": 38.63,
+  "S_pick": 45.13,
+  "confidence": 0.676
+ },
+ "XO.LA29..HH.2018.07.29.08.45.00": {
+  "P_pick": 44.85,
+  "S_pick": 55.64,
+  "confidence": 0.559
+ },
+ "XO.WD46..HH.2018.07.29.10.43.22": {
+  "P_pick": null,
+  "S_pick": null,
+  "confidence": null
+ },
+ "XO.WD50..HH.2018.07.29.10.43.41": {
+  "P_pick": 45.07,
+  "S_pick": 65.5,
+  "confidence": 0.628
+ },
+ "XO.WD49..HH.2018.07.29.10.43.46": {
+  "P_pick": 44.72,
+  "S_pick": 67.47,
+  "confidence": 0.448
+ },
+ "XO.LT06..HH.2018.07.29.10.49.58": {
+  "P_pick": 44.91,
+  "S_pick": 53.39,
+  "confidence": 0.887
+ },
+ "XO.WD51..HH.2018.07.29.10.50.19": {
+  "P_pick": 44.91,
+  "S_pick": 69.76,
+  "confidence": 0.856
+ },
+ "XO.LT17..HH.2018.07.29.14.28.17": {
+  "P_pick": 44.71,
+  "S_pick": 51.07,
+  "confidence": 0.743
+ },
+ "XO.LA39..HH.2018.07.31.05.39.22": {
+  "P_pick": 45.25,
+  "S_pick": 60.74,
+  "confidence": 0.825
+ },
+ "XO.WD50..HH.2018.07.31.05.39.24": {
+  "P_pick": 44.67,
+  "S_pick": 61.46,
+  "confidence": 0.634
+ },
+ "XO.LD40..HH.2018.07.31.16.56.54": {
+  "P_pick": 25.42,
+  "S_pick": 45.32,
+  "confidence": 0.436
+ },
+ "XO.WD69..HH.2018.07.31.19.21.34": {
+  "P_pick": 44.97,
+  "S_pick": 54.99,
+  "confidence": 0.915
+ },
+ "XO.LD44..HH.2018.07.31.19.21.36": {
+  "P_pick": 44.73,
+  "S_pick": 56.31,
+  "confidence": 0.551
+ },
+ "XO.LT01..HH.2018.07.31.23.15.16": {
+  "P_pick": 35.22,
+  "S_pick": 105.36,
+  "confidence": 0.218
+ },
+ "XO.LA39..HH.2018.07.31.13.47.53": {
+  "P_pick": 37.32,
+  "S_pick": 52.35,
+  "confidence": 0.901
+ }
+}

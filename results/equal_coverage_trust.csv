@@ -1,6 +1,6 @@
 strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile
-TrustLayer,50,46.71,7.21,53.29,94.05,55.4,hydrophone_v2
-TrustLayer,60,46.71,7.21,53.29,94.05,55.4,hydrophone_v2
-TrustLayer,70,46.71,7.21,53.29,94.05,55.4,hydrophone_v2
-TrustLayer,80,46.71,7.21,53.29,94.05,55.4,hydrophone_v2
-TrustLayer,90,46.71,7.21,53.29,94.05,55.4,hydrophone_v2
+TrustLayer,50,50.0,5.82,50.0,94.1,32.4,hydrophone_v2
+TrustLayer,60,54.21,6.5,45.79,92.86,59.7,hydrophone_v2
+TrustLayer,70,54.21,6.5,45.79,92.86,59.7,hydrophone_v2
+TrustLayer,80,54.21,6.5,45.79,92.86,59.7,hydrophone_v2
+TrustLayer,90,54.21,6.5,45.79,92.86,59.7,hydrophone_v2

@@ -19,10 +19,10 @@ from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORDS_PATH = ROOT / "data" / "batch_calibration" / "records_all.json"
+RECORDS_PATH = ROOT / "data" / "batch_calibration" / "records_all_v2.json"
 
 PHASE_TOL = {"P": 0.5, "S": 1.0}
-MODELS = ("PhaseNet", "PickBlue", "OBSTransformer")
+MODELS = ("PhaseNet", "PickBlue", "OBSTransformer", "EQTransformer")
 
 
 def phase_verdict(pred: Optional[float], truth: float, phase: str) -> str:

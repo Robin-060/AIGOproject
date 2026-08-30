@@ -4,18 +4,15 @@
 #           禁止因结果不理想改动数据/seed/模型/判据/指标。
 # v1.1 变更 (2026-08-28 晚): 评价单位按 C 契约 v1.2 改为相位级 Primary;
 #       N_eval = 1306; 成对判定降级为 Secondary。参见 evaluation_protocol.md。
-# v1.2 变更 (2026-08-29): 适用性配置走 C 契约 6.2 选择程序 — 预声明准则
-#       "main 上 50% 覆盖率点 Unsafe 更低者胜"。
-#       history_v1 (PickBlue 要求 ZNEH): 9.2% → 淘汰;
-#       hydrophone_v2 (PickBlue 要求 Z,H, 优先 N,E): 5.0% → 选定;
-#       holdout 确认 17.0% (选择不稳定, 如实记录);
-#       依据: 冻结数据证明 PickBlue 在缺 E 样本上仍有预测且常正确,
-#       seisbench 对缺通道做掩码处理, OBS 权重以水听器 H 为主。
-config_version: semifinal_v1.2
+# v1.3 变更 (2026-08-29 晚): C 批准新增 EQTransformer-obs 为第四模型 (不替换)。
+#       四模型冻结预测 data/batch_calibration/records_all_v2.json
+#       (sha256 e5cc0a28...); 模型身份按 model_registry.md 纠正:
+#       PhaseNet 列实为 geofon, PickBlue 列实为 obs。全链重跑。
+config_version: semifinal_v1.3
 
 dataset:
-  file: data/batch_calibration/records_all.json
-  sha256: 738e46aaf0010727401402532d2ce569a21526332727df71d60525ac29d25699
+  file: data/batch_calibration/records_all_v2.json
+  sha256: e5cc0a28a61a4a91
   total_records: 895
   chunk_distribution:
     "201805": 116
@@ -42,12 +39,15 @@ dataset:
     purpose: 主结论在 main 上报告, holdout 作一致性佐证
 
 models:
+  # 冻结预测列 → 实际 checkpoint (按 model_registry.md 纠正)
   PhaseNet:
-    checkpoint: obs
+    checkpoint: geofon        # 冻结列为陆地 geofon, 非 obs (指纹 8/8 验证)
   PickBlue:
-    checkpoint: phasenet (base)
+    checkpoint: obs           # 冻结列实为 PhaseNet obs
   OBSTransformer:
     checkpoint: obst2024
+  EQTransformer:
+    checkpoint: obs           # v1.3 新增 (C 批准, 不替换)
   framework_versions:
     seisbench: 0.12.3
     torch: 2.13.0+cpu

@@ -173,6 +173,7 @@ def main():
         "Single-PhaseNet": strat_single("PhaseNet"),
         "Single-PickBlue": strat_single("PickBlue"),
         "Single-OBSTransformer": strat_single("OBSTransformer"),
+        "Single-EQTransformer": strat_single("EQTransformer"),
         "MaxConf": strat_maxconf(),
         "Voting": strat_vote(),
         "Traditional-STA/LTA": strat_traditional(),
@@ -230,7 +231,8 @@ def main():
     # 图: Coverage vs Unsafe (所有策略)
     colors = {
         "Single-PhaseNet": "#9E9E9E", "Single-PickBlue": "#9E9E9E",
-        "Single-OBSTransformer": "#607D8B", "MaxConf": "#FF9800",
+        "Single-OBSTransformer": "#607D8B", "Single-EQTransformer": "#3F51B5",
+        "MaxConf": "#FF9800",
         "Voting": "#2196F3", "Random": "#F44336",
         "Traditional-STA/LTA": "#795548",
     }

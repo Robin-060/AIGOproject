@@ -1,9 +1,10 @@
 method,unsafe_46.7,cov_46.7,unsafe_50,cov_50
 Single-PickBlue,7.87,46.71,7.66,50.0
 Single-OBSTransformer,13.93,46.71,14.24,50.0
+Single-EQTransformer,7.05,46.71,7.2,50.0
 Single-PhaseNet,20.77,9.95,20.77,9.95
-MaxConf,12.46,46.71,12.71,50.0
-Voting,6.23,46.71,5.82,50.0
+MaxConf,12.46,46.71,12.56,50.0
+Voting,4.92,46.71,4.59,50.0
 Traditional-STA/LTA,41.48,46.71,43.49,50.0
 Random,20.39,46.7,20.42,50.0
-TrustLayer(v2),7.21,46.71,,不可达
+TrustLayer(v1.3),5.9,46.71,5.82,50.0

@@ -74,6 +74,9 @@ PROFILE_CANDIDATES = {
                      preferred_channels=["Z", "N", "E"],
                      accepted_sampling_rates_hz=[100.0], resampling_supported=True,
                      required_preprocessing_version="obs_raw_v1"),
+        ModelProfile(model_name="EQTransformer", required_channels=["Z", "N", "E"],
+                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
+                     required_preprocessing_version="obs_raw_v1"),
     ],
     # 候选: PickBlue 实际输入契约以 H 为主 (OBS 权重, seisbench 对缺通道做掩码);
     # 冻结数据证明其在缺 E 样本上仍有预测且常为正确
@@ -89,12 +92,15 @@ PROFILE_CANDIDATES = {
                      preferred_channels=["Z", "N", "E"],
                      accepted_sampling_rates_hz=[100.0], resampling_supported=True,
                      required_preprocessing_version="obs_raw_v1"),
+        ModelProfile(model_name="EQTransformer", required_channels=["Z", "N", "E"],
+                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
+                     required_preprocessing_version="obs_raw_v1"),
     ],
 }
 ADAPTERS = [
     AdapterStatus(model_name=m, loaded=True, run_succeeded=True,
                   output_comparable=True)
-    for m in ("PhaseNet", "PickBlue", "OBSTransformer")
+    for m in ("PhaseNet", "PickBlue", "OBSTransformer", "EQTransformer")
 ]
 
 
