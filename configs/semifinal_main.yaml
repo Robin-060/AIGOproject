@@ -4,13 +4,16 @@
 #           禁止因结果不理想改动数据/seed/模型/判据/指标。
 # v1.1 变更 (2026-08-28 晚): 评价单位按 C 契约 v1.2 改为相位级 Primary;
 #       N_eval = 1306; 成对判定降级为 Secondary。参见 evaluation_protocol.md。
-# v1.4 变更 (2026-08-29 深夜): DS4 自然危害率重校准通过 validation 程序。
-#       数据证据罚分从注入校准 (8.6/9.9/10.7/27.4) 切换为自然校准
-#       (1.5/2.8/0/1.3): main 4.2%→3.82%, holdout 12.31%→11.54%, 方向一致。
-#       关键发现: 注入罚分被高估 5-20 倍 (强噪声注入 91.3% vs 自然 4.5%),
-#       DS4 相关性判定不成立 (仅断点弱相关)。主实验重跑: 50% 点 Unsafe
-#       5.8%→5.4%; bootstrap S 相从"显著落后"转为"统计并列"。
-config_version: semifinal_v1.4
+# v1.5 变更 (2026-08-31): C 五条建议落地 (收缩版)。
+#       ① 置信度 Platt 校准入证据层 (PickBlue/OBSTransformer/EQT;
+#          geofon 样本不足保留 raw) — 目的为阈值语义, 不宣称改善排序;
+#       ② 分歧单向化: 粗分三级 (SEVERE 满档/MINOR 半档/CONSENSUS 零罚),
+#          FUSE 增加校准置信度门槛 (治"抱团一起错");
+#       ③ ID-only 域熟悉度门 (马氏距离, XO 阈值 95%=3.94/99%=5.27),
+#          DS5 新成功标准 = coverage 主动下降 + retained unsafe 降低;
+#       ④ Evidence Admission Rule 制度冻结 (STA/LTA 结案为被拒首例)。
+#       主结果: 50% 点 Unsafe 5.5% (与 Voting 统计并列), holdout 稳定性改善。
+config_version: semifinal_v1.5
 
 dataset:
   file: data/batch_calibration/records_all_v2.json
