@@ -5,13 +5,20 @@
 
 ## 1. 总表（冻结数据三列 vs 档案声称）
 
-| 冻结数据列名 | 档案声称 | **实际身份（已指纹验证）** | 架构 | 通道 |
-|---|---|---|---|---|
-| PhaseNet | PhaseNet obs | **PhaseNet geofon**（陆地模型） | CNN (PhaseNet 家族) | ZNE 三分量 |
-| PickBlue | PickBlue (独立 OBS 模型) | **PhaseNet obs**（与 PickBlue(base="phasenet") 同一调用） | CNN (PhaseNet 家族) | Z12H 四分量 |
-| OBSTransformer | obst2024 | obst2024 ✓（档案无误） | Transformer | ZNE 三分量 |
+> C 锁死条件：registry 区分 **architecture_origin（架构来源）** 与
+> **checkpoint_training_domain（checkpoint 训练域）** —— 同架构异训练域
+> （geofon vs obs）是模型异质性论证的关键。
 
-**结论：三套不同权重、两个架构家族；其中"PhaseNet"列实为未适配 OBS 的陆地模型。**
+| 冻结数据列名 | 档案声称 | **实际身份（已指纹验证）** | architecture_origin | checkpoint_training_domain | 通道 |
+|---|---|---|---|---|---|
+| PhaseNet | PhaseNet obs | **PhaseNet geofon**（陆地模型） | PhaseNet 架构（Zhu & Beroza, 2019） | 陆地 GEOfon 域 | ZNE 三分量 |
+| PickBlue | PickBlue (独立 OBS 模型) | **PhaseNet obs** | PhaseNet 架构（同上） | OBS 域 | Z12H 四分量 |
+| OBSTransformer | obst2024 | obst2024 ✓（档案无误） | OBSTransformer 架构（Niksejel & Zhang, 2024） | OBST2024 OBS 域 | ZNE 三分量 |
+| EQTransformer（v1.3 新增，C 已批） | — | EQT-obs | EQTransformer 架构（Mousavi et al., 2020） | OBS 域 | ZNE 三分量 |
+
+**结论（v1.3 起）：四套 checkpoint、三个架构（PhaseNet / OBSTransformer /
+EQTransformer）、跨两个训练域（陆地 + OBS）——新增 EQT 为异构证据，
+旧模型全部保留（C 锁死条件：不替换）。**
 
 ## 2. 逐模型注册信息（C 契约 3.2 字段）
 
@@ -21,6 +28,8 @@
 |---|---|
 | class | `seisbench.models.PhaseNet` |
 | weights_name | `geofon`（`PhaseNet.from_pretrained("geofon")`） |
+| architecture_origin | PhaseNet 架构（Zhu & Beroza, 2019, doi:10.1093/gji/ggy423） |
+| checkpoint_training_domain | 陆地 GEOfon 域（非 OBS） |
 | in_channels / component_order | 3 / ZNE |
 | training_domain | 陆地地震数据域（非 OBS） |
 | default_args | P_threshold=0.570, S_threshold=0.073, blinding=[250,250] |
@@ -38,6 +47,8 @@
 |---|---|
 | class | `seisbench.models.PhaseNet`（经 `PickBlue(base="phasenet")` 工厂） |
 | weights_name | `obs`（`PhaseNet.from_pretrained("obs")`） |
+| architecture_origin | PhaseNet 架构（Zhu & Beroza, 2019）——与 2.1 同架构异训练域 |
+| checkpoint_training_domain | OBS 域（海洋） |
 | in_channels / component_order | 4 / Z12H |
 | training_domain | OBS 数据域（海洋） |
 | default_args | P_threshold=0.2, S_threshold=0.1 |
@@ -56,6 +67,8 @@
 |---|---|
 | class | `seisbench.models.OBSTransformer` |
 | weights_name | `obst2024` |
+| architecture_origin | OBSTransformer 架构（Niksejel & Zhang, 2024, doi:10.1093/gji/ggae049） |
+| checkpoint_training_domain | OBST2024 OBS 域 |
 | in_channels / component_order | 3 / ZNE |
 | training_domain | OBST2024 OBS 数据集域 |
 | default_args | {}（空） |
