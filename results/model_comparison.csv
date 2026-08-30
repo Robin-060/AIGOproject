@@ -1,0 +1,5 @@
+model,p_picks,p_hit_pct,s_picks,s_hit_pct,raw_error_pct,ranked50_unsafe_pct
+PhaseNet,118,78.0,12,91.7,20.8,20.8
+PickBlue,612,85.9,639,89.2,12.4,7.7
+OBSTransformer,634,87.4,646,72.0,20.4,14.2
+EQTransformer,625,84.2,623,88.8,13.5,7.2
