@@ -124,7 +124,7 @@ def main():
         t_cells[point] = (wrong / total * 100 if total else float("nan"),
                           total / len(trust_rows) * 100)
     rows.append({
-        "method": "TrustLayer(v1.3)",
+        "method": "TrustLayer(v1.4)",
         "unsafe_46.7": round(t_cells[46.7][0], 2), "cov_46.7": round(t_cells[46.7][1], 2),
         "unsafe_50": round(t_cells[50.0][0], 2), "cov_50": round(t_cells[50.0][1], 2),
     })

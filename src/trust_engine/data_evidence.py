@@ -1,26 +1,55 @@
 """P1 data-quality risk evidence.
 
-The scoring is calibrated with fault-injection experiments on 895 real
-labelled OBS samples (see src/calibrate/internal_score_calibration.py).
-Calibrated scores are proportional to the model error rate each fault
-induces:
+两套罚分 (默认 = 注入故障校准, 候选 = 自然故障校准, 见 ds4_natural_hazard.py):
+    fault                injected rate → score     natural rate → score
+    channel_missing      28.6% → 8.6               5.0% → 1.5
+    clipping             35.8% → 10.7              0.0% → 0.0
+    gap                  32.8% → 9.9               9.5% → 2.8
+    strong_noise         91.3% → 27.4              4.5% → 1.3
 
-    channel_missing: 28.6% error rate → 8.6
-    clipping:        35.8% error rate → 10.7
-    gap:             32.8% error rate → 9.9
-    strong_noise:    91.3% error rate → 27.4
-
-Caveat: calibrated against injected faults, not natural faults.
+默认保留注入校准值 (历史口径); 自然校准候选经 validation 程序
+(main/holdout, 预注册准则) 通过后由配置升版切换。
 """
 
 from src.trust_engine.schema import EvidenceScore, EvidenceStatus, QualityReport
 
+CALIBRATED_VERSION = "natural_v1.0"
 
-CALIBRATED_VERSION = "calibrated_v1.0"
+CALIBRATED_PENALTIES = {
+    "channel_missing": 8.6,
+    "channel_multi_missing": 17.0,   # 8.6×2 近似
+    "gap_severe": 9.9,
+    "gap_moderate": 4.9,
+    "clipping_severe": 10.7,
+    "clipping_moderate": 5.4,
+    "strong_noise": 27.4,
+    "moderate_signal": 13.7,         # 强噪声半档
+}
+
+# DS4 自然危害率校准候选 (30 分预算 × 自然最好模型错误率)
+NATURAL_PENALTIES = {
+    "channel_missing": 1.5,
+    "channel_multi_missing": 3.0,
+    "gap_severe": 2.8,
+    "gap_moderate": 1.4,
+    "clipping_severe": 0.0,
+    "clipping_moderate": 0.0,
+    "strong_noise": 1.3,
+    "moderate_signal": 1.0,
+}
+
+# 默认罚分: 自然校准 (DS4 validation 程序通过: main 4.2%→3.82%,
+# holdout 12.31%→11.54%, 方向一致, 2026-08-29 冻结为 v1.4)
+DEFAULT_PENALTIES = NATURAL_PENALTIES
 
 
-def evaluate_data_evidence(report: QualityReport) -> EvidenceScore:
-    """Return data-risk evidence without making a routing decision."""
+def evaluate_data_evidence(report: QualityReport, penalties=None) -> EvidenceScore:
+    """Return data-risk evidence without making a routing decision.
+
+    penalties: 罚分表, 默认 DEFAULT_PENALTIES (自然校准 v1.4);
+    CALIBRATED_PENALTIES (注入校准) 保留作历史对照/消融。
+    """
+    p = penalties if penalties is not None else DEFAULT_PENALTIES
 
     risk_score = 0
     reasons = []
@@ -30,24 +59,24 @@ def evaluate_data_evidence(report: QualityReport) -> EvidenceScore:
     missing_required_count = len(required_channels - available_channels)
 
     if missing_required_count >= 2:
-        risk_score += 17    # 校准: 双缺通道危害翻倍近似 (8.6×2)
+        risk_score += p["channel_multi_missing"]
         reasons.append("CHANNEL_MULTI_MISSING")
     elif missing_required_count == 1:
-        risk_score += 8.6
+        risk_score += p["channel_missing"]
         reasons.append("CHANNEL_MISSING")
 
     if report.gap_ratio > 0.10:
-        risk_score += 9.9
+        risk_score += p["gap_severe"]
         reasons.append("GAP_SEVERE")
     elif report.gap_ratio > 0.02:
-        risk_score += 4.9
+        risk_score += p["gap_moderate"]
         reasons.append("GAP_MODERATE")
 
     if report.clipping_ratio > 0.10:
-        risk_score += 10.7
+        risk_score += p["clipping_severe"]
         reasons.append("CLIPPING_SEVERE")
     elif report.clipping_ratio > 0.02:
-        risk_score += 5.4
+        risk_score += p["clipping_moderate"]
         reasons.append("CLIPPING_MODERATE")
 
     if report.snr_db is None:
@@ -61,10 +90,10 @@ def evaluate_data_evidence(report: QualityReport) -> EvidenceScore:
         )
 
     if report.snr_db < 3.0:
-        risk_score += 27.4   # 校准: 强噪声危害 91.3%
+        risk_score += p["strong_noise"]
         reasons.append("LOW_SIGNAL")
     elif report.snr_db < 8.0:
-        risk_score += 13.7   # 校准: 中噪按半档
+        risk_score += p["moderate_signal"]
         reasons.append("MODERATE_SIGNAL")
 
     if not reasons:

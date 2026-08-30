@@ -120,7 +120,7 @@ def load_split() -> dict:
     return split
 
 
-def trust_per_record(record, quality_row, config, profiles):
+def trust_per_record(record, quality_row, config, profiles, penalties=None):
     """单样本跑完整 Trust 链, 返回 ReliabilityResult."""
     preds = [
         ModelPrediction(
@@ -148,7 +148,7 @@ def trust_per_record(record, quality_row, config, profiles):
         clipping_ratio=float(quality_row["clipping_ratio"]) if quality_row["clipping_ratio"] else 0.0,
         source="REAL_CALCULATION",
     )
-    data_ev = evaluate_data_evidence(quality)
+    data_ev = evaluate_data_evidence(quality, penalties)
     suits = evaluate_model_suitability(meta, quality, profiles, ADAPTERS)
     singles = evaluate_single_model_evidence(preds)
     physics = []
@@ -171,12 +171,13 @@ def trust_per_record(record, quality_row, config, profiles):
     )
 
 
-def build_unit_rows(records, units, quality_map, profiles, config, record_map):
+def build_unit_rows(records, units, quality_map, profiles, config, record_map,
+                    penalties=None):
     """逐单元产出决策与判定."""
     per_record = {}
     for i, record in enumerate(records):
         per_record[record["sample_id"]] = trust_per_record(
-            record, quality_map[record["sample_id"]], config, profiles)
+            record, quality_map[record["sample_id"]], config, profiles, penalties)
         if (i + 1) % 300 == 0:
             print(f"    Trust 链进度 {i + 1}/{len(records)}", flush=True)
 

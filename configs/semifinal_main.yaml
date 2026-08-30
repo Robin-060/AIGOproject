@@ -4,11 +4,13 @@
 #           禁止因结果不理想改动数据/seed/模型/判据/指标。
 # v1.1 变更 (2026-08-28 晚): 评价单位按 C 契约 v1.2 改为相位级 Primary;
 #       N_eval = 1306; 成对判定降级为 Secondary。参见 evaluation_protocol.md。
-# v1.3 变更 (2026-08-29 晚): C 批准新增 EQTransformer-obs 为第四模型 (不替换)。
-#       四模型冻结预测 data/batch_calibration/records_all_v2.json
-#       (sha256 e5cc0a28...); 模型身份按 model_registry.md 纠正:
-#       PhaseNet 列实为 geofon, PickBlue 列实为 obs。全链重跑。
-config_version: semifinal_v1.3
+# v1.4 变更 (2026-08-29 深夜): DS4 自然危害率重校准通过 validation 程序。
+#       数据证据罚分从注入校准 (8.6/9.9/10.7/27.4) 切换为自然校准
+#       (1.5/2.8/0/1.3): main 4.2%→3.82%, holdout 12.31%→11.54%, 方向一致。
+#       关键发现: 注入罚分被高估 5-20 倍 (强噪声注入 91.3% vs 自然 4.5%),
+#       DS4 相关性判定不成立 (仅断点弱相关)。主实验重跑: 50% 点 Unsafe
+#       5.8%→5.4%; bootstrap S 相从"显著落后"转为"统计并列"。
+config_version: semifinal_v1.4
 
 dataset:
   file: data/batch_calibration/records_all_v2.json

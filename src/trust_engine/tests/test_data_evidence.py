@@ -1,4 +1,7 @@
-from src.trust_engine.data_evidence import evaluate_data_evidence
+from src.trust_engine.data_evidence import (
+    CALIBRATED_PENALTIES,
+    evaluate_data_evidence,
+)
 from src.trust_engine.schema import EvidenceStatus, QualityReport
 
 
@@ -23,28 +26,30 @@ def test_normal_data_has_zero_risk():
     assert evidence.reasons == ["DATA_QUALITY_OK"]
 
 
-def test_one_required_channel_missing_adds_calibrated_score():
+def test_one_required_channel_missing_adds_natural_score():
+    # v1.4 默认 = 自然校准 (DS4): 缺通道 1.5 分
     evidence = evaluate_data_evidence(
         make_report(available_channels=["Z", "N"], missing_channels=["E"])
     )
-    assert evidence.score is not None and evidence.score >= 8
+    assert evidence.score == 1.5
     assert "CHANNEL_MISSING" in evidence.reasons
 
 
-def test_low_snr_adds_calibrated_score():
+def test_low_snr_adds_natural_score():
     evidence = evaluate_data_evidence(make_report(snr_db=2.9))
-    assert evidence.score is not None and evidence.score >= 20
+    assert evidence.score == 1.3
     assert "LOW_SIGNAL" in evidence.reasons
 
 
 def test_severe_gap_does_not_also_add_moderate_gap():
     evidence = evaluate_data_evidence(make_report(gap_ratio=0.11))
-    assert evidence.score == 9.9
+    assert evidence.score == 2.8
     assert "GAP_SEVERE" in evidence.reasons
     assert "GAP_MODERATE" not in evidence.reasons
 
 
-def test_combined_risk_is_capped_at_thirty():
+def test_combined_risk_is_capped_at_thirty_with_injected_table():
+    # 上限封顶逻辑用注入校准表验证 (自然表最大仅 7.1, 触不到上限)
     evidence = evaluate_data_evidence(
         make_report(
             available_channels=["Z"],
@@ -52,9 +57,19 @@ def test_combined_risk_is_capped_at_thirty():
             gap_ratio=0.11,
             clipping_ratio=0.11,
             snr_db=2.0,
-        )
+        ),
+        penalties=CALIBRATED_PENALTIES,
     )
     assert evidence.score == 30
+
+
+def test_injected_table_retained_for_ablation():
+    # 历史注入校准表保留可用 (消融/对照)
+    evidence = evaluate_data_evidence(
+        make_report(available_channels=["Z", "N"], missing_channels=["E"]),
+        penalties=CALIBRATED_PENALTIES,
+    )
+    assert evidence.score == 8.6
 
 
 def test_missing_snr_is_insufficient_not_all_ok():

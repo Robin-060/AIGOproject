@@ -1,32 +1,32 @@
 {
   "ALL": {
-    "point_delta_pp": 0.98,
-    "trust_unsafe_pp": 5.9,
+    "point_delta_pp": 0.16,
+    "trust_unsafe_pp": 5.08,
     "voting_unsafe_pp": 4.92,
-    "ci95_lo": -1.08,
-    "ci95_hi": 3.42,
-    "one_sided_upper95": 3.04,
+    "ci95_lo": -1.78,
+    "ci95_hi": 3.2,
+    "one_sided_upper95": 2.68,
     "n_replicates": 1000,
     "verdict": "INCONCLUSIVE (CI 包含 0)"
   },
   "P": {
-    "point_delta_pp": -0.65,
-    "trust_unsafe_pp": 6.19,
+    "point_delta_pp": -1.3,
+    "trust_unsafe_pp": 5.54,
     "voting_unsafe_pp": 6.84,
-    "ci95_lo": -4.63,
-    "ci95_hi": 2.64,
-    "one_sided_upper95": 2.07,
+    "ci95_lo": -4.85,
+    "ci95_hi": 2.5,
+    "one_sided_upper95": 1.76,
     "n_replicates": 1000,
     "verdict": "INCONCLUSIVE (CI 包含 0)"
   },
   "S": {
-    "point_delta_pp": 2.97,
-    "trust_unsafe_pp": 5.94,
+    "point_delta_pp": 1.98,
+    "trust_unsafe_pp": 4.95,
     "voting_unsafe_pp": 2.97,
-    "ci95_lo": 0.12,
-    "ci95_hi": 5.28,
-    "one_sided_upper95": 4.82,
+    "ci95_lo": -1.48,
+    "ci95_hi": 4.91,
+    "one_sided_upper95": 4.47,
     "n_replicates": 1000,
-    "verdict": "Trust 显著更差 (Δ 全正)"
+    "verdict": "INCONCLUSIVE (CI 包含 0)"
   }
 }
