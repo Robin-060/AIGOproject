@@ -1,0 +1,13 @@
+{
+  "deployment": "_BLANCO",
+  "n_sampled": 200,
+  "n_eval": 400,
+  "trust_unsafe_50": 21.5,
+  "trust_ceiling": 54.5,
+  "voting_unsafe_50": 21.5,
+  "xo_reference": {
+    "trust_unsafe_50": 5.4,
+    "voting_unsafe_50": 4.6,
+    "ceiling": 54.2
+  }
+}
