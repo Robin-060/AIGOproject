@@ -1,0 +1,149 @@
+# 探索日志素材汇总（A → C 交接件）
+
+> 用途：C 撰写 exploration_log.md 的原材料。每条按
+> Hypothesis → Experiment → Observation → Revision → Result → Limitation 组织，
+> 所有数字有出处文件，C 的定量表述可直接引用。
+> 覆盖：项目全程（含被推翻的早期方法），10 个实验条目 + 负结果清单 + 数字速查表。
+
+## 一、实验时间线总表
+
+| 编号 | 事件 | 类型 | 结果 |
+|---|---|---|---|
+| EXP01 | 小样本校准 → 895 条重校准 | 修正 | 容差 0.578→0.34 / 0.340→0.51 |
+| EXP02 | 故障注入罚分校准 → 自然重校准（DS4） | 修正 | 注入罚分被证高估 5-20 倍 |
+| EXP03 | 风险曲线非单调 → 证据权重调整 | 修正 | 风险分箱单调 |
+| EXP04 | 假质量报告发现 → 真实质量清单重建 | 异常→修正 | 895 条真实 SNR/断点/削波/缺道 |
+| EXP05 | 模型身份错位（geofon 指纹破案） | 异常→修正 | 三列真实身份锁定，代码对齐 |
+| EXP06 | "PickBlue 需 4 分量"假设证伪 | 异常→修正 | v2 档案（main 9.2%→5.0%） |
+| EXP07 | 主实验 v1：DS1 部分成立 + bootstrap | 正/负结果 | S 相显著落后，天花板 46.7% |
+| EXP08 | EQT 第四模型（C 批准，不替换） | 正向发现 | 天花板 46.7→54.2% |
+| EXP09 | STA/LTA 第五证据 12 组合校准 | **负结果（淘汰）** | X=0 胜出，弱相关 46.7% vs 60.9% |
+| EXP10 | DS4 自然罚分重校准 | 正向发现 | v1.4：S 相从显著落后→统计并列 |
+
+## 二、逐条素材卡
+
+### EXP01 小样本校准 → 全量重校准
+- **H**：用少量样本（n=14-80）校准容差足够
+- **E**：小样本分位校准容差（P 0.578s / S 0.340s）
+- **O**：被质疑样本不足，结论可能不稳
+- **R**：改用 895 条全量重新校准 → P 0.34 / S 0.51（95% 分位，n=674/455）
+- **Limitation**：历史小样本参数保留于 docs/experiments/legacy/（修正证据链）
+
+### EXP02 故障注入 → 自然校准
+- **H**：人为注入故障可校准数据罚分
+- **E**：895 条注入故障实验 → 错误率 28.6/35.8/32.8/91.3% → 罚分 8.6/10.7/9.9/27.4
+- **O**：被质疑"故障是人为增加的，不是真实的"；代码注明 caveat
+- **R**：DS4 用真实质量清单计算自然危害率 → 发现注入值高估 5-20 倍
+  （强噪声注入 91.3% vs 自然 4.5%）；validation 程序通过后 v1.4 切换自然罚分
+- **出处**：results/ds4_natural_hazard.json、results/ds4_penalty_grid.csv
+
+### EXP03 风险曲线非单调 → 权重调整
+- **H**：风险分越高，错误率越高
+- **O**：早期风险校准曲线非单调
+- **R**：调整证据权重（逻辑回归 n=895 校准 single/multi/physics 权重）
+- **Result**：v1.4 风险分箱严格单调（4.18→10.38→28.57%，n=502/183/21）
+
+### EXP04 假质量报告 → 真实质量清单
+- **H**：历史基线实验的质量报告可信
+- **O**：审计发现基线脚本硬编码 QualityReport(snr=20, 无缺道/断点/削波)
+  ——数据证据层从未在真实质量上运行
+- **R**：下载 OBS 数据集 3 chunks（2.7GB）→ 用数据组同款函数重建 895 条真实质量
+- **Result**：真实画像：SNR 中位数 11dB、55.2% 有断点、100% 有削波、13.6% 缺 E
+- **出处**：data/quality_manifest.csv、src/data_layer/quality_manifest_builder.py
+
+### EXP05 模型身份错位（geofon 破案）
+- **H**：冻结"PhaseNet"列是 obs 权重
+- **E**：本地复现对不上（P 差 0.18s、S 差 0.30s、置信度 0.912 vs 0.795）
+- **O**：源码证明 PickBlue(base="phasenet") ≡ PhaseNet obs（别名工厂）；
+  若两列不同，"PhaseNet"列必不是 obs
+- **R**：指纹匹配锁定 geofon（8 样本 P 8/8、置信度 8/8 精确吻合）；
+  model_registry.md 记录真实身份；data_layer.py 改为 geofon + ZNE 通道
+  （指纹复核完全一致）
+- **Limitation**：数据组生成环境版本未冻结，无法追溯执行差异（如实记录）
+
+### EXP06 "PickBlue 需 4 分量"假设证伪
+- **H**：PickBlue 档案要求 Z/N/E/H 四通道，缺 E 即排除
+- **O**：冻结数据 94% 缺 E 记录有 PickBlue 预测（数据组从未执行该限制）；
+  实测缺 E 时 PickBlue 命中 91-93%，不受影响；反而 OBSTransformer 缺 E 时
+  S 命中 74%→58%（真正降级的是它）
+- **R**：v2 选择程序（预注册准则：main 50% 点 Unsafe 低者胜）：
+  hydrophone_v2 档案（Z,H 必需）胜出 → main 9.2%→5.0%
+- **Result**：缺 E 记录决策翻盘：ROUTE 独苗 180→2，FUSE 0→120，ABSTAIN 58
+
+### EXP07 主实验 v1：DS1 部分成立 + 统计框架
+- **E**：相位级 Equal-Coverage（1306 单元、五点位）+ cluster paired-bootstrap
+  （60 台站 × 1000 次，seed 42）
+- **O**：DS1 部分成立——优于 5/7 参照系，不优于 Voting；S 相显著落后
+  （CI [+0.1, +5.3] 全正）；覆盖率天花板 46.7%；拦截率 94.1%
+- **R**：定位三个根因：档案误杀 PickBlue（→EXP06）、OBSTransformer S 弱
+  （72% 容差内）、风险排序被数据罚分稀释（→EXP10）
+- **Limitation**：main/holdout 不稳定（5.0% vs 17.0%）如实记录
+
+### EXP08 EQT 第四模型
+- **H**：模型池缺一个真正的强 OBS 模型（geofon 是凑数的陆地模型）
+- **E**：EQT 探针（50 条）：S 容差内 100% vs OBSTransformer 82%
+- **R**：C 批准新增（锁死条件：不替换）；EQT 跑 895 条 → 四模型冻结 v2
+- **Result**：天花板 46.7→54.2%（+47 单元恢复输出）；Trust 反超全部单模型
+
+### EXP09 STA/LTA 第五证据（负结果，淘汰）
+- **H**：STA/LTA 触发支持可作为第五证据（独立机制交叉验证）
+- **E**：12 组合（W×X）预注册校准
+- **O**：全部组合 4.2% 与基线相同；诊断：正确拾取 46.7% 无支持 vs 错误 60.9%
+  ——弱相关 + 高误伤，排序边界不动
+- **R**：按预注册准则 X=0 胜出，证据淘汰；STA/LTA 保留 Traditional 参照系用途
+- **价值**：预注册的失败条款被执行（设计文档硬约束第 4 条），负结果完整留痕
+
+### EXP10 DS4 自然罚分重校准
+- **H**：注入校准罚分在自然数据上仍有效
+- **O**：DS4 判定不成立——自然危害率远低于注入值（强噪声 4.5% vs 91.3%、
+  缺道 5.0% vs 28.6%、削波 0% vs 35.8%）；低信噪样本错误率（4.5%）
+  甚至低于无故障基线（6.6%）
+- **R**：自然罚分候选（B_natural）validation 双线胜
+  （main 4.2→3.82%，holdout 12.31→11.54%，方向一致）→ 冻结 v1.4
+- **Result**：50% 点 Unsafe 5.8→5.4%；**bootstrap S 相从显著落后转为统计并列**
+
+## 三、负结果清单（官方明确允许，须如实呈现）
+
+1. **STA/LTA 第五证据被淘汰**（EXP09）——弱相关，预注册程序裁决 X=0
+2. **DS4 相关性不成立**（EXP10 前半）——缺道/低信号与错误风险的相关性
+   在自然数据上不存在（仅断点弱相关 9.5% vs 6.6%）
+3. **DS1 未全线成立**——与 Voting 统计并列而非显著领先（bootstrap CI 含 0）
+4. **覆盖率天花板 54.2%**——半数单元无安全自动路径（保守拒绝的代价）
+5. **main/holdout 不稳定**——main 3.82% vs holdout 11.54%（选择程序的方向
+   一致但幅度不稳，样本量限制）
+6. **overlap 未审计**——obs/obst2024 与评估集的训练重叠 UNKNOWN，按 C 契约
+   相关结论降级表述
+
+## 四、修正证据链（legacy 保留）
+
+| 文件 | 内容 |
+|---|---|
+| docs/experiments/legacy/param_identification.json | 早期小样本参数（被 EXP01 取代） |
+| docs/experiments/legacy/weight_calibration.json | 早期权重校准（被 n=895 逻辑回归取代） |
+| src/calibrate/internal_score_calibration.py | 注入校准方法（被 EXP10 自然校准取代，保留作对照） |
+| src/experiments/real_baseline_final.py | 历史成对口径 + 假质量基线（保留作历史记录） |
+| configs/semifinal_main.yaml 版本注释 | v1.1→v1.4 全部变更留痕 |
+
+## 五、v1.4 关键数字速查表（C 引用用）
+
+| 数字 | 值 | 出处 |
+|---|---|---|
+| N_eval | 1306 (P 657 + S 649) | data/manifest_phase.csv |
+| 容差 | P 0.5s / S 1.0s | 12 档敏感性证据 results/tolerance_sensitivity.json |
+| Trust Unsafe@50% | 5.4% | results/equal_coverage_trust.csv |
+| Voting Unsafe@50% | 4.6% | results/baseline_results.csv |
+| 最好单模型（EQT）@50% | 7.2% | results/model_comparison.csv |
+| OBSTransformer S 容差内 | 72.0% | results/model_comparison.csv |
+| 天花板 | 54.2%（708/1306 有有效输出） | results/main_results.csv |
+| 拦截率@50% | 94.6% | results/equal_coverage_trust.csv |
+| Bootstrap Δ(vs Voting) | +0.7pp, CI [-1.8, +3.2] → INCONCLUSIVE | results/bootstrap_ci.json |
+| S 相 Δ | +2.0pp, CI [-1.5, +4.9]（v1.3 时为显著落后） | results/bootstrap_ci.json |
+| 风险分箱 | 4.18→10.38→28.57%（单调） | results/risk_bins.csv |
+| failure 未拦住@50% | 35 个（总错误/无拾取 644） | results/failure_raw.csv |
+| 四模型原始错误率 | geofon 20.8 / obs 12.4 / obst 20.4 / EQT 13.5% | results/model_comparison.csv |
+
+## 六、数字出处规则（C 引用时）
+
+- 所有主实验数字来自 v1.4（configs/semifinal_main.yaml 冻结）
+- 历史数字（29.1%→2.8% 等）**不得引用**，已由 v1.4 全链重跑取代
+- 任何定量表述指回上表"出处"文件即可满足可追溯要求
