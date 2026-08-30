@@ -208,25 +208,27 @@ def build_sample_metadata(meta: dict, trace_idx: int, chunk: str) -> dict:
 MODEL_PROFILES: Dict[str, dict] = {
     "PhaseNet": {
         "model_name": "PhaseNet",
-        "model_version": "obs_pretrained",
+        # 指纹验证 (model_registry.md): 冻结数据此列为 geofon 陆地权重, 非 obs
+        "model_version": "geofon_pretrained",
         "model_family": "generic_three_component",
-        # PhaseNet 训练于三分量地震数据 (Z, N, E)
+        # geofon 为陆地三分量模型 (Z, N, E)
         "required_channels": ["Z", "N", "E"],
         "preferred_channels": [],
         "accepted_sampling_rates_hz": [100.0],
         "resampling_supported": True,
         "required_preprocessing_version": "obs_raw_v1",
-        "validation_profile_id": "phasenet_obs_zenodo_v1",
+        "validation_profile_id": "phasenet_geofon_v1",
         "validation_domain_known": True,
         "profile_source": "REAL_ADAPTER",
     },
     "PickBlue": {
         "model_name": "PickBlue",
-        "model_version": "phasenet_base",
+        # seisbench 0.12.3: PickBlue(base="phasenet") ≡ PhaseNet.from_pretrained("obs")
+        "model_version": "obs_pretrained",
         "model_family": "obs_specialized",
-        # PickBlue 在 PhaseNet 基础上针对 OBS 优化，需要 4 分量
-        "required_channels": ["Z", "N", "E", "H"],
-        "preferred_channels": [],
+        # v1.2 选择程序 (semifinal_main.yaml): 实际输入契约以 H 为主, 缺 E 仍可用
+        "required_channels": ["Z", "H"],
+        "preferred_channels": ["N", "E"],
         "accepted_sampling_rates_hz": [100.0],
         "resampling_supported": True,
         "required_preprocessing_version": "obs_raw_v1",
@@ -262,14 +264,15 @@ def init_models():
     adapter_statuses = []
 
     try:
-        models["PhaseNet"] = PhaseNet.from_pretrained("obs")
+        # 指纹验证 (model_registry.md): 冻结数据此列为 geofon 陆地权重
+        models["PhaseNet"] = PhaseNet.from_pretrained("geofon")
         adapter_statuses.append({
             "model_name": "PhaseNet",
             "loaded": True,
             "run_succeeded": True,
             "output_comparable": True,
         })
-        print("    PhaseNet (obs) ✓", flush=True)
+        print("    PhaseNet (geofon) ✓", flush=True)
     except Exception as e:
         print(f"    PhaseNet ✗ ({e})", flush=True)
         adapter_statuses.append({
@@ -335,6 +338,22 @@ def get_stream(obs_dataset, trace_idx: int):
         }
         traces.append(Trace(data=waveform[i], header=hdr))
     return Stream(traces=traces), waveform, meta
+
+
+def stream_for_model(model_name: str, stream: Stream) -> Stream:
+    """按模型实测 component_order 组装输入流。
+
+    geofon (冻结"PhaseNet"列) 为陆地三分量模型 (ZNE): 选 Z/1/2 并映射
+    1→N、2→E —— 指纹复现验证 (end_to_end_verification.py) 同款逻辑。
+    其余模型直接使用完整流 (PickBlue/obs 用 Z12H, OBSTransformer 兼容全流)。
+    """
+    if model_name == "PhaseNet":
+        subset = stream.select(channel="Z") + stream.select(channel="1") \
+            + stream.select(channel="2")
+        for trace in subset:
+            trace.stats.channel = {"Z": "Z", "1": "N", "2": "E"}[trace.stats.channel]
+        return subset
+    return stream
 
 
 def classify(model, model_name: str, stream) -> dict:
@@ -488,7 +507,7 @@ def process_trace(
     raw_results = {}
     for name, model in models.items():
         print(f"  Running {name}...", flush=True)
-        raw_results[name] = classify(model, name, stream)
+        raw_results[name] = classify(model, name, stream_for_model(name, stream))
 
     predictions = build_model_predictions(sample_id, window_id, raw_results, adapter_statuses)
 
