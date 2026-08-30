@@ -1,0 +1,38 @@
+{
+  "PhaseNet": {
+    "a": 1.247,
+    "b": 0.763,
+    "n_main": 100,
+    "n_holdout": 30,
+    "brier_raw": 0.2099,
+    "brier_cal": 0.2464,
+    "ece_cal": 0.1647
+  },
+  "PickBlue": {
+    "a": 2.82,
+    "b": 0.205,
+    "n_main": 1003,
+    "n_holdout": 248,
+    "brier_raw": 0.1628,
+    "brier_cal": 0.1371,
+    "ece_cal": 0.0578
+  },
+  "OBSTransformer": {
+    "a": 3.87,
+    "b": -1.812,
+    "n_main": 1028,
+    "n_holdout": 252,
+    "brier_raw": 0.2071,
+    "brier_cal": 0.1977,
+    "ece_cal": 0.1027
+  },
+  "EQTransformer": {
+    "a": 3.651,
+    "b": -0.29,
+    "n_main": 998,
+    "n_holdout": 250,
+    "brier_raw": 0.1587,
+    "brier_cal": 0.1401,
+    "ece_cal": 0.0679
+  }
+}
