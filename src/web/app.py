@@ -438,11 +438,10 @@ def main() -> None:
     risk_threshold = control_cols[0].slider(
         "Risk threshold",
         min_value=0.0,
-        max_value=1.0,
-        value=0.50,
-        step=0.05,
+        max_value=100.0,
+        value=10.0,
+        step=1.0,
     )
-
     p_tolerance = control_cols[1].slider(
         "P tolerance (s)",
         min_value=0.05,
