@@ -1,7 +1,7 @@
 """
 三张主图最终版 + failure raw data 导出
 
-主图 1: figures/coverage_vs_unsafe.png       (run_main_experiment 已生成, v1.4)
+主图 1: figures/coverage_vs_unsafe.png       (run_main_experiment 已生成, v1.5)
 主图 2: figures/risk_vs_actual_error.png     (本脚本, 风险分箱 vs 实际错误率)
 主表 1: results/equal_coverage_table.csv     (本脚本, 全部策略 × 5 覆盖率点)
 附加:   results/failure_raw.csv              (Trust 错误单元明细, 供 C 分类)
@@ -47,7 +47,7 @@ def main():
                 f"{rate:.1f}%\n(n={n})", ha="center", fontsize=10)
     ax.set_xlabel("Risk Score Bin")
     ax.set_ylabel("Actual Error Rate (%)")
-    ax.set_title("Risk Score vs Actual Error Rate (semifinal_v1.4, "
+    ax.set_title("Risk Score vs Actual Error Rate (semifinal_v1.5, "
                  "output-capable units)")
     ax.set_ylim(0, max(rates) * 1.4 + 5)
     ax.grid(axis="y", alpha=0.3)
@@ -56,7 +56,7 @@ def main():
     plt.close(fig)
     print(f"✓ 主图 2: {FIG2}")
 
-    # ── 主表 1: Equal-Coverage 全表 ──
+    # ── 主表 1: Equal-Coverage 全表 (NOT_EVALUABLE 纪律) ──
     points = ["50", "60", "70", "80", "90"]
     strategies = {}
     with open(ROOT / "results" / "baseline_results.csv", encoding="utf-8") as f:
@@ -64,34 +64,39 @@ def main():
             name = row["strategy"]
             if name == "Random":
                 continue
-            strategies.setdefault(name, {})[row["target_coverage_pct"]] = float(
-                row["unsafe_output_rate_pct"])
+            feasible = row.get("feasible", "true").lower() == "true"
+            strategies.setdefault(name, {})[row["target_coverage_pct"]] = (
+                float(row["unsafe_output_rate_pct"]) if feasible else None
+            )
     trust_row = {}
+    trust_ceiling = 0.0
+    trust_50_feasible = False
+    trust_threshold = None
     with open(ROOT / "results" / "equal_coverage_trust.csv", encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            trust_row[row["target_coverage_pct"]] = float(row["unsafe_output_rate_pct"])
-    # Trust 覆盖率天花板 (60-90% 点位不可达, 留空避免误导)
-    trust_ceiling = 54.2
-    strategies["TrustLayer(v1.4)"] = {p: (trust_row[p] if p == "50" else None)
-                                      for p in points}
+            feasible = row.get("feasible", "false").lower() == "true"
+            trust_row[row["target_coverage_pct"]] = (
+                float(row["unsafe_output_rate_pct"]) if feasible else None
+            )
+            trust_ceiling = max(trust_ceiling, float(row["coverage_pct"]))
+            if row["target_coverage_pct"] == "50":
+                trust_50_feasible = feasible
+                if feasible:
+                    trust_threshold = float(row["risk_threshold"])
+    strategies["TrustLayer(v1.5)"] = trust_row
 
     with open(TABLE, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["strategy"] + [f"{p}%_unsafe" for p in points] + ["ceiling_pct"])
         for name in strategies:
-            ceiling = trust_ceiling if name.startswith("TrustLayer") else ""
+            ceiling = round(trust_ceiling, 2) if name.startswith("TrustLayer") else ""
             writer.writerow([name] + [
                 f"{strategies[name].get(p, ''):.1f}" if strategies[name].get(p) is not None
                 else "" for p in points] + [ceiling])
     print(f"✓ 主表 1: {TABLE}")
 
     # ── failure raw data (Trust 错误单元, 供 C 分类) ──
-    op_threshold = trust_row.get("50", 17.3)
-    # v1.4 50% 点位有效阈值从 equal_coverage_trust.csv 读取
-    with open(ROOT / "results" / "equal_coverage_trust.csv", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            if row["target_coverage_pct"] == "50":
-                op_threshold = float(row["risk_threshold"])
+    op_threshold = trust_threshold if trust_50_feasible else None
     quality = {}
     with open(ROOT / "data" / "quality_manifest.csv", encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -113,9 +118,14 @@ def main():
                 "action": row["action"],
                 "risk": row["risk"],
                 "verdict": row["verdict"],
-                "auto_at_50pct": "yes" if (row["verdict"] == "wrong"
-                                            and row["auto_capable"] == "True"
-                                            and float(row["risk"]) <= op_threshold) else "no",
+                "auto_at_50pct": (
+                    "NOT_EVALUABLE" if not trust_50_feasible
+                    else "yes" if (
+                        row["verdict"] == "wrong"
+                        and row["auto_capable"] == "True"
+                        and float(row["risk"]) <= op_threshold
+                    ) else "no"
+                ),
                 "snr_db": q.get("snr_db", ""),
                 "gap_ratio": q.get("gap_ratio", ""),
                 "clipping_ratio": q.get("clipping_ratio", ""),
@@ -126,8 +136,11 @@ def main():
         writer.writeheader()
         writer.writerows(out_rows)
     n_uncaught = sum(1 for r in out_rows if r["auto_at_50pct"] == "yes")
-    print(f"✓ failure raw: {FAILURE} ({len(out_rows)} 个错误/无拾取单元, "
-          f"其中 50% 点位未拦住 {n_uncaught} 个, 阈值 {op_threshold})")
+    if trust_50_feasible:
+        suffix = f"50% 点位未拦住 {n_uncaught} 个, 阈值 {op_threshold}"
+    else:
+        suffix = f"50% 点位 NOT_EVALUABLE, Trust 天花板 {trust_ceiling:.2f}%"
+    print(f"✓ failure raw: {FAILURE} ({len(out_rows)} 个错误/无拾取单元, {suffix})")
 
 
 if __name__ == "__main__":

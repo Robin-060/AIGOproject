@@ -206,7 +206,13 @@ def main():
     print(f"无门控 (全部):     coverage {cov_all:.1f}%  unsafe {unsafe_all:.1f}%")
     print(f"仅 familiar:       coverage {cov_fam:.1f}%  unsafe {unsafe_fam:.1f}%")
     print(f"familiar+border:   coverage {cov_fb:.1f}%  unsafe {unsafe_fb:.1f}%")
-    print(f"XO 参照:           coverage 54.2%  unsafe 5.4%")
+    # XO 参照从当前主实验结果动态读取 (不硬编码)
+    import csv as _csv
+    xo_rows = list(_csv.DictReader(
+        open(ROOT / "results" / "main_results.csv", encoding="utf-8")))
+    xo_ceiling = (sum(1 for r in xo_rows if r["verdict"] in ("correct", "wrong"))
+                  / len(xo_rows) * 100)
+    print(f"XO 参照 (v1.5 主实验): 天花板 {xo_ceiling:.1f}%")
 
     success = (cov_fam < cov_all) and (unsafe_fam < unsafe_all)
     report = {

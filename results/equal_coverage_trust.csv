@@ -1,6 +1,6 @@
-strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile
-TrustLayer,50,50.0,5.51,50.0,94.41,18.3,hydrophone_v2
-TrustLayer,60,54.21,6.5,45.79,92.86,34.3,hydrophone_v2
-TrustLayer,70,54.21,6.5,45.79,92.86,34.3,hydrophone_v2
-TrustLayer,80,54.21,6.5,45.79,92.86,34.3,hydrophone_v2
-TrustLayer,90,54.21,6.5,45.79,92.86,34.3,hydrophone_v2
+strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile,feasible,comparison_status
+TrustLayer,50,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,60,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,70,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,80,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,90,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET

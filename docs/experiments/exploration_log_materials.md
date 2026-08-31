@@ -3,7 +3,7 @@
 > 用途：C 撰写 exploration_log.md 的原材料。每条按
 > Hypothesis → Experiment → Observation → Revision → Result → Limitation 组织，
 > 所有数字有出处文件，C 的定量表述可直接引用。
-> 覆盖：项目全程（含被推翻的早期方法），10 个实验条目 + 负结果清单 + 数字速查表。
+> 覆盖：项目全程（含被推翻的早期方法），14 个实验条目 + 负结果清单 + 数字速查表。
 
 ## 一、实验时间线总表
 
@@ -22,6 +22,7 @@
 | EXP11 | DS3 判定：分歧与错误关联 | **负结果** | P 不显著/S rho=0.09；发现"完全一致也会错"（11.3%/8.0%） |
 | EXP12 | DS5 泛化验证（_BLANCO 跨域） | **负结果→修正** | 跨域同降（21.5%）→ ID-only 域门（coverage 54.5→19.5%） |
 | EXP13 | C 五刀落地（v1.5） | 修正 | 校准入证据层 + 分歧单向化 + FUSE 门槛 + 准入制度 |
+| EXP14 | FUSE 门绕过审计 + NOT_EVALUABLE 纪律 | **负结果→修正** | 堵 4.5 步绕过后天花板 54.2→45.6%；50% 点 NOT_EVALUABLE；DS5 域门新标准未成立 |
 
 ## 二、逐条素材卡
 
@@ -122,8 +123,9 @@
 - **R**：C 第三刀收缩——ID-only 域熟悉度门（马氏距离，XO 建正常范围）。
   **DS5 新成功标准**：coverage 主动下降 + retained unsafe 降低
   （不要求准确率恢复）
-- **Result**：新标准成立——BLANCO coverage 54.5%→19.5%，retained unsafe
+- **Result**：v1.4 引擎下新标准成立——BLANCO coverage 54.5%→19.5%，retained unsafe
   23.9%→21.8%；**边界**：retained 21.8% 仍高于域内 5.4%，门是必要护栏非完整解药
+  ⚠️ v1.5 严格门槛引擎下重跑 → 新标准未成立（见 EXP14 / 负结果清单 11）
 - **出处**：results/domain_gate.json、results/generalization_blanco.json
 
 ### EXP13 C 五刀落地（v1.5）
@@ -131,10 +133,27 @@
 - **R**：① Platt 校准入证据层（PickBlue/OBSTransformer/EQT；geofon 样本
   不足保留 raw）② 分歧粗分三级 + FUSE 门槛 ③ ID-only 域门 ④ Evidence
   Admission Rule 冻结（STA/LTA 结案为被拒首例）
-- **Result**：主结果持平（5.5%@50，与 Voting 统计并列），holdout 稳定性改善
+- **Result**：初版主结果持平（5.5%@50，与 Voting 统计并列），holdout 稳定性改善
   （11.5→10.0%）；置信度获得统计语义（校准后 0.78≈78% 正确）
+  ⚠️ 该 5.5%@50 数字后来被 EXP14 取代——当时存在第 4.5 步绕过，50% 点位实为不可达
 - **出处**：results/calibration/、docs/experiments/evidence_admission_rule.md、
   docs/experiments/ds_findings_v15.md
+
+### EXP14 FUSE 门绕过审计 + NOT_EVALUABLE 纪律（v1.5 收口）
+- **H**：v1.5 的校准 FUSE 门槛对所有 FUSE 路径生效
+- **E**：policy_router 路径审计 → 发现第 4.5 步"多模型共识但无显式融合候选"分支
+  直接走单模型主路，未检查 FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR——
+  低置信共识绕过 FUSE 门
+- **O**：堵住后 Trust 最大可达覆盖率 54.2%→45.64%（596/1306 有有效输出），
+  预声明 50% 点位不可达；原 5.5%@50 数字作废
+- **R**：Equal-Coverage 纪律升级——不可达预声明点位输出 NOT_EVALUABLE /
+  NOT_COMPARABLE_AT_TARGET，不填 Unsafe、不做显著性结论；
+  bootstrap 另出天花板补充比较（非声明点位，明确标注"补充"）
+- **Result**：ALL 天花板补充 Δ=+1.17pp（Trust 6.04 vs Voting 4.87），
+  CI [-1.42, +2.87] 含 0 → INCONCLUSIVE；同口径下 DS5 域门新标准未成立
+  （见负结果清单 10-11）
+- **出处**：results/bootstrap_ci.json、results/equal_coverage_trust.csv、
+  results/domain_gate.json
 
 ## 三、负结果清单（官方明确允许，须如实呈现）
 
@@ -144,22 +163,28 @@
 3. **DS3 相关性不成立**（EXP11）——P 不显著、S 极弱；且"完全一致也会错"
 4. **DS5 原条款不成立**（EXP12 前半）——跨域后与 Voting 同降，未主动降级
 5. **DS1 未全线成立**——与 Voting 统计并列而非显著领先（bootstrap CI 含 0）
-6. **覆盖率天花板 54.2%**——近半数单元无安全自动路径（保守拒绝的代价）
+6. **覆盖率天花板 45.64%**（严格 FUSE 门槛后；堵住绕过前为 54.2%）——近半数单元无安全自动路径（保守拒绝的代价）
 7. **main/holdout 不稳定**——选择程序方向一致但幅度不稳（样本量限制）
 8. **overlap 未审计**——obs/obst2024 与评估集的训练重叠 UNKNOWN，按 C 契约
    相关结论降级表述
-9. **域门边界**（EXP12 后半）——retained unsafe 21.8% 仍高于域内 5.4%，
+9. **域门边界**（EXP12 后半）——v1.4 引擎下 retained unsafe 21.8% 仍高于域内 5.4%，
    门控是必要护栏、非完整解药
+10. **FUSE 门被第 4.5 步绕过**（EXP14）——v1.4/v1.5 初版的 50% 点数字（天花板 54.2%、
+    5.5%@50）在存在该路径漏洞时测得；堵住后天花板 45.64%，50% 预声明点位
+    NOT_EVALUABLE——预声明点位不可达本身即是代价，如实记录
+11. **DS5 域门新标准未成立（严格引擎下）**（EXP14）——coverage 37.8%→16.0%
+    主动降级 ✓，但 retained unsafe 25.0% > 无门控 22.5% ✗：门只降"量"、未滤"质"；
+    宽松档 familiar_borderline（coverage 25.2% / unsafe 21.8%）勉强双达标但幅度微弱
 
 ## 三·五、DS 判定总表（v1.5 新口径，C 调整）
 
 | DS | 问题 | 判定 |
 |---|---|---|
-| DS1 | 是否真的优于简单投票 | ⚠️ 统计并列（诚实边界：同域模型接近时复杂调度边际有限） |
+| DS1 | 是否真的优于简单投票 | ⚠️ **NOT_EVALUABLE@50%**（天花板 45.6% < 50%）；天花板补充比较 INCONCLUSIVE（诚实边界：同域模型接近时复杂调度边际有限） |
 | DS2 | 基础排序是否可靠 | ✅ 成立（保住） |
-| DS3 | 分歧能否识别风险 | ❌ 实测不成立 → v1.5 逻辑修正（单向风险证据） |
+| DS3 | 分歧能否识别风险 | ❌ 实测不成立 → v1.5 逻辑修正（单向风险证据 + FUSE 校准门槛 + 堵 4.5 步绕过） |
 | DS4 | 数据质量是否预测错误 | ❌ 不成立 → 角色重定义（input integrity guard） |
-| DS5 | shift 能否检测并降级 | ✅ 成立（新标准：coverage 主动下降 + retained unsafe 降低） |
+| DS5 | shift 能否检测并降级 | ⚠️ 部分成立：coverage 主动降级 ✓ / retained unsafe 未降 ✗（新标准未成立） |
 
 ## 四、修正证据链（legacy 保留）
 
@@ -177,22 +202,22 @@
 |---|---|---|
 | N_eval | 1306 (P 657 + S 649) | data/manifest_phase.csv |
 | 容差 | P 0.5s / S 1.0s | 12 档敏感性证据 results/tolerance_sensitivity.json |
-| Trust Unsafe@50% | 5.5% | results/equal_coverage_trust.csv |
-| Voting Unsafe@50% | 4.6% | results/baseline_results.csv |
+| Trust Unsafe@50% | **NOT_EVALUABLE**（天花板 45.64% < 50%，预声明点位不可达） | results/equal_coverage_trust.csv |
+| Voting Unsafe@50% | 4.59% | results/baseline_results.csv |
 | 最好单模型（EQT）@50% | 7.2% | results/model_comparison.csv |
 | OBSTransformer S 容差内 | 72.0% | results/model_comparison.csv |
-| 天花板 | 54.2%（708/1306 有有效输出） | results/main_results.csv |
-| 拦截率@50% | 94.4% | results/equal_coverage_trust.csv |
-| Bootstrap Δ(vs Voting) | +0.9pp, CI [-1.4, +3.4] → INCONCLUSIVE | results/bootstrap_ci.json |
-| S 相 Δ | +2.8pp, CI [-1.2, +5.0] → INCONCLUSIVE | results/bootstrap_ci.json |
-| 风险分箱 | 3.96→9.6→28.57%（单调） | results/risk_bins.csv |
-| failure 未拦住@50% | 36 个（总错误/无拾取 644） | results/failure_raw.csv |
+| 天花板 | 45.64%（596/1306 有有效输出；堵住 FUSE 门绕过前为 54.2%） | results/main_results.csv |
+| 拦截率@50% | NOT_EVALUABLE（50% 点位不可达） | results/equal_coverage_trust.csv |
+| Bootstrap Δ(vs Voting) | 50% 点 NOT_EVALUABLE；天花板补充（45.6% 点）Δ=+1.17pp, CI [-1.42, +2.87] → INCONCLUSIVE | results/bootstrap_ci.json |
+| S 相 Δ | 天花板补充 Δ=+3.4pp, CI [-1.0, +5.67] → INCONCLUSIVE | results/bootstrap_ci.json |
+| 风险分箱 | 4.07→9.2→28.57%（单调，n=418/163/14；30+ 分箱 n<10 标不可靠） | results/risk_bins.csv |
+| failure 未拦住@50% | NOT_EVALUABLE（50% 点位不可达） | results/failure_raw.csv |
 | 校准器（Platt） | PickBlue/EQT Brier 改善 12-16%；geofon 不校 | results/calibration/platt_calibrators.json |
 | 域门阈值（XO 马氏距离） | 95%=3.94 / 99%=5.27 | results/domain_gate.json |
-| DS5 新标准 | BLANCO coverage 54.5→19.5%，retained 23.9→21.8% | results/domain_gate.json |
+| DS5 新标准 | ❌ 未成立（严格引擎下）：coverage 37.8→16.0% ✓ / retained unsafe 25.0% vs 22.5% ✗ | results/domain_gate.json |
 
 ## 六、数字出处规则（C 引用时）
 
-- 所有主实验数字来自 v1.4（configs/semifinal_main.yaml 冻结）
-- 历史数字（29.1%→2.8% 等）**不得引用**，已由 v1.4 全链重跑取代
+- 所有主实验数字来自 v1.5（configs/semifinal_main.yaml 冻结，含 FUSE 门绕过修复）
+- 历史数字（29.1%→2.8%、5.5%@50 等）**不得引用**，已由 v1.5 全链重跑取代
 - 任何定量表述指回上表"出处"文件即可满足可追溯要求

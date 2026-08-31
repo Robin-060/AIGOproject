@@ -1,3 +1,6 @@
 # 冻结数据与配置文件强制 LF 换行 (复现校验跨平台稳定)
 data/*.json text eol=lf
 configs/*.yaml text eol=lf
+
+# shell 脚本强制 LF (Linux 评审环境可直接执行)
+*.sh text eol=lf

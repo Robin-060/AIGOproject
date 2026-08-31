@@ -96,6 +96,13 @@ def route_phase(
 
     # ── 第 4.5 步: 多模型共识但无显式融合候选 ──────────
     if consensus and consensus.status == "CONSENSUS" and len(survivors) >= 2:
+        # 第二刀 (v1.5): 共识不能绕过校准置信度门槛 — 低置信共识一律 ABSTAIN
+        if (fusion_candidate is not None
+                and not fusion_candidate.fusion_allowed
+                and "FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR" in fusion_candidate.reasons):
+            decision.action = Action.ABSTAIN.value
+            decision.reason_codes = reasons + ["FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR"]
+            return decision
         primary = config.primary_model
         if _risk_too_high(phase_risk, config):
             decision.reason_codes = reasons + ["CONSENSUS_RISK_ABOVE_AUTO_THRESHOLD"]

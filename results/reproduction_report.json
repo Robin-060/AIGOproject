@@ -1,5 +1,5 @@
 {
-  "config_version": "semifinal_v1.4",
+  "config_version": "semifinal_v1.5",
   "seed": 42,
   "environment": {
     "seisbench": "0.12.3",
@@ -32,15 +32,13 @@
     }
   },
   "core_numbers": {
-    "trust_unsafe_pct_at_50": 5.51,
+    "trust_unsafe_pct_at_50": null,
     "voting_unsafe_pct_at_50": 4.59,
-    "delta_trust_minus_voting_pp": 0.92,
-    "ci95": [
-      -1.42,
-      3.35
-    ],
-    "verdict": "INCONCLUSIVE (CI 包含 0)"
+    "declared_point_50": "NOT_EVALUABLE",
+    "trust_ceiling_pct": 45.64,
+    "ceiling_supplementary_delta_pp": 1.17,
+    "ceiling_supplementary_verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 51.5,
-  "timestamp_utc": "2026-08-31T02:39:22.271622+00:00"
+  "duration_s": 104.8,
+  "timestamp_utc": "2026-08-31T08:23:54.452440+00:00"
 }

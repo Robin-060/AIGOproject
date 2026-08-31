@@ -7,11 +7,14 @@
 
 ```bash
 pip install -r requirements.txt          # 依赖安装
-python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主图
+bash smoke_test.sh                       # 环境自检: 依赖 + 冻结数据 + 52 个测试
+bash reproduce_core.sh                   # 一键复现核心数字与三张主图
+# 等价于: python -m src.experiments.reproduce_main
 ```
 
-复现范围：冻结数据校验 → 基线对比 → 主实验 → 全方法对比 → bootstrap → 主图。
+复现范围：冻结数据校验 → 基线对比 → 主实验 → 全方法对比 → bootstrap → 主图 → 探索轨迹。
 **全程使用冻结预测，不运行模型推理**（预测是冻结物；重跑模型的入口见第 6 节）。
+两个 shell 脚本兼容 Linux 与 Windows（解释器自动回退 python3 → python）。
 
 ## 2. 环境（版本已冻结）
 
@@ -45,7 +48,7 @@ python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主
 | bootstrap 种子/次数 | 42 / 1000 次（cluster=60 台站） | bootstrap_analysis.py |
 | 置信度校准 | Platt（main 拟合，holdout 验证）；geofon 不校准 | confidence_calibration.py |
 
-## 5. 输出与核心数字（v1.4 预期）
+## 5. 输出与核心数字（v1.5 预期）
 
 | 输出 | 文件 |
 |---|---|
@@ -57,10 +60,14 @@ python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主
 | bootstrap | results/bootstrap_ci.json |
 | 主表/主图 | results/equal_coverage_table.csv、figures/*.png |
 | failure 明细 | results/failure_raw.csv |
+| 探索轨迹 | results/exploration_trajectory.jsonl（EXP01–14，由 generate_trajectory.py 生成，产物引用缺失时告警） |
 | 复现报告 | results/reproduction_report.json |
 
-核心数字（50% 覆盖率点）：Trust 5.5% | Voting 4.6% | Δ=+0.9pp，
-95% CI [-1.4, +3.4] → INCONCLUSIVE（统计并列）；S 相 Δ=+2.8pp CI [-1.2, +5.0]。
+核心数字（v1.5 严格 FUSE 门槛后）：Trust 覆盖率天花板 **45.6%**——
+预声明点位 50% **NOT_EVALUABLE**（不等覆盖比较不给出显著性结论）；
+天花板点位补充比较：Trust 6.0% vs Voting 4.9%，Δ=+1.2pp，
+95% CI 含 0 → INCONCLUSIVE（统计并列）；P 相点估计反超（−1.3pp）、
+S 相落后（+3.4pp）。Voting@50% = 4.59%。
 
 ## 6. 重跑模型推理（可选，非复现必需）
 
@@ -74,5 +81,5 @@ python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主
 - obs/obst2024 与评估集的训练重叠未审计（overlap UNKNOWN）——按 C 契约
   相关结论降级表述
 - 冻结"PhaseNet"列实为 geofon（陆地模型），身份与证据见 model_registry.md
-- 覆盖率天花板 54.2%（半数单元无安全自动路径）
+- 覆盖率天花板 45.6%（严格 FUSE 门槛后；596/1306 单元有安全自动路径，其余保守拒绝）
 - main/holdout 结果存在幅度不稳定（3.82% vs 11.54%），样本量限制

@@ -8,17 +8,17 @@
     "unfamiliar": 66
   },
   "ungated": {
-    "coverage": 54.5,
-    "unsafe": 23.9
+    "coverage": 37.8,
+    "unsafe": 22.5
   },
   "familiar_only": {
-    "coverage": 19.5,
-    "unsafe": 21.8
+    "coverage": 16.0,
+    "unsafe": 25.0
   },
   "familiar_borderline": {
-    "coverage": 32.2,
-    "unsafe": 24.0
+    "coverage": 25.2,
+    "unsafe": 21.8
   },
   "ds5_new_criterion": "coverage 主动下降 AND retained unsafe 降低",
-  "ds5_success": true
+  "ds5_success": false
 }

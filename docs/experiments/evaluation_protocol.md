@@ -64,6 +64,11 @@
 - 所有策略使用相同数据、相同真值、相同模型输出、相同正确性容差。
 - 各策略通过自身旋钮对齐到目标覆盖率点后再比 Unsafe Output Rate。
 - 不得通过提高拒绝比例单独宣称 Unsafe Rate 下降。
+- **NOT_EVALUABLE 纪律（v1.5 起）**：某策略在预声明点位不可达（覆盖率天花板
+  低于目标点）时，该点位输出 NOT_EVALUABLE / NOT_COMPARABLE_AT_TARGET，
+  **不给出 Unsafe 数值与显著性结论**——不等覆盖比较的显著性结论视为口径错误。
+  可达性以 max achievable coverage 判定（feasible 字段进入所有结果文件）；
+  补充比较只允许在天花板点位进行，并明确标注"非声明点位"。
 - 确证条件（C 契约 8.4）：cluster paired-bootstrap（station 重采样），
   ΔUnsafe 单侧 95% CI 上界 < 0；P、S 点估计分别报告，双相位声明需 Holm 校正。
 

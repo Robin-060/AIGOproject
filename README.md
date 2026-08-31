@@ -14,12 +14,12 @@
 - **模型分歧**：两个模型给出相差数秒的拾取，不知道该信谁
 - **物理不可能**：P 波拾取晚于 S 波，荒谬结果流入下游分析
 
-我们的实验（895 条真实标注样本）显示模型错误率 35.8%。Trust Layer 在四档噪声下均实现**零错误放行**（基线方法每档泄漏 1-4 个错误）。
+当前实验口径（semifinal_v1.5，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%（近半数单元被保守拒绝），风险排序严格单调（DS2 成立）；与 Voting 等参照系的天花板补充比较为统计并列（Δ=+1.17pp，CI 含 0）。其余假设的负结果与边界一律如实记录，见 [DS 判定汇总](docs/experiments/ds_findings_v15.md)。
 
 ## 系统架构
 
 ```
-数据层: PhaseNet / PickBlue / OBSTransformer → 统一预测格式
+数据层: PhaseNet(geofon) / PickBlue / OBSTransformer / EQTransformer → 统一预测格式
    ↓
 证据层:
   ├─ 数据质量证据      0-30 分
@@ -56,22 +56,41 @@ streamlit run src/web/app.py                             # 或: sh scripts/run_d
 ### 运行正式实验
 
 ```bash
-sh scripts/download_obs_201805.sh        # 下载最小 OBS 分块 (~353 MiB)
-python3 -m src.experiments.seisbench_noise  # 噪声鲁棒性实验
-sh scripts/run_public_evaluation.sh       # 重建公开评测表 + STA/LTA 基线 + CPU 基准
-python3 -m pytest -q                      # 运行全部测试 (37 个)
+bash smoke_test.sh                        # 环境自检: 依赖 + 冻结数据 + 52 个测试
+bash reproduce_core.sh                    # 一键复现核心数字与三张主图
+# 等价于: python3 -m src.experiments.reproduce_main
 ```
 
-实验固定使用官方测试集中 20 条四通道 P/S 标注波形，运行 PhaseNet/geofon、PickBlue/obs-phasenet 和 OBSTransformer/obst2024。严格指标同时报告准确率、覆盖率、选择性准确率、拒绝率、不安全输出率、P/S MAE 和 95% 置信区间。
+复现范围（全程使用冻结预测，不运行模型推理）：冻结数据 sha256 校验 → 8 策略基线 → 主实验 → 全方法对比 → cluster paired-bootstrap → 三张主图 → 探索轨迹 JSONL。核心数字落在 `results/reproduction_report.json`，详细口径见 [复现说明](docs/reproduction.md)。
 
 ## 实验结论摘要
 
-| 指标 | 结果 |
+| 指标 | 结果 (semifinal_v1.5) |
 |------|------|
-| 错误放行 | **0/20**（基线 2/20） |
-| 噪声鲁棒性 | L0-L3 全档零错误放行 |
-| 参数校准 | 全部阈值经 n=895 真实数据校准 |
-| 测试 | 37 个单元测试通过 |
+| 评估单元 | 1306 个 (P 657 + S 649)，容差 P 0.5s / S 1.0s |
+| Trust 覆盖率天花板 | 45.64%（严格 FUSE 门槛；596/1306 有安全自动路径） |
+| 预声明 50% 点位 | NOT_EVALUABLE（不等覆盖不比较，纪律见 [评估协议](docs/experiments/evaluation_protocol.md)） |
+| 风险排序 | 分箱严格单调 4.07→9.2→28.57%（DS2 成立） |
+| 测试 | 52 个单元测试通过 |
+| 一键复现 | `bash reproduce_core.sh`（冻结数据 sha256 校验） |
+
+## 复赛证据链（Evidence Chain）
+
+提交材料按以下主键可追溯，任何一段都能倒查到具体 run：
+
+> 代码版本 → config → 数据版本 → trajectory → result → Figure/Table → Scientific Claim
+
+| 环节 | 载体 | 入口 |
+|------|------|------|
+| 代码版本 | git 提交记录（integration 分支） | `git log` |
+| config | `configs/semifinal_main.yaml`（semifinal_v1.5，seed 42） | 同一文件 |
+| 数据版本 | 冻结预测 + 真值 + 质量清单（sha256 校验） | `reproduce_main` 第 1 步 |
+| trajectory | `results/exploration_trajectory.jsonl`（EXP01–14，Observation→Action→Tool→Feedback） | `src/experiments/generate_trajectory.py` |
+| result | `results/*.csv` + `bootstrap_ci.json` + `reproduction_report.json` | `bash reproduce_core.sh` |
+| Figure/Table | `figures/*.png` + `results/equal_coverage_table.csv` | 同上 |
+| Scientific Claim | 由 C 按实验冻结（候选口径见 [DS 判定汇总](docs/experiments/ds_findings_v15.md)） | `docs/final_report.md` |
+
+探索轨迹 JSONL 由脚本从 `docs/experiments/exploration_log_materials.md`（单一来源）生成，每条记录引用真实产物文件，产物缺失时脚本告警。
 
 ## 文档索引
 
@@ -79,6 +98,9 @@ python3 -m pytest -q                      # 运行全部测试 (37 个)
 |------|------|
 | [问题定义文档](docs/problem_definition.md) | 4 页问题定义（比赛主材料） |
 | [最终实验报告](docs/final_report.md) | 完整实验设置、结果与分析 |
+| [复现说明](docs/reproduction.md) | 一键复现入口、环境、核心数字 |
+| [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
+| [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
 | [参数溯源表](docs/parameter_provenance.md) | 每个参数的来源与校准方法 |
 | [数据与模型来源](docs/data_and_model_sources.md) | 数据合规声明 |
 | [开源计划](docs/open_source_plan.md) | 开源路线图 |

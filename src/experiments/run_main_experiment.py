@@ -270,7 +270,10 @@ def main():
     hold_rows = build_unit_rows(records, holdout_units, quality_map,
                                 PROFILE_CANDIDATES[winner], config, record_map)
     h_unsafe, h_ceiling = unsafe_at_coverage(hold_rows, 50)
-    print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | 天花板 = {h_ceiling:.1f}%")
+    if h_ceiling + 1e-9 < 50.0:
+        print(f"  holdout: 50% 点位 NOT_EVALUABLE (天花板 {h_ceiling:.1f}%)")
+    else:
+        print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | 天花板 = {h_ceiling:.1f}%")
 
     # ── 最终版 (胜者配置, 全单元) ──
     print(f"\n最终版 ({winner}, 全部单元)...")
@@ -292,11 +295,13 @@ def write_outputs(unit_rows, profile_name):
     print(f"Trust 覆盖率天花板: {len(output_rows)}/{len(unit_rows)} "
           f"= {len(output_rows)/len(unit_rows)*100:.1f}%")
 
-    print(f"\n{'目标Cov':>8} {'有效阈值':>8} {'实际Cov':>8} {'Unsafe':>8} {'Burden':>8} {'拦截率':>8}")
+    print(f"\n{'目标Cov':>8} {'有效阈值':>8} {'实际Cov':>8} {'Unsafe':>8} {'Burden':>8} {'拦截率':>8} {'状态':>24}")
     eq_rows = []
     trust_curve = {"cov": [], "unsafe": []}
     for target in COVERAGE_POINTS:
-        k = min(int(round(target / 100 * len(unit_rows))), len(output_sorted))
+        requested_k = int(round(target / 100 * len(unit_rows)))
+        feasible = requested_k <= len(output_sorted)
+        k = min(requested_k, len(output_sorted))
         accepted = {(r["sample_id"], r["phase"]) for r in output_sorted[:k]}
         eff_threshold = output_sorted[k - 1]["risk"] if k else 0.0
         auto_correct = auto_wrong = intercepted = total_errors = 0
@@ -316,19 +321,26 @@ def write_outputs(unit_rows, profile_name):
         unsafe = auto_wrong / auto * 100 if auto else 0.0
         burden = (len(unit_rows) - auto) / len(unit_rows) * 100
         inter = intercepted / total_errors * 100 if total_errors else 0.0
+        status = "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
         eq_rows.append({
             "strategy": "TrustLayer", "target_coverage_pct": target,
             "coverage_pct": round(cov, 2),
-            "unsafe_output_rate_pct": round(unsafe, 2),
+            "unsafe_output_rate_pct": round(unsafe, 2) if feasible else "",
             "review_burden_pct": round(burden, 2),
-            "error_interception_rate_pct": round(inter, 2),
-            "risk_threshold": round(eff_threshold, 2),
+            "error_interception_rate_pct": round(inter, 2) if feasible else "",
+            "risk_threshold": round(eff_threshold, 2) if feasible else "",
             "profile": profile_name,
+            "feasible": str(feasible).lower(),
+            "comparison_status": status,
         })
-        trust_curve["cov"].append(cov)
-        trust_curve["unsafe"].append(unsafe)
-        print(f"{target:>7}% {eff_threshold:>8.2f} {cov:>7.1f}% {unsafe:>7.1f}% "
-              f"{burden:>7.1f}% {inter:>7.1f}%")
+        if feasible:
+            trust_curve["cov"].append(cov)
+            trust_curve["unsafe"].append(unsafe)
+            print(f"{target:>7}% {eff_threshold:>8.2f} {cov:>7.1f}% {unsafe:>7.1f}% "
+                  f"{burden:>7.1f}% {inter:>7.1f}% {status:>24}")
+        else:
+            print(f"{target:>7}% {'—':>8} {cov:>7.1f}% {'—':>8} {burden:>7.1f}% "
+                  f"{'—':>8} NOT_EVALUABLE (天花板 {len(output_sorted)/len(unit_rows)*100:.1f}%)")
 
     with open(OUT_EQ, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(eq_rows[0].keys()))
@@ -342,10 +354,13 @@ def write_outputs(unit_rows, profile_name):
     for lo, hi in bins:
         members = [r for r in output_rows if lo <= r["risk"] < hi]
         errors = sum(1 for r in members if r["verdict"] == "wrong")
+        reliable = len(members) >= 10
         bin_rows.append({
             "risk_bin": f"{lo}-{hi - 1}", "n": len(members),
             "wrong": errors,
-            "error_rate_pct": round(errors / len(members) * 100, 2) if members else "",
+            "error_rate_pct": (round(errors / len(members) * 100, 2)
+                               if members and reliable else ""),
+            "reliable": str(reliable).lower(),
         })
     with open(OUT_BINS, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(bin_rows[0].keys()))
@@ -353,14 +368,18 @@ def write_outputs(unit_rows, profile_name):
         writer.writerows(bin_rows)
     print(f"✓ {OUT_BINS}")
     for row in bin_rows:
-        print(f"  risk {row['risk_bin']:>6}: n={row['n']:4d} 错误率={row['error_rate_pct']}%")
+        flag = "" if row["reliable"] == "true" else " (n<10 不可靠)"
+        print(f"  risk {row['risk_bin']:>6}: n={row['n']:4d} "
+              f"错误率={row['error_rate_pct'] or '—'}{flag}")
 
-    # 主图更新
+    # 主图更新 (跳过不可达点位行)
     base_csv = ROOT / "results" / "baseline_results.csv"
     strategies = {}
     with open(base_csv, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             name = row["strategy"]
+            if row.get("feasible", "true").lower() != "true":
+                continue
             strategies.setdefault(name, {"cov": [], "unsafe": []})
             strategies[name]["cov"].append(float(row["coverage_pct"]))
             strategies[name]["unsafe"].append(float(row["unsafe_output_rate_pct"]))
@@ -379,7 +398,7 @@ def write_outputs(unit_rows, profile_name):
     ax.set_xlabel("Coverage (%)")
     ax.set_ylabel("Unsafe Output Rate (%)")
     ax.set_title("Equal-Coverage Comparison on 1306 Phase Units "
-                 f"(semifinal_v1.2, profile={profile_name})")
+                 f"(semifinal_v1.5, profile={profile_name})")
     ax.legend()
     ax.grid(alpha=0.3)
     fig.tight_layout()

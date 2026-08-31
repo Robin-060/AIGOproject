@@ -1,6 +1,6 @@
-risk_bin,n,wrong,error_rate_pct
-0-9,480,19,3.96
-10-19,198,19,9.6
-20-29,28,8,28.57
-30-39,2,0,0.0
-40-50,0,0,
+risk_bin,n,wrong,error_rate_pct,reliable
+0-9,418,17,4.07,true
+10-19,163,15,9.2,true
+20-29,14,4,28.57,true
+30-39,1,0,,false
+40-50,0,0,,false

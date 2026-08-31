@@ -160,6 +160,7 @@ def run_gated(units, output_fn, risk_fn, target_pct):
         1 for u in units if u["primary_inclusion"]
         and output_fn(u) is not None
     ) / sum(1 for u in units if u["primary_inclusion"])
+    stats["feasible"] = target_pct / 100.0 <= stats["max_coverage"] + 1e-9
     return stats
 
 
@@ -185,20 +186,28 @@ def main():
     for name, (output_fn, risk_fn) in strategies.items():
         for target in COVERAGE_POINTS:
             stats = run_gated(units, output_fn, risk_fn, target)
+            feasible = stats["feasible"]
             rows.append({
                 "strategy": name, "target_coverage_pct": target,
                 "coverage_pct": round(stats["coverage"] * 100, 2),
-                "unsafe_output_rate_pct": round(stats["unsafe_output_rate"] * 100, 2),
+                "unsafe_output_rate_pct": (round(stats["unsafe_output_rate"] * 100, 2)
+                                            if feasible else ""),
                 "review_burden_pct": round(stats["review_burden"] * 100, 2),
-                "error_interception_rate_pct": round(stats["error_interception_rate"] * 100, 2),
+                "error_interception_rate_pct": (round(stats["error_interception_rate"] * 100, 2)
+                                                 if feasible else ""),
                 "max_coverage_pct": round(stats["max_coverage"] * 100, 2),
+                "feasible": str(feasible).lower(),
+                "comparison_status": (
+                    "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
+                ),
             })
             chart[name]["cov"].append(stats["coverage"] * 100)
             chart[name]["unsafe"].append(stats["unsafe_output_rate"] * 100)
+            status = "COMPARABLE" if feasible else "NOT_COMPARABLE"
             print(f"{name:>22} {target:>6}% {stats['coverage']*100:>7.1f}% "
                   f"{stats['unsafe_output_rate']*100:>7.1f}% "
                   f"{stats['review_burden']*100:>7.1f}% "
-                  f"{stats['error_interception_rate']*100:>7.1f}%")
+                  f"{stats['error_interception_rate']*100:>7.1f}% {status}")
 
     # Random (多种子, 独立协议); 随机拒绝与错误独立 → 拦截率 = 1 - coverage
     chart["Random"] = {"cov": [], "unsafe": []}
@@ -209,13 +218,21 @@ def main():
     for target in COVERAGE_POINTS:
         p = random_find_p(units, target)
         stat = random_across_seeds(units, p)
+        feasible = target <= obst_pick_frac * 100
         rows.append({
             "strategy": "Random", "target_coverage_pct": target,
             "coverage_pct": round(stat["coverage"] * 100, 2),
-            "unsafe_output_rate_pct": round(stat["unsafe_output_rate"] * 100, 2),
+            "unsafe_output_rate_pct": (round(stat["unsafe_output_rate"] * 100, 2)
+                                        if feasible else ""),
+            # 随机拒绝与错误独立 → burden = interception = 1 - coverage
             "review_burden_pct": round((1 - stat["coverage"]) * 100, 2),
-            "error_interception_rate_pct": round((1 - stat["coverage"]) * 100, 2),
+            "error_interception_rate_pct": (round((1 - stat["coverage"]) * 100, 2)
+                                             if feasible else ""),
             "max_coverage_pct": round(obst_pick_frac * 100, 2),
+            "feasible": str(feasible).lower(),
+            "comparison_status": (
+                "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
+            ),
         })
         chart["Random"]["cov"].append(stat["coverage"] * 100)
         chart["Random"]["unsafe"].append(stat["unsafe_output_rate"] * 100)
