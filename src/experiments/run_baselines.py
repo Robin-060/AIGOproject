@@ -32,6 +32,7 @@ from src.experiments.phase_evaluation import (
     evaluate_units,
     load_records,
 )
+from src.experiments.frozen_config import load_equal_coverage_points
 from src.experiments.random_baseline import (
     evaluate_across_seeds as random_across_seeds,
     find_p_for_coverage as random_find_p,
@@ -43,8 +44,10 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT_CSV = ROOT / "results" / "baseline_results.csv"
 OUT_FIG = ROOT / "figures" / "coverage_vs_unsafe.png"
 
-COVERAGE_POINTS = [50, 60, 70, 80, 90]
-SEVERE_THRESHOLD = {"P": 1.0, "S": 2.0}   # 暂用候选值, validation 冻结前标记 provisional
+# 覆盖率点位一律取自冻结配置 (v1.5.1), 不在脚本内硬编码
+COVERAGE_POINTS = load_equal_coverage_points()
+# 分歧严重档阈值 (v1.5 冻结, 与 multi_model.SEVERE_DISAGREEMENT 一致)
+SEVERE_THRESHOLD = {"P": 1.0, "S": 2.0}
 
 
 def conf_of(unit, model):

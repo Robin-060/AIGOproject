@@ -1,8 +1,9 @@
 """
 全方法对比表 (v2 规则) — 相位级 Equal-Coverage
 
-Trust Layer 用 v2 档案 (hydrophone_v2); 基线不受档案影响 (直接用冻结预测)。
-比较点位: 46.7% (Trust 覆盖率天花板) 与 50% (标准点)。
+Trust Layer 用冻结档案 (hydrophone_v2); 基线不受档案影响 (直接用冻结预测)。
+比较点位 (v1.5.1): Trust 覆盖率天花板点 (动态取 main_results.csv, 当前 45.6%)
+与 50% (标准点)。不可达点位按 NOT_EVALUABLE 纪律留空 Unsafe。
 输出: results/method_comparison_v2.csv + stdout 摘要表
 
 用法:
@@ -38,7 +39,6 @@ from src.experiments.run_baselines import (  # noqa: E402
 )
 
 OUT_CSV = ROOT / "results" / "method_comparison_v2.csv"
-POINTS = [46.7, 50.0]
 
 
 def unsafe_at(units, output_fn, risk_fn, target_pct):
@@ -67,6 +67,17 @@ def unsafe_at(units, output_fn, risk_fn, target_pct):
 def main():
     records = load_records()
     units = with_confidence(build_phase_units(records), records)
+
+    # Trust 天花板先行计算: 决定本表比较点位 (v1.5.1: 不再硬编码历史点 46.7)
+    import csv as _csv
+    trust_rows = list(_csv.DictReader(
+        open(ROOT / "results" / "main_results.csv", encoding="utf-8")))
+    output_rows = [r for r in trust_rows if r["verdict"] in ("correct", "wrong")]
+    trust_ceiling = len(output_rows) / len(trust_rows) * 100
+    ceiling_point = round(trust_ceiling, 1)
+    points = [ceiling_point, 50.0]
+    col_c = str(ceiling_point)
+
     strategies = {
         "Single-PickBlue": strat_single("PickBlue"),
         "Single-OBSTransformer": strat_single("OBSTransformer"),
@@ -77,47 +88,48 @@ def main():
         "Traditional-STA/LTA": strat_traditional(),
     }
     rows = []
-    print(f"{'方法':>22} | {'46.7% Unsafe':>11} | {'实际Cov':>7} | {'50% Unsafe':>9} | {'实际Cov':>7}")
+    print(f"{'方法':>22} | {f'{ceiling_point}% Unsafe':>12} | {'实际Cov':>7} | "
+          f"{'50% Unsafe':>9} | {'实际Cov':>7}")
     print("-" * 72)
     for name, (out_fn, risk_fn) in strategies.items():
-        cell = {}
-        for point in POINTS:
-            unsafe, cov, feasible = unsafe_at(units, out_fn, risk_fn, point)
-            cell[point] = (unsafe, cov, feasible)
+        cells = {point: unsafe_at(units, out_fn, risk_fn, point)
+                 for point in points}
+        c, f = cells[ceiling_point], cells[50.0]
         rows.append({
             "method": name,
-            "unsafe_46.7": (round(cell[46.7][0], 2) if cell[46.7][2] else ""),
-            "cov_46.7": round(cell[46.7][1], 2),
-            "status_46.7": "COMPARABLE" if cell[46.7][2] else "NOT_COMPARABLE_AT_TARGET",
-            "unsafe_50": (round(cell[50.0][0], 2) if cell[50.0][2] else ""),
-            "cov_50": round(cell[50.0][1], 2),
-            "status_50": "COMPARABLE" if cell[50.0][2] else "NOT_COMPARABLE_AT_TARGET",
+            f"unsafe_{col_c}": (round(c[0], 2) if c[2] else ""),
+            f"cov_{col_c}": round(c[1], 2),
+            f"status_{col_c}": "COMPARABLE" if c[2] else "NOT_COMPARABLE_AT_TARGET",
+            "unsafe_50": (round(f[0], 2) if f[2] else ""),
+            "cov_50": round(f[1], 2),
+            "status_50": "COMPARABLE" if f[2] else "NOT_COMPARABLE_AT_TARGET",
         })
-        print(f"{name:>22} | {cell[46.7][0]:>9.1f}% | {cell[46.7][1]:>6.1f}% | "
-              f"{cell[50.0][0]:>8.1f}% | {cell[50.0][1]:>6.1f}%")
+        print(f"{name:>22} | {c[0]:>12.1f}% | {c[1]:>7.1f}% | "
+              f"{f[0]:>9.1f}% | {f[1]:>7.1f}%")
 
     # Random (多种子)
     rand_cells = {}
-    for point in POINTS:
+    for point in points:
         p = random_find_p(units, point)
         stat = random_across_seeds(units, p)
-        rand_cells[point] = (stat["unsafe_output_rate"] * 100, stat["coverage"] * 100)
+        rand_cells[point] = (stat["unsafe_output_rate"] * 100,
+                             stat["coverage"] * 100)
+    rc, rf = rand_cells[ceiling_point], rand_cells[50.0]
     rows.append({
         "method": "Random",
-        "unsafe_46.7": round(rand_cells[46.7][0], 2), "cov_46.7": round(rand_cells[46.7][1], 2),
-        "unsafe_50": round(rand_cells[50.0][0], 2), "cov_50": round(rand_cells[50.0][1], 2),
+        f"unsafe_{col_c}": round(rc[0], 2),
+        f"cov_{col_c}": round(rc[1], 2),
+        f"status_{col_c}": "COMPARABLE",
+        "unsafe_50": round(rf[0], 2),
+        "cov_50": round(rf[1], 2),
+        "status_50": "COMPARABLE",
     })
-    print(f"{'Random':>22} | {rand_cells[46.7][0]:>9.1f}% | {rand_cells[46.7][1]:>6.1f}% | "
-          f"{rand_cells[50.0][0]:>8.1f}% | {rand_cells[50.0][1]:>6.1f}%")
+    print(f"{'Random':>22} | {rc[0]:>12.1f}% | {rc[1]:>7.1f}% | "
+          f"{rf[0]:>9.1f}% | {rf[1]:>7.1f}%")
 
     # Trust v1.5 (从 main_results.csv 直接算, 与基线同口径 + NOT_EVALUABLE 纪律)
-    import csv as _csv
-    trust_rows = list(_csv.DictReader(
-        open(ROOT / "results" / "main_results.csv", encoding="utf-8")))
-    output_rows = [r for r in trust_rows if r["verdict"] in ("correct", "wrong")]
     output_sorted = sorted(output_rows,
                            key=lambda r: (float(r["risk"]), r["sample_id"], r["phase"]))
-    trust_ceiling = len(output_rows) / len(trust_rows) * 100
 
     def trust_cell(point):
         requested = int(round(point / 100 * len(trust_rows)))
@@ -133,13 +145,12 @@ def main():
         unsafe = wrong / total * 100 if total else float("nan")
         return unsafe, total / len(trust_rows) * 100, feasible
 
-    t46 = trust_cell(46.7)
-    t50 = trust_cell(50.0)
+    tc, t50 = trust_cell(ceiling_point), trust_cell(50.0)
     rows.append({
         "method": "TrustLayer(v1.5)",
-        "unsafe_46.7": round(t46[0], 2) if t46[2] else "",
-        "cov_46.7": round(t46[1], 2),
-        "status_46.7": "COMPARABLE" if t46[2] else "NOT_COMPARABLE_AT_TARGET",
+        f"unsafe_{col_c}": round(tc[0], 2) if tc[2] else "",
+        f"cov_{col_c}": round(tc[1], 2),
+        f"status_{col_c}": "COMPARABLE" if tc[2] else "NOT_COMPARABLE_AT_TARGET",
         "unsafe_50": round(t50[0], 2) if t50[2] else "",
         "cov_50": round(t50[1], 2),
         "status_50": "COMPARABLE" if t50[2] else "NOT_COMPARABLE_AT_TARGET",
@@ -149,11 +160,10 @@ def main():
     for row in rows:
         row.setdefault("ceiling_pct", "")
     print("-" * 72)
-    print(f"{'TrustLayer(v1.5)':>22} | "
-          f"{t46[0]:>9.1f}% | {t46[1]:>6.1f}% | "
-          f"{t50[0]:>8.1f}% | {t50[1]:>6.1f}%")
-    print(f"Trust 天花板 {trust_ceiling:.1f}% — 46.7/50 点位: "
-          f"{'COMPARABLE' if t46[2] else 'NOT_EVALUABLE'}/"
+    print(f"{'TrustLayer(v1.5)':>22} | {tc[0]:>12.1f}% | {tc[1]:>7.1f}% | "
+          f"{t50[0]:>9.1f}% | {t50[1]:>7.1f}%")
+    print(f"Trust 天花板 {trust_ceiling:.2f}% — 天花板点 {ceiling_point}%: "
+          f"{'COMPARABLE' if tc[2] else 'NOT_EVALUABLE'}; 50%: "
           f"{'COMPARABLE' if t50[2] else 'NOT_EVALUABLE'} (不等覆盖不报 Unsafe)")
 
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:

@@ -2,12 +2,12 @@
   "config_version": "semifinal_v1.5",
   "seed": 42,
   "environment": {
-    "seisbench": "0.12.5",
+    "seisbench": "0.12.3",
     "torch": "2.13.0",
-    "obspy": "1.5.1",
-    "numpy": "2.5.2",
-    "scipy": "1.18.1",
-    "pandas": "2.3.3"
+    "obspy": "1.5.0",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "pandas": "3.0.5"
   },
   "frozen_inputs": {
     "data/batch_calibration/records_all_v2.json": {
@@ -39,6 +39,6 @@
     "ceiling_supplementary_delta_pp": 1.17,
     "ceiling_supplementary_verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 51.5,
-  "timestamp_utc": "2026-08-31T12:33:14.090396+00:00"
+  "duration_s": 42.1,
+  "timestamp_utc": "2026-08-31T12:47:28.670230+00:00"
 }

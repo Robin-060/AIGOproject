@@ -42,6 +42,7 @@ from src.experiments.phase_evaluation import (  # noqa: E402
     load_records,
     phase_verdict,
 )
+from src.experiments.frozen_config import load_frozen_experiment  # noqa: E402
 from src.trust_engine.schema import (  # noqa: E402
     AdapterStatus,
     ModelPrediction,
@@ -63,28 +64,6 @@ OUT_BINS = ROOT / "results" / "risk_bins.csv"
 OUT_EQ = ROOT / "results" / "equal_coverage_trust.csv"
 OUT_FIG = ROOT / "figures" / "coverage_vs_unsafe.png"
 OUT_SELECTION = ROOT / "results" / "profile_selection_exp06.csv"
-FROZEN_CONFIG = ROOT / "configs" / "semifinal_main.yaml"
-
-
-def load_frozen_experiment():
-    """读取冻结实验控制字段 (v1.5.1): 复现路径的唯一参数来源.
-
-    返回 (frozen_profile, coverage_points, parameter_set);
-    任一字段缺失或不可读即抛错 — 冻结配置失效时拒绝运行, 不静默回退。
-    """
-    import yaml
-    with open(FROZEN_CONFIG, encoding="utf-8") as f:
-        raw = yaml.safe_load(f)
-    frozen_profile = (raw.get("experiment") or {}).get("frozen_profile")
-    points = (raw.get("equal_coverage") or {}).get("points")
-    param_set = (raw.get("trust_engine") or {}).get("parameter_set")
-    if not frozen_profile:
-        raise ValueError(f"冻结配置缺失 experiment.frozen_profile ({FROZEN_CONFIG})")
-    if not points:
-        raise ValueError(f"冻结配置缺失 equal_coverage.points ({FROZEN_CONFIG})")
-    if not param_set:
-        raise ValueError(f"冻结配置缺失 trust_engine.parameter_set ({FROZEN_CONFIG})")
-    return frozen_profile, [int(p) for p in points], param_set
 
 # 候选适用性配置 (v2 选择程序)
 PROFILE_CANDIDATES = {

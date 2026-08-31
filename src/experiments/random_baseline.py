@@ -17,6 +17,7 @@
 
 import numpy as np
 
+from src.experiments.frozen_config import load_equal_coverage_points
 from src.experiments.phase_evaluation import (
     build_phase_units,
     evaluate_units,
@@ -25,7 +26,8 @@ from src.experiments.phase_evaluation import (
 
 UNDERLYING_MODEL = "OBSTransformer"
 SEEDS = list(range(100))
-COVERAGE_POINTS = [50, 60, 70, 80, 90]
+# 覆盖率点位一律取自冻结配置 (v1.5.1), 不在脚本内硬编码
+COVERAGE_POINTS = load_equal_coverage_points()
 
 
 def make_gate(units: list, p: float, seed: int):

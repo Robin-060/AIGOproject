@@ -108,6 +108,10 @@
 - **R**：自然罚分候选（B_natural）validation 双线胜
   （main 4.2→3.82%，holdout 12.31→11.54%，方向一致）→ 冻结 v1.4
 - **Result**：50% 点 Unsafe 5.8→5.4%；**bootstrap S 相从显著落后转为统计并列**
+- **已知差异留痕（v1.5.1 审计）**：NATURAL_PENALTIES.moderate_signal 冻结值 1.0，
+  与 ds4_natural_hazard.json 的 raw 候选分 2.0（30×rate）不一致；差异自 v1.4
+  冻结提交即存在，全部实验数字以代码冻结值 1.0 计算，对账由
+  tests/test_frozen_parameters.py 显式钉死
 
 ### EXP11 DS3 判定（分歧与错误关联，负结果）
 - **H**：模型 P/S 拾取分歧与真实错误风险存在可重复关联

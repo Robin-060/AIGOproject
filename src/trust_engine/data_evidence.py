@@ -35,6 +35,9 @@ NATURAL_PENALTIES = {
     "clipping_severe": 0.0,
     "clipping_moderate": 0.0,
     "strong_noise": 1.3,
+    # 冻结值 1.0 (v1.4); ds4_natural_hazard.json 的 raw 候选分为 2.0 (30×rate),
+    # 差异自冻结提交起即存在, 全部实验以本表为准 — 对账见
+    # src/trust_engine/tests/test_frozen_parameters.py
     "moderate_signal": 1.0,
 }
 

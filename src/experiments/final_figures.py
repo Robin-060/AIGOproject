@@ -26,6 +26,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
+from src.experiments.frozen_config import load_equal_coverage_points  # noqa: E402
+
 FIG2 = ROOT / "figures" / "risk_vs_actual_error.png"
 FIG3 = ROOT / "figures" / "phase_unsafe_comparison.png"
 TABLE = ROOT / "results" / "equal_coverage_table.csv"
@@ -60,7 +62,8 @@ def main():
     print(f"✓ 主图 2: {FIG2}")
 
     # ── 主表 1: Equal-Coverage 全表 (NOT_EVALUABLE 纪律) ──
-    points = ["50", "60", "70", "80", "90"]
+    # 点位一律取自冻结配置 (v1.5.1)
+    points = [str(p) for p in load_equal_coverage_points()]
     strategies = {}
     with open(ROOT / "results" / "baseline_results.csv", encoding="utf-8") as f:
         for row in csv.DictReader(f):
