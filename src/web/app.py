@@ -466,19 +466,19 @@ data_weight = control_cols[3].slider(
     value=1.00,
     step=0.05,
 )
-    upload_columns = st.columns(2)
-    uploaded_files = upload_columns[0].file_uploader(
-        "上传一个或多个 result.json",
-        type=["json"],
-        accept_multiple_files=True,
-    )
-    waveform_upload = upload_columns[1].file_uploader(
-        "可选：上传对应波形",
-        type=["csv", "mseed", "miniseed", "sgy", "segy"],
-        help="CSV 需要 time_s 列，或使用左侧 JSON 中的采样率。MiniSEED/SEG-Y 由 ObsPy 读取。",
-    )
+upload_columns = st.columns(2)
+uploaded_files = upload_columns[0].file_uploader(
+    "上传一个或多个 result.json",
+    type=["json"],
+    accept_multiple_files=True,
+)
+waveform_upload = upload_columns[1].file_uploader(
+    "可选：上传对应波形",
+    type=["csv", "mseed", "miniseed", "sgy", "segy"],
+    help="CSV 需要 time_s 列，或使用左侧 JSON 中的采样率。MiniSEED/SEG-Y 由 ObsPy 读取。",
+)
 
-    if not uploaded_files:
+if not uploaded_files:
         if waveform_upload is not None:
             st.warning(
                 "边界提示：原始波形文件（SEG-Y/MiniSEED/CSV）不含模型预测，无法直接分析。"
