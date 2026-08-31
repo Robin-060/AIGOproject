@@ -12,7 +12,7 @@ bash reproduce_core.sh                   # 一键复现核心数字与三张主�
 # 等价于: python -m src.experiments.reproduce_main
 ```
 
-复现范围：冻结数据校验 → 基线对比 → 主实验 → 全方法对比 → bootstrap → 主图 → 探索轨迹。
+复现范围：冻结数据校验 → 基线对比 → 主实验（冻结档案 hydrophone_v2，直接读取、不重新选优）→ 全方法对比 → bootstrap → 主图 → 探索轨迹。
 **全程使用冻结预测，不运行模型推理**（预测是冻结物；重跑模型的入口见第 6 节）。
 两个 shell 脚本兼容 Linux 与 Windows（解释器自动回退 python3 → python）。
 

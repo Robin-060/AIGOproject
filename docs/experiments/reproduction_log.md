@@ -41,3 +41,12 @@ SEISBENCH_CACHE_ROOT=D:/seisbench_cache \
 ## 4. 结论
 
 clean env 复现 ✅ 通过（任务书 DoD："clean env 能复现核心表和图"）。
+
+## 5. 增补（2026-08-31，冻结档案纪律 v1.5.1）
+
+- requirements.txt 新增 `pyyaml>=6,<7`（复现链读取 `configs/semifinal_main.yaml`
+  的 `experiment.frozen_profile` 所需）；两个环境补装 pyyaml 6.0.3 后重跑全链，
+  核心数字不变，产物仍逐字节一致（仅 reproduction_report.json 的时间戳/耗时字段
+  按每次运行变化）。
+- 复现链不再重新比较候选档案（EXP06 历史程序改由
+  `--profile-selection` 显式重放，只写 `results/profile_selection_exp06.csv`）。

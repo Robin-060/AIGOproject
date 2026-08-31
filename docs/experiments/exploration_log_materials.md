@@ -72,6 +72,9 @@
   S 命中 74%→58%（真正降级的是它）
 - **R**：v2 选择程序（预注册准则：main 50% 点 Unsafe 低者胜）：
   hydrophone_v2 档案（Z,H 必需）胜出 → main 9.2%→5.0%
+- **v1.5.1 修正（2026-08-31）**：该选择程序退出复现路径——正式复现直接读取
+  YAML `experiment.frozen_profile`，不再重新选优（防结果驱动选择）；
+  本程序仅作历史记录，可经 `--profile-selection` 显式重放
 - **Result**：缺 E 记录决策翻盘：ROUTE 独苗 180→2，FUSE 0→120，ABSTAIN 58
 
 ### EXP07 主实验 v1：DS1 部分成立 + 统计框架

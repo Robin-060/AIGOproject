@@ -4,7 +4,7 @@ reproduce_main.py — 一键复现核心数字与三张主图 (v1.5)
 复现范围 (全部基于冻结数据, 不运行模型推理):
   1. 冻结数据完整性校验 (sha256)
   2. 基线对比 → baseline_results.csv + 主图1 (含 Trust 曲线的基线图由主实验更新)
-  3. 主实验 (候选选择程序 + 最终版) → main_results/equal_coverage/risk_bins
+  3. 主实验 (冻结档案 hydrophone_v2, 不选优) → main_results/equal_coverage/risk_bins
   4. 全方法对比 → method_comparison_v2.csv
   5. cluster paired-bootstrap → bootstrap_ci.json
   6. 三张主图最终版 + failure raw data
@@ -94,7 +94,7 @@ def main():
     from src.experiments.run_baselines import main as baselines_main
     baselines_main()
 
-    step("3/7 主实验 (候选选择程序 + 最终版)")
+    step("3/7 主实验 (冻结档案, 不选优)")
     from src.experiments.run_main_experiment import main as mainexp_main
     mainexp_main()
 

@@ -118,6 +118,7 @@ TRAJECTORY = [
         "artifacts": [
             "configs/semifinal_main.yaml",
             "results/main_results.csv",
+            "results/profile_selection_exp06.csv",
         ],
     },
     {

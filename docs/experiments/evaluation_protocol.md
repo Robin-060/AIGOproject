@@ -69,6 +69,13 @@
   **不给出 Unsafe 数值与显著性结论**——不等覆盖比较的显著性结论视为口径错误。
   可达性以 max achievable coverage 判定（feasible 字段进入所有结果文件）；
   补充比较只允许在天花板点位进行，并明确标注"非声明点位"。
+- **冻结档案纪律（v1.5.1 起）**：正式复现必须直接读取
+  `configs/semifinal_main.yaml` 的 `experiment.frozen_profile`（hydrophone_v2），
+  **禁止在复现中重新比较候选档案并按结果选优**（结果驱动选择）。候选选择程序
+  （EXP06 预注册比较）降级为历史记录，仅可通过
+  `python -m src.experiments.run_main_experiment --profile-selection` 显式重放，
+  其输出只写 `results/profile_selection_exp06.csv`，不覆盖正式产出。
+  复现入口同时校验 TrustConfig 参数集与 YAML `parameter_set` 一致，不一致即拒绝运行。
 - 确证条件（C 契约 8.4）：cluster paired-bootstrap（station 重采样），
   ΔUnsafe 单侧 95% CI 上界 < 0；P、S 点估计分别报告，双相位声明需 Holm 校正。
 

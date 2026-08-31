@@ -12,8 +12,23 @@
 #       ③ ID-only 域熟悉度门 (马氏距离, XO 阈值 95%=3.94/99%=5.27),
 #          DS5 新成功标准 = coverage 主动下降 + retained unsafe 降低;
 #       ④ Evidence Admission Rule 制度冻结 (STA/LTA 结案为被拒首例)。
-#       主结果: 50% 点 Unsafe 5.5% (与 Voting 统计并列), holdout 稳定性改善。
+#       注: 初版记录的"50% 点 Unsafe 5.5%"后经 EXP14 取代 (FUSE 门第 4.5 步
+#       绕过修复), 最终口径: 50% 预声明点位 NOT_EVALUABLE, 天花板 45.64%。
+# v1.5.1 变更 (2026-08-31): 冻结配置真正控制实验 (复现纪律修复)
+#       新增 experiment.frozen_profile = hydrophone_v2: 正式复现必须直接读取
+#       该冻结档案, 禁止在复现中重新比较候选并按结果选优 (结果驱动选择风险);
+#       原候选选择程序降级为 EXP06 历史记录, 仅可通过
+#       `python -m src.experiments.run_main_experiment --profile-selection` 显式重放。
+#       本变更不改变任何实验数字 (控制流修复)。
 config_version: semifinal_v1.5
+
+experiment:   # 实验控制字段 (v1.5.1 起: 复现路径唯一参数来源, run_main_experiment 启动时校验)
+  frozen_profile: hydrophone_v2   # v1.2 冻结 (EXP06 预注册程序产出); 复现直接读取, 禁止重新选优
+  profile_selection_history:      # EXP06 历史记录, 复现链不调用
+    procedure: "main 分片 50% 覆盖率点 Unsafe 更低者胜 (预注册准则)"
+    decided: hydrophone_v2
+    replay: "python -m src.experiments.run_main_experiment --profile-selection"
+
 
 dataset:
   file: data/batch_calibration/records_all_v2.json
@@ -118,8 +133,9 @@ baselines:   # 五类参照系
   - random                      # 新实现: src/experiments/random_baseline.py
 
 second_domain:
-  status: 候选确认中 (2026-08-28)
-  candidates:
+  status: 已定稿 (2026-08-31 团队确认)
+  deliverable: _BLANCO 台阵 (200 条, 与主域同数据集、不同台阵) — 跨台阵第二数据域
+  candidates_archive:   # 定稿前的候选清单, 留档
     - seisbench OBS 数据集其他 chunk (同台阵不同时段, 弱域移)
     - 其他公开 OBS 台阵数据 (需数据组评估获取渠道)
-  stop_loss: 2026-09-01 12:00   # 到期不稳定立即停止, 转 future research
+  stop_loss: 2026-09-01 12:00   # 定稿后该止损条款不再适用, 不再扩展第三域

@@ -1,20 +1,24 @@
 """
 Trust Layer 主实验 (D6) — 相位级评估 + 真实质量报告 + Equal-Coverage
 
-协议: configs/semifinal_main.yaml (semifinal_v1.1 起)
+协议: configs/semifinal_main.yaml (semifinal_v1.5)
   - 1306 个 (sample_id, phase) 评估单元, 冻结预测
   - 质量报告来自 data/quality_manifest.csv (真实 SNR/断点/削波/缺道)
-  - TrustConfig = calibrated_v1.0; 门控: 以 threshold=100 运行一次后
-    外部按 phase risk 排序选样 (与基线一致的 top-k 精确覆盖率)
+  - 冻结档案: configs/semifinal_main.yaml 的 experiment.frozen_profile
+    (hydrophone_v2, v1.2 冻结) — 复现直接读取, 禁止重新选优
+  - TrustConfig 参数集必须与 YAML trust_engine.parameter_set 一致, 否则拒绝运行
+  - Equal-Coverage 点位从 YAML equal_coverage.points 读取
+  - 门控: 以 threshold=100 运行一次后外部按 phase risk 排序选样 (与基线一致的 top-k)
   - no_pick 单元按 C 契约落 ABSTAIN, 永不进入 auto
 
-v2 候选选择程序 (C 契约 6.2):
-  - 候选适用性配置在 main 分片上比较, 预声明准则:
-    "50% 覆盖率点 Unsafe Output Rate 更低者胜"
-  - 胜者用 holdout 分片确认后, 冻结为 semifinal_v1.2
+EXP06 候选选择程序 (历史记录, 复现链不调用):
+  - 仅通过 --profile-selection 显式重放: main 分片上比较 history_v1/hydrophone_v2,
+    预声明准则 "50% 覆盖率点 Unsafe 更低者胜", 结果只写
+    results/profile_selection_exp06.csv, 不覆盖任何正式产出
 
 用法:
-    python -m src.experiments.run_main_experiment
+    python -m src.experiments.run_main_experiment                      # 冻结档案复现 (正式)
+    python -m src.experiments.run_main_experiment --profile-selection  # EXP06 历史重放
 """
 
 import csv
@@ -58,7 +62,29 @@ OUT_MAIN = ROOT / "results" / "main_results.csv"
 OUT_BINS = ROOT / "results" / "risk_bins.csv"
 OUT_EQ = ROOT / "results" / "equal_coverage_trust.csv"
 OUT_FIG = ROOT / "figures" / "coverage_vs_unsafe.png"
-COVERAGE_POINTS = [50, 60, 70, 80, 90]
+OUT_SELECTION = ROOT / "results" / "profile_selection_exp06.csv"
+FROZEN_CONFIG = ROOT / "configs" / "semifinal_main.yaml"
+
+
+def load_frozen_experiment():
+    """读取冻结实验控制字段 (v1.5.1): 复现路径的唯一参数来源.
+
+    返回 (frozen_profile, coverage_points, parameter_set);
+    任一字段缺失或不可读即抛错 — 冻结配置失效时拒绝运行, 不静默回退。
+    """
+    import yaml
+    with open(FROZEN_CONFIG, encoding="utf-8") as f:
+        raw = yaml.safe_load(f)
+    frozen_profile = (raw.get("experiment") or {}).get("frozen_profile")
+    points = (raw.get("equal_coverage") or {}).get("points")
+    param_set = (raw.get("trust_engine") or {}).get("parameter_set")
+    if not frozen_profile:
+        raise ValueError(f"冻结配置缺失 experiment.frozen_profile ({FROZEN_CONFIG})")
+    if not points:
+        raise ValueError(f"冻结配置缺失 equal_coverage.points ({FROZEN_CONFIG})")
+    if not param_set:
+        raise ValueError(f"冻结配置缺失 trust_engine.parameter_set ({FROZEN_CONFIG})")
+    return frozen_profile, [int(p) for p in points], param_set
 
 # 候选适用性配置 (v2 选择程序)
 PROFILE_CANDIDATES = {
@@ -234,6 +260,60 @@ def unsafe_at_coverage(rows, target_pct):
 
 
 def main():
+    frozen_profile, points, param_set = load_frozen_experiment()
+    if frozen_profile not in PROFILE_CANDIDATES:
+        raise ValueError(f"冻结档案 {frozen_profile} 不在候选定义中 — 冻结配置失效")
+
+    records = load_records()
+    quality_map = load_quality()
+    split_map = load_split()
+    units = build_phase_units(records)
+    for unit in units:
+        unit["split"] = split_map.get((unit["sample_id"], unit["phase"]), "main")
+    record_map = {r["sample_id"]: r for r in records}
+
+    config = TrustConfig()
+    if config.config_version != param_set:
+        raise ValueError(
+            f"TrustConfig 参数集 {config.config_version} 与冻结配置 "
+            f"trust_engine.parameter_set={param_set} 不一致 — 冻结配置失效, 拒绝运行")
+    config.automatic_risk_threshold = 100.0  # top-k 协议: 全量产出后按风险排序对齐覆盖率点
+
+    main_units = [u for u in units if u["split"] == "main" and u["primary_inclusion"]]
+    holdout_units = [u for u in units if u["split"] == "holdout" and u["primary_inclusion"]]
+    print(f"评估单元: main={len(main_units)}, holdout={len(holdout_units)}, "
+          f"共 {len(main_units) + len(holdout_units)}")
+    print(f"冻结档案: {frozen_profile} "
+          f"(configs/semifinal_main.yaml experiment.frozen_profile)")
+    print("复现纪律: 直接读取冻结档案, 不重新比较候选 "
+          "(EXP06 历史程序见 --profile-selection)")
+
+    # ── holdout 一致性确认 (冻结档案, 不作选择) ──
+    print(f"\nholdout 一致性确认 (冻结档案 {frozen_profile})...")
+    hold_rows = build_unit_rows(records, holdout_units, quality_map,
+                                PROFILE_CANDIDATES[frozen_profile], config,
+                                record_map)
+    h_unsafe, h_ceiling = unsafe_at_coverage(hold_rows, 50)
+    if h_ceiling + 1e-9 < 50.0:
+        print(f"  holdout: 50% 点位 NOT_EVALUABLE (天花板 {h_ceiling:.1f}%)")
+    else:
+        print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | "
+              f"天花板 = {h_ceiling:.1f}%")
+
+    # ── 正式产出 (冻结档案, 全单元) ──
+    print(f"\n正式产出 ({frozen_profile}, 全部单元)...")
+    final_rows = build_unit_rows(records, units, quality_map,
+                                 PROFILE_CANDIDATES[frozen_profile], config,
+                                 record_map)
+    write_outputs(final_rows, frozen_profile, points)
+
+
+def profile_selection_history():
+    """EXP06 预注册候选选择程序 (历史重放, 复现链不调用).
+
+    在 main 分片上比较 history_v1 与 hydrophone_v2, 按预声明准则
+    "50% 覆盖率点 Unsafe 更低者胜" 报告结果; 只写历史记录文件, 不覆盖正式产出。
+    """
     records = load_records()
     quality_map = load_quality()
     split_map = load_split()
@@ -243,46 +323,32 @@ def main():
     record_map = {r["sample_id"]: r for r in records}
     config = TrustConfig()
     config.automatic_risk_threshold = 100.0
-
     main_units = [u for u in units if u["split"] == "main" and u["primary_inclusion"]]
-    holdout_units = [u for u in units if u["split"] == "holdout" and u["primary_inclusion"]]
-    print(f"评估单元: main={len(main_units)}, holdout={len(holdout_units)}, "
-          f"共 {len(main_units) + len(holdout_units)}")
-    print("选择准则 (预声明): 50% 覆盖率点 Unsafe 更低者胜 (main 上比较)")
 
-    # ── v2 候选比较 (main 分片) ──
+    print("EXP06 历史程序重放 (预注册准则: main 50% 点 Unsafe 更低者胜)")
     results_by_candidate = {}
     for name, profiles in PROFILE_CANDIDATES.items():
-        print(f"\n候选 {name} (main 分片)...")
         rows = build_unit_rows(records, main_units, quality_map, profiles, config,
                                record_map)
         unsafe50, ceiling = unsafe_at_coverage(rows, 50)
-        results_by_candidate[name] = (unsafe50, ceiling, rows)
-        print(f"  {name}: 50%覆盖率 Unsafe = {unsafe50:.1f}% | 天花板 = {ceiling:.1f}%")
-
-    winner = min(results_by_candidate,
-                 key=lambda n: results_by_candidate[n][0])
-    print(f"\n==> main 上胜者: {winner} "
+        results_by_candidate[name] = (unsafe50, ceiling)
+        print(f"  {name}: 50%覆盖率 Unsafe = {unsafe50:.1f}% | "
+              f"天花板 = {ceiling:.1f}%")
+    winner = min(results_by_candidate, key=lambda n: results_by_candidate[n][0])
+    print(f"==> main 上胜者: {winner} "
           f"(Unsafe50 = {results_by_candidate[winner][0]:.1f}%)")
+    print("注意: 本结果为历史记录; 正式复现直接使用 YAML 冻结档案, 不再选优")
 
-    # ── holdout 确认 ──
-    print(f"\nholdout 确认 (候选 {winner})...")
-    hold_rows = build_unit_rows(records, holdout_units, quality_map,
-                                PROFILE_CANDIDATES[winner], config, record_map)
-    h_unsafe, h_ceiling = unsafe_at_coverage(hold_rows, 50)
-    if h_ceiling + 1e-9 < 50.0:
-        print(f"  holdout: 50% 点位 NOT_EVALUABLE (天花板 {h_ceiling:.1f}%)")
-    else:
-        print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | 天花板 = {h_ceiling:.1f}%")
-
-    # ── 最终版 (胜者配置, 全单元) ──
-    print(f"\n最终版 ({winner}, 全部单元)...")
-    final_rows = build_unit_rows(records, units, quality_map,
-                                 PROFILE_CANDIDATES[winner], config, record_map)
-    write_outputs(final_rows, winner)
+    with open(OUT_SELECTION, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["candidate", "unsafe50_pct", "ceiling_pct", "decided"])
+        for name, (unsafe, ceiling) in results_by_candidate.items():
+            writer.writerow([name, f"{unsafe:.2f}", f"{ceiling:.2f}",
+                             "winner" if name == winner else ""])
+    print(f"✓ 历史记录: {OUT_SELECTION}")
 
 
-def write_outputs(unit_rows, profile_name):
+def write_outputs(unit_rows, profile_name, points):
     with open(OUT_MAIN, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(unit_rows[0].keys()))
         writer.writeheader()
@@ -298,7 +364,7 @@ def write_outputs(unit_rows, profile_name):
     print(f"\n{'目标Cov':>8} {'有效阈值':>8} {'实际Cov':>8} {'Unsafe':>8} {'Burden':>8} {'拦截率':>8} {'状态':>24}")
     eq_rows = []
     trust_curve = {"cov": [], "unsafe": []}
-    for target in COVERAGE_POINTS:
+    for target in points:
         requested_k = int(round(target / 100 * len(unit_rows)))
         feasible = requested_k <= len(output_sorted)
         k = min(requested_k, len(output_sorted))
@@ -408,4 +474,7 @@ def write_outputs(unit_rows, profile_name):
 
 
 if __name__ == "__main__":
-    main()
+    if "--profile-selection" in sys.argv:
+        profile_selection_history()
+    else:
+        main()
