@@ -433,52 +433,52 @@ def main() -> None:
         "Backend recalculation wiring will use the frozen A-side schema."
     )
 
-control_cols = st.columns(4)
+    control_cols = st.columns(4)
 
-risk_threshold = control_cols[0].slider(
-    "Risk threshold",
-    min_value=0.0,
-    max_value=1.0,
-    value=0.50,
-    step=0.05,
-)
+    risk_threshold = control_cols[0].slider(
+        "Risk threshold",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.50,
+        step=0.05,
+    )
 
-p_tolerance = control_cols[1].slider(
-    "P tolerance (s)",
-    min_value=0.05,
-    max_value=1.0,
-    value=0.30,
-    step=0.05,
-)
+    p_tolerance = control_cols[1].slider(
+        "P tolerance (s)",
+        min_value=0.05,
+        max_value=1.00,
+        value=0.30,
+        step=0.05,
+    )
 
-s_tolerance = control_cols[2].slider(
-    "S tolerance (s)",
-    min_value=0.05,
-    max_value=1.0,
-    value=0.50,
-    step=0.05,
-)
+    s_tolerance = control_cols[2].slider(
+        "S tolerance (s)",
+        min_value=0.05,
+        max_value=2.00,
+        value=0.50,
+        step=0.05,
+    )
 
-data_weight = control_cols[3].slider(
-    "Evidence weight",
-    min_value=0.0,
-    max_value=1.0,
-    value=1.00,
-    step=0.05,
-)
-upload_columns = st.columns(2)
-uploaded_files = upload_columns[0].file_uploader(
-    "上传一个或多个 result.json",
-    type=["json"],
-    accept_multiple_files=True,
-)
-waveform_upload = upload_columns[1].file_uploader(
-    "可选：上传对应波形",
-    type=["csv", "mseed", "miniseed", "sgy", "segy"],
-    help="CSV 需要 time_s 列，或使用左侧 JSON 中的采样率。MiniSEED/SEG-Y 由 ObsPy 读取。",
-)
+    evidence_weight = control_cols[3].slider(
+        "Evidence weight",
+        min_value=0.0,
+        max_value=2.0,
+        value=1.0,
+        step=0.1,
+    )
+    upload_columns = st.columns(2)
+    uploaded_files = upload_columns[0].file_uploader(
+        "上传一个或多个 result.json",
+        type=["json"],
+        accept_multiple_files=True,
+    )
+    waveform_upload = upload_columns[1].file_uploader(
+        "可选：上传对应波形",
+        type=["csv", "mseed", "miniseed", "sgy", "segy"],
+        help="CSV 需要 time_s 列，或使用左侧 JSON 中的采样率。MiniSEED/SEG-Y 由 ObsPy 读取。",
+    )
 
-if not uploaded_files:
+    if not uploaded_files:
         if waveform_upload is not None:
             st.warning(
                 "边界提示：原始波形文件（SEG-Y/MiniSEED/CSV）不含模型预测，无法直接分析。"
@@ -492,14 +492,19 @@ if not uploaded_files:
         if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
             st.session_state["example_file"] = "example_2.json"
 
-               example_file = st.session_state.get("example_file")
-        example_path = ROOT / "data" / "examples" / example_file if example_file else None
+        example_file = st.session_state.get("example_file")
+        example_path = (
+            ROOT / "data" / "examples" / example_file
+            if example_file
+            else None
+        )
 
         if example_path and example_path.exists():
             try:
                 uploaded_raw = json.loads(
                     example_path.read_text(encoding="utf-8-sig")
                 )
+
                 uploaded_analysis = run_analysis(
                     uploaded_raw,
                     risk_threshold=risk_threshold,
@@ -517,6 +522,7 @@ if not uploaded_files:
                 raw = items[0]["raw"]
                 analysis = items[0]["analysis"]
 
+                # 加载配套波形 CSV（若存在）
                 waveform = None
                 csv_path = example_path.with_suffix(".csv")
 
@@ -533,7 +539,8 @@ if not uploaded_files:
                         waveform = None
 
                 st.success(
-                    f"已加载内置示例：{example_file}（{len(analysis['inputs']['predictions'])} 条模型预测）"
+                    f"已加载内置示例：{example_file}"
+                    f"（{len(analysis['inputs']['predictions'])} 条模型预测）"
                 )
                 _render_full(raw, analysis, waveform)
 
@@ -547,6 +554,7 @@ if not uploaded_files:
         return
 
     items = []
+
     for uploaded in uploaded_files:
         try:
             uploaded_raw = json.loads(
