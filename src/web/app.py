@@ -492,19 +492,14 @@ if not uploaded_files:
         if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
             st.session_state["example_file"] = "example_2.json"
 
-        example_file = st.session_state.get("example_file")
-        example_path = (
-            ROOT / "data" / "examples" / example_file
-            if example_file
-            else None
-        )
+               example_file = st.session_state.get("example_file")
+        example_path = ROOT / "data" / "examples" / example_file if example_file else None
 
         if example_path and example_path.exists():
             try:
                 uploaded_raw = json.loads(
                     example_path.read_text(encoding="utf-8-sig")
                 )
-
                 uploaded_analysis = run_analysis(
                     uploaded_raw,
                     risk_threshold=risk_threshold,
@@ -522,7 +517,6 @@ if not uploaded_files:
                 raw = items[0]["raw"]
                 analysis = items[0]["analysis"]
 
-                # 加载配套波形 CSV（若存在）
                 waveform = None
                 csv_path = example_path.with_suffix(".csv")
 
@@ -539,16 +533,17 @@ if not uploaded_files:
                         waveform = None
 
                 st.success(
-                    f"已加载内置示例：{example_file}"
-                    f"（{len(analysis['inputs']['predictions'])} 条模型预测）"
+                    f"已加载内置示例：{example_file}（{len(analysis['inputs']['predictions'])} 条模型预测）"
                 )
                 _render_full(raw, analysis, waveform)
 
-                       except Exception as exc:
+            except Exception as exc:
                 st.exception(exc)
+
         else:
             st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
             _render_experiments()
+
         return
 
     items = []
