@@ -459,7 +459,7 @@ def main() -> None:
         step=0.05,
     )
 
-    evidence_weight = control_cols[3].slider(
+    data_weight = control_cols[3].slider(
         "Evidence weight",
         min_value=0.0,
         max_value=2.0,
