@@ -544,18 +544,15 @@ if not uploaded_files:
                 )
                 _render_full(raw, analysis, waveform)
 
-            except Exception as exc:
+                       except Exception as exc:
                 st.exception(exc)
-
         else:
             st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
             _render_experiments()
+        return
 
-    return
-
-items = []
-
-for uploaded in uploaded_files:
+    items = []
+    for uploaded in uploaded_files:
         try:
             uploaded_raw = json.loads(
                 uploaded.getvalue().decode("utf-8-sig")
