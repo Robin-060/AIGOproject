@@ -35,7 +35,7 @@ from src.trust_engine.schema import (
     AdapterStatus,
     DEMO_CONFIG,
 )
-from src.trust_engine.pipeline import analyze_sample
+from src.trust_engine.pipeline import run_pipeline
 
 
 def load_data_layer_json(json_path: str) -> dict:
@@ -151,11 +151,12 @@ def run(json_path: str):
     # ── 调用 Trust Engine ──
     config = DEMO_CONFIG
 
-    result = analyze_sample(
+    result = run_pipeline(
         metadata=metadata,
         quality=quality,
-        model_profiles=profiles,
+        profiles=profiles,
         predictions=predictions,
+        adapter_statuses=adapter_statuses,
         config=config,
         # P1/P2/P3 证据留空 — 由 evaluate_reliability 内部处理
     )

@@ -24,7 +24,7 @@ from dataclasses import asdict
 
 import numpy as np
 
-CACHE_ROOT = Path("D:/seisbench_cache")
+CACHE_ROOT = (Path.home() / ".seisbench")
 os.environ["SEISBENCH_CACHE_ROOT"] = str(CACHE_ROOT)
 
 import seisbench

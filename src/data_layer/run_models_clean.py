@@ -3,7 +3,7 @@
 import os, sys, json
 from pathlib import Path
 
-CACHE_ROOT = Path("D:/seisbench_cache")
+CACHE_ROOT = (Path.home() / ".seisbench")
 os.environ["SEISBENCH_CACHE_ROOT"] = str(CACHE_ROOT)
 
 import seisbench

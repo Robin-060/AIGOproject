@@ -12,7 +12,7 @@ import shutil
 from pathlib import Path
 import requests
 
-CACHE_ROOT = Path("D:/seisbench_cache")
+CACHE_ROOT = Path.home() / ".seisbench"
 DATASET_DIR = CACHE_ROOT / "datasets" / "obs"
 ZENODO_RECORD_ID = "10277799"
 

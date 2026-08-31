@@ -33,7 +33,7 @@ from src.data_layer.download_obs_dataset import (  # noqa: E402
     download_file,
 )
 
-CACHE_ROOT = Path("D:/seisbench_cache")
+CACHE_ROOT = (Path.home() / ".seisbench")
 DATASET_DIR = CACHE_ROOT / "datasets" / "obs"
 RECORDS_PATH = ROOT / "data" / "batch_calibration" / "records_all.json"
 OUT_PATH = ROOT / "data" / "quality_manifest.csv"
