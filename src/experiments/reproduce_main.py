@@ -4,7 +4,7 @@ reproduce_main.py — 一键复现核心数字与三张主图 (v1.5)
 复现范围 (全部基于冻结数据, 不运行模型推理):
   1. 冻结数据完整性校验 (sha256)
   2. 基线对比 → baseline_results.csv + 主图1 (含 Trust 曲线的基线图由主实验更新)
-  3. 主实验 (冻结档案 hydrophone_v2, 不选优) → main_results/equal_coverage/risk_bins
+  3. 主实验 (候选选择程序 + 最终版) → main_results/equal_coverage/risk_bins
   4. 全方法对比 → method_comparison_v2.csv
   5. cluster paired-bootstrap → bootstrap_ci.json
   6. 三张主图最终版 + failure raw data
@@ -16,7 +16,6 @@ reproduce_main.py — 一键复现核心数字与三张主图 (v1.5)
     python -m src.experiments.reproduce_main
 """
 
-import hashlib
 import json
 import sys
 import time
@@ -30,44 +29,42 @@ if str(ROOT) not in sys.path:
 import warnings  # noqa: E402
 warnings.filterwarnings("ignore")
 
+from src.experiments.run_trajectory import RunTrajectory  # noqa: E402
+from src.trust_engine.config_loader import (  # noqa: E402
+    canonical_sha256,
+    load_frozen_config,
+)
+
 OUT_REPORT = ROOT / "results" / "reproduction_report.json"
-
-FROZEN_INPUTS = {
-    "data/batch_calibration/records_all_v2.json":
-        "e5cc0a28a61a4a91",
-    "data/quality_manifest.csv": None,
-    "data/sta_lta_picks.csv": None,
-    "data/manifest_phase.csv": None,
-    "data/eqt_predictions.json": None,
-}
+OUT_RUN_TRAJECTORY = ROOT / "results" / "run_trajectory.jsonl"
 
 
-def canonical_digest(path: Path) -> str:
-    """规范化内容哈希: 统一 CRLF→LF 后计算 (跨平台稳定, 免疫 git autocrlf)."""
-    raw = path.read_bytes()
-    return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
-
-
-def verify_inputs() -> dict:
-    """校验冻结数据存在且 sha256 一致 (前 16 位)."""
+def verify_inputs(frozen) -> dict:
+    """校验全部冻结数据、校准器与 registry 的完整 SHA-256。"""
     checked = {}
-    for rel, expect in FROZEN_INPUTS.items():
+    for rel, expect in frozen.raw["frozen_artifacts"].items():
         path = ROOT / rel
         if not path.exists():
-            raise FileNotFoundError(f"冻结数据缺失: {rel}")
-        digest = canonical_digest(path)
-        ok = expect is None or digest.startswith(expect)
-        checked[rel] = {"sha256_prefix": digest[:16], "verified": bool(ok)}
+            raise FileNotFoundError(f"冻结产物缺失: {rel}")
+        digest = canonical_sha256(path)
+        ok = digest == str(expect)
+        checked[rel] = {
+            "sha256": digest,
+            "expected_sha256": str(expect),
+            "verified": bool(ok),
+        }
         if not ok:
-            raise ValueError(f"冻结数据校验失败: {rel} (期望前缀 {expect}, "
-                             f"实际 {digest[:16]})")
+            raise ValueError(f"冻结产物校验失败: {rel} (期望 {expect}, 实际 {digest})")
     return checked
 
 
 def env_info() -> dict:
     import importlib.metadata as md
     versions = {}
-    for pkg in ("seisbench", "torch", "obspy", "numpy", "scipy", "pandas"):
+    for pkg in (
+        "seisbench", "torch", "obspy", "numpy", "scipy", "pandas",
+        "matplotlib", "PyYAML",
+    ):
         try:
             versions[pkg] = md.version(pkg)
         except Exception:
@@ -81,38 +78,64 @@ def step(title):
 
 def main():
     started = time.time()
-    print("OBS Trust Layer 一键复现 (semifinal_v1.5)")
+    frozen = load_frozen_config()
+    command = f"{Path(sys.executable).name} -m src.experiments.reproduce_main"
+    run_log = RunTrajectory(ROOT, frozen, command)
+    print(f"OBS Trust Layer 一键复现 ({frozen.version})")
+    print(f"config sha256: {frozen.sha256} | parent: {frozen.parent}")
     print("范围: 冻结数据 → 基线 → 主实验 → 对比 → bootstrap → 主图")
     print("注意: 全程使用冻结预测, 不运行模型推理", flush=True)
 
     step("1/7 冻结数据校验")
-    checked = verify_inputs()
+    checked = {}
+    def verify_step():
+        checked.update(verify_inputs(frozen))
+    run_log.run_step(1, "verify_frozen_artifacts", verify_step, [])
     for rel, info in checked.items():
-        print(f"  ✓ {rel} (sha256 {info['sha256_prefix']})")
+        print(f"  ✓ {rel} (sha256 {info['sha256'][:16]})")
 
     step("2/7 基线对比 (8 策略)")
     from src.experiments.run_baselines import main as baselines_main
-    baselines_main()
+    run_log.run_step(2, "run_baselines", baselines_main, [
+        "results/baseline_results.csv",
+        "figures/coverage_vs_unsafe.png",
+    ])
 
-    step("3/7 主实验 (冻结档案, 不选优)")
+    step("3/7 主实验 (冻结 profile + 最终版)")
     from src.experiments.run_main_experiment import main as mainexp_main
-    mainexp_main()
+    run_log.run_step(3, "run_frozen_main_experiment", mainexp_main, [
+        "results/main_results.csv",
+        "results/equal_coverage_trust.csv",
+        "results/risk_bins.csv",
+        "figures/coverage_vs_unsafe.png",
+    ])
 
     step("4/7 全方法对比表")
     from src.experiments.compare_methods_v2 import main as compare_main
-    compare_main()
+    run_log.run_step(4, "compare_methods", compare_main, [
+        "results/method_comparison_v2.csv",
+    ])
 
     step("5/7 cluster paired-bootstrap")
     from src.experiments.bootstrap_analysis import main as boot_main
-    boot_main()
+    run_log.run_step(5, "cluster_paired_bootstrap", boot_main, [
+        "results/bootstrap_ci.json",
+    ])
 
     step("6/7 主图与 failure data")
     from src.experiments.final_figures import main as figures_main
-    figures_main()
+    run_log.run_step(6, "generate_final_figures", figures_main, [
+        "results/equal_coverage_table.csv",
+        "results/failure_raw.csv",
+        "figures/risk_vs_actual_error.png",
+        "figures/phase_unsafe_comparison.png",
+    ])
 
     step("7/7 探索轨迹导出")
     from src.experiments.generate_trajectory import main as trajectory_main
-    trajectory_main()
+    run_log.run_step(7, "export_exploration_history", trajectory_main, [
+        "results/exploration_trajectory.jsonl",
+    ])
 
     # ── 复现报告 (NOT_EVALUABLE 纪律: 不可达点位不填 Unsafe) ──
     import csv
@@ -131,11 +154,11 @@ def main():
             if row["strategy"] == "Voting" and row["target_coverage_pct"] == "50":
                 voting50 = float(row["unsafe_output_rate_pct"])
     with open(ROOT / "results" / "bootstrap_ci.json", encoding="utf-8") as f:
-        boot = json.load(f)["ALL"]
+        boot_report = json.load(f)
+    boot = boot_report["ALL"]
     if boot.get("verdict") == "NOT_EVALUABLE":
         # 声明点位不可达: 报告天花板补充比较 (非声明点位)
-        supp = json.load(open(ROOT / "results" / "bootstrap_ci.json",
-                              encoding="utf-8")).get("ALL_ceiling_supplementary", {})
+        supp = boot_report.get("ALL_ceiling_supplementary", {})
         core = {
             "trust_unsafe_pct_at_50": None,
             "voting_unsafe_pct_at_50": voting50,
@@ -154,8 +177,15 @@ def main():
         }
 
     report = {
-        "config_version": "semifinal_v1.5",
-        "seed": 42,
+        "run_id": run_log.run_id,
+        "command": command,
+        "git": run_log.git,
+        "config_version": frozen.version,
+        "config_hash": frozen.sha256,
+        "parent_config": frozen.parent,
+        "selected_profile": frozen.selected_profile,
+        "seed": int(frozen.raw["seeds"]["global_seed"]),
+        "run_controls": dict(frozen.raw["run_controls"]),
         "environment": env_info(),
         "frozen_inputs": checked,
         "core_numbers": core,
@@ -164,13 +194,28 @@ def main():
     }
     OUT_REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False),
                           encoding="utf-8")
+    run_log.finish(OUT_RUN_TRAJECTORY, [
+        "results/reproduction_report.json",
+        "results/baseline_results.csv",
+        "results/main_results.csv",
+        "results/equal_coverage_trust.csv",
+        "results/risk_bins.csv",
+        "results/method_comparison_v2.csv",
+        "results/bootstrap_ci.json",
+        "results/equal_coverage_table.csv",
+        "results/failure_raw.csv",
+        "results/exploration_trajectory.jsonl",
+        "figures/coverage_vs_unsafe.png",
+        "figures/risk_vs_actual_error.png",
+        "figures/phase_unsafe_comparison.png",
+    ])
     print(f"\n✓ 复现报告: {OUT_REPORT}")
+    print(f"✓ 真实运行轨迹: {OUT_RUN_TRAJECTORY} (run_id={run_log.run_id})")
     if trust_50_feasible:
         print(f"核心数字: Trust {trust50}% @50% | Voting {voting50}% @50% | "
               f"Δ={boot['point_delta_pp']}pp, {boot['verdict']}")
     else:
-        supp = json.load(open(ROOT / "results" / "bootstrap_ci.json",
-                              encoding="utf-8")).get("ALL_ceiling_supplementary", {})
+        supp = boot_report.get("ALL_ceiling_supplementary", {})
         print(f"声明点位 50%: NOT_EVALUABLE (Trust 天花板 {trust_ceiling:.2f}%) | "
               f"Voting {voting50}% @50% | 天花板补充 Δ={supp.get('point_delta_pp')}pp, "
               f"{supp.get('verdict')}")

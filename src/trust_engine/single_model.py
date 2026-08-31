@@ -3,18 +3,19 @@
 from typing import List
 
 from src.trust_engine.confidence_calibration import (
-    CALIBRATED_CONFIDENCE_FLOOR,
     calibrated_prob,
 )
 from src.trust_engine.schema import (
     EvidenceStatus,
     ModelPrediction,
     SingleModelEvidence,
+    TrustConfig,
 )
 
 
 def evaluate_single_model_evidence(
     predictions: List[ModelPrediction],
+    config: TrustConfig = None,
 ) -> List[SingleModelEvidence]:
     """Preserve one evidence result for each supplied model and phase pair.
 
@@ -23,6 +24,7 @@ def evaluate_single_model_evidence(
     校准正确率 < 0.70 → 警示分 5; 否则 0。
     """
 
+    config = config or TrustConfig()
     results = []
 
     for prediction in predictions:
@@ -40,8 +42,8 @@ def evaluate_single_model_evidence(
 
         calibrated = calibrated_prob(prediction.model_name, prediction.score)
 
-        if calibrated < CALIBRATED_CONFIDENCE_FLOOR:
-            risk_score = 5
+        if calibrated < config.fusion_confidence_floor:
+            risk_score = config.single_low_confidence_score
             reasons = [
                 f"LOW_CALIBRATED_CONFIDENCE_{prediction.model_name}_{prediction.phase}"
             ]

@@ -215,7 +215,13 @@ def analyze_multi_model_consensus(
             ]
             if len(usable_times) >= 2:
                 full_spread = max(usable_times) - min(usable_times)
-                if full_spread > SEVERE_DISAGREEMENT.get(phase, 2.0):
+                severe_map = (
+                    SEVERE_DISAGREEMENT if config is None else {
+                        "P": config.severe_disagreement_p_s,
+                        "S": config.severe_disagreement_s_s,
+                    }
+                )
+                if full_spread > severe_map.get(phase, 2.0):
                     reasons.append("SEVERE_DISAGREEMENT")
                 else:
                     reasons.append("MINOR_DISAGREEMENT")

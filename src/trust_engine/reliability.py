@@ -63,6 +63,8 @@ def evaluate_reliability(
     result = ReliabilityResult(
         sample_id=metadata.sample_id,
         config_version=config.config_version,
+        config_hash=config.config_hash,
+        parent_config=config.parent_config,
         data_source=metadata.data_source,
     )
     reasons = []

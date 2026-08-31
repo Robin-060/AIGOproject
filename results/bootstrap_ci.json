@@ -1,53 +1,71 @@
 {
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815",
+  "parent_config": "semifinal_v1.5",
   "trust_ceiling_pct": 45.64,
   "declared_point": 50.0,
   "declared_feasible": false,
   "ALL": {
     "target_coverage_pct": 50.0,
     "verdict": "NOT_EVALUABLE",
-    "reason": "Trust ceiling 45.6% < declared 50.0%"
+    "reason": "ALL Trust ceiling 45.64% < declared 50.0%"
   },
   "ALL_ceiling_supplementary": {
-    "target_coverage_pct": 45.6,
+    "target_coverage_pct": 45.635528330781014,
     "point_delta_pp": 1.17,
     "trust_unsafe_pp": 6.04,
     "voting_unsafe_pp": 4.87,
-    "ci95_lo": -1.42,
-    "ci95_hi": 2.87,
-    "one_sided_upper95": 2.53,
+    "ci95_lo": -1.09,
+    "ci95_hi": 2.93,
+    "one_sided_upper95": 2.72,
     "n_replicates": 1000,
-    "verdict": "INCONCLUSIVE (CI 包含 0)"
+    "n_replicates_requested": 1000,
+    "n_replicates_skipped_infeasible": 0,
+    "bootstrap_estimand": "full-sample equal-coverage top-k selectors frozen before station cluster resampling",
+    "verdict": "INCONCLUSIVE (CI 包含 0)",
+    "comparison_scope": "SUPPLEMENTARY_PHASE_SPECIFIC_CEILING",
+    "phase_ceiling_pct": 45.6355
   },
   "P": {
     "target_coverage_pct": 50.0,
     "verdict": "NOT_EVALUABLE",
-    "reason": "Trust ceiling 45.6% < declared 50.0%"
+    "reason": "P Trust ceiling 45.81% < declared 50.0%"
   },
   "P_ceiling_supplementary": {
-    "target_coverage_pct": 45.6,
+    "target_coverage_pct": 45.81430745814307,
     "point_delta_pp": -1.33,
-    "trust_unsafe_pp": 5.67,
-    "voting_unsafe_pp": 7.0,
-    "ci95_lo": -4.97,
-    "ci95_hi": 2.07,
-    "one_sided_upper95": 1.56,
+    "trust_unsafe_pp": 5.65,
+    "voting_unsafe_pp": 6.98,
+    "ci95_lo": -4.62,
+    "ci95_hi": 2.13,
+    "one_sided_upper95": 1.59,
     "n_replicates": 1000,
-    "verdict": "INCONCLUSIVE (CI 包含 0)"
+    "n_replicates_requested": 1000,
+    "n_replicates_skipped_infeasible": 0,
+    "bootstrap_estimand": "full-sample equal-coverage top-k selectors frozen before station cluster resampling",
+    "verdict": "INCONCLUSIVE (CI 包含 0)",
+    "comparison_scope": "SUPPLEMENTARY_PHASE_SPECIFIC_CEILING",
+    "phase_ceiling_pct": 45.8143
   },
   "S": {
     "target_coverage_pct": 50.0,
     "verdict": "NOT_EVALUABLE",
-    "reason": "Trust ceiling 45.6% < declared 50.0%"
+    "reason": "S Trust ceiling 45.45% < declared 50.0%"
   },
   "S_ceiling_supplementary": {
-    "target_coverage_pct": 45.6,
-    "point_delta_pp": 3.4,
+    "target_coverage_pct": 45.45454545454545,
+    "point_delta_pp": 3.39,
     "trust_unsafe_pp": 6.44,
-    "voting_unsafe_pp": 3.04,
-    "ci95_lo": -1.0,
-    "ci95_hi": 5.67,
-    "one_sided_upper95": 5.12,
+    "voting_unsafe_pp": 3.05,
+    "ci95_lo": 0.9,
+    "ci95_hi": 5.96,
+    "one_sided_upper95": 5.44,
     "n_replicates": 1000,
-    "verdict": "INCONCLUSIVE (CI 包含 0)"
+    "n_replicates_requested": 1000,
+    "n_replicates_skipped_infeasible": 0,
+    "bootstrap_estimand": "full-sample equal-coverage top-k selectors frozen before station cluster resampling",
+    "verdict": "Trust 显著更差 (Δ 全正)",
+    "comparison_scope": "SUPPLEMENTARY_PHASE_SPECIFIC_CEILING",
+    "phase_ceiling_pct": 45.4545
   }
 }

@@ -165,6 +165,19 @@
 - **出处**：results/bootstrap_ci.json、results/equal_coverage_trust.csv、
   results/domain_gate.json
 
+### EXP15 配置/统计/运行日志审计修复（v1.5.1）
+- **H**：v1.5 的配置、cluster bootstrap 与 trajectory 已经形成可审计闭环
+- **O**：正式复现仍会在主数据上动态选择 profile；bootstrap 把有放回抽中的重复台站
+  转成 set，Trust 重复权重被丢失；EXP01–14 是回顾性探索历史而非真实执行轨迹
+- **R**：冻结 `hydrophone_v2` 并由唯一 YAML 驱动；full-sample equal-coverage
+  selector 冻结后再做 station cluster resampling；新增 run_id/commit/config hash/seed/
+  step/output hash/人工干预与 Best-of-N 披露
+- **Result**：覆盖率与点估计不变；ALL 补充 CI [−1.09,+2.93]、P 补充
+  CI [−4.62,+2.13]，均 INCONCLUSIVE；S 在自身 45.45% 天花板处
+  Δ=+3.39pp，CI [+0.90,+5.96]，显著差于 Voting。该负结果未通过调参修饰
+- **出处**：configs/semifinal_main.yaml、results/bootstrap_ci.json、
+  results/run_trajectory.jsonl
+
 ## 三、负结果清单（官方明确允许，须如实呈现）
 
 1. **STA/LTA 第五证据被淘汰**（EXP09）——弱相关，预注册程序裁决 X=0
@@ -185,12 +198,15 @@
 11. **DS5 域门新标准未成立（严格引擎下）**（EXP14）——coverage 37.8%→16.0%
     主动降级 ✓，但 retained unsafe 25.0% > 无门控 22.5% ✗：门只降"量"、未滤"质"；
     宽松档 familiar_borderline（coverage 25.2% / unsafe 21.8%）勉强双达标但幅度微弱
+12. **S 相补充比较显著更差**（EXP15）——修正 cluster bootstrap 重复权重后，
+    S 相在自身 45.45% 天花板处 Δ=+3.39pp，95% CI [+0.90,+5.96]；
+    这是补充点位结果，不改变 50% 主点 NOT_EVALUABLE，但必须披露
 
 ## 三·五、DS 判定总表（v1.5 新口径，C 调整）
 
 | DS | 问题 | 判定 |
 |---|---|---|
-| DS1 | 是否真的优于简单投票 | ⚠️ **NOT_EVALUABLE@50%**（天花板 45.6% < 50%）；天花板补充比较 INCONCLUSIVE（诚实边界：同域模型接近时复杂调度边际有限） |
+| DS1 | 是否真的优于简单投票 | ⚠️ **NOT_EVALUABLE@50%**（天花板 45.6% < 50%）；总体天花板补充 INCONCLUSIVE，S 相自身天花板补充显著更差 |
 | DS2 | 基础排序是否可靠 | ✅ 成立（保住） |
 | DS3 | 分歧能否识别风险 | ❌ 实测不成立 → v1.5 逻辑修正（单向风险证据 + FUSE 校准门槛 + 堵 4.5 步绕过） |
 | DS4 | 数据质量是否预测错误 | ❌ 不成立 → 角色重定义（input integrity guard） |
@@ -206,7 +222,7 @@
 | src/experiments/real_baseline_final.py | 历史成对口径 + 假质量基线（保留作历史记录） |
 | configs/semifinal_main.yaml 版本注释 | v1.1→v1.4 全部变更留痕 |
 
-## 五、v1.5 关键数字速查表（C 引用用）
+## 五、v1.5.1 关键数字速查表（C 引用用）
 
 | 数字 | 值 | 出处 |
 |---|---|---|
@@ -218,8 +234,8 @@
 | OBSTransformer S 容差内 | 72.0% | results/model_comparison.csv |
 | 天花板 | 45.64%（596/1306 有有效输出；堵住 FUSE 门绕过前为 54.2%） | results/main_results.csv |
 | 拦截率@50% | NOT_EVALUABLE（50% 点位不可达） | results/equal_coverage_trust.csv |
-| Bootstrap Δ(vs Voting) | 50% 点 NOT_EVALUABLE；天花板补充（45.6% 点）Δ=+1.17pp, CI [-1.42, +2.87] → INCONCLUSIVE | results/bootstrap_ci.json |
-| S 相 Δ | 天花板补充 Δ=+3.4pp, CI [-1.0, +5.67] → INCONCLUSIVE | results/bootstrap_ci.json |
+| Bootstrap Δ(vs Voting) | 50% 点 NOT_EVALUABLE；总体天花板补充 Δ=+1.17pp, CI [−1.09,+2.93] → INCONCLUSIVE | results/bootstrap_ci.json |
+| S 相 Δ | S 自身 45.45% 天花板补充 Δ=+3.39pp, CI [+0.90,+5.96] → Trust 显著更差 | results/bootstrap_ci.json |
 | 风险分箱 | 4.07→9.2→28.57%（单调，n=418/163/14；30+ 分箱 n<10 标不可靠） | results/risk_bins.csv |
 | failure 未拦住@50% | NOT_EVALUABLE（50% 点位不可达） | results/failure_raw.csv |
 | 校准器（Platt） | PickBlue/EQT Brier 改善 12-16%；geofon 不校 | results/calibration/platt_calibrators.json |
@@ -228,6 +244,6 @@
 
 ## 六、数字出处规则（C 引用时）
 
-- 所有主实验数字来自 v1.5（configs/semifinal_main.yaml 冻结，含 FUSE 门绕过修复）
+- 所有主实验数字来自 v1.5.1（parent=v1.5；审计修复未改变数据、模型、阈值和判据）
 - 历史数字（29.1%→2.8%、5.5%@50 等）**不得引用**，已由 v1.5 全链重跑取代
 - 任何定量表述指回上表"出处"文件即可满足可追溯要求

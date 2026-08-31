@@ -148,10 +148,8 @@ def main():
 
     # ── 3. Trust 链 (BLANCO, 同主实验口径) ──
     from src.experiments.phase_evaluation import build_phase_units
-    from src.experiments.run_main_experiment import (
-        PROFILE_CANDIDATES, build_unit_rows,
-    )
-    from src.trust_engine.schema import TrustConfig
+    from src.experiments.run_main_experiment import build_unit_rows
+    from src.trust_engine.config_loader import load_frozen_config
 
     units = build_phase_units(blanco_records)
     qmap = {r["sample_id"]: {
@@ -161,10 +159,10 @@ def main():
         "gap_ratio": r["_quality"]["gap_ratio"],
         "clipping_ratio": r["_quality"]["clipping_ratio"],
     } for r in blanco_records}
-    config = TrustConfig()
-    config.automatic_risk_threshold = 100.0
+    frozen = load_frozen_config()
+    config = frozen.trust_config(ranking_mode=True)
     rows = build_unit_rows(blanco_records, units, qmap,
-                           PROFILE_CANDIDATES["hydrophone_v2"], config,
+                           frozen.model_profiles(), config,
                            {r["sample_id"]: r for r in blanco_records})
     print(f"BLANCO Trust 链完成: {len(rows)} 单元")
 

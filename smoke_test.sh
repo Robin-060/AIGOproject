@@ -46,7 +46,7 @@ if missing:
 print(f"  {len(required)} 个冻结数据文件齐全")
 PY
 
-echo "[4/4] 单元测试 (52 个)"
+echo "[4/4] 全仓库单元测试"
 "$PY" -m pytest src/trust_engine/tests/ -q
 
 echo ""

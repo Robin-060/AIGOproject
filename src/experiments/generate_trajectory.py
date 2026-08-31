@@ -1,7 +1,7 @@
 """
 generate_trajectory.py — 探索轨迹 (trajectory JSONL) 导出
 
-把 EXP01–EXP14 的实验历史按 OPEN 附件要求的
+把 EXP01–EXP15 的实验历史按 OPEN 附件要求的
 Observation → Action → Tool → Feedback 探索闭环落成机器可读 JSONL
 (results/exploration_trajectory.jsonl)，满足"完整 trajectory / JSONL log"交付物。
 
@@ -13,8 +13,9 @@ Observation → Action → Tool → Feedback 探索闭环落成机器可读 JSON
 
 import json
 import sys
-from datetime import date
 from pathlib import Path
+
+from src.trust_engine.config_loader import load_frozen_config
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "results" / "exploration_trajectory.jsonl"
@@ -256,6 +257,25 @@ TRAJECTORY = [
             "results/reproduction_report.json",
         ],
     },
+    {
+        "trajectory_id": "EXP15",
+        "step": 15,
+        "date": "2026-08-31",
+        "ds": ["DS1"],
+        "config_version": "semifinal_v1.5.1",
+        "result_type": "audit_correction",
+        "hypothesis": "v1.5 的配置、bootstrap 与 trajectory 已形成可审计闭环",
+        "observation": "审计发现正式复现仍动态选择 profile；cluster bootstrap 用 set 丢失重复台站权重；探索历史是回顾性叙事而非真实执行日志",
+        "action": "冻结 hydrophone_v2 并统一加载 config；修复重复权重并冻结 full-sample selectors 后做 station bootstrap；新增逐步真实 run trajectory 与完整 SHA-256",
+        "tool": "src/trust_engine/config_loader.py; src/experiments/bootstrap_analysis.py; src/experiments/run_trajectory.py",
+        "feedback": "核心覆盖率与总体点估计不变；总体补充 CI 仍含 0，P 补充仍 INCONCLUSIVE；S 在自身 45.45% 天花板处显著差于 Voting（Δ=+3.39pp，95% CI [+0.90,+5.96]），负结果保留且未调参修饰",
+        "artifacts": [
+            "configs/semifinal_main.yaml",
+            "results/bootstrap_ci.json",
+            "src/trust_engine/config_loader.py",
+            "src/experiments/run_trajectory.py",
+        ],
+    },
 ]
 
 
@@ -270,21 +290,24 @@ def validate_artifacts() -> list:
 
 
 def main():
+    frozen = load_frozen_config()
     meta = {
         "type": "meta",
         "schema_version": "1.0",
         "protocol": "Observation → Action → Tool → Feedback 探索闭环",
         "source": "docs/experiments/exploration_log_materials.md",
         "generated_by": "src/experiments/generate_trajectory.py",
-        "generated_on": date.today().isoformat(),
+        "history_as_of": str(frozen.raw["trajectory_history"]["history_as_of"]),
+        "current_config_version": frozen.version,
+        "current_config_hash": frozen.sha256,
+        "parent_config": frozen.parent,
         "total_steps": len(TRAJECTORY),
     }
 
     missing = validate_artifacts()
     if missing:
-        print("⚠ 产物引用缺失 (请先核对文件是否已生成):")
-        for exp, rel in missing:
-            print(f"  - {exp}: {rel}")
+        details = ", ".join(f"{exp}:{rel}" for exp, rel in missing)
+        raise FileNotFoundError(f"探索轨迹产物引用缺失: {details}")
 
     lines = [json.dumps(meta, ensure_ascii=False)]
     for rec in TRAJECTORY:

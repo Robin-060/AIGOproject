@@ -1,5 +1,9 @@
 # 复现日志（clean env 验证）
 
+> 历史记录说明：本页记录的是 semifinal_v1.5 的首次 clean-env 运行。
+> 当前正式口径为 v1.5.1；最新一次可审计执行及输出哈希见
+> `results/run_trajectory.jsonl` 和 `results/reproduction_report.json`。
+
 > 任务书 9/2 上午项"clean env 复现"提前执行（2026-08-31）。
 > 目的：证明干净环境（仅 requirements.txt + 冻结数据）能复现核心数字、表与图。
 
@@ -34,9 +38,10 @@ SEISBENCH_CACHE_ROOT=D:/seisbench_cache \
   - Voting@50% = 4.59%
   - 天花板补充 Δ=+1.17pp，INCONCLUSIVE（CI 含 0）；P 相 −1.3pp / S 相 +3.4pp
 - 单元测试：52 个全过（clean venv 内运行）
-- **产物逐字节一致**：clean env 跑完后 `git status` 仅有
+- **该次 Windows clean env 内产物逐字节一致**：跑完后 `git status` 仅有
   `results/reproduction_report.json` 一个文件变化，且差异只在其环境版本字段与
-  时间戳字段；其余全部 CSV/JSON/三张 PNG 与已提交版本逐字节相同
+  时间戳字段；其余 CSV/JSON/PNG 与当时提交版本一致。该结论不外推为
+  跨操作系统 PNG 必然逐字节一致；跨平台要求是核心数值和规范化表格内容一致。
 
 ## 4. 结论
 

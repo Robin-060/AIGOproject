@@ -9,6 +9,7 @@ from src.experiments.phase_evaluation import (
     phase_verdict,
 )
 from src.experiments.random_baseline import (
+    evaluate_across_seeds,
     evaluate_at_p,
     make_gate,
     underlying_output,
@@ -86,3 +87,16 @@ def test_evaluate_at_p_seed_reproducible():
     b = evaluate_at_p(units, p=0.5, seed=3)
     assert a["coverage"] == b["coverage"]
     assert a["unsafe_output_rate"] == b["unsafe_output_rate"]
+
+
+def test_seed_interval_is_percentile_interval_and_all_metrics_are_measured():
+    units = build_phase_units(load_records())
+    stat = evaluate_across_seeds(units, p=0.5, seeds=list(range(10)))
+    for metric in (
+        "coverage", "unsafe_output_rate", "review_burden",
+        "error_interception_rate",
+    ):
+        assert metric in stat
+        assert f"{metric}_seed_interval95_lo" in stat
+        assert f"{metric}_seed_interval95_hi" in stat
+    assert "unsafe_output_rate_ci95_lo" not in stat

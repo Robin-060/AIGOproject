@@ -49,6 +49,9 @@ def test_pipeline_serializes_object_and_exposes_risk_breakdown():
         "total": 0.0,
     }
     assert decoded["overall_risk_score"] == 0.0
+    assert decoded["config_version"] == "semifinal_v1.5.1"
+    assert len(decoded["config_hash"]) == 64
+    assert decoded["parent_config"] == "semifinal_v1.5"
 
 
 def test_missing_required_section_is_rejected():

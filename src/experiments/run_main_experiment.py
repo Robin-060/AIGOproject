@@ -1,24 +1,21 @@
 """
 Trust Layer 主实验 (D6) — 相位级评估 + 真实质量报告 + Equal-Coverage
 
-协议: configs/semifinal_main.yaml (semifinal_v1.5)
+协议: configs/semifinal_main.yaml (当前 semifinal_v1.5.1)
   - 1306 个 (sample_id, phase) 评估单元, 冻结预测
   - 质量报告来自 data/quality_manifest.csv (真实 SNR/断点/削波/缺道)
-  - 冻结档案: configs/semifinal_main.yaml 的 experiment.frozen_profile
-    (hydrophone_v2, v1.2 冻结) — 复现直接读取, 禁止重新选优
-  - TrustConfig 参数集必须与 YAML trust_engine.parameter_set 一致, 否则拒绝运行
-  - Equal-Coverage 点位从 YAML equal_coverage.points 读取
-  - 门控: 以 threshold=100 运行一次后外部按 phase risk 排序选样 (与基线一致的 top-k)
+  - TrustConfig 由 configs/semifinal_main.yaml 单一加载; 门控以 threshold=100
+    排序运行一次后
+    外部按 phase risk 排序选样 (与基线一致的 top-k 精确覆盖率)
   - no_pick 单元按 C 契约落 ABSTAIN, 永不进入 auto
 
-EXP06 候选选择程序 (历史记录, 复现链不调用):
-  - 仅通过 --profile-selection 显式重放: main 分片上比较 history_v1/hydrophone_v2,
-    预声明准则 "50% 覆盖率点 Unsafe 更低者胜", 结果只写
-    results/profile_selection_exp06.csv, 不覆盖任何正式产出
+历史 v2 候选选择已在 EXP06 完成；正式复现固定读取 selected_profile，
+不得再次按当前结果选择候选。`--profile-selection` 只重放历史程序，
+只写历史文件，不覆盖正式产物。
 
 用法:
-    python -m src.experiments.run_main_experiment                      # 冻结档案复现 (正式)
-    python -m src.experiments.run_main_experiment --profile-selection  # EXP06 历史重放
+    python -m src.experiments.run_main_experiment
+    python -m src.experiments.run_main_experiment --profile-selection
 """
 
 import csv
@@ -42,15 +39,13 @@ from src.experiments.phase_evaluation import (  # noqa: E402
     load_records,
     phase_verdict,
 )
-from src.experiments.frozen_config import load_frozen_experiment  # noqa: E402
 from src.trust_engine.schema import (  # noqa: E402
     AdapterStatus,
     ModelPrediction,
-    ModelProfile,
     QualityReport,
     SampleMetadata,
-    TrustConfig,
 )
+from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
 from src.trust_engine.data_evidence import evaluate_data_evidence  # noqa: E402
 from src.trust_engine.model_suitability import evaluate_model_suitability  # noqa: E402
 from src.trust_engine.single_model import evaluate_single_model_evidence  # noqa: E402
@@ -65,42 +60,12 @@ OUT_EQ = ROOT / "results" / "equal_coverage_trust.csv"
 OUT_FIG = ROOT / "figures" / "coverage_vs_unsafe.png"
 OUT_SELECTION = ROOT / "results" / "profile_selection_exp06.csv"
 
-# 候选适用性配置 (v2 选择程序)
+# Compatibility for historical exploration scripts only. Formal main() never
+# iterates or selects these candidates; it loads frozen.selected_profile once.
+_FROZEN_PROFILES = load_frozen_config()
 PROFILE_CANDIDATES = {
-    # 历史口径: PickBlue 严格要求 Z,N,E,H → 缺 E(13.6%)时被排除
-    "history_v1": [
-        ModelProfile(model_name="PhaseNet", required_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="PickBlue", required_channels=["Z", "N", "E", "H"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="OBSTransformer", required_channels=["H"],
-                     preferred_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="EQTransformer", required_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-    ],
-    # 候选: PickBlue 实际输入契约以 H 为主 (OBS 权重, seisbench 对缺通道做掩码);
-    # 冻结数据证明其在缺 E 样本上仍有预测且常为正确
-    "hydrophone_v2": [
-        ModelProfile(model_name="PhaseNet", required_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="PickBlue", required_channels=["Z", "H"],
-                     preferred_channels=["N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="OBSTransformer", required_channels=["H"],
-                     preferred_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-        ModelProfile(model_name="EQTransformer", required_channels=["Z", "N", "E"],
-                     accepted_sampling_rates_hz=[100.0], resampling_supported=True,
-                     required_preprocessing_version="obs_raw_v1"),
-    ],
+    name: _FROZEN_PROFILES.model_profiles(name)
+    for name in _FROZEN_PROFILES.raw["model_profiles"]
 }
 ADAPTERS = [
     AdapterStatus(model_name=m, loaded=True, run_succeeded=True,
@@ -153,9 +118,11 @@ def trust_per_record(record, quality_row, config, profiles, penalties=None):
         clipping_ratio=float(quality_row["clipping_ratio"]) if quality_row["clipping_ratio"] else 0.0,
         source="REAL_CALCULATION",
     )
-    data_ev = evaluate_data_evidence(quality, penalties)
+    data_ev = evaluate_data_evidence(
+        quality, penalties if penalties is not None else config.data_penalties
+    )
     suits = evaluate_model_suitability(meta, quality, profiles, ADAPTERS)
-    singles = evaluate_single_model_evidence(preds)
+    singles = evaluate_single_model_evidence(preds, config)
     physics = []
     seen = set()
     for p in preds:
@@ -169,7 +136,7 @@ def trust_per_record(record, quality_row, config, profiles, penalties=None):
             config, target_id=p.model_name,
         ))
     cons = analyze_multi_model_consensus(preds, suits, physics, config)
-    fusions = build_fusion_candidates(preds, cons)
+    fusions = build_fusion_candidates(preds, cons, config)
     return evaluate_reliability(
         meta, quality, profiles, preds,
         config, data_ev, suits, singles, physics, cons, fusions,
@@ -239,10 +206,7 @@ def unsafe_at_coverage(rows, target_pct):
 
 
 def main():
-    frozen_profile, points, param_set = load_frozen_experiment()
-    if frozen_profile not in PROFILE_CANDIDATES:
-        raise ValueError(f"冻结档案 {frozen_profile} 不在候选定义中 — 冻结配置失效")
-
+    frozen = load_frozen_config()
     records = load_records()
     quality_map = load_quality()
     split_map = load_split()
@@ -250,86 +214,89 @@ def main():
     for unit in units:
         unit["split"] = split_map.get((unit["sample_id"], unit["phase"]), "main")
     record_map = {r["sample_id"]: r for r in records}
-
-    config = TrustConfig()
-    if config.config_version != param_set:
-        raise ValueError(
-            f"TrustConfig 参数集 {config.config_version} 与冻结配置 "
-            f"trust_engine.parameter_set={param_set} 不一致 — 冻结配置失效, 拒绝运行")
-    config.automatic_risk_threshold = 100.0  # top-k 协议: 全量产出后按风险排序对齐覆盖率点
+    config = frozen.trust_config(ranking_mode=True)
+    profiles = frozen.model_profiles()
 
     main_units = [u for u in units if u["split"] == "main" and u["primary_inclusion"]]
     holdout_units = [u for u in units if u["split"] == "holdout" and u["primary_inclusion"]]
+    print(f"冻结配置: {frozen.version} | parent={frozen.parent} | "
+          f"sha256={frozen.sha256[:16]} | profile={frozen.selected_profile}")
     print(f"评估单元: main={len(main_units)}, holdout={len(holdout_units)}, "
           f"共 {len(main_units) + len(holdout_units)}")
-    print(f"冻结档案: {frozen_profile} "
-          f"(configs/semifinal_main.yaml experiment.frozen_profile)")
-    print("复现纪律: 直接读取冻结档案, 不重新比较候选 "
-          "(EXP06 历史程序见 --profile-selection)")
 
-    # ── holdout 一致性确认 (冻结档案, 不作选择) ──
-    print(f"\nholdout 一致性确认 (冻结档案 {frozen_profile})...")
-    hold_rows = build_unit_rows(records, holdout_units, quality_map,
-                                PROFILE_CANDIDATES[frozen_profile], config,
-                                record_map)
+    # 只运行冻结 profile。main/holdout 仅作已冻结配置的分片诊断，不再选优。
+    print(f"\n正式运行 ({frozen.selected_profile}, 全部单元)...")
+    final_rows = build_unit_rows(records, units, quality_map, profiles, config,
+                                 record_map)
+    main_rows = [row for row in final_rows if row["split"] == "main"]
+    hold_rows = [row for row in final_rows if row["split"] == "holdout"]
+    m_unsafe, m_ceiling = unsafe_at_coverage(main_rows, 50)
+    if m_ceiling + 1e-9 < 50.0:
+        print(f"  main: 50% 点位 NOT_EVALUABLE (天花板 {m_ceiling:.1f}%)")
+    else:
+        print(f"  main: 50%覆盖率 Unsafe = {m_unsafe:.1f}% | 天花板 = {m_ceiling:.1f}%")
     h_unsafe, h_ceiling = unsafe_at_coverage(hold_rows, 50)
     if h_ceiling + 1e-9 < 50.0:
         print(f"  holdout: 50% 点位 NOT_EVALUABLE (天花板 {h_ceiling:.1f}%)")
     else:
-        print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | "
-              f"天花板 = {h_ceiling:.1f}%")
+        print(f"  holdout: 50%覆盖率 Unsafe = {h_unsafe:.1f}% | 天花板 = {h_ceiling:.1f}%")
 
-    # ── 正式产出 (冻结档案, 全单元) ──
-    print(f"\n正式产出 ({frozen_profile}, 全部单元)...")
-    final_rows = build_unit_rows(records, units, quality_map,
-                                 PROFILE_CANDIDATES[frozen_profile], config,
-                                 record_map)
-    write_outputs(final_rows, frozen_profile, points)
+    write_outputs(final_rows, frozen)
 
 
 def profile_selection_history():
-    """EXP06 预注册候选选择程序 (历史重放, 复现链不调用).
-
-    在 main 分片上比较 history_v1 与 hydrophone_v2, 按预声明准则
-    "50% 覆盖率点 Unsafe 更低者胜" 报告结果; 只写历史记录文件, 不覆盖正式产出。
-    """
+    """显式重放 EXP06 候选比较；正式复现链不会调用。"""
+    frozen = load_frozen_config()
     records = load_records()
     quality_map = load_quality()
     split_map = load_split()
     units = build_phase_units(records)
     for unit in units:
         unit["split"] = split_map.get((unit["sample_id"], unit["phase"]), "main")
-    record_map = {r["sample_id"]: r for r in records}
-    config = TrustConfig()
-    config.automatic_risk_threshold = 100.0
-    main_units = [u for u in units if u["split"] == "main" and u["primary_inclusion"]]
+    main_units = [
+        unit for unit in units
+        if unit["split"] == "main" and unit["primary_inclusion"]
+    ]
+    record_map = {record["sample_id"]: record for record in records}
+    config = frozen.trust_config(ranking_mode=True)
 
-    print("EXP06 历史程序重放 (预注册准则: main 50% 点 Unsafe 更低者胜)")
     results_by_candidate = {}
+    print("EXP06 历史程序重放（不参与正式复现，不重新冻结）")
     for name, profiles in PROFILE_CANDIDATES.items():
-        rows = build_unit_rows(records, main_units, quality_map, profiles, config,
-                               record_map)
+        rows = build_unit_rows(
+            records, main_units, quality_map, profiles, config, record_map
+        )
         unsafe50, ceiling = unsafe_at_coverage(rows, 50)
         results_by_candidate[name] = (unsafe50, ceiling)
-        print(f"  {name}: 50%覆盖率 Unsafe = {unsafe50:.1f}% | "
-              f"天花板 = {ceiling:.1f}%")
-    winner = min(results_by_candidate, key=lambda n: results_by_candidate[n][0])
-    print(f"==> main 上胜者: {winner} "
-          f"(Unsafe50 = {results_by_candidate[winner][0]:.1f}%)")
-    print("注意: 本结果为历史记录; 正式复现直接使用 YAML 冻结档案, 不再选优")
+        print(f"  {name}: Unsafe@50={unsafe50:.2f}% | ceiling={ceiling:.2f}%")
+    winner = min(results_by_candidate, key=lambda name: results_by_candidate[name][0])
 
-    with open(OUT_SELECTION, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+    with open(OUT_SELECTION, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["candidate", "unsafe50_pct", "ceiling_pct", "decided"])
         for name, (unsafe, ceiling) in results_by_candidate.items():
-            writer.writerow([name, f"{unsafe:.2f}", f"{ceiling:.2f}",
-                             "winner" if name == winner else ""])
-    print(f"✓ 历史记录: {OUT_SELECTION}")
+            writer.writerow([
+                name,
+                f"{unsafe:.2f}",
+                f"{ceiling:.2f}",
+                "winner" if name == winner else "",
+            ])
+    print(f"✓ 历史记录: {OUT_SELECTION} | winner={winner}")
 
 
-def write_outputs(unit_rows, profile_name, points):
+def write_outputs(unit_rows, frozen):
+    profile_name = frozen.selected_profile
+    for row in unit_rows:
+        row.update({
+            "config_version": frozen.version,
+            "config_hash": frozen.sha256,
+            "parent_config": frozen.parent,
+            "profile": profile_name,
+        })
     with open(OUT_MAIN, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(unit_rows[0].keys()))
+        writer = csv.DictWriter(
+            f, fieldnames=list(unit_rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(unit_rows)
     print(f"✓ {OUT_MAIN} ({len(unit_rows)} 行)")
@@ -343,7 +310,7 @@ def write_outputs(unit_rows, profile_name, points):
     print(f"\n{'目标Cov':>8} {'有效阈值':>8} {'实际Cov':>8} {'Unsafe':>8} {'Burden':>8} {'拦截率':>8} {'状态':>24}")
     eq_rows = []
     trust_curve = {"cov": [], "unsafe": []}
-    for target in points:
+    for target in frozen.coverage_points:
         requested_k = int(round(target / 100 * len(unit_rows)))
         feasible = requested_k <= len(output_sorted)
         k = min(requested_k, len(output_sorted))
@@ -375,6 +342,9 @@ def write_outputs(unit_rows, profile_name, points):
             "error_interception_rate_pct": round(inter, 2) if feasible else "",
             "risk_threshold": round(eff_threshold, 2) if feasible else "",
             "profile": profile_name,
+            "config_version": frozen.version,
+            "config_hash": frozen.sha256,
+            "parent_config": frozen.parent,
             "feasible": str(feasible).lower(),
             "comparison_status": status,
         })
@@ -388,7 +358,9 @@ def write_outputs(unit_rows, profile_name, points):
                   f"{'—':>8} NOT_EVALUABLE (天花板 {len(output_sorted)/len(unit_rows)*100:.1f}%)")
 
     with open(OUT_EQ, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(eq_rows[0].keys()))
+        writer = csv.DictWriter(
+            f, fieldnames=list(eq_rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(eq_rows)
     print(f"✓ {OUT_EQ}")
@@ -406,9 +378,13 @@ def write_outputs(unit_rows, profile_name, points):
             "error_rate_pct": (round(errors / len(members) * 100, 2)
                                if members and reliable else ""),
             "reliable": str(reliable).lower(),
+            "config_version": frozen.version,
+            "config_hash": frozen.sha256,
         })
     with open(OUT_BINS, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(bin_rows[0].keys()))
+        writer = csv.DictWriter(
+            f, fieldnames=list(bin_rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(bin_rows)
     print(f"✓ {OUT_BINS}")
@@ -443,7 +419,7 @@ def write_outputs(unit_rows, profile_name, points):
     ax.set_xlabel("Coverage (%)")
     ax.set_ylabel("Unsafe Output Rate (%)")
     ax.set_title("Equal-Coverage Comparison on 1306 Phase Units "
-                 f"(semifinal_v1.5, profile={profile_name})")
+                 f"({frozen.version}, profile={profile_name})")
     ax.legend()
     ax.grid(alpha=0.3)
     fig.tight_layout()

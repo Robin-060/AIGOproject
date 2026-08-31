@@ -1,7 +1,7 @@
 """
 相位级评估模块 — C 契约 v1.2 评价单位 (Primary: (sample_id, phase))
 
-冻结口径 (configs/semifinal_main.yaml, semifinal_v1.1):
+冻结口径 (configs/semifinal_main.yaml, 当前 semifinal_v1.5.1):
   - N_eval = primary_inclusion=True 的 (sample_id, phase) 单元数 = 1306
     (P 真值 657 + S 真值 649)
   - 正确性容差: P 0.5s / S 1.0s (依据与敏感性证据见 evaluation_protocol.md 2.1)
@@ -18,11 +18,20 @@ import json
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
+from src.trust_engine.config_loader import load_frozen_config
+
 ROOT = Path(__file__).resolve().parents[2]
 RECORDS_PATH = ROOT / "data" / "batch_calibration" / "records_all_v2.json"
 
-PHASE_TOL = {"P": 0.5, "S": 1.0}
-MODELS = ("PhaseNet", "PickBlue", "OBSTransformer", "EQTransformer")
+_FROZEN = load_frozen_config()
+PHASE_TOL = {
+    "P": float(_FROZEN.raw["correctness"]["p_tolerance_s"]),
+    "S": float(_FROZEN.raw["correctness"]["s_tolerance_s"]),
+}
+MODELS = tuple(_FROZEN.raw["models"].keys())
+# framework_versions/model_prediction_coverage are metadata, not models.
+MODELS = tuple(name for name in MODELS
+               if name not in {"framework_versions", "model_prediction_coverage"})
 
 
 def phase_verdict(pred: Optional[float], truth: float, phase: str) -> str:

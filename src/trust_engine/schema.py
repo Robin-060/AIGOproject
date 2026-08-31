@@ -154,13 +154,31 @@ class TrustConfig:
     risk_medium_max: float = 30.0            # calibrated: 风险校准曲线 (30分处错误率76.5%)
     min_sp_s: float = 5.7                     # calibrated: 2.5%分位 (n=411)
     max_sp_s: float = 33.42                   # calibrated: 97.5%分位 (n=411)
+    severe_disagreement_p_s: float = 1.0
+    severe_disagreement_s_s: float = 2.0
     required_channels_for_task: List[str] = field(default_factory=lambda: ["Z", "N", "E"])
     # 证据权重上限 (四类证据各自的风险分满分)
     data_weight: float = 30.0                 # 保留启发式: 批量数据无质量失败样本, 故障注入验证有效性
     single_model_weight: float = 24.0         # calibrated: 逻辑回归拟合 (n=895)
     multi_model_weight: float = 37.0          # calibrated: 逻辑回归拟合 (n=895)
     physics_weight: float = 40.0              # calibrated: 逻辑回归拟合 (n=895)
+    fusion_confidence_floor: float = 0.70      # v1.5: calibrated probability gate
+    single_low_confidence_score: float = 5.0
+    p_after_s_score: float = 10.0
+    sp_interval_score: float = 5.0
+    data_penalties: Dict[str, float] = field(default_factory=lambda: {
+        "channel_missing": 1.5,
+        "channel_multi_missing": 3.0,
+        "gap_severe": 2.8,
+        "gap_moderate": 1.4,
+        "clipping_severe": 0.0,
+        "clipping_moderate": 0.0,
+        "strong_noise": 1.3,
+        "moderate_signal": 1.0,
+    })
     config_version: str = "calibrated_v1.0"
+    config_hash: str = ""
+    parent_config: str = ""
 
 
 # ═══════════════════════════════════════
@@ -274,6 +292,8 @@ class ReliabilityResult:
     evidence_breakdown: Dict[str, Any] = field(default_factory=dict)
     reason_codes: List[str] = field(default_factory=list)
     config_version: str = "heuristic_v0.1"
+    config_hash: str = ""
+    parent_config: str = ""
     data_source: str = ""
 
     def to_json(self, indent: int = 2) -> str:

@@ -105,11 +105,9 @@ def main():
 
     # ── 相位级评估: Trust (hydrophone_v2 + 自然罚分) vs Voting ──
     from src.experiments.phase_evaluation import build_phase_units, phase_verdict
-    from src.experiments.run_main_experiment import (
-        PROFILE_CANDIDATES, build_unit_rows,
-    )
+    from src.experiments.run_main_experiment import build_unit_rows
     from src.experiments.run_baselines import strat_vote, with_confidence
-    from src.trust_engine.schema import TrustConfig
+    from src.trust_engine.config_loader import load_frozen_config
 
     units = with_confidence(build_phase_units(records), records)
     n_eval = sum(1 for u in units if u["primary_inclusion"])
@@ -122,10 +120,10 @@ def main():
         "gap_ratio": r["_quality"]["gap_ratio"],
         "clipping_ratio": r["_quality"]["clipping_ratio"],
     } for r in records}
-    config = TrustConfig()
-    config.automatic_risk_threshold = 100.0
+    frozen = load_frozen_config()
+    config = frozen.trust_config(ranking_mode=True)
     rows = build_unit_rows(records, units, quality_map,
-                           PROFILE_CANDIDATES["hydrophone_v2"], config,
+                           frozen.model_profiles(), config,
                            {r["sample_id"]: r for r in records})
 
     def unsafe_at(row_list, target):

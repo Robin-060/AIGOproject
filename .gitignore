@@ -24,6 +24,7 @@ result.json
 
 # Local environments and tool caches
 .venv/
+.venv-a/
 .venv312/
 .pytest_cache/
 .streamlit/

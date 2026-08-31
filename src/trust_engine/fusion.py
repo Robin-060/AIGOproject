@@ -10,12 +10,13 @@ from __future__ import annotations
 from statistics import median
 from typing import List
 
-from .confidence_calibration import CALIBRATED_CONFIDENCE_FLOOR, calibrated_prob
+from .confidence_calibration import calibrated_prob
 from .multi_model import CONSENSUS_TOLERANCE
 from .schema import (
     ConsensusResult,
     FusedPickCandidate,
     ModelPrediction,
+    TrustConfig,
 )
 
 
@@ -65,8 +66,11 @@ def _same_fusion_group(
 def build_fusion_candidates(
     predictions: List[ModelPrediction],
     consensus_results: List[ConsensusResult],
+    config: TrustConfig | None = None,
 ) -> List[FusedPickCandidate]:
     """Build fusion candidates from consensus results."""
+
+    config = config or TrustConfig()
 
     candidates: List[FusedPickCandidate] = []
 
@@ -95,17 +99,17 @@ def build_fusion_candidates(
             else -1.0
         )
 
-        tolerance = CONSENSUS_TOLERANCE.get(
-            consensus.phase,
-            -1.0,
-        )
+        tolerance = {
+            "P": config.consensus_tolerance_p_s,
+            "S": config.consensus_tolerance_s_s,
+        }.get(consensus.phase, -1.0)
 
         # 第二刀: FUSE 需额外满足校准置信度条件 (一致 ≠ 可信, 治"抱团一起错")
         calibrated_ok = (
             len(inliers) >= 2
             and all(
                 (cp := calibrated_prob(prediction.model_name, prediction.score)) is not None
-                and cp >= CALIBRATED_CONFIDENCE_FLOOR
+                and cp >= config.fusion_confidence_floor
                 for prediction in inliers
             )
         )
@@ -163,7 +167,7 @@ def build_fusion_candidates(
                 excluded_models=excluded_models,
                 spread_s=spread_s,
                 fusion_method=FUSION_METHOD,
-                threshold_version=VERSION,
+                threshold_version=config.config_version,
                 reasons=reasons,
             )
         )

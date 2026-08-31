@@ -1,7 +1,7 @@
 """
 统一 baseline 运行器 — 8/30 交付物 (提前开工)
 
-在 1306 个相位级评估单元上, 按 Equal-Coverage 协议 (semifinal_v1.1) 运行:
+在 1306 个相位级评估单元上, 按冻结 Equal-Coverage 协议运行:
   - Random            (已实现于 random_baseline.py, 此处复用)
   - Single-PhaseNet / Single-PickBlue / Single-OBSTransformer  (C 契约: 三模型分别作基线)
   - MaxConf           (risk = 1 - max raw score)
@@ -32,22 +32,25 @@ from src.experiments.phase_evaluation import (
     evaluate_units,
     load_records,
 )
-from src.experiments.frozen_config import load_equal_coverage_points
 from src.experiments.random_baseline import (
     evaluate_across_seeds as random_across_seeds,
     find_p_for_coverage as random_find_p,
     make_gate as random_gate,
     underlying_output as random_output,
 )
+from src.trust_engine.config_loader import load_frozen_config
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT_CSV = ROOT / "results" / "baseline_results.csv"
 OUT_FIG = ROOT / "figures" / "coverage_vs_unsafe.png"
 
-# 覆盖率点位一律取自冻结配置 (v1.5.1), 不在脚本内硬编码
-COVERAGE_POINTS = load_equal_coverage_points()
-# 分歧严重档阈值 (v1.5 冻结, 与 multi_model.SEVERE_DISAGREEMENT 一致)
-SEVERE_THRESHOLD = {"P": 1.0, "S": 2.0}
+_FROZEN = load_frozen_config()
+COVERAGE_POINTS = _FROZEN.coverage_points
+SEVERE_THRESHOLD = {
+    phase: float(value)
+    for phase, value in _FROZEN.raw["baseline_parameters"]
+    ["voting_severe_threshold_s"].items()
+}
 
 
 def conf_of(unit, model):
@@ -203,6 +206,9 @@ def main():
                 "comparison_status": (
                     "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
                 ),
+                "config_version": _FROZEN.version,
+                "config_hash": _FROZEN.sha256,
+                "parent_config": _FROZEN.parent,
             })
             chart[name]["cov"].append(stats["coverage"] * 100)
             chart[name]["unsafe"].append(stats["unsafe_output_rate"] * 100)
@@ -212,7 +218,7 @@ def main():
                   f"{stats['review_burden']*100:>7.1f}% "
                   f"{stats['error_interception_rate']*100:>7.1f}% {status}")
 
-    # Random (多种子, 独立协议); 随机拒绝与错误独立 → 拦截率 = 1 - coverage
+    # Random (多种子, 独立协议); 四项指标均逐 seed 真实计算后聚合。
     chart["Random"] = {"cov": [], "unsafe": []}
     obst_pick_frac = sum(
         1 for u in units
@@ -227,15 +233,17 @@ def main():
             "coverage_pct": round(stat["coverage"] * 100, 2),
             "unsafe_output_rate_pct": (round(stat["unsafe_output_rate"] * 100, 2)
                                         if feasible else ""),
-            # 随机拒绝与错误独立 → burden = interception = 1 - coverage
-            "review_burden_pct": round((1 - stat["coverage"]) * 100, 2),
-            "error_interception_rate_pct": (round((1 - stat["coverage"]) * 100, 2)
+            "review_burden_pct": round(stat["review_burden"] * 100, 2),
+            "error_interception_rate_pct": (round(stat["error_interception_rate"] * 100, 2)
                                              if feasible else ""),
             "max_coverage_pct": round(obst_pick_frac * 100, 2),
             "feasible": str(feasible).lower(),
             "comparison_status": (
                 "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
             ),
+            "config_version": _FROZEN.version,
+            "config_hash": _FROZEN.sha256,
+            "parent_config": _FROZEN.parent,
         })
         chart["Random"]["cov"].append(stat["coverage"] * 100)
         chart["Random"]["unsafe"].append(stat["unsafe_output_rate"] * 100)
@@ -244,7 +252,9 @@ def main():
 
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            f, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 

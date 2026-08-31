@@ -96,25 +96,16 @@ def route_phase(
 
     # ── 第 4.5 步: 多模型共识但无显式融合候选 ──────────
     if consensus and consensus.status == "CONSENSUS" and len(survivors) >= 2:
-        # 第二刀 (v1.5): 共识不能绕过校准置信度门槛 — 低置信共识一律 ABSTAIN
-        if (fusion_candidate is not None
-                and not fusion_candidate.fusion_allowed
-                and "FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR" in fusion_candidate.reasons):
-            decision.action = Action.ABSTAIN.value
-            decision.reason_codes = reasons + ["FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR"]
-            return decision
-        primary = config.primary_model
-        if _risk_too_high(phase_risk, config):
-            decision.reason_codes = reasons + ["CONSENSUS_RISK_ABOVE_AUTO_THRESHOLD"]
-            return decision
-        if primary in survivors:
-            decision.action = Action.ACCEPT.value
-            decision.selected_model = primary
-        else:
-            decision.action = Action.FUSE.value
-            decision.selected_model = None
-            decision.selected_time_s = consensus.center_time_s
-        decision.reason_codes = reasons + ["MODEL_CONSENSUS"]
+        # Fail closed: 共识本身不是自动输出许可。没有通过全部门槛的显式
+        # FusedPickCandidate 时，不得改走 primary 或 consensus.center_time_s 旁路。
+        candidate_reasons = (
+            list(fusion_candidate.reasons) if fusion_candidate is not None
+            else ["FUSION_CANDIDATE_MISSING"]
+        )
+        decision.action = Action.ABSTAIN.value
+        decision.reason_codes = reasons + candidate_reasons + [
+            "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION"
+        ]
         return decision
 
     # ── 第 5 步: 有其他证据支持某模型？(暂无验证档案 → ABSTAIN)

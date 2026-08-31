@@ -14,7 +14,7 @@
 - **模型分歧**：两个模型给出相差数秒的拾取，不知道该信谁
 - **物理不可能**：P 波拾取晚于 S 波，荒谬结果流入下游分析
 
-当前实验口径（semifinal_v1.5，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%（近半数单元被保守拒绝），风险排序严格单调（DS2 成立）；与 Voting 等参照系的天花板补充比较为统计并列（Δ=+1.17pp，CI 含 0）。其余假设的负结果与边界一律如实记录，见 [DS 判定汇总](docs/experiments/ds_findings_v15.md)。
+当前实验口径（semifinal_v1.5.1，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%，风险排序严格单调（DS2 成立）；预声明 50% 点位 NOT_EVALUABLE。修正 cluster bootstrap 后，总体天花板补充比较仍为 INCONCLUSIVE（Δ=+1.17pp，95% CI [−1.09,+2.93]），但 S 相在自身 45.45% 天花板处显著差于 Voting（Δ=+3.39pp，95% CI [+0.90,+5.96]）。这些均为补充结果，不替代预声明点判定。
 
 ## 系统架构
 
@@ -56,7 +56,8 @@ streamlit run src/web/app.py                             # 或: sh scripts/run_d
 ### 运行正式实验
 
 ```bash
-bash smoke_test.sh                        # 环境自检: 依赖 + 冻结数据 + 52 个测试
+bash smoke_test_a.sh                      # A 最小环境: 配置/hash/A 测试
+bash smoke_test.sh                        # 全仓库环境自检（含 B Web 测试）
 bash reproduce_core.sh                    # 一键复现核心数字与三张主图
 # 等价于: python3 -m src.experiments.reproduce_main
 ```
@@ -65,13 +66,13 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 
 ## 实验结论摘要
 
-| 指标 | 结果 (semifinal_v1.5) |
+| 指标 | 结果 (semifinal_v1.5.1) |
 |------|------|
 | 评估单元 | 1306 个 (P 657 + S 649)，容差 P 0.5s / S 1.0s |
 | Trust 覆盖率天花板 | 45.64%（严格 FUSE 门槛；596/1306 有安全自动路径） |
 | 预声明 50% 点位 | NOT_EVALUABLE（不等覆盖不比较，纪律见 [评估协议](docs/experiments/evaluation_protocol.md)） |
 | 风险排序 | 分箱严格单调 4.07→9.2→28.57%（DS2 成立） |
-| 测试 | 52 个单元测试通过 |
+| A 测试 | `smoke_test_a.sh` 全部通过 |
 | 一键复现 | `bash reproduce_core.sh`（冻结数据 sha256 校验） |
 
 ## 复赛证据链（Evidence Chain）
@@ -83,14 +84,15 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | 环节 | 载体 | 入口 |
 |------|------|------|
 | 代码版本 | git 提交记录（integration 分支） | `git log` |
-| config | `configs/semifinal_main.yaml`（semifinal_v1.5，seed 42） | 同一文件 |
+| config | `configs/semifinal_main.yaml`（semifinal_v1.5.1，seed 42，冻结 hydrophone_v2） | `config_loader.py` |
 | 数据版本 | 冻结预测 + 真值 + 质量清单（sha256 校验） | `reproduce_main` 第 1 步 |
-| trajectory | `results/exploration_trajectory.jsonl`（EXP01–14，Observation→Action→Tool→Feedback） | `src/experiments/generate_trajectory.py` |
+| exploration history | `results/exploration_trajectory.jsonl`（EXP01–15，Observation→Action→Tool→Feedback） | `src/experiments/generate_trajectory.py` |
+| actual run trajectory | `results/run_trajectory.jsonl`（commit/config/seed/逐步状态/输出 hash/干预披露） | `src.experiments.reproduce_main` |
 | result | `results/*.csv` + `bootstrap_ci.json` + `reproduction_report.json` | `bash reproduce_core.sh` |
 | Figure/Table | `figures/*.png` + `results/equal_coverage_table.csv` | 同上 |
 | Scientific Claim | 由 C 按实验冻结（候选口径见 [DS 判定汇总](docs/experiments/ds_findings_v15.md)） | `docs/final_report.md` |
 
-探索轨迹 JSONL 由脚本从 `docs/experiments/exploration_log_materials.md`（单一来源）生成，每条记录引用真实产物文件，产物缺失时脚本告警。
+探索历史 JSONL 由脚本从历史材料生成，引用缺失会直接失败；真实正式运行另由 `reproduce_main` 逐步写入 `run_trajectory.jsonl`，两者不再混称。
 
 ## 文档索引
 

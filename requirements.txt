@@ -4,4 +4,4 @@ matplotlib>=3.7,<4
 scipy>=1.11,<2
 pytest>=7,<9
 seisbench>=0.12.3,<0.13
-pyyaml>=6,<7
+PyYAML>=6.0,<7

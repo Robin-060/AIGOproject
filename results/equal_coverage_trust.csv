@@ -1,6 +1,6 @@
-strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile,feasible,comparison_status
-TrustLayer,50,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,60,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,70,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,80,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,90,45.64,,54.36,,,hydrophone_v2,false,NOT_COMPARABLE_AT_TARGET
+strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile,config_version,config_hash,parent_config,feasible,comparison_status
+TrustLayer,50,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815,semifinal_v1.5,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,60,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815,semifinal_v1.5,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,70,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815,semifinal_v1.5,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,80,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815,semifinal_v1.5,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,90,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815,semifinal_v1.5,false,NOT_COMPARABLE_AT_TARGET

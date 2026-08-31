@@ -1,13 +1,15 @@
-# 复赛评估协议（冻结版 v1.1）
+# 复赛评估协议（冻结版 v1.5.1）
 
-> 冻结时间 2026-08-28（Gate 0），对应 `configs/semifinal_main.yaml`（semifinal_v1.1）。
+> 初次冻结 2026-08-28（Gate 0）；当前审计修复版对应
+> `configs/semifinal_main.yaml`（semifinal_v1.5.1，parent=semifinal_v1.5）。
 > 本协议是 A 的冻结交付物：所有 baseline、Trust 主实验、Demo 反馈面板必须使用同一套定义。
 > v1.1 变更：评价单位按 C 契约 v1.2 改为**相位级 Primary**，成对判定降级为 Secondary。
 
 ## 1. 数据与评估子集
 
-- 数据文件：`data/batch_calibration/records_all.json`（895 条，seisbench OBS 公开数据集的官方 P/S reference picks）
-- 完整性指纹：sha256 `738e46aa...29d25699`，相位级清单见 `data/manifest_phase.csv`
+- 数据文件：`data/batch_calibration/records_all_v2.json`（895 条，四模型冻结预测与官方 P/S reference picks）
+- 完整性指纹：完整 SHA-256 由冻结配置的 `frozen_artifacts` 声明并由
+  `reproduce_main` 强制验证；相位级清单见 `data/manifest_phase.csv`
 - chunk 分布：201805 × 116、201806 × 288、201807 × 491；部署 XO，独立台站 60 个
 - **主评估单位 `(sample_id, phase)`：N_eval = 1306**（P 真值 657 + S 真值 649）
 - 真值缺失的相位：**已自查（2026-08-28）**——895 条全部有 source_id（事件目录），均为事件窗口、无噪声窗口；缺失真值 = 该相位在源数据集中无标注（trace_*_status 为空），按 C 契约 Unknown 不进入 primary，排除原因见 manifest 的 exclusion_reason
@@ -60,7 +62,7 @@
 
 ## 5. Equal-Coverage 公平性协议
 
-- 比较点：Coverage = 50%、60%、70%、80%、90%（Primary point = 60%，其余为敏感性点）。
+- 预声明点：Coverage = 50%；60%、70%、80%、90% 为覆盖率敏感性点。
 - 所有策略使用相同数据、相同真值、相同模型输出、相同正确性容差。
 - 各策略通过自身旋钮对齐到目标覆盖率点后再比 Unsafe Output Rate。
 - 不得通过提高拒绝比例单独宣称 Unsafe Rate 下降。
@@ -81,12 +83,18 @@
 
 ## 6. 随机数与可复现性
 
-- global_seed = 42；随机 baseline 用 0–99 共 100 个种子取均值 ± 标准差（报告 95% 区间）。
+- global_seed = 42；随机 baseline 用 0–99 共 100 个种子，报告均值、标准差
+  和跨 seed 的 2.5%/97.5% percentile interval，不将其误称为均值置信区间。
 - 所有实验脚本的随机源必须显式记录种子。
 - 历史数字规则：29.1%→2.8% 等历史阶段性结果必须由本配置 + reproduce 脚本重新生成后方可进入最终材料。
 
 ## 7. 软件与模型冻结
 
-- seisbench 0.12.3、torch 2.13.0+cpu、obspy 1.5.0
-- PhaseNet checkpoint `obs`、PickBlue base `phasenet`、OBSTransformer `obst2024`
-- 模型预测覆盖率（895 条中有 P 预测的比例）：PhaseNet 125、PickBlue 747、OBSTransformer 825
+- 核心复现基于冻结预测，不加载模型；完整推理参考环境为 seisbench 0.12.3、
+  torch 2.13.0+cpu、obspy 1.5.0
+- 四个冻结 checkpoint：PhaseNet `geofon`、PickBlue/PhaseNet `obs`、
+  OBSTransformer `obst2024`、EQTransformer `obs`；身份见 `model_registry.md`
+- 预测覆盖 count（P/S）：PhaseNet 125/15、PickBlue 747/827、
+  OBSTransformer 825/881、EQTransformer 753/794
+- 正式 profile 固定为 `hydrophone_v2`；历史候选比较属于 EXP06，
+  `reproduce_core` 不得重新按结果选 profile

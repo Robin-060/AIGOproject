@@ -25,8 +25,7 @@ import matplotlib  # noqa: E402
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
-
-from src.experiments.frozen_config import load_equal_coverage_points  # noqa: E402
+from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
 
 FIG2 = ROOT / "figures" / "risk_vs_actual_error.png"
 FIG3 = ROOT / "figures" / "phase_unsafe_comparison.png"
@@ -35,6 +34,7 @@ FAILURE = ROOT / "results" / "failure_raw.csv"
 
 
 def main():
+    frozen = load_frozen_config()
     # ── 主图 2: 风险分箱 vs 实际错误率 ──
     bins = []
     with open(ROOT / "results" / "risk_bins.csv", encoding="utf-8") as f:
@@ -52,7 +52,7 @@ def main():
                 f"{rate:.1f}%\n(n={n})", ha="center", fontsize=10)
     ax.set_xlabel("Risk Score Bin")
     ax.set_ylabel("Actual Error Rate (%)")
-    ax.set_title("Risk Score vs Actual Error Rate (semifinal_v1.5, "
+    ax.set_title(f"Risk Score vs Actual Error Rate ({frozen.version}, "
                  "output-capable units)")
     ax.set_ylim(0, max(rates) * 1.4 + 5)
     ax.grid(axis="y", alpha=0.3)
@@ -62,8 +62,7 @@ def main():
     print(f"✓ 主图 2: {FIG2}")
 
     # ── 主表 1: Equal-Coverage 全表 (NOT_EVALUABLE 纪律) ──
-    # 点位一律取自冻结配置 (v1.5.1)
-    points = [str(p) for p in load_equal_coverage_points()]
+    points = [str(point) for point in frozen.coverage_points]
     strategies = {}
     with open(ROOT / "results" / "baseline_results.csv", encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -89,16 +88,18 @@ def main():
                 trust_50_feasible = feasible
                 if feasible:
                     trust_threshold = float(row["risk_threshold"])
-    strategies["TrustLayer(v1.5)"] = trust_row
+    strategies[f"TrustLayer({frozen.version})"] = trust_row
 
     with open(TABLE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["strategy"] + [f"{p}%_unsafe" for p in points] + ["ceiling_pct"])
+        writer = csv.writer(f, lineterminator="\n")
+        writer.writerow(["strategy"] + [f"{p}%_unsafe" for p in points] + [
+            "ceiling_pct", "config_version", "config_hash"
+        ])
         for name in strategies:
             ceiling = round(trust_ceiling, 2) if name.startswith("TrustLayer") else ""
             writer.writerow([name] + [
                 f"{strategies[name].get(p, ''):.1f}" if strategies[name].get(p) is not None
-                else "" for p in points] + [ceiling])
+                else "" for p in points] + [ceiling, frozen.version, frozen.sha256])
     print(f"✓ 主表 1: {TABLE}")
 
     # ── 主图 3: P/S 相位级 Unsafe 对比 (天花板补充口径) ──
@@ -127,13 +128,13 @@ def main():
     ax.set_xticks(x)
     ax.set_xticklabels([label for _key, label in groups])
     ax.set_ylabel("Unsafe Output Rate (%)")
-    ax.set_title("Phase-level Unsafe at Trust Ceiling "
-                 "(semifinal_v1.5, ceiling 45.6% supplementary)")
+    ax.set_title(f"Phase-level Unsafe at Phase-specific Trust Ceilings "
+                 f"({frozen.version}, supplementary)")
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
     fig.text(0.5, 0.01,
-             "Declared point 50%: NOT_EVALUABLE (Trust ceiling 45.64%). "
-             "Supplementary comparison at ceiling point, no significance claim.",
+             "Declared point 50%: NOT_EVALUABLE. Each phase uses its own Trust "
+             "ceiling; P/S targets differ and are not directly comparable.",
              ha="center", fontsize=9, color="#555555")
     fig.tight_layout(rect=[0, 0.04, 1, 1])
     fig.savefig(FIG3, dpi=150)
@@ -175,9 +176,13 @@ def main():
                 "gap_ratio": q.get("gap_ratio", ""),
                 "clipping_ratio": q.get("clipping_ratio", ""),
                 "missing_channels": q.get("missing_channels", ""),
+                "config_version": frozen.version,
+                "config_hash": frozen.sha256,
             })
     with open(FAILURE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
+        writer = csv.DictWriter(
+            f, fieldnames=list(out_rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(out_rows)
     n_uncaught = sum(1 for r in out_rows if r["auto_at_50pct"] == "yes")

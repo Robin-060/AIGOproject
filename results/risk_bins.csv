@@ -1,6 +1,6 @@
-risk_bin,n,wrong,error_rate_pct,reliable
-0-9,418,17,4.07,true
-10-19,163,15,9.2,true
-20-29,14,4,28.57,true
-30-39,1,0,,false
-40-50,0,0,,false
+risk_bin,n,wrong,error_rate_pct,reliable,config_version,config_hash
+0-9,418,17,4.07,true,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815
+10-19,163,15,9.2,true,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815
+20-29,14,4,28.57,true,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815
+30-39,1,0,,false,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815
+40-50,0,0,,false,semifinal_v1.5.1,58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815

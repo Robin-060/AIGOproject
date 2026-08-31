@@ -17,21 +17,14 @@ from typing import Any, Mapping, Union
 from src.trust_engine.schema import (
     SampleMetadata, QualityReport, ModelProfile, ModelPrediction,
     TrustConfig, ReliabilityResult, AdapterStatus,
-    DEMO_CONFIG,
 )
+from src.trust_engine.config_loader import load_frozen_config
 from src.trust_engine.reliability import evaluate_reliability
 
 
 def _load_config() -> TrustConfig:
-    """优先读校准后的参数，没有则用 Demo 默认值"""
-    from pathlib import Path
-    calib_path = Path("src/calibrate/thresholds_calibrated.json")
-    if calib_path.exists():
-        with open(calib_path, "r", encoding="utf-8") as f:
-            calib = json.load(f)
-        params = calib.get("parameters", {})
-        return TrustConfig(**params, config_version="calibrated_v1.0")
-    return DEMO_CONFIG
+    """Load the same frozen config used by formal experiments."""
+    return load_frozen_config().trust_config()
 
 
 # ═══════════════════════════════════════
@@ -119,53 +112,38 @@ def run_pipeline(
         config = _load_config()
 
     # ── P1 ──────────────────────────────────────
-    suitabilities = None
-    data_evidence = None
-    single_evidences = None
-    try:
-        from src.trust_engine.data_evidence import evaluate_data_evidence
-        from src.trust_engine.model_suitability import evaluate_model_suitability
-        from src.trust_engine.single_model import evaluate_single_model_evidence
+    from src.trust_engine.data_evidence import evaluate_data_evidence
+    from src.trust_engine.model_suitability import evaluate_model_suitability
+    from src.trust_engine.single_model import evaluate_single_model_evidence
 
-        data_evidence = evaluate_data_evidence(quality)
-        suitabilities = evaluate_model_suitability(
-            metadata, quality, profiles,
-            adapter_statuses or [],
-        )
-        single_evidences = evaluate_single_model_evidence(predictions)
-    except ImportError:
-        pass
+    data_evidence = evaluate_data_evidence(quality, config.data_penalties)
+    suitabilities = evaluate_model_suitability(
+        metadata, quality, profiles,
+        adapter_statuses or [],
+    )
+    single_evidences = evaluate_single_model_evidence(predictions, config)
 
     # ── P2 ──────────────────────────────────────
-    physics_checks = None
-    try:
-        from src.trust_engine.physics import check_model_prediction
-        physics_checks = []
-        for p in predictions:
-            if p.phase == "P":
-                s_preds = [x for x in predictions
-                           if x.phase == "S" and x.model_name == p.model_name]
-                s_pred = s_preds[0] if s_preds else None
-                physics_checks.append(check_model_prediction(p, s_pred, config))
-    except ImportError:
-        pass
+    from src.trust_engine.physics import check_model_prediction
+    physics_checks = []
+    for p in predictions:
+        if p.phase == "P":
+            s_preds = [x for x in predictions
+                       if x.phase == "S" and x.model_name == p.model_name]
+            s_pred = s_preds[0] if s_preds else None
+            physics_checks.append(check_model_prediction(p, s_pred, config))
 
     # ── P3 ──────────────────────────────────────
-    consensus_results = None
-    fusion_candidates = None
-    try:
-        from src.trust_engine.multi_model import analyze_multi_model_consensus
-        from src.trust_engine.fusion import build_fusion_candidates
+    from src.trust_engine.multi_model import analyze_multi_model_consensus
+    from src.trust_engine.fusion import build_fusion_candidates
 
-        consensus_results = analyze_multi_model_consensus(
-            predictions, suitabilities or [], physics_checks or [],
-            config=config,
-        )
-        fusion_candidates = build_fusion_candidates(
-            predictions, consensus_results,
-        )
-    except ImportError:
-        pass
+    consensus_results = analyze_multi_model_consensus(
+        predictions, suitabilities, physics_checks,
+        config=config,
+    )
+    fusion_candidates = build_fusion_candidates(
+        predictions, consensus_results, config,
+    )
 
     return evaluate_reliability(
         metadata=metadata,

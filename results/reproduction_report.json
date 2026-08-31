@@ -1,33 +1,121 @@
 {
-  "config_version": "semifinal_v1.5",
+  "run_id": "formal-20260831T124928Z-17de8fee",
+  "command": "python3 -m src.experiments.reproduce_main",
+  "git": {
+    "commit": "9911b59eafff5e443024e5083f0fc7586c7c4778",
+    "branch": "integration",
+    "dirty_at_start": true,
+    "dirty_paths_at_start": [
+      "M README.md",
+      " M configs/semifinal_main.yaml",
+      " M docs/experiments/evaluation_protocol.md",
+      " M docs/experiments/exploration_log_materials.md",
+      " M docs/experiments/reproduction_log.md",
+      " M docs/reproduction.md",
+      " M figures/coverage_vs_unsafe.png",
+      " M figures/phase_unsafe_comparison.png",
+      " M figures/risk_vs_actual_error.png",
+      " M requirements.txt",
+      " M results/baseline_results.csv",
+      " M results/bootstrap_ci.json",
+      " M results/equal_coverage_table.csv",
+      " M results/equal_coverage_trust.csv",
+      " M results/exploration_trajectory.jsonl",
+      " M results/failure_raw.csv",
+      " M results/main_results.csv",
+      " M results/method_comparison_v2.csv",
+      " M results/reproduction_report.json",
+      " M results/risk_bins.csv",
+      " M smoke_test.sh",
+      " M src/experiments/bootstrap_analysis.py",
+      " M src/experiments/compare_methods_v2.py",
+      " M src/experiments/domain_gate.py",
+      " M src/experiments/final_figures.py",
+      " M src/experiments/generate_trajectory.py",
+      " M src/experiments/phase_evaluation.py",
+      " M src/experiments/random_baseline.py",
+      " M src/experiments/reproduce_main.py",
+      " M src/experiments/run_baselines.py",
+      " M src/experiments/run_generalization.py",
+      " M src/experiments/run_main_experiment.py",
+      " M src/trust_engine/fusion.py",
+      " M src/trust_engine/multi_model.py",
+      " M src/trust_engine/physics.py",
+      " M src/trust_engine/pipeline.py",
+      " M src/trust_engine/policy_router.py",
+      " M src/trust_engine/reliability.py",
+      " M src/trust_engine/schema.py",
+      " M src/trust_engine/single_model.py",
+      " M src/trust_engine/tests/test_p3_consensus_fusion.py",
+      " M src/trust_engine/tests/test_pipeline_result.py",
+      " M src/trust_engine/tests/test_random_baseline.py",
+      "?? .venv-a/",
+      "?? requirements-core.txt",
+      "?? results/run_trajectory.jsonl",
+      "?? smoke_test_a.sh",
+      "?? src/experiments/run_trajectory.py",
+      "?? src/trust_engine/config_loader.py",
+      "?? src/trust_engine/tests/test_bootstrap_analysis.py",
+      "?? src/trust_engine/tests/test_frozen_config.py"
+    ]
+  },
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815",
+  "parent_config": "semifinal_v1.5",
+  "selected_profile": "hydrophone_v2",
   "seed": 42,
+  "run_controls": {
+    "profile_selection_during_reproduction": false,
+    "human_intervention_during_run": false,
+    "best_of_n": false,
+    "retries": 0,
+    "multiple_formal_runs_selected": false,
+    "disclosure": "正式复现无人工干预、无 Best-of-N、无结果筛选；历史探索见 exploration_trajectory.jsonl"
+  },
   "environment": {
-    "seisbench": "0.12.3",
-    "torch": "2.13.0",
-    "obspy": "1.5.0",
-    "numpy": "2.5.1",
-    "scipy": "1.18.0",
-    "pandas": "3.0.5"
+    "seisbench": "unknown",
+    "torch": "unknown",
+    "obspy": "unknown",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.1",
+    "PyYAML": "6.0.3"
   },
   "frozen_inputs": {
     "data/batch_calibration/records_all_v2.json": {
-      "sha256_prefix": "e5cc0a28a61a4a91",
+      "sha256": "e5cc0a28a61a4a919336126cbb6322212292e7ea76de41356fe2e8085fcd2456",
+      "expected_sha256": "e5cc0a28a61a4a919336126cbb6322212292e7ea76de41356fe2e8085fcd2456",
       "verified": true
     },
     "data/quality_manifest.csv": {
-      "sha256_prefix": "2a1dcb8c135ce2db",
+      "sha256": "2a1dcb8c135ce2db09955183c0ac94b2a2223e4a3db95d5e7f52d941c92e3024",
+      "expected_sha256": "2a1dcb8c135ce2db09955183c0ac94b2a2223e4a3db95d5e7f52d941c92e3024",
       "verified": true
     },
     "data/sta_lta_picks.csv": {
-      "sha256_prefix": "7dcaf65d73f061e9",
+      "sha256": "7dcaf65d73f061e9d34e07f309be6efb9fec0a601894e95432f60adc85018de6",
+      "expected_sha256": "7dcaf65d73f061e9d34e07f309be6efb9fec0a601894e95432f60adc85018de6",
       "verified": true
     },
     "data/manifest_phase.csv": {
-      "sha256_prefix": "db5c71d712f36b43",
+      "sha256": "db5c71d712f36b43d1268a3680df0a98a09801c92de9b8c879318f7659e35ea3",
+      "expected_sha256": "db5c71d712f36b43d1268a3680df0a98a09801c92de9b8c879318f7659e35ea3",
       "verified": true
     },
     "data/eqt_predictions.json": {
-      "sha256_prefix": "fee504eab17aaa78",
+      "sha256": "fee504eab17aaa7837fea093df718a4e5b0b48a1d1bce2257e8ca29351698b44",
+      "expected_sha256": "fee504eab17aaa7837fea093df718a4e5b0b48a1d1bce2257e8ca29351698b44",
+      "verified": true
+    },
+    "results/calibration/platt_calibrators.json": {
+      "sha256": "2ab46c4279aad6d645befed1b84fa81a4c39f9b5948e330450624369e16bbc95",
+      "expected_sha256": "2ab46c4279aad6d645befed1b84fa81a4c39f9b5948e330450624369e16bbc95",
+      "verified": true
+    },
+    "docs/model_registry.md": {
+      "sha256": "eed9c208f0825411595476998d37ab6bcec1a826444445f7f855586aa26082de",
+      "expected_sha256": "eed9c208f0825411595476998d37ab6bcec1a826444445f7f855586aa26082de",
       "verified": true
     }
   },
@@ -39,6 +127,6 @@
     "ceiling_supplementary_delta_pp": 1.17,
     "ceiling_supplementary_verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 42.1,
-  "timestamp_utc": "2026-08-31T12:47:28.670230+00:00"
+  "duration_s": 25.9,
+  "timestamp_utc": "2026-08-31T12:49:54.513880+00:00"
 }

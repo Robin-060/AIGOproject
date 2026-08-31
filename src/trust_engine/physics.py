@@ -30,12 +30,6 @@ class PhysicsReason(str, Enum):
     PHASE_MISMATCH = "PHYSICS_PHASE_MISMATCH"
 
 
-# Evidence weights follow the agreed P2 score budget. Physical thresholds are
-# always read from TrustConfig and are never hard-coded in this module.
-_P_AFTER_S_SCORE = 10.0
-_SP_INTERVAL_SCORE = 5.0
-
-
 def check_model_prediction(
     p_prediction: Optional[ModelPrediction],
     s_prediction: Optional[ModelPrediction],
@@ -174,7 +168,7 @@ def _check_comparable_pair(
             target_id=target_id,
             status=PhysicsStatus.FAIL.value,
             hard_fail=True,
-            score=_P_AFTER_S_SCORE,
+            score=config.p_after_s_score,
             reasons=[PhysicsReason.P_AFTER_S.value],
         )
 
@@ -184,7 +178,7 @@ def _check_comparable_pair(
             target_id=target_id,
             status=PhysicsStatus.FAIL.value,
             hard_fail=False,
-            score=_SP_INTERVAL_SCORE,
+            score=config.sp_interval_score,
             reasons=[PhysicsReason.SP_TOO_SHORT.value],
         )
 
@@ -194,7 +188,7 @@ def _check_comparable_pair(
             target_id=target_id,
             status=PhysicsStatus.FAIL.value,
             hard_fail=False,
-            score=_SP_INTERVAL_SCORE,
+            score=config.sp_interval_score,
             reasons=[PhysicsReason.SP_TOO_LONG.value],
         )
 

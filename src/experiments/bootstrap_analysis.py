@@ -2,7 +2,7 @@
 Cluster paired-bootstrap — C 契约 8.4 统计硬要求 (v1.5 NOT_EVALUABLE 纪律)
 
 设计:
-  - cluster 单元: station (60 个台站, 冻结于 semifinal_v1.5)
+  - cluster 单元: station (60 个台站, 当前配置 semifinal_v1.5.1)
   - paired: 同一重采样站集上同时算 Trust 与对比策略的 Unsafe
   - 声明点位: 50% (预注册); 若 Trust 天花板 < 点位 → 该点位 NOT_EVALUABLE
     (不等覆盖比较不给出显著性结论, C 纪律)
@@ -33,11 +33,13 @@ from src.experiments.phase_evaluation import (  # noqa: E402
     phase_verdict,
 )
 from src.experiments.run_baselines import strat_vote, with_confidence  # noqa: E402
+from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
 
 OUT_JSON = ROOT / "results" / "bootstrap_ci.json"
-DECLARED_PCT = 50.0   # 预注册声明点位
-N_REPLICATES = 1000
-SEED = 42
+_FROZEN = load_frozen_config()
+DECLARED_PCT = _FROZEN.declared_coverage_pct
+N_REPLICATES = _FROZEN.bootstrap_replicates
+SEED = _FROZEN.bootstrap_seed
 
 TRUST_CSV = ROOT / "results" / "main_results.csv"
 
@@ -61,43 +63,35 @@ def method_stats(units_subset, trust, voting_output, voting_risk, target_pct):
     k = int(round(target_pct / 100 * n))
 
     trust_units = []
-    for u in units_subset:
+    for occurrence, u in enumerate(units_subset):
         key = (u["sample_id"], u["phase"])
         t = trust[key]
         if t["verdict"] in ("correct", "wrong"):
-            trust_units.append((t["risk"], key, t["verdict"]))
-    trust_units.sort(key=lambda x: (x[0], x[1]))
-    trust_accept = set(entry[1] for entry in trust_units[: min(k, len(trust_units))])
+            trust_units.append((t["risk"], key, occurrence, t["verdict"]))
+    trust_units.sort(key=lambda x: (x[0], x[1], x[2]))
 
     vote_units = []
-    for u in units_subset:
+    for occurrence, u in enumerate(units_subset):
         key = (u["sample_id"], u["phase"])
         out = voting_output[u["sample_id"], u["phase"]]
         if out is None:
             continue
         verdict = phase_verdict(out, u["reference_time_s"], u["phase"])
         if verdict in ("correct", "wrong"):
-            vote_units.append((voting_risk[u["sample_id"], u["phase"]], key, verdict))
-    vote_units.sort(key=lambda x: (x[0], x[1]))
-    vote_accept = set(entry[1] for entry in vote_units[: min(k, len(vote_units))])
+            vote_units.append((voting_risk[key], key, occurrence, verdict))
+    vote_units.sort(key=lambda x: (x[0], x[1], x[2]))
 
-    trust_wrong = trust_correct = vote_wrong = vote_correct = 0
-    for key in trust_accept:
-        if trust[key]["verdict"] == "wrong":
-            trust_wrong += 1
-        else:
-            trust_correct += 1
-    for u in units_subset:
-        key = (u["sample_id"], u["phase"])
-        if key in vote_accept:
-            out = voting_output[u["sample_id"], u["phase"]]
-            if out is None:
-                continue
-            verdict = phase_verdict(out, u["reference_time_s"], u["phase"])
-            if verdict == "wrong":
-                vote_wrong += 1
-            elif verdict == "correct":
-                vote_correct += 1
+    # Equal-coverage is undefined if either method cannot supply k outputs.
+    if k <= 0 or len(trust_units) < k or len(vote_units) < k:
+        return float("nan"), float("nan")
+
+    # Keep list multiplicity. A station sampled twice must contribute twice.
+    trust_accept = trust_units[:k]
+    vote_accept = vote_units[:k]
+    trust_wrong = sum(1 for entry in trust_accept if entry[3] == "wrong")
+    trust_correct = sum(1 for entry in trust_accept if entry[3] == "correct")
+    vote_wrong = sum(1 for entry in vote_accept if entry[3] == "wrong")
+    vote_correct = sum(1 for entry in vote_accept if entry[3] == "correct")
     t_unsafe = (trust_wrong / (trust_wrong + trust_correct) * 100
                 if (trust_wrong + trust_correct) else float("nan"))
     v_unsafe = (vote_wrong / (vote_wrong + vote_correct) * 100
@@ -105,10 +99,68 @@ def method_stats(units_subset, trust, voting_output, voting_risk, target_pct):
     return t_unsafe, v_unsafe
 
 
+def fixed_acceptance_keys(base_units, trust, voting_output, voting_risk,
+                          target_pct):
+    """Freeze each method's full-sample top-k set before cluster resampling."""
+    keys = [(u["sample_id"], u["phase"]) for u in base_units]
+    if len(keys) != len(set(keys)):
+        raise ValueError("base_units must contain unique evaluation units")
+    k = int(round(target_pct / 100 * len(base_units)))
+
+    trust_ranked = sorted(
+        ((trust[key]["risk"], key) for key in keys
+         if trust[key]["verdict"] in ("correct", "wrong")),
+        key=lambda item: (item[0], item[1]),
+    )
+    vote_ranked = []
+    for u in base_units:
+        key = (u["sample_id"], u["phase"])
+        out = voting_output[key]
+        if out is None:
+            continue
+        verdict = phase_verdict(out, u["reference_time_s"], u["phase"])
+        if verdict in ("correct", "wrong"):
+            vote_ranked.append((voting_risk[key], key))
+    vote_ranked.sort(key=lambda item: (item[0], item[1]))
+
+    if k <= 0 or len(trust_ranked) < k or len(vote_ranked) < k:
+        raise ValueError(f"Equal-coverage point {target_pct}% is infeasible")
+    return (
+        {key for _, key in trust_ranked[:k]},
+        {key for _, key in vote_ranked[:k]},
+    )
+
+
+def fixed_selection_stats(units_subset, trust, voting_output,
+                          trust_accept, vote_accept):
+    """Evaluate frozen selectors on a cluster-resampled list, preserving repeats."""
+    trust_wrong = trust_total = vote_wrong = vote_total = 0
+    for u in units_subset:
+        key = (u["sample_id"], u["phase"])
+        if key in trust_accept:
+            trust_total += 1
+            trust_wrong += trust[key]["verdict"] == "wrong"
+        if key in vote_accept:
+            out = voting_output[key]
+            if out is not None:
+                verdict = phase_verdict(out, u["reference_time_s"], u["phase"])
+                if verdict in ("correct", "wrong"):
+                    vote_total += 1
+                    vote_wrong += verdict == "wrong"
+    if not trust_total or not vote_total:
+        return float("nan"), float("nan")
+    return trust_wrong / trust_total * 100, vote_wrong / vote_total * 100
+
+
 def run_phase_bootstrap(base_units, trust, voting_output, voting_risk,
                         target_pct, stations, units_by_station, filt, rng):
     """单相位 × 单覆盖率点的 paired bootstrap."""
     t0, v0 = method_stats(base_units, trust, voting_output, voting_risk, target_pct)
+    if not np.isfinite(t0) or not np.isfinite(v0):
+        raise ValueError(f"Equal-coverage point {target_pct}% is infeasible for base units")
+    trust_accept, vote_accept = fixed_acceptance_keys(
+        base_units, trust, voting_output, voting_risk, target_pct
+    )
     deltas = []
     for _ in range(N_REPLICATES):
         sample_stations = rng.choice(stations, size=len(stations), replace=True)
@@ -118,7 +170,9 @@ def run_phase_bootstrap(base_units, trust, voting_output, voting_risk,
         subset = [u for u in subset if filt is None or u["phase"] == filt]
         if not subset:
             continue
-        t, v = method_stats(subset, trust, voting_output, voting_risk, target_pct)
+        t, v = fixed_selection_stats(
+            subset, trust, voting_output, trust_accept, vote_accept
+        )
         if np.isfinite(t) and np.isfinite(v):
             deltas.append(t - v)
     deltas = np.array(deltas)
@@ -140,6 +194,12 @@ def run_phase_bootstrap(base_units, trust, voting_output, voting_risk,
         "ci95_hi": round(float(hi), 2),
         "one_sided_upper95": round(float(upper95), 2),
         "n_replicates": int(len(deltas)),
+        "n_replicates_requested": N_REPLICATES,
+        "n_replicates_skipped_infeasible": int(N_REPLICATES - len(deltas)),
+        "bootstrap_estimand": (
+            "full-sample equal-coverage top-k selectors frozen before "
+            "station cluster resampling"
+        ),
         "verdict": verdict,
     }
 
@@ -178,14 +238,24 @@ def main():
               f" (不等覆盖比较不给出显著性结论); 另做天花板点位补充比较")
 
     rng = np.random.default_rng(SEED)
-    report = {"trust_ceiling_pct": round(trust_ceiling, 2),
+    report = {"config_version": _FROZEN.version,
+              "config_hash": _FROZEN.sha256,
+              "parent_config": _FROZEN.parent,
+              "trust_ceiling_pct": round(trust_ceiling, 2),
               "declared_point": DECLARED_PCT,
               "declared_feasible": bool(declared_feasible)}
 
     for phase_label, filt in (("ALL", None), ("P", "P"), ("S", "S")):
         base_units = [u for u in primary
                       if filt is None or u["phase"] == filt]
-        if declared_feasible:
+        phase_ceiling = (
+            sum(1 for u in base_units
+                if trust[(u["sample_id"], u["phase"])]["verdict"]
+                in ("correct", "wrong"))
+            / len(base_units) * 100
+        )
+        phase_declared_feasible = phase_ceiling + 1e-9 >= DECLARED_PCT
+        if declared_feasible and phase_declared_feasible:
             entry = run_phase_bootstrap(
                 base_units, trust, voting_output, voting_risk,
                 DECLARED_PCT, stations, units_by_station, filt, rng)
@@ -199,17 +269,23 @@ def main():
             report[f"{phase_label}"] = {
                 "target_coverage_pct": DECLARED_PCT,
                 "verdict": "NOT_EVALUABLE",
-                "reason": f"Trust ceiling {trust_ceiling:.1f}% < declared {DECLARED_PCT}%",
+                "reason": (
+                    f"{phase_label} Trust ceiling {phase_ceiling:.2f}% "
+                    f"< declared {DECLARED_PCT}%"
+                ),
             }
             print(f"\n[{phase_label}] 声明点位 {DECLARED_PCT}%: NOT_EVALUABLE"
-                  f" (天花板 {trust_ceiling:.1f}%)")
-            # 天花板点位补充比较 (非声明点位, 仅作证据)
-            ceil = round(trust_ceiling, 1)
+                  f" (本相位天花板 {phase_ceiling:.2f}%)")
+            # 分相位使用各自精确天花板，保证该相位内 Trust/Voting 真正等覆盖。
+            # 各相位补充点不同，不能拿 P 与 S 的点估计互相作直接效应比较。
+            ceil = phase_ceiling
             entry = run_phase_bootstrap(
                 base_units, trust, voting_output, voting_risk,
                 ceil, stations, units_by_station, filt, rng)
+            entry["comparison_scope"] = "SUPPLEMENTARY_PHASE_SPECIFIC_CEILING"
+            entry["phase_ceiling_pct"] = round(phase_ceiling, 4)
             report[f"{phase_label}_ceiling_supplementary"] = entry
-            print(f"[{phase_label}] 补充(天花板 {ceil}%): Trust {entry['trust_unsafe_pp']:.1f}% "
+            print(f"[{phase_label}] 补充(本相位天花板 {ceil:.2f}%): Trust {entry['trust_unsafe_pp']:.1f}% "
                   f"vs Voting {entry['voting_unsafe_pp']:.1f}% "
                   f"(Δ={entry['point_delta_pp']:+.1f}pp, {entry['verdict']})")
 

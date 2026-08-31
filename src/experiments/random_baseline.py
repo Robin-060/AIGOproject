@@ -6,10 +6,10 @@
       随机拒绝不会降低被接受子集的错误率——它与 Trust Layer 的差距即
       "选择性拒绝"带来的真实收益。
 
-协议: configs/semifinal_main.yaml (semifinal_v1.1)
+协议: configs/semifinal_main.yaml (当前 semifinal_v1.5.1)
   - 评估单位: (sample_id, phase), N_eval = 1306 (P 657 + S 649)
   - 正确性: 相位级容差 P 0.5s / S 1.0s (evaluation_protocol.md)
-  - 多种子: 0..99 共 100 个, 报告均值 ± 标准差与 95% 区间
+  - 多种子: 0..99 共 100 个, 报告均值、标准差与 seed percentile 区间
 
 用法:
     python -m src.experiments.random_baseline          # 输出 5 个 coverage 点结果
@@ -17,17 +17,20 @@
 
 import numpy as np
 
-from src.experiments.frozen_config import load_equal_coverage_points
+from src.trust_engine.config_loader import load_frozen_config
+
 from src.experiments.phase_evaluation import (
     build_phase_units,
     evaluate_units,
     load_records,
 )
 
-UNDERLYING_MODEL = "OBSTransformer"
-SEEDS = list(range(100))
-# 覆盖率点位一律取自冻结配置 (v1.5.1), 不在脚本内硬编码
-COVERAGE_POINTS = load_equal_coverage_points()
+_FROZEN = load_frozen_config()
+UNDERLYING_MODEL = str(
+    _FROZEN.raw["baseline_parameters"]["random_underlying_model"]
+)
+SEEDS = _FROZEN.random_seeds
+COVERAGE_POINTS = _FROZEN.coverage_points
 
 
 def make_gate(units: list, p: float, seed: int):
@@ -53,9 +56,14 @@ def evaluate_at_p(units: list, p: float, seed: int) -> dict:
 
 def evaluate_across_seeds(units: list, p: float,
                           seeds: list = SEEDS) -> dict:
-    """多种子统计, 返回均值 ± 标准差与 95% 区间 (种子间变异)."""
+    """多种子统计，报告均值、标准差和 seed 分布的 percentile 区间。"""
     runs = [evaluate_at_p(units, p, seed) for seed in seeds]
-    keys = ("coverage", "unsafe_output_rate")
+    keys = (
+        "coverage",
+        "unsafe_output_rate",
+        "review_burden",
+        "error_interception_rate",
+    )
     out = {"p": p, "n_seeds": len(seeds)}
     for key in keys:
         values = np.array([run[key] for run in runs])
@@ -63,8 +71,9 @@ def evaluate_across_seeds(units: list, p: float,
         std = float(values.std())
         out[key] = mean
         out[f"{key}_std"] = std
-        out[f"{key}_ci95_lo"] = mean - 1.96 * std
-        out[f"{key}_ci95_hi"] = mean + 1.96 * std
+        lo, hi = np.percentile(values, [2.5, 97.5])
+        out[f"{key}_seed_interval95_lo"] = float(lo)
+        out[f"{key}_seed_interval95_hi"] = float(hi)
     return out
 
 
@@ -88,14 +97,14 @@ def main() -> None:
     print(f"评估单位: {n_eval} 个 (sample_id, phase) | "
           f"底层模型: {UNDERLYING_MODEL} | 种子: {len(SEEDS)} 个")
     print(f"{'目标Coverage':>12} {'调得p':>8} {'实际Coverage':>13} "
-          f"{'Unsafe(95%CI)':>18}")
+              f"{'Unsafe(seed 95%区间)':>24}")
     for target in COVERAGE_POINTS:
         p = find_p_for_coverage(units, target)
         stat = evaluate_across_seeds(units, p)
         print(f"{target:>10}% {p:>9.3f} {stat['coverage']*100:>11.1f}% "
               f"{stat['unsafe_output_rate']*100:>7.1f}% "
-              f"[{stat['unsafe_output_rate_ci95_lo']*100:.1f}, "
-              f"{stat['unsafe_output_rate_ci95_hi']*100:.1f}]")
+              f"[{stat['unsafe_output_rate_seed_interval95_lo']*100:.1f}, "
+              f"{stat['unsafe_output_rate_seed_interval95_hi']*100:.1f}]")
 
 
 if __name__ == "__main__":
