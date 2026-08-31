@@ -1,14 +1,14 @@
 {
-  "run_id": "formal-20260831T125431Z-d049fe14",
+  "run_id": "formal-20260831T130907Z-81d55100",
   "command": "python3 -m src.experiments.reproduce_main",
   "git": {
-    "commit": "6c8e8d940b114e8b0920d4084280e9b2d87d9cdd",
+    "commit": "a1a7641c5f15a88d3659e9afe9ccba7c7f8b47cb",
     "branch": "integration",
     "dirty_at_start": false,
     "dirty_paths_at_start": []
   },
   "config_version": "semifinal_v1.5.1",
-  "config_hash": "58011ddcaeaa2160bc51d32f50f956ca8ea552ed98363eaef11d301276495815",
+  "config_hash": "bf3adc8d3406fa2bf6465c9d89e5585314fbac9857bcae245ba0067bc966c435",
   "parent_config": "semifinal_v1.5",
   "selected_profile": "hydrophone_v2",
   "seed": 42,
@@ -75,6 +75,6 @@
     "ceiling_supplementary_delta_pp": 1.17,
     "ceiling_supplementary_verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 25.0,
-  "timestamp_utc": "2026-08-31T12:54:56.114420+00:00"
+  "duration_s": 25.6,
+  "timestamp_utc": "2026-08-31T13:09:32.922560+00:00"
 }
