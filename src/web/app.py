@@ -446,7 +446,7 @@ def main() -> None:
         "P tolerance (s)",
         min_value=0.05,
         max_value=1.00,
-        value=0.30,
+        value=0.34,
         step=0.05,
     )
 
@@ -454,16 +454,17 @@ def main() -> None:
         "S tolerance (s)",
         min_value=0.05,
         max_value=2.00,
-        value=0.50,
+        value=0.51,
         step=0.05,
     )
 
+    # 语义与冻结配置一致: data_weight 是数据证据的 30 分预算, 不是 0-1 乘数
     data_weight = control_cols[3].slider(
-        "Evidence weight",
+        "Data evidence weight",
         min_value=0.0,
-        max_value=2.0,
-        value=1.0,
-        step=0.1,
+        max_value=30.0,
+        value=30.0,
+        step=1.0,
     )
     upload_columns = st.columns(2)
     uploaded_files = upload_columns[0].file_uploader(
