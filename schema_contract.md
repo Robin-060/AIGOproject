@@ -68,7 +68,9 @@ Confirmed current backend parameters:
 - single_model_weight = 24.0
 - multi_model_weight = 37.0
 - physics_weight = 40.0
-- config_version = "calibrated_v1.0"
+- config_version = "calibrated_v1.0"          # TrustConfig 参数集版本
+- data evidence penalties = "natural_v1.0"     # DS4 自然重校准 (NATURAL_PENALTIES)
+- experiment protocol = "semifinal_v1.5"       # configs/semifinal_main.yaml
 
 ## 5. Demo-Adjustable Parameters
 
@@ -166,7 +168,7 @@ Confirmed from the current repository:
 - ModelPrediction schema
 - AdapterStatus schema
 - Main TrustConfig parameters
-- config_version = calibrated_v1.0
+- config_version = calibrated_v1.0 (TrustConfig 参数集); 实验协议 semifinal_v1.5
 - Real pipeline entry point
 - Existing analysis chain
 
@@ -251,6 +253,16 @@ Confirmed from `src/trust_engine/schema.py` (`class Action`): the router emits
 exactly four values — `ACCEPT`, `ROUTE`, `FUSE`, `ABSTAIN`. `ROUTE` is emitted
 when a single non-primary model is selected (`policy_router.py`).
 
+v1.5 reason codes B may encounter (display as-is, do not reinterpret):
+
+- `SEVERE_DISAGREEMENT` / `MINOR_DISAGREEMENT` — 分歧三级 (第二刀)
+- `FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR` — FUSE 被校准置信度门槛拦截
+- `LOW_CALIBRATED_CONFIDENCE_<model>_<phase>` — 校准后正确率 < 0.70
+
+Model identities (four frozen prediction columns): PhaseNet=geofon、
+PickBlue=PhaseNet obs、OBSTransformer=obst2024、EQTransformer=obs —
+见 `docs/model_registry.md`。
+
 ### 12.2 Weight calibration provenance (for slider labels)
 
 | Parameter | Frozen default | Provenance |
@@ -265,6 +277,9 @@ when a single non-primary model is selected (`policy_router.py`).
 
 The Demo must label each slider with its frozen default and provenance, and mark
 "偏离 calibrated_v1.0" with the deviation list after any user change.
+数据证据罚分来自 `natural_v1.0`（NATURAL_PENALTIES，DS4 自然重校准），
+实验协议为 `semifinal_v1.5`（configs/semifinal_main.yaml）——三者是两个
+不同层级的版本概念，Demo 展示时按字段区分。
 
 ### 12.3 Batch metrics source (Feedback panel)
 
@@ -272,10 +287,12 @@ Coverage / Unsafe Output Rate / Interception / Review Burden are batch
 statistics. They are NOT part of a single `run_pipeline()` return. The Feedback
 panel reads A's batch result files:
 
-- `results/baseline_results.csv` — five baselines × 5 coverage points
+- `results/baseline_results.csv` — 8 strategies (含 4 单模型基线) × 5 coverage points
 - `results/main_results.csv` — Trust main experiment per-sample decisions
 - `results/risk_bins.csv` — risk-bin error rates
+- `results/domain_gate.json` — ID-only 域门 (XO 阈值 95%=3.94 / 99%=5.27)
 
 Metric definitions and pairing rules: `docs/experiments/evaluation_protocol.md`.
-Evaluation subset: 411 records with complete P+S truth (see
-`configs/semifinal_main.yaml`). The frontend must not recompute these metrics.
+Evaluation subset: **N_eval = 1306 phase units (P 657 + S 649)** — 相位级 Primary
+(成对判定仅作 Secondary)，见 `configs/semifinal_main.yaml`。
+The frontend must not recompute these metrics.
