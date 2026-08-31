@@ -551,11 +551,11 @@ if not uploaded_files:
             st.info("上传 JSON 开始分析，或点击上方按钮加载内置示例。")
             _render_experiments()
 
-        return
+    return
 
-    items = []
+items = []
 
-    for uploaded in uploaded_files:
+for uploaded in uploaded_files:
         try:
             uploaded_raw = json.loads(
                 uploaded.getvalue().decode("utf-8-sig")
