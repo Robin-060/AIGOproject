@@ -31,7 +31,7 @@
 
 容差：P = 0.5s，S = 1.0s（依据见 3.1）。
 
-### 3.1 容差依据与敏感性证据（状态：待 C 签认）
+### 3.1 容差依据与敏感性证据（状态：C 已审阅，v1.5 五刀审核中接受校准方向）
 
 依据两份证据（复现脚本 `src/experiments/tolerance_sensitivity.py`，
 结果 `results/tolerance_sensitivity.json`，评估子集 411 条成对口径）：

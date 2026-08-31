@@ -19,6 +19,9 @@
 | EXP08 | EQT 第四模型（C 批准，不替换） | 正向发现 | 天花板 46.7→54.2% |
 | EXP09 | STA/LTA 第五证据 12 组合校准 | **负结果（淘汰）** | X=0 胜出，弱相关 46.7% vs 60.9% |
 | EXP10 | DS4 自然罚分重校准 | 正向发现 | v1.4：S 相从显著落后→统计并列 |
+| EXP11 | DS3 判定：分歧与错误关联 | **负结果** | P 不显著/S rho=0.09；发现"完全一致也会错"（11.3%/8.0%） |
+| EXP12 | DS5 泛化验证（_BLANCO 跨域） | **负结果→修正** | 跨域同降（21.5%）→ ID-only 域门（coverage 54.5→19.5%） |
+| EXP13 | C 五刀落地（v1.5） | 修正 | 校准入证据层 + 分歧单向化 + FUSE 门槛 + 准入制度 |
 
 ## 二、逐条素材卡
 
@@ -102,17 +105,61 @@
   （main 4.2→3.82%，holdout 12.31→11.54%，方向一致）→ 冻结 v1.4
 - **Result**：50% 点 Unsafe 5.8→5.4%；**bootstrap S 相从显著落后转为统计并列**
 
+### EXP11 DS3 判定（分歧与错误关联，负结果）
+- **H**：模型 P/S 拾取分歧与真实错误风险存在可重复关联
+- **E**：分相位分带错误率 + Spearman（n=635 P / 644 S，≥2 模型有拾取）
+- **O**：P 相关系不显著（rho=0.06, p=0.13）且呈 U 形；S 极弱（rho=0.09）
+  且非单调。**关键发现：完全一致带（0-0.05s）错误率 11.3%/8.0%，
+  高于中分歧带（4.6%/2.6%）——模型会抱团一起错**
+- **R**：v1.5 将分歧改为单向风险证据（粗分三级）+ FUSE 校准置信度门槛
+- **出处**：results/ds3_disagreement.json
+
+### EXP12 DS5 泛化验证（_BLANCO 跨域，负结果→修正）
+- **H**：跨域时 Trust 能通过提高 ABSTAIN 实现安全降级（DS5 原条款）
+- **E**：chunk 000000 的 _BLANCO 台阵（200 条，四模型推理，同协议评估）
+- **O**：原条款判定不成立——跨域后 Trust 与 Voting 同降（21.5%），
+  天花板 54.5% 与域内 54.2% 相同（未主动降级）
+- **R**：C 第三刀收缩——ID-only 域熟悉度门（马氏距离，XO 建正常范围）。
+  **DS5 新成功标准**：coverage 主动下降 + retained unsafe 降低
+  （不要求准确率恢复）
+- **Result**：新标准成立——BLANCO coverage 54.5%→19.5%，retained unsafe
+  23.9%→21.8%；**边界**：retained 21.8% 仍高于域内 5.4%，门是必要护栏非完整解药
+- **出处**：results/domain_gate.json、results/generalization_blanco.json
+
+### EXP13 C 五刀落地（v1.5）
+- **H**：C 建议——校准置信度、分歧降级、域门收缩、准入制度、DS 口径调整
+- **R**：① Platt 校准入证据层（PickBlue/OBSTransformer/EQT；geofon 样本
+  不足保留 raw）② 分歧粗分三级 + FUSE 门槛 ③ ID-only 域门 ④ Evidence
+  Admission Rule 冻结（STA/LTA 结案为被拒首例）
+- **Result**：主结果持平（5.5%@50，与 Voting 统计并列），holdout 稳定性改善
+  （11.5→10.0%）；置信度获得统计语义（校准后 0.78≈78% 正确）
+- **出处**：results/calibration/、docs/experiments/evidence_admission_rule.md、
+  docs/experiments/ds_findings_v15.md
+
 ## 三、负结果清单（官方明确允许，须如实呈现）
 
 1. **STA/LTA 第五证据被淘汰**（EXP09）——弱相关，预注册程序裁决 X=0
 2. **DS4 相关性不成立**（EXP10 前半）——缺道/低信号与错误风险的相关性
    在自然数据上不存在（仅断点弱相关 9.5% vs 6.6%）
-3. **DS1 未全线成立**——与 Voting 统计并列而非显著领先（bootstrap CI 含 0）
-4. **覆盖率天花板 54.2%**——半数单元无安全自动路径（保守拒绝的代价）
-5. **main/holdout 不稳定**——main 3.82% vs holdout 11.54%（选择程序的方向
-   一致但幅度不稳，样本量限制）
-6. **overlap 未审计**——obs/obst2024 与评估集的训练重叠 UNKNOWN，按 C 契约
+3. **DS3 相关性不成立**（EXP11）——P 不显著、S 极弱；且"完全一致也会错"
+4. **DS5 原条款不成立**（EXP12 前半）——跨域后与 Voting 同降，未主动降级
+5. **DS1 未全线成立**——与 Voting 统计并列而非显著领先（bootstrap CI 含 0）
+6. **覆盖率天花板 54.2%**——近半数单元无安全自动路径（保守拒绝的代价）
+7. **main/holdout 不稳定**——选择程序方向一致但幅度不稳（样本量限制）
+8. **overlap 未审计**——obs/obst2024 与评估集的训练重叠 UNKNOWN，按 C 契约
    相关结论降级表述
+9. **域门边界**（EXP12 后半）——retained unsafe 21.8% 仍高于域内 5.4%，
+   门控是必要护栏、非完整解药
+
+## 三·五、DS 判定总表（v1.5 新口径，C 调整）
+
+| DS | 问题 | 判定 |
+|---|---|---|
+| DS1 | 是否真的优于简单投票 | ⚠️ 统计并列（诚实边界：同域模型接近时复杂调度边际有限） |
+| DS2 | 基础排序是否可靠 | ✅ 成立（保住） |
+| DS3 | 分歧能否识别风险 | ❌ 实测不成立 → v1.5 逻辑修正（单向风险证据） |
+| DS4 | 数据质量是否预测错误 | ❌ 不成立 → 角色重定义（input integrity guard） |
+| DS5 | shift 能否检测并降级 | ✅ 成立（新标准：coverage 主动下降 + retained unsafe 降低） |
 
 ## 四、修正证据链（legacy 保留）
 
@@ -124,23 +171,25 @@
 | src/experiments/real_baseline_final.py | 历史成对口径 + 假质量基线（保留作历史记录） |
 | configs/semifinal_main.yaml 版本注释 | v1.1→v1.4 全部变更留痕 |
 
-## 五、v1.4 关键数字速查表（C 引用用）
+## 五、v1.5 关键数字速查表（C 引用用）
 
 | 数字 | 值 | 出处 |
 |---|---|---|
 | N_eval | 1306 (P 657 + S 649) | data/manifest_phase.csv |
 | 容差 | P 0.5s / S 1.0s | 12 档敏感性证据 results/tolerance_sensitivity.json |
-| Trust Unsafe@50% | 5.4% | results/equal_coverage_trust.csv |
+| Trust Unsafe@50% | 5.5% | results/equal_coverage_trust.csv |
 | Voting Unsafe@50% | 4.6% | results/baseline_results.csv |
 | 最好单模型（EQT）@50% | 7.2% | results/model_comparison.csv |
 | OBSTransformer S 容差内 | 72.0% | results/model_comparison.csv |
 | 天花板 | 54.2%（708/1306 有有效输出） | results/main_results.csv |
-| 拦截率@50% | 94.6% | results/equal_coverage_trust.csv |
-| Bootstrap Δ(vs Voting) | +0.7pp, CI [-1.8, +3.2] → INCONCLUSIVE | results/bootstrap_ci.json |
-| S 相 Δ | +2.0pp, CI [-1.5, +4.9]（v1.3 时为显著落后） | results/bootstrap_ci.json |
-| 风险分箱 | 4.18→10.38→28.57%（单调） | results/risk_bins.csv |
-| failure 未拦住@50% | 35 个（总错误/无拾取 644） | results/failure_raw.csv |
-| 四模型原始错误率 | geofon 20.8 / obs 12.4 / obst 20.4 / EQT 13.5% | results/model_comparison.csv |
+| 拦截率@50% | 94.4% | results/equal_coverage_trust.csv |
+| Bootstrap Δ(vs Voting) | +0.9pp, CI [-1.4, +3.4] → INCONCLUSIVE | results/bootstrap_ci.json |
+| S 相 Δ | +2.8pp, CI [-1.2, +5.0] → INCONCLUSIVE | results/bootstrap_ci.json |
+| 风险分箱 | 3.96→9.6→28.57%（单调） | results/risk_bins.csv |
+| failure 未拦住@50% | 36 个（总错误/无拾取 644） | results/failure_raw.csv |
+| 校准器（Platt） | PickBlue/EQT Brier 改善 12-16%；geofon 不校 | results/calibration/platt_calibrators.json |
+| 域门阈值（XO 马氏距离） | 95%=3.94 / 99%=5.27 | results/domain_gate.json |
+| DS5 新标准 | BLANCO coverage 54.5→19.5%，retained 23.9→21.8% | results/domain_gate.json |
 
 ## 六、数字出处规则（C 引用时）
 

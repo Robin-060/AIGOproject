@@ -32,15 +32,15 @@
     }
   },
   "core_numbers": {
-    "trust_unsafe_pct_at_50": 5.36,
+    "trust_unsafe_pct_at_50": 5.51,
     "voting_unsafe_pct_at_50": 4.59,
-    "delta_trust_minus_voting_pp": 0.77,
+    "delta_trust_minus_voting_pp": 0.92,
     "ci95": [
       -1.42,
-      3.41
+      3.35
     ],
     "verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 41.1,
-  "timestamp_utc": "2026-08-30T09:12:31.931465+00:00"
+  "duration_s": 51.5,
+  "timestamp_utc": "2026-08-31T02:39:22.271622+00:00"
 }

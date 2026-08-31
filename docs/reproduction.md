@@ -38,11 +38,12 @@ python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主
 
 | 项 | 值 | 位置 |
 |---|---|---|
-| 实验配置 | semifinal_v1.4 | configs/semifinal_main.yaml |
+| 实验配置 | semifinal_v1.5 | configs/semifinal_main.yaml |
 | 全局/留出集种子 | 42 | 同上 |
 | holdout 划分 | chunk 分层 20%，seed 42 | manifest_phase.csv split 列 |
 | 随机基线种子 | 0-99（100 个） | random_baseline.py |
 | bootstrap 种子/次数 | 42 / 1000 次（cluster=60 台站） | bootstrap_analysis.py |
+| 置信度校准 | Platt（main 拟合，holdout 验证）；geofon 不校准 | confidence_calibration.py |
 
 ## 5. 输出与核心数字（v1.4 预期）
 
@@ -58,8 +59,8 @@ python -m src.experiments.reproduce_main  # 一键复现核心数字与三张主
 | failure 明细 | results/failure_raw.csv |
 | 复现报告 | results/reproduction_report.json |
 
-核心数字（50% 覆盖率点）：Trust 5.4% | Voting 4.6% | Δ=+0.8pp，
-95% CI [-1.4, +3.4] → INCONCLUSIVE（统计并列）；S 相 Δ=+2.8pp CI [-1.1, +5.0]。
+核心数字（50% 覆盖率点）：Trust 5.5% | Voting 4.6% | Δ=+0.9pp，
+95% CI [-1.4, +3.4] → INCONCLUSIVE（统计并列）；S 相 Δ=+2.8pp CI [-1.2, +5.0]。
 
 ## 6. 重跑模型推理（可选，非复现必需）
 
