@@ -55,3 +55,15 @@ clean env 复现 ✅ 通过（任务书 DoD："clean env 能复现核心表和�
   按每次运行变化）。
 - 复现链不再重新比较候选档案（EXP06 历史程序改由
   `--profile-selection` 显式重放，只写 `results/profile_selection_exp06.csv`）。
+
+## 6. 增补二（2026-08-31 晚，v1.5.1 整合后的当前状态）
+
+- 引擎全部参数进入 `configs/semifinal_main.yaml`（`trust_engine.parameters`，
+  含数据罚分/置信门槛/物理分数/分歧阈值），由 `src/trust_engine/config_loader.py`
+  单一读取，`config_hash`（配置全文件 SHA-256）随所有结果行。
+- cluster bootstrap 重复权重 bug 修正（EXP15）：总体与 P 相补充比较仍
+  INCONCLUSIVE；**S 相在自身 45.45% 天花板处 Δ=+3.39pp，CI [+0.90,+5.96]，
+  显著差于 Voting**（负结果如实记录）。
+- 当前测试套件 64 个全过、`smoke_test_a.sh` 62 个通过；本页第 1-5 节的
+  "52 个测试"为当时 clean-env 验证的历史数字。
+- 核心数字与第 3 节一致（50% NOT_EVALUABLE、天花板 45.64%、Δ=1.17pp）。

@@ -72,6 +72,19 @@ Confirmed current backend parameters:
 - data evidence penalties = "natural_v1.0"     # DS4 自然重校准 (NATURAL_PENALTIES)
 - experiment protocol = "semifinal_v1.5"       # configs/semifinal_main.yaml
 
+v1.5.1 (2026-08-31) 新增冻结字段 — 全部由 `src/trust_engine/config_loader.py`
+从 `configs/semifinal_main.yaml` 的 `trust_engine.parameters` 单一来源读取,
+Demo 不得硬编码复刻:
+
+- config_hash = 冻结配置全文件 SHA-256（每个结果行携带, 供追溯）
+- parent_config = "semifinal_v1.5"
+- severe_disagreement_p_s = 1.0 / severe_disagreement_s_s = 2.0
+- fusion_confidence_floor = 0.70
+- single_low_confidence_score = 5.0
+- p_after_s_score = 10.0 / sp_interval_score = 5.0
+- data_penalties = 自然罚分全表（含 moderate_signal=1.0, 见 ds4_natural_hazard.json）
+- experiment protocol 升版为 `semifinal_v1.5.1`
+
 ## 5. Demo-Adjustable Parameters
 
 The Gate 0 Demo skeleton exposes:
@@ -168,7 +181,7 @@ Confirmed from the current repository:
 - ModelPrediction schema
 - AdapterStatus schema
 - Main TrustConfig parameters
-- config_version = calibrated_v1.0 (TrustConfig 参数集); 实验协议 semifinal_v1.5
+- config_version = calibrated_v1.0 (TrustConfig 参数集); 实验协议 semifinal_v1.5.1
 - Real pipeline entry point
 - Existing analysis chain
 
@@ -223,17 +236,21 @@ The frontend displays backend-provided values and does not independently recompu
 
 ### Configuration version behaviour
 
-The pipeline loads calibrated parameters from:
+The pipeline loads ALL engine parameters from the single frozen config via
+`src/trust_engine/config_loader.py` (`configs/semifinal_main.yaml`,
+`trust_engine.parameters`):
 
-`src/calibrate/thresholds_calibrated.json`
+```
+load_frozen_config().trust_config()
+```
 
-when available and uses:
+The historical parameter file `src/calibrate/thresholds_calibrated.json` is no
+longer read (kept as legacy record only). The loaded config carries
+`config_version = "calibrated_v1.0"` (parameter set), `config_hash`
+(frozen-config SHA-256) and `parent_config = "semifinal_v1.5"`.
 
-`config_version = "calibrated_v1.0"`
-
-Otherwise it falls back to `DEMO_CONFIG`.
-
-The Demo must display the `config_version` returned by the active backend result rather than hard-coding a version.
+The Demo must display the `config_version` / `config_hash` returned by the active
+backend result rather than hard-coding a version.
 
 ### Gate 0 Status
 
@@ -258,6 +275,8 @@ v1.5 reason codes B may encounter (display as-is, do not reinterpret):
 - `SEVERE_DISAGREEMENT` / `MINOR_DISAGREEMENT` — 分歧三级 (第二刀)
 - `FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR` — FUSE 被校准置信度门槛拦截
 - `LOW_CALIBRATED_CONFIDENCE_<model>_<phase>` — 校准后正确率 < 0.70
+- `CONSENSUS_WITHOUT_ADMISSIBLE_FUSION` — v1.5.1 fail-closed: 共识但无通过
+  全部门槛的融合候选 → ABSTAIN（第 4.5 步, 不再回退主模型）
 
 Model identities (four frozen prediction columns): PhaseNet=geofon、
 PickBlue=PhaseNet obs、OBSTransformer=obst2024、EQTransformer=obs —
@@ -277,9 +296,10 @@ PickBlue=PhaseNet obs、OBSTransformer=obst2024、EQTransformer=obs —
 
 The Demo must label each slider with its frozen default and provenance, and mark
 "偏离 calibrated_v1.0" with the deviation list after any user change.
-数据证据罚分来自 `natural_v1.0`（NATURAL_PENALTIES，DS4 自然重校准），
-实验协议为 `semifinal_v1.5`（configs/semifinal_main.yaml）——三者是两个
-不同层级的版本概念，Demo 展示时按字段区分。
+数据证据罚分来自 `natural_v1.0`（NATURAL_PENALTIES，DS4 自然重校准，v1.5.1 起
+内嵌于 trust_engine.parameters.data_penalties），实验协议为 `semifinal_v1.5.1`
+（configs/semifinal_main.yaml，`config_hash` 全程随行）——版本层级按字段区分，
+Demo 展示时不得混用。
 
 ### 12.3 Batch metrics source (Feedback panel)
 
