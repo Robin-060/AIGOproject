@@ -1,4 +1,4 @@
-# 复赛评估协议（冻结版 v1.5.1）
+# 复赛评估协议（冻结版 v1.5.1-bugfix）
 
 > 初次冻结 2026-08-28（Gate 0）；当前审计修复版对应
 > `configs/semifinal_main.yaml`（semifinal_v1.5.1，parent=semifinal_v1.5）。

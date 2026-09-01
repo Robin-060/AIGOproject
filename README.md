@@ -14,7 +14,7 @@
 - **模型分歧**：两个模型给出相差数秒的拾取，不知道该信谁
 - **物理不可能**：P 波拾取晚于 S 波，荒谬结果流入下游分析
 
-当前实验口径（semifinal_v1.5.1，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%，风险排序严格单调（DS2 成立）；预声明 50% 点位 NOT_EVALUABLE。修正 cluster bootstrap 后，总体天花板补充比较仍为 INCONCLUSIVE（Δ=+1.17pp，95% CI [−1.09,+2.93]），但 S 相在自身 45.45% 天花板处显著差于 Voting（Δ=+3.39pp，95% CI [+0.90,+5.96]）。这些均为补充结果，不替代预声明点判定。
+当前实验口径（semifinal_v1.5.1-bugfix，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%，风险排序严格单调（DS2 成立）；预声明 50% 点位 NOT_EVALUABLE。修正 cluster bootstrap 后，总体天花板补充比较仍为 INCONCLUSIVE（Δ=+1.17pp，95% CI [−1.09,+2.93]），但 S 相在自身 45.45% 天花板处显著差于 Voting（Δ=+3.39pp，95% CI [+0.90,+5.96]）。这些均为补充结果，不替代预声明点判定。
 
 ## 系统架构
 
@@ -66,7 +66,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 
 ## 实验结论摘要
 
-| 指标 | 结果 (semifinal_v1.5.1) |
+| 指标 | 结果 (semifinal_v1.5.1-bugfix) |
 |------|------|
 | 评估单元 | 1306 个 (P 657 + S 649)，容差 P 0.5s / S 1.0s |
 | Trust 覆盖率天花板 | 45.64%（严格 FUSE 门槛；596/1306 有安全自动路径） |
@@ -84,7 +84,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | 环节 | 载体 | 入口 |
 |------|------|------|
 | 代码版本 | git 提交记录（integration 分支） | `git log` |
-| config | `configs/semifinal_main.yaml`（semifinal_v1.5.1，seed 42，冻结 hydrophone_v2） | `config_loader.py` |
+| config | `configs/semifinal_main.yaml`（semifinal_v1.5.1-bugfix，seed 42，冻结 hydrophone_v2） | `config_loader.py` |
 | 数据版本 | 冻结预测 + 真值 + 质量清单（sha256 校验） | `reproduce_main` 第 1 步 |
 | exploration history | `results/exploration_trajectory.jsonl`（EXP01–15，Observation→Action→Tool→Feedback） | `src/experiments/generate_trajectory.py` |
 | actual run trajectory | `results/run_trajectory.jsonl`（commit/config/seed/逐步状态/输出 hash/干预披露） | `src.experiments.reproduce_main` |

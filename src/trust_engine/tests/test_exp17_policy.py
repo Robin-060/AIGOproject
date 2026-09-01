@@ -21,6 +21,13 @@ from src.trust_engine.schema import (
 from src.trust_engine.policy_router import EXP17_POLICY_ENV, route_phase
 
 
+@pytest.fixture(autouse=True)
+def _clear_policy_env():
+    """每个测试后清除 EXP17 环境开关, 防串扰."""
+    yield
+    os.environ.pop(EXP17_POLICY_ENV, None)
+
+
 def _inputs():
     suitabilities = [
         ModelSuitability(model_name="PickBlue", eligible=True),

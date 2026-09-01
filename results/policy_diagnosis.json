@@ -1,8 +1,8 @@
 {
-  "config_version": "semifinal_v1.5.1",
-  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "config_version": "semifinal_v1.5.1-bugfix",
+  "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
   "n_units": 1306,
-  "n_auto": 603,
+  "n_auto": 596,
   "categories": {
     "NO_ELIGIBLE_MODELS": {
       "n": 1,
@@ -46,6 +46,13 @@
       "with_correct_pick": 0,
       "all_picks_correct": 0
     },
+    "SURVIVOR_WITHOUT_VALID_PICK": {
+      "n": 7,
+      "P": 2,
+      "S": 5,
+      "with_correct_pick": 5,
+      "all_picks_correct": 2
+    },
     "NO_PREDICTIONS": {
       "n": 4,
       "P": 4,
@@ -61,11 +68,11 @@
       "all_picks_correct": 483
     },
     "AUTO_ROUTE": {
-      "n": 8,
-      "P": 3,
-      "S": 5,
-      "with_correct_pick": 6,
-      "all_picks_correct": 3
+      "n": 1,
+      "P": 1,
+      "S": 0,
+      "with_correct_pick": 1,
+      "all_picks_correct": 1
     }
   },
   "consensus_without_fusion_floor_hist": {

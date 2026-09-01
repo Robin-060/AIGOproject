@@ -73,6 +73,7 @@ CATEGORIES = [
     "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION",
     "INSUFFICIENT_EVIDENCE_FOR_SELECTION",
     "RISK_ABOVE_AUTO_THRESHOLD",
+    "SURVIVOR_WITHOUT_VALID_PICK",
     "NO_PREDICTIONS",
 ]
 
@@ -90,6 +91,8 @@ def classify(reason_codes):
         return "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION"
     if "INSUFFICIENT_EVIDENCE_FOR_SELECTION" in reason_codes:
         return "INSUFFICIENT_EVIDENCE_FOR_SELECTION"
+    if any("NO_VALID_PICK" in c for c in reason_codes):
+        return "SURVIVOR_WITHOUT_VALID_PICK"
     if any("RISK_ABOVE" in c for c in reason_codes):
         return "RISK_ABOVE_AUTO_THRESHOLD"
     return "OTHER_AUTO"
