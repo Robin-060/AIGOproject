@@ -8,7 +8,8 @@
   3. ModelProfile     – 每个模型的通道需求说明书
   4. ModelPrediction[]– 每个模型的 P/S 到时 + 置信度
 
-输出: 统一 JSON，可直接喂入 Trust Engine 的 pipeline.analyze_sample()
+输出: 统一 JSON，可经 src/data_layer/feed_trust_engine.py 喂入
+Trust Engine 的 pipeline.run_pipeline()（冻结配置由 config_loader 读取）
 
 用法:
     python data_layer.py                          # 处理 trace 0, 所有 chunk

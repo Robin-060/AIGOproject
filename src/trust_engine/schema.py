@@ -191,7 +191,7 @@ class EvidenceScore:
     reasons: List[str] = field(default_factory=list)
     status: str = "AVAILABLE"
     source: str = ""
-    version: str = "heuristic_v0.1"
+    version: str = "calibrated_v1.0"
 
 
 @dataclass
@@ -235,7 +235,7 @@ class ConsensusResult:
     spread_s: float = -1
     score: float = 0.0
     reasons: List[str] = field(default_factory=list)
-    version: str = "heuristic_v0.1"
+    version: str = "calibrated_v1.0"
 
 
 @dataclass
@@ -247,7 +247,7 @@ class FusedPickCandidate:
     excluded_models: List[str] = field(default_factory=list)
     spread_s: float = -1
     fusion_method: str = "MEDIAN_INLIERS"
-    threshold_version: str = "heuristic_v0.1"
+    threshold_version: str = "calibrated_v1.0"
     reasons: List[str] = field(default_factory=list)
 
 
@@ -291,7 +291,7 @@ class ReliabilityResult:
     final_pair_status: str = "PARTIAL"
     evidence_breakdown: Dict[str, Any] = field(default_factory=dict)
     reason_codes: List[str] = field(default_factory=list)
-    config_version: str = "heuristic_v0.1"
+    config_version: str = "calibrated_v1.0"
     config_hash: str = ""
     parent_config: str = ""
     data_source: str = ""
@@ -334,6 +334,9 @@ DEMO_MODEL_PROFILES = {
     ),
 }
 
+# legacy (v1.5.1 起不再被任何运行路径引用): 早期 Demo 演示参数,
+# 现统一由 config_loader.load_frozen_config().trust_config() 取代;
+# B 本地未推送代码可能仍引用, 暂保留定义待其合并后清理
 DEMO_CONFIG = TrustConfig(
     primary_model="PhaseNet",
     fusion_enabled=True,

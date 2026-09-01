@@ -21,7 +21,6 @@ from .schema import (
 
 
 FUSION_METHOD = "MEDIAN_INLIERS"
-VERSION = "heuristic_v0.1"
 
 
 def _get_inlier_predictions(

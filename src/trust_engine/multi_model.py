@@ -29,7 +29,8 @@ SEVERE_DISAGREEMENT = {
     "S": 2.00,
 }
 
-VERSION = "heuristic_v0.1"
+# 仅 config=None 时的兜底标签; 运行路径使用 config.config_version (calibrated_v1.0)
+VERSION = "calibrated_v1.0"
 
 
 def _get_usable_models(
