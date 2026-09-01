@@ -66,14 +66,18 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 
 ## 实验结论摘要
 
-| 指标 | 结果 (semifinal_v1.5.1-bugfix) |
-|------|------|
-| 评估单元 | 1306 个 (P 657 + S 649)，容差 P 0.5s / S 1.0s |
-| Trust 覆盖率天花板 | 45.64%（严格 FUSE 门槛；596/1306 有安全自动路径） |
-| 预声明 50% 点位 | NOT_EVALUABLE（不等覆盖不比较，纪律见 [评估协议](docs/experiments/evaluation_protocol.md)） |
-| 风险排序 | 分箱严格单调 4.07→9.2→28.57%（DS2 成立） |
-| A 测试 | `smoke_test_a.sh` 全部通过 |
-| 一键复现 | `bash reproduce_core.sh`（冻结数据 sha256 校验） |
+| 指标 | 结果 |
+|---|---|
+| 评估单元 | 1306 个（P 657 + S 649） |
+| EXP17-A Coverage | **54.13%** |
+| Unsafe Output Rate | **5.51%** |
+| Error Interception | **94.26%** |
+| 配对 bootstrap 非劣界 | ΔUnsafe 单侧 95% 上界 **+2.24pp**；点估计 **+0.92pp** |
+| 科研结论 | Coverage 已恢复；Unsafe 点估计与 Voting 接近，但 +2.0pp 非劣界尚未统计确认 |
+| Risk ranking | 保持有效，不因 R1 robustness check 改变 |
+| R1 robustness | **PASS**；运行路径实际使用校准容差 P=0.34s / S=0.51s，结果与冻结 EXP17 一致 |
+| 参数审计 | 红灯参数 **0**；legacy P0.30/S0.50 不在正式运行路径 |
+| 测试 | **76 tests passed** |
 
 ## 复赛证据链（Evidence Chain）
 
