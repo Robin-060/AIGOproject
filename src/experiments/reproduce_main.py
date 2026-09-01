@@ -9,6 +9,7 @@ reproduce_main.py — 一键复现核心数字与三张主图 (v1.5)
   5. cluster paired-bootstrap → bootstrap_ci.json
   6. 三张主图最终版 + failure raw data
   7. 探索轨迹导出 → exploration_trajectory.jsonl
+  8. Review Budget 曲线 → review_budget_curve.csv/summary/图
 
 输出: results/reproduction_report.json (环境版本/seed/校验和/核心数字)
 
@@ -86,7 +87,7 @@ def main():
     print("范围: 冻结数据 → 基线 → 主实验 → 对比 → bootstrap → 主图")
     print("注意: 全程使用冻结预测, 不运行模型推理", flush=True)
 
-    step("1/7 冻结数据校验")
+    step("1/8 冻结数据校验")
     checked = {}
     def verify_step():
         checked.update(verify_inputs(frozen))
@@ -94,14 +95,14 @@ def main():
     for rel, info in checked.items():
         print(f"  ✓ {rel} (sha256 {info['sha256'][:16]})")
 
-    step("2/7 基线对比 (8 策略)")
+    step("2/8 基线对比 (8 策略)")
     from src.experiments.run_baselines import main as baselines_main
     run_log.run_step(2, "run_baselines", baselines_main, [
         "results/baseline_results.csv",
         "figures/coverage_vs_unsafe.png",
     ])
 
-    step("3/7 主实验 (冻结 profile + 最终版)")
+    step("3/8 主实验 (冻结 profile + 最终版)")
     from src.experiments.run_main_experiment import main as mainexp_main
     run_log.run_step(3, "run_frozen_main_experiment", mainexp_main, [
         "results/main_results.csv",
@@ -110,19 +111,19 @@ def main():
         "figures/coverage_vs_unsafe.png",
     ])
 
-    step("4/7 全方法对比表")
+    step("4/8 全方法对比表")
     from src.experiments.compare_methods_v2 import main as compare_main
     run_log.run_step(4, "compare_methods", compare_main, [
         "results/method_comparison_v2.csv",
     ])
 
-    step("5/7 cluster paired-bootstrap")
+    step("5/8 cluster paired-bootstrap")
     from src.experiments.bootstrap_analysis import main as boot_main
     run_log.run_step(5, "cluster_paired_bootstrap", boot_main, [
         "results/bootstrap_ci.json",
     ])
 
-    step("6/7 主图与 failure data")
+    step("6/8 主图与 failure data")
     from src.experiments.final_figures import main as figures_main
     run_log.run_step(6, "generate_final_figures", figures_main, [
         "results/equal_coverage_table.csv",
@@ -131,10 +132,18 @@ def main():
         "figures/phase_unsafe_comparison.png",
     ])
 
-    step("7/7 探索轨迹导出")
+    step("7/8 探索轨迹导出")
     from src.experiments.generate_trajectory import main as trajectory_main
     run_log.run_step(7, "export_exploration_history", trajectory_main, [
         "results/exploration_trajectory.jsonl",
+    ])
+
+    step("8/8 Review Budget 曲线 (冻结结果上四策略对比)")
+    from src.experiments.review_budget_curve import main as review_main
+    run_log.run_step(8, "review_budget_curve", review_main, [
+        "results/review_budget_curve.csv",
+        "results/review_budget_summary.json",
+        "figures/review_budget_curve.png",
     ])
 
     # ── 复现报告 (NOT_EVALUABLE 纪律: 不可达点位不填 Unsafe) ──
@@ -205,6 +214,9 @@ def main():
         "results/equal_coverage_table.csv",
         "results/failure_raw.csv",
         "results/exploration_trajectory.jsonl",
+        "results/review_budget_curve.csv",
+        "results/review_budget_summary.json",
+        "figures/review_budget_curve.png",
         "figures/coverage_vs_unsafe.png",
         "figures/risk_vs_actual_error.png",
         "figures/phase_unsafe_comparison.png",

@@ -3,7 +3,7 @@
 > 用途：C 撰写 exploration_log.md 的原材料。每条按
 > Hypothesis → Experiment → Observation → Revision → Result → Limitation 组织，
 > 所有数字有出处文件，C 的定量表述可直接引用。
-> 覆盖：项目全程（含被推翻的早期方法），15 个实验条目 + 负结果清单 + 数字速查表。
+> 覆盖：项目全程（含被推翻的早期方法），16 个实验条目 + 负结果清单 + 数字速查表。
 
 ## 一、实验时间线总表
 
@@ -24,6 +24,7 @@
 | EXP13 | C 五刀落地（v1.5） | 修正 | 校准入证据层 + 分歧单向化 + FUSE 门槛 + 准入制度 |
 | EXP14 | FUSE 门绕过审计 + NOT_EVALUABLE 纪律 | **负结果→修正** | 堵 4.5 步绕过后天花板 54.2→45.6%；50% 点 NOT_EVALUABLE；DS5 域门新标准未成立 |
 | EXP15 | cluster bootstrap 重复权重修正 | **负结果** | S 相在自身 45.45% 天花板处 Δ=+3.39pp，CI [+0.90,+5.96]，显著差于 Voting |
+| EXP16 | Review Budget–Error Interception 曲线（C 追加） | 正向发现 | 固定复核预算下 Trust 风险排序全面领先: 50% 预算截获 83.6% vs Random 50.0% |
 
 ## 二、逐条素材卡
 
@@ -180,6 +181,21 @@
 - **出处**：configs/semifinal_main.yaml、results/bootstrap_ci.json、
   results/run_trajectory.jsonl
 
+### EXP16 Review Budget–Error Interception 曲线（C 追加，v1.5.1）
+- **H**：不同排序信号在固定人工复核预算下截获错误的能力不同
+- **E**：1306 单元 × 四种可疑度排序（Random 100 种子 / 模型置信度 1−max conf /
+  拾取分歧 spread / Trust 风险分），预算 0-60% 扫描截获率与精确率；
+  全部基于冻结预测与冻结结果，不重训、不重调、不改 DS
+- **O**：Trust 风险排序在每个预算点全面领先（50% 预算: 83.6% vs ModelConf 59.9% /
+  Disagreement 56.3% / Random 50.0%）；Trust 实际运行点（复核 54.4%）截获 85.3%、
+  精确率 89.6%
+- **R**：无需修正——该结果补充了 DS1 的另一维度：Trust 在同覆盖率下不优于 Voting，
+  但其风险排序作为"复核优先级"显著优于简单信号（排序质量 ≠ 等覆盖安全率）
+- **边界**：风险分在同评估数据上校准（main 为主），排序优势含样本内成分；
+  不作因果声明，仅作为参照系比较报告
+- **出处**：results/review_budget_curve.csv、results/review_budget_summary.json、
+  figures/review_budget_curve.png
+
 ## 三、负结果清单（官方明确允许，须如实呈现）
 
 1. **STA/LTA 第五证据被淘汰**（EXP09）——弱相关，预注册程序裁决 X=0
@@ -242,6 +258,7 @@
 | failure 未拦住@50% | NOT_EVALUABLE（50% 点位不可达） | results/failure_raw.csv |
 | 校准器（Platt） | PickBlue/EQT Brier 改善 12-16%；geofon 不校 | results/calibration/platt_calibrators.json |
 | 域门阈值（XO 马氏距离） | 95%=3.94 / 99%=5.27 | results/domain_gate.json |
+| Review Budget @50% 预算 | Trust 83.6% / ModelConf 59.9% / Disagreement 56.3% / Random 50.0%（截获率） | results/review_budget_summary.json |
 | DS5 新标准 | ❌ 未成立（严格引擎下）：coverage 37.8→16.0% ✓ / retained unsafe 25.0% vs 22.5% ✗ | results/domain_gate.json |
 
 ## 六、数字出处规则（C 引用时）
