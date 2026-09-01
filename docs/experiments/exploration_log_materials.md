@@ -25,6 +25,7 @@
 | EXP14 | FUSE 门绕过审计 + NOT_EVALUABLE 纪律 | **负结果→修正** | 堵 4.5 步绕过后天花板 54.2→45.6%；50% 点 NOT_EVALUABLE；DS5 域门新标准未成立 |
 | EXP15 | cluster bootstrap 重复权重修正 | **负结果** | S 相在自身 45.45% 天花板处 Δ=+3.39pp，CI [+0.90,+5.96]，显著差于 Voting |
 | EXP16 | Review Budget–Error Interception 曲线（C 追加） | 正向发现 | 固定复核预算下 Trust 风险排序全面领先: 50% 预算截获 83.6% vs Random 50.0% |
+| EXP17 | Policy Refinement（预注册 failure-driven） | **正/负结果** | A 共识路由 PASS (天花板 45.64→54.13%)；B 仅可用幸存者 FAIL (天花板 81.6% 但 ΔUnsafe 上界 +3.42pp 超阈)，A+B 同 FAIL → 采用 A |
 
 ## 二、逐条素材卡
 
@@ -207,6 +208,22 @@
 - **出处**：results/review_budget_curve.csv、results/review_budget_summary.json、
   results/review_budget_ci.json、results/review_budget_interpolation.json、
   results/review_budget_summary_holdout.json、figures/review_budget_curve.png
+
+### EXP17 Policy Refinement（预注册 failure-driven，v1.5.1 之后）
+- **H**：天花板 45.64% 主要来自第 4.5/5 步的保守 ABSTAIN 设计，改决策逻辑
+  即可在不牺牲安全的前提下过 50%（预注册: docs/experiments/exp17_preregistration.md）
+- **E**：三干预单变量（A Consensus Route / B Only-usable-survivor /
+  C floor sweep），顺序执行逐干预验收；判据: Coverage≥50% + Unsafe 单侧
+  95% 上界 <+2.0pp（vs v1.5.1 天花板点 6.04%）+ holdout 一致
+- **O（A PASS）**：天花板 45.64→54.13%；Unsafe@50=5.51%；Δ上界 +1.54pp < +2.0pp；
+  holdout 天花板 43.46→53.08%；截获@50%预算 83.6→94.26%
+- **O（B FAIL，负结果）**：天花板 81.62% 但 ΔUnsafe 单侧 95% 上界 +3.42pp 超阈
+  （Unsafe@50=6.28%）；A+B 累加天花板 90.12% 但上界 +2.55pp 仍超阈 → **弃用 B**。
+  纪律生效: 覆盖率好看 ≠ 可接受，判据失败即回退，未做任何参数微调
+- **R**：最终采用 A；C（floor sweep 报告）待跑；v1.5.1 冻结产物零改动
+  （默认路径 1306 单元逐一对账零差异）
+- **出处**：results/exp17_summary_{A,B,AB}.json、results/main_results_exp17_*.csv、
+  docs/experiments/exp17_preregistration.md
 
 ## 三、负结果清单（官方明确允许，须如实呈现）
 

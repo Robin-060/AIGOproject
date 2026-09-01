@@ -25,8 +25,10 @@ ALL_ENABLED = {"data": True, "single_model": True, "multi_model": True, "physics
 EXP17_POLICY_ENV = "OBS_EXP17_POLICY"
 
 
-def _exp17_policy() -> str:
-    return os.environ.get(EXP17_POLICY_ENV, "")
+def _exp17_policies() -> set:
+    """已开启的 EXP17 干预集合 (逗号分隔, 预注册顺序累加: A→B)."""
+    raw = os.environ.get(EXP17_POLICY_ENV, "")
+    return {p.strip() for p in raw.split(",") if p.strip()}
 
 
 def route_phase(
@@ -91,15 +93,26 @@ def route_phase(
             decision.reason_codes = reasons + ["FUSE_CONSENSUS_CLUSTER"]
             return decision
 
-    # ── 第 3 步: 只剩一个 survivor → 选它 ─────────────
-    if len(survivors) == 1:
-        model = survivors[0]
+    # ── 第 3 步: 只剩一个 survivor → 选它 ──────────
+    # EXP17-B (预注册, 仅显式开启): 触发条件扩展为"恰有一个 survivor 有该相位
+    # 拾取"(仅当 predictions 提供时可判定); 默认关闭 = v1.5.1 行为
+    pred_names = ({p.model_name for p in predictions if p.phase == phase}
+                  if predictions is not None else set())
+    usable_survivors = [m for m in survivors if m in pred_names]
+    single_survivor = len(survivors) == 1
+    only_usable = ("only_usable_survivor" in _exp17_policies()
+                   and len(survivors) >= 2 and len(usable_survivors) == 1)
+    if single_survivor or only_usable:
+        model = usable_survivors[0] if only_usable else survivors[0]
         if _risk_too_high(phase_risk, config):
             decision.reason_codes = reasons + [f"ONLY_SURVIVOR_{model}_RISK_ABOVE_THRESHOLD"]
             return decision
         decision.action = Action.ACCEPT.value if model == config.primary_model else Action.ROUTE.value
         decision.selected_model = model
-        decision.reason_codes = reasons + [f"ONLY_SURVIVOR_{model}"]
+        if single_survivor:
+            decision.reason_codes = reasons + [f"ONLY_SURVIVOR_{model}"]
+        else:
+            decision.reason_codes = reasons + [f"ONLY_USABLE_SURVIVOR_{model}"]
         return decision
 
     # ── 第 4 步: 两个都合理但严重分歧 ─────────────────
@@ -118,7 +131,7 @@ def route_phase(
         )
         # EXP17-A (预注册, 仅显式开启): Consensus Route —
         # 共识簇内校准置信度最高、有真实拾取、风险不超阈的幸存模型 → ROUTE/ACCEPT
-        if _exp17_policy() == "consensus_route":
+        if "consensus_route" in _exp17_policies():
             candidates = []
             for m in consensus.inlier_models:
                 if m not in survivors:

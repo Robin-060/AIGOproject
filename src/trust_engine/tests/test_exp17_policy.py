@@ -95,3 +95,61 @@ def test_exp17_a_excludes_below_floor_models():
     # PickBlue 仍达标 → 应 ROUTE PickBlue
     assert decision.action == Action.ROUTE.value
     assert decision.selected_model == "PickBlue"
+
+
+def _b_inputs():
+    """第 5 步场景: 共识 INSUFFICIENT, 幸存者 2 个但仅 1 个有拾取."""
+    args = list(_inputs())
+    args[2] = ConsensusResult(
+        phase="P", status="INSUFFICIENT",
+        inlier_models=[], outlier_models=[],
+        center_time_s=-1, spread_s=-1,
+    )
+    # 只有 PickBlue 有 P 相拾取
+    args[5] = [ModelPrediction(model_name="PickBlue", phase="P",
+                               time_s=10.0, score=0.9)]
+    return args
+
+
+def test_b_default_path_still_abstains():
+    """未开启 B 时, '2 幸存者但仅 1 个有拾取'维持第 5 步 ABSTAIN."""
+    args = _b_inputs()
+    os.environ.pop(EXP17_POLICY_ENV, None)
+    decision = route_phase(
+        phase="P", suitabilities=args[0], physics_checks=args[1],
+        consensus=args[2], fusion_candidate=args[3],
+        single_model_evidences=args[4], config=args[6],
+        phase_risk=0.0, predictions=args[5],
+    )
+    assert decision.action == Action.ABSTAIN.value
+    assert "INSUFFICIENT_EVIDENCE_FOR_SELECTION" in decision.reason_codes
+
+
+def test_exp17_b_routes_only_usable_survivor():
+    """开启 only_usable_survivor 后, 恰有 1 个幸存者有拾取 → ROUTE 它."""
+    args = _b_inputs()
+    os.environ[EXP17_POLICY_ENV] = "only_usable_survivor"
+    decision = route_phase(
+        phase="P", suitabilities=args[0], physics_checks=args[1],
+        consensus=args[2], fusion_candidate=args[3],
+        single_model_evidences=args[4], config=args[6],
+        phase_risk=0.0, predictions=args[5],
+    )
+    assert decision.action == Action.ROUTE.value
+    assert decision.selected_model == "PickBlue"
+    assert "ONLY_USABLE_SURVIVOR_PickBlue" in decision.reason_codes
+
+
+def test_exp17_b_risk_gate_still_applies():
+    """风险超阈时 B 不生效 (与第 3 步原逻辑一致)."""
+    args = _b_inputs()
+    os.environ[EXP17_POLICY_ENV] = "only_usable_survivor"
+    config = TrustConfig()
+    decision = route_phase(
+        phase="P", suitabilities=args[0], physics_checks=args[1],
+        consensus=args[2], fusion_candidate=args[3],
+        single_model_evidences=args[4], config=config,
+        phase_risk=99.0, predictions=args[5],
+    )
+    assert decision.action == Action.ABSTAIN.value
+    assert any("RISK_ABOVE" in c for c in decision.reason_codes)

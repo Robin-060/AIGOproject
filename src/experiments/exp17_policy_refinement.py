@@ -48,7 +48,8 @@ FROZEN_REF_UNSAFE_PP = 6.04     # v1.5.1 天花板点 Unsafe (bootstrap ALL_ceil
 MAX_DELTA_UPPER_PP = 2.0        # 预注册: 单侧 95% 上界 < +2.0pp 视为不显著恶化
 N_ITER = 1000
 SEED = 42
-ENV_POLICIES = {"A": "consensus_route"}
+ENV_POLICIES = {"A": "consensus_route", "B": "only_usable_survivor",
+                "AB": "consensus_route,only_usable_survivor"}
 
 
 def chain_rows(env_value):
@@ -163,41 +164,26 @@ def baseline_parity_check(rows, frozen_ref_csv):
     return diffs, len(ref)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--intervention", choices=["A", "B"], default="A")
-    args = parser.parse_args()
-    if args.intervention == "B":
-        raise SystemExit("干预 B (only_usable_survivor) 尚未实现 — 按预注册顺序先跑 A")
-
-    # 0) v1.5.1 默认路径对账 (改动不得影响冻结行为)
-    rows_base, frozen = chain_rows(None)
-    diffs, n_ref = baseline_parity_check(
-        rows_base, ROOT / "results" / "main_results.csv")
-    print(f"[0] v1.5.1 默认路径对账: {n_ref} 单元, 差异 {diffs} 个 "
-          f"{'✓' if diffs == 0 else '✗ FAIL'}")
-
-    # 1) 干预 A
-    rows_a, frozen = chain_rows(ENV_POLICIES["A"])
-    out_csv = ROOT / "results" / f"main_results_exp17_{args.intervention}.csv"
+def run_intervention(tag, env_value, frozen):
+    rows, _frozen = chain_rows(env_value)
+    out_csv = ROOT / "results" / f"main_results_exp17_{tag}.csv"
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows_a[0].keys()))
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
-        writer.writerows(rows_a)
+        writer.writerows(rows)
 
-    m = evaluate(rows_a)
-    ho = holdout_stats(rows_a)
-    boot = bootstrap_unsafe_delta(rows_a)
+    m = evaluate(rows)
+    ho = holdout_stats(rows)
+    boot = bootstrap_unsafe_delta(rows)
 
     crit1 = m["ceiling_pct"] >= 50.0
     crit2 = (m["feasible_50"] and boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
     verdict = "PASS" if (crit1 and crit2) else "FAIL"
 
     summary = {
-        "intervention": f"EXP17-{args.intervention}",
-        "policy": ENV_POLICIES["A"],
+        "intervention": f"EXP17-{tag}",
+        "policy": env_value,
         "config_version": frozen.version, "config_hash": frozen.sha256,
-        "baseline_parity_diffs": diffs,
         "metrics": m, "holdout": ho, "unsafe_delta_bootstrap": boot,
         "criteria": {
             "c1_ceiling_ge_50": {"pass": bool(crit1),
@@ -210,22 +196,41 @@ def main():
         },
         "verdict": verdict,
     }
-    out_summary = ROOT / "results" / f"exp17_summary_{args.intervention}.json"
+    out_summary = ROOT / "results" / f"exp17_summary_{tag}.json"
     out_summary.write_text(json.dumps(summary, indent=2, ensure_ascii=False),
                            encoding="utf-8")
 
-    print(f"[1] 干预 A (consensus_route): 天花板 {m['ceiling_pct']:.2f}% | "
+    print(f"[{tag}] 天花板 {m['ceiling_pct']:.2f}% | "
           f"50% 点 Unsafe {m['unsafe_50_pct']} (feasible={m['feasible_50']}) | "
-          f"复核负担 {m['review_burden_50_pct']}% | 截获@50%预算 "
-          f"{m['interception_50_budget_pct']}%")
-    print(f"    ΔUnsafe bootstrap: 单侧95%上界 {boot['one_sided_upper95_pp']:+.2f}pp "
+          f"截获@50%预算 {m['interception_50_budget_pct']}%")
+    print(f"      ΔUnsafe 单侧95%上界 {boot['one_sided_upper95_pp']:+.2f}pp "
           f"(阈值 +{MAX_DELTA_UPPER_PP}pp) | CI[{boot['ci95_lo_pp']:+.2f}, "
           f"{boot['ci95_hi_pp']:+.2f}]")
-    print(f"    holdout: 天花板 {ho['holdout_ceiling_pct']}% | Unsafe@天花板 "
+    print(f"      holdout 天花板 {ho['holdout_ceiling_pct']}% | Unsafe@天花板 "
           f"{ho['holdout_unsafe_at_ceiling_pct']}%")
-    print(f"    判据: c1={crit1} c2={crit2} → **{verdict}**")
+    print(f"      判据: c1={crit1} c2={crit2} → **{verdict}**")
     print(f"✓ {out_csv}")
     print(f"✓ {out_summary}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--intervention", choices=["A", "B"], default="A")
+    args = parser.parse_args()
+
+    # 0) v1.5.1 默认路径对账 (改动不得影响冻结行为)
+    rows_base, frozen = chain_rows(None)
+    diffs, n_ref = baseline_parity_check(
+        rows_base, ROOT / "results" / "main_results.csv")
+    print(f"[0] v1.5.1 默认路径对账: {n_ref} 单元, 差异 {diffs} 个 "
+          f"{'✓' if diffs == 0 else '✗ FAIL'}")
+
+    if args.intervention == "A":
+        run_intervention("A", ENV_POLICIES["A"], frozen)
+    else:
+        # B: 单独验收 + 按预注册顺序累加 A+B 后复验
+        run_intervention("B", ENV_POLICIES["B"], frozen)
+        run_intervention("AB", ENV_POLICIES["AB"], frozen)
 
 
 if __name__ == "__main__":
