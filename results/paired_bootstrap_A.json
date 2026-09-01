@@ -1,7 +1,7 @@
 {
   "tag": "EXP17-A",
-  "config_version": "semifinal_v1.5.1",
-  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "config_version": "semifinal_v1.5.1-bugfix",
+  "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
   "n_units": 1306,
   "n_stations": 60,
   "n_iterations": 1000,

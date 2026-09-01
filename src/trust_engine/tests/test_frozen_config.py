@@ -5,8 +5,8 @@ from src.trust_engine.config_loader import load_frozen_config
 
 def test_frozen_config_is_executable_and_profile_is_preselected():
     frozen = load_frozen_config()
-    assert frozen.version == "semifinal_v1.5.1"
-    assert frozen.parent == "semifinal_v1.5"
+    assert frozen.version == "semifinal_v1.5.1-bugfix"
+    assert frozen.parent == "semifinal_v1.5.1"
     assert frozen.selected_profile == "hydrophone_v2"
     assert frozen.raw["experiment"]["frozen_profile"] == frozen.selected_profile
     assert frozen.raw["run_controls"]["profile_selection_during_reproduction"] is False

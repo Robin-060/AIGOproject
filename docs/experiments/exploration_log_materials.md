@@ -223,10 +223,19 @@
   **截获@50%预算塌到 64.55%**（risk ranking 被稀释，正是 C 警示的失败模式）；
   A+B 累加天花板 90.12% 但 c2 上界 +2.55pp 仍超阈 → **弃用 B**。
   纪律生效: 覆盖率好看 ≠ 可接受，判据失败即回退，未做任何参数微调
-- **R**：最终采用 A；C（floor sweep 报告）待跑；v1.5.1 冻结产物零改动
-  （默认路径 1306 单元逐一对账零差异）
-- **出处**：results/exp17_summary_{A,B,AB}.json、results/main_results_exp17_*.csv、
-  docs/experiments/exp17_preregistration.md
+- **R**：**最终裁决（2026-09-01，C 方案 a）**：采用 A；v1.5.1 冻结产物零改动
+  （默认路径 1306 单元逐一对账零差异；ROUTE invalid-pick bug 已按 v1.5.1-bugfix
+  单独修复，前后对照 7 个假输出单元、数值零变化）。
+  正式表述口径（C 定稿）：
+  "在不增加模型、不重新训练的情况下，failure-driven policy refinement 使
+  自动覆盖率相对提高约 18.5%（45.64%→54.13%，+8.49pp）；同时 Trust 风险排序
+  显著提高人工复核效率。安全性点估计接近 Voting（+0.92pp，绿灯内），但在预设
+  +2pp 非劣界下尚未获得充分统计证据（配对 bootstrap 单侧 95% 上界 +2.24pp）。"
+  Review prioritization 明确成立；Automation coverage 明确恢复；
+  **安全非劣只写"接近、未确认"，绝不写"持平"或"通过"**
+- **出处**：results/exp17_summary_A.json、results/paired_bootstrap_A.json、
+  results/main_results_exp17_A.csv、docs/experiments/exp17_preregistration.md、
+  results/v151_archive/
 
 ## 三、负结果清单（官方明确允许，须如实呈现）
 

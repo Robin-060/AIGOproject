@@ -1,8 +1,8 @@
 {
   "intervention": "EXP17-A",
   "policy": "consensus_route",
-  "config_version": "semifinal_v1.5.1",
-  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "config_version": "semifinal_v1.5.1-bugfix",
+  "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
   "metrics": {
     "n": 1306,
     "ceiling_pct": 54.134762633996935,
