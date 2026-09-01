@@ -3,15 +3,20 @@ Review Budget–Error Interception Curve (C 追加分析)
 
 问题: 在固定"复核预算"下, 各策略能截获多少错误?
 口径 (完全基于冻结物, 不重训模型 / 不重调 Trust / 不改变 DS):
-  - 单元: 1306 个 (sample_id, phase), 错误定义与主实验一致
-    (verdict in {"wrong", "no_pick"}, 共 746 个, 见 failure_raw.csv)
-  - 四种策略按各自"可疑度"对全部单元排序, 前 k 个送人工复核:
-      1. Random          — 100 种子平均 (期望 = 对角线)
+  - 单元: 1306 个 (sample_id, phase), 错误全集 = verdict in {"wrong","no_pick"}
+    (共 746 个, 与 failure_raw.csv / 主实验拦截口径一致)
+  - 四种策略按各自"可疑度"对全部单元排序, 前 k 个送人工复核,
+    k = round(budget% × n) (四舍五入, 每预算的 k 记入 CSV reviewed_n 列):
+      1. Random          — 100 种子平均 (期望 = 对角线 = 预算本身)
       2. Model confidence— 1 - 该相位可用模型的最大置信度 (缺拾取 → 0, 排最后)
       3. Disagreement    — 该相位可用拾取的最大差 spread (s); <2 拾取 → 0
       4. Trust risk      — main_results.csv 冻结风险分 (v1.5.1)
-  - 指标: 复核预算 b% → 截获错误率 (%) 与精确率 (%)
-  - 附加: Trust 实际运行点 (review burden 54.36% 处) 标注在曲线上
+  - 排序方向: 可疑度**降序** (最可疑者最先送审); 同分时按原始单元顺序
+    (stable sort, 即 build_phase_units 的 manifest 顺序, 确定性可复现)
+  - 指标: 截获错误率 (%) 与精确率 (%) = 送审单元中的错误占比
+  - 附加: Trust 实际运行点 (复核负担 = 100% − 覆盖率天花板 45.64% ≈ 54.36%)
+    标注在曲线上; 运行点精确率 ≈ 89.6% 的含义 = 送审单元中约 9 成是真实错误
+    (风险排序对错误的富集能力, 见 docs/experiments/exp16_review_budget.md)
 
 输出:
   results/review_budget_curve.csv     (长表: 策略 × 预算点)
@@ -144,12 +149,14 @@ def main():
     rows = []
     for strategy, suspicion in signals.items():
         for b in SWEEP_BUDGETS:
+            k = int(round(b / 100 * n))
             if strategy == "Random":
                 inter, prec = random_interception_at(is_error, b)
             else:
                 inter, prec = interception_at(suspicion, is_error, b)
             rows.append({
                 "strategy": strategy, "review_budget_pct": b,
+                "reviewed_n": k,
                 "errors_intercepted": round(inter / 100 * errors_total, 1),
                 "total_errors": errors_total,
                 "interception_rate_pct": round(inter, 2),
@@ -189,6 +196,11 @@ def main():
             "review_burden_pct": round(burden, 2),
             "interception_rate_pct": round(op_inter, 2),
             "precision_pct": round(op_prec, 2),
+            "meaning": ("运行点 = Trust 覆盖率天花板 (45.64%) 的自然补集: "
+                        f"复核负担 {burden:.2f}% 即 100% − 天花板; "
+                        f"该队列中 {op_inter:.1f}% 的错误被截获, "
+                        f"精确率 {op_prec:.1f}% 表示送审单元中约九成是真实错误 "
+                        "(风险排序对错误的富集能力)"),
         }
     else:
         burden, op_inter, op_prec = None, None, None

@@ -46,6 +46,7 @@
   "trust_operating_point": {
     "review_burden_pct": 54.36,
     "interception_rate_pct": 85.25,
-    "precision_pct": 89.58
+    "precision_pct": 89.58,
+    "meaning": "运行点 = Trust 覆盖率天花板 (45.64%) 的自然补集: 复核负担 54.36% 即 100% − 天花板; 该队列中 85.3% 的错误被截获, 精确率 89.6% 表示送审单元中约九成是真实错误 (风险排序对错误的富集能力)"
   }
 }
