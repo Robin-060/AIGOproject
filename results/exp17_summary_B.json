@@ -23,6 +23,42 @@
     "one_sided_upper95_pp": 3.42,
     "n_valid_resamples": 1000
   },
+  "risk_bins": {
+    "bins": [
+      {
+        "bin": "0-9",
+        "n": 418,
+        "error_rate_pct": 4.07,
+        "reliable": true
+      },
+      {
+        "bin": "10-19",
+        "n": 164,
+        "error_rate_pct": 9.15,
+        "reliable": true
+      },
+      {
+        "bin": "20-29",
+        "n": 404,
+        "error_rate_pct": 14.85,
+        "reliable": true
+      },
+      {
+        "bin": "30-39",
+        "n": 76,
+        "error_rate_pct": 15.79,
+        "reliable": true
+      },
+      {
+        "bin": "40-50",
+        "n": 4,
+        "error_rate_pct": 75.0,
+        "reliable": false
+      }
+    ],
+    "monotonic_reliable_bins": true
+  },
+  "review_curve_reference_interception_50_pct": 83.6,
   "criteria": {
     "c1_ceiling_ge_50": {
       "pass": true,
@@ -33,6 +69,15 @@
       "one_sided_upper95_pp": 3.42,
       "threshold_pp": 2.0,
       "reference_unsafe_pp": 6.04
+    },
+    "c3_review_curve_preserved": {
+      "pass": false,
+      "interception_50_budget_pct": 64.55,
+      "reference_pct": 83.6
+    },
+    "c4_risk_bin_ordering_preserved": {
+      "pass": true,
+      "monotonic": true
     }
   },
   "verdict": "FAIL"

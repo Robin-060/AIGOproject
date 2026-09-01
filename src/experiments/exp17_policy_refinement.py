@@ -164,6 +164,36 @@ def baseline_parity_check(rows, frozen_ref_csv):
     return diffs, len(ref)
 
 
+def risk_bins_evaluate(rows):
+    """判据 4: 风险分箱排序保持 (与主实验同口径, 可靠箱 n≥10)."""
+    out = [r for r in rows if r["verdict"] in ("correct", "wrong")]
+    edges = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 51)]
+    result = []
+    for lo, hi in edges:
+        m = [r for r in out if lo <= float(r["risk"]) < hi]
+        if not m:
+            result.append({"bin": f"{lo}-{hi-1}", "n": 0,
+                           "error_rate_pct": None, "reliable": False})
+            continue
+        w = sum(1 for r in m if r["verdict"] == "wrong")
+        result.append({"bin": f"{lo}-{hi-1}", "n": len(m),
+                       "error_rate_pct": round(w / len(m) * 100, 2),
+                       "reliable": len(m) >= 10})
+    reliable = [r["error_rate_pct"] for r in result if r["reliable"]
+                and r["error_rate_pct"] is not None]
+    monotonic = all(a <= b for a, b in zip(reliable, reliable[1:]))
+    return {"bins": result, "monotonic_reliable_bins": bool(monotonic)}
+
+
+def review_curve_reference():
+    """v1.5.1 冻结的 Review Budget 截获@50% 预算 (EXP16 冻结产物)."""
+    import json as _json
+    with open(ROOT / "results" / "review_budget_summary.json",
+              encoding="utf-8") as f:
+        ref = _json.load(f)["fixed_budget_interception_pct"]["50"]["TrustRisk"]
+    return float(ref)
+
+
 def run_intervention(tag, env_value, frozen):
     rows, _frozen = chain_rows(env_value)
     out_csv = ROOT / "results" / f"main_results_exp17_{tag}.csv"
@@ -175,16 +205,24 @@ def run_intervention(tag, env_value, frozen):
     m = evaluate(rows)
     ho = holdout_stats(rows)
     boot = bootstrap_unsafe_delta(rows)
+    bins = risk_bins_evaluate(rows)
+    ref_inter = review_curve_reference()
 
     crit1 = m["ceiling_pct"] >= 50.0
     crit2 = (m["feasible_50"] and boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
-    verdict = "PASS" if (crit1 and crit2) else "FAIL"
+    # 判据 3 (C 指示): Review Budget 曲线保持 — 截获@50%预算不低于 v1.5.1 冻结值
+    crit3 = m["interception_50_budget_pct"] >= ref_inter - 1e-9
+    # 判据 4 (C 指示): 风险分箱排序保持单调 (可靠箱 n≥10)
+    crit4 = bins["monotonic_reliable_bins"]
+    verdict = "PASS" if all((crit1, crit2, crit3, crit4)) else "FAIL"
 
     summary = {
         "intervention": f"EXP17-{tag}",
         "policy": env_value,
         "config_version": frozen.version, "config_hash": frozen.sha256,
         "metrics": m, "holdout": ho, "unsafe_delta_bootstrap": boot,
+        "risk_bins": bins,
+        "review_curve_reference_interception_50_pct": ref_inter,
         "criteria": {
             "c1_ceiling_ge_50": {"pass": bool(crit1),
                                  "value_pct": round(m["ceiling_pct"], 2)},
@@ -193,6 +231,14 @@ def run_intervention(tag, env_value, frozen):
                 "one_sided_upper95_pp": boot["one_sided_upper95_pp"],
                 "threshold_pp": MAX_DELTA_UPPER_PP,
                 "reference_unsafe_pp": FROZEN_REF_UNSAFE_PP},
+            "c3_review_curve_preserved": {
+                "pass": bool(crit3),
+                "interception_50_budget_pct":
+                    m["interception_50_budget_pct"],
+                "reference_pct": ref_inter},
+            "c4_risk_bin_ordering_preserved": {
+                "pass": bool(crit4),
+                "monotonic": bins["monotonic_reliable_bins"]},
         },
         "verdict": verdict,
     }
@@ -208,7 +254,10 @@ def run_intervention(tag, env_value, frozen):
           f"{boot['ci95_hi_pp']:+.2f}]")
     print(f"      holdout 天花板 {ho['holdout_ceiling_pct']}% | Unsafe@天花板 "
           f"{ho['holdout_unsafe_at_ceiling_pct']}%")
-    print(f"      判据: c1={crit1} c2={crit2} → **{verdict}**")
+    print(f"      风险分箱: {[b['error_rate_pct'] for b in bins['bins'] if b['reliable']]} "
+          f"(单调={bins['monotonic_reliable_bins']}) | 截获@50%预算 "
+          f"{m['interception_50_budget_pct']}% (冻结参照 {ref_inter}%)")
+    print(f"      判据: c1={crit1} c2={crit2} c3={crit3} c4={crit4} → **{verdict}**")
     print(f"✓ {out_csv}")
     print(f"✓ {out_summary}")
 
