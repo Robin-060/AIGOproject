@@ -26,7 +26,8 @@ from src.trust_engine.model_suitability import evaluate_model_suitability
 from src.trust_engine.multi_model import analyze_multi_model_consensus
 from src.trust_engine.physics import check_model_prediction
 from src.trust_engine.pipeline import load_from_mapping, run_pipeline, _load_config
-from src.trust_engine.schema import DEMO_CONFIG
+from src.trust_engine.config_loader import load_frozen_config
+
 from src.trust_engine.single_model import evaluate_single_model_evidence
 
 
@@ -115,7 +116,7 @@ def analyze_payload(
             ),
             None,
         )
-        physics.append(check_model_prediction(prediction, s_prediction, DEMO_CONFIG))
+        physics.append(check_model_prediction(prediction, s_prediction, config))
     consensus = analyze_multi_model_consensus(
         inputs["predictions"], suitabilities, physics
     )
@@ -415,6 +416,14 @@ def main() -> None:
         layout="wide",
     )
     st.title("OBS Trust Layer 可信分析台")
+
+    frozen_identity = load_frozen_config()
+    frozen_profile = frozen_identity.raw.get("selected_profile", "unknown")
+    st.caption(
+        f"Frozen run · {frozen_identity.version} · "
+        f"profile={frozen_profile} · "
+        f"config hash={frozen_identity.sha256[:12]}…"
+    )
     st.markdown(
         "**模型无关的可信 AI 调度层** —— 综合数据质量、多模型一致性与物理约束，"
         "对每次拾取结果给出风险等级与决策：自动接受（ACCEPT）、模型融合（FUSE）或人工复核（ABSTAIN）。"

@@ -33,9 +33,8 @@ from src.trust_engine.schema import (
     ModelPrediction,
     TrustConfig,
     AdapterStatus,
-    DEMO_CONFIG,
 )
-from src.trust_engine.pipeline import run_pipeline
+from src.trust_engine.pipeline import run_pipeline, _load_config
 
 
 def load_data_layer_json(json_path: str) -> dict:
@@ -149,7 +148,7 @@ def run(json_path: str):
     print()
 
     # ── 调用 Trust Engine ──
-    config = DEMO_CONFIG
+    config = _load_config()
 
     result = run_pipeline(
         metadata=metadata,
