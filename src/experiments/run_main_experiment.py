@@ -333,11 +333,15 @@ def write_outputs(unit_rows, frozen):
         unsafe = auto_wrong / auto * 100 if auto else 0.0
         burden = (len(unit_rows) - auto) / len(unit_rows) * 100
         inter = intercepted / total_errors * 100 if total_errors else 0.0
+        # Selective Risk = 自动单元上的平均 0-1 loss (wrong=1, correct=0);
+        # 本口径下 auto 集内仅有 correct/wrong 两类 → 数值等同 Unsafe Output Rate
+        selective_risk = unsafe
         status = "COMPARABLE" if feasible else "NOT_COMPARABLE_AT_TARGET"
         eq_rows.append({
             "strategy": "TrustLayer", "target_coverage_pct": target,
             "coverage_pct": round(cov, 2),
             "unsafe_output_rate_pct": round(unsafe, 2) if feasible else "",
+            "selective_risk_pct": round(selective_risk, 2) if feasible else "",
             "review_burden_pct": round(burden, 2),
             "error_interception_rate_pct": round(inter, 2) if feasible else "",
             "risk_threshold": round(eff_threshold, 2) if feasible else "",

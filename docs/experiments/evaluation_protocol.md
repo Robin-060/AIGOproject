@@ -56,7 +56,7 @@
 | Unsafe Output Rate | 自动输出单元中 wrong 的比例（核心安全指标） | 必须与 Coverage 同报，**禁止单独报告** |
 | Error Interception Rate | 被 ABSTAIN/Review 拦下的错误（含真值要求相位的 NO_PICK）÷ 全部错误 | 必须与 Review Burden 同报 |
 | Review Burden | 进入人工复核的相位单元比例 | 必须与 Error Interception Rate 同报 |
-| Selective Risk | 自动处理单元上的平均 0-1 loss | 必须按不同 Coverage 点报告 |
+| Selective Risk | 自动处理单元上的平均 0-1 loss（wrong=1, correct=0）；本口径下 auto 集内仅 correct/wrong 两类，故数值等同 Unsafe Output Rate，落盘为 equal_coverage_trust.csv 的 selective_risk_pct 列 | 必须按不同 Coverage 点报告 |
 
 禁止表述："错误率 2.8%"。正确表述："Coverage=X% 时 Unsafe Output Rate=Y%"。
 

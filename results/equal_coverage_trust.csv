@@ -1,6 +1,6 @@
-strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile,config_version,config_hash,parent_config,feasible,comparison_status
-TrustLayer,50,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,60,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,70,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,80,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
-TrustLayer,90,45.64,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
+strategy,target_coverage_pct,coverage_pct,unsafe_output_rate_pct,selective_risk_pct,review_burden_pct,error_interception_rate_pct,risk_threshold,profile,config_version,config_hash,parent_config,feasible,comparison_status
+TrustLayer,50,45.64,,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,60,45.64,,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,70,45.64,,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,80,45.64,,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
+TrustLayer,90,45.64,,,54.36,,,hydrophone_v2,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d,semifinal_v1.5.1,false,NOT_COMPARABLE_AT_TARGET
