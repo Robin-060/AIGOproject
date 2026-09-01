@@ -1,0 +1,77 @@
+{
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "n_units": 1306,
+  "n_auto": 603,
+  "categories": {
+    "NO_ELIGIBLE_MODELS": {
+      "n": 1,
+      "P": 0,
+      "S": 1,
+      "with_correct_pick": 0,
+      "all_picks_correct": 0
+    },
+    "NO_SURVIVING_MODELS": {
+      "n": 0,
+      "P": 0,
+      "S": 0,
+      "with_correct_pick": 0,
+      "all_picks_correct": 0
+    },
+    "NO_DECISIVE_EVIDENCE_BETWEEN_MODELS": {
+      "n": 99,
+      "P": 44,
+      "S": 55,
+      "with_correct_pick": 91,
+      "all_picks_correct": 10
+    },
+    "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION": {
+      "n": 112,
+      "P": 77,
+      "S": 35,
+      "with_correct_pick": 105,
+      "all_picks_correct": 89
+    },
+    "INSUFFICIENT_EVIDENCE_FOR_SELECTION": {
+      "n": 487,
+      "P": 229,
+      "S": 258,
+      "with_correct_pick": 430,
+      "all_picks_correct": 312
+    },
+    "RISK_ABOVE_AUTO_THRESHOLD": {
+      "n": 0,
+      "P": 0,
+      "S": 0,
+      "with_correct_pick": 0,
+      "all_picks_correct": 0
+    },
+    "NO_PREDICTIONS": {
+      "n": 4,
+      "P": 4,
+      "S": 0,
+      "with_correct_pick": 0,
+      "all_picks_correct": 0
+    },
+    "AUTO_FUSE": {
+      "n": 595,
+      "P": 300,
+      "S": 295,
+      "with_correct_pick": 574,
+      "all_picks_correct": 483
+    },
+    "AUTO_ROUTE": {
+      "n": 8,
+      "P": 3,
+      "S": 5,
+      "with_correct_pick": 6,
+      "all_picks_correct": 3
+    }
+  },
+  "consensus_without_fusion_floor_hist": {
+    "0.7": 101,
+    "0.65": 107,
+    "0.6": 107,
+    "0.55": 109
+  }
+}
