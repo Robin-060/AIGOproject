@@ -596,6 +596,181 @@ def _render_experiments() -> None:
     )
 
 
+
+    # ------------------------------------------------------------
+    # Case Explorer — frozen failure cases
+    # ------------------------------------------------------------
+    st.divider()
+    st.subheader("Case Explorer")
+    st.caption(
+        "Inspect frozen Trust Layer decisions from results/failure_raw.csv. "
+        "This panel only reads frozen results and does not recompute metrics."
+    )
+
+    failure_path = ROOT / "results" / "failure_raw.csv"
+
+    if failure_path.exists():
+        cases = pd.read_csv(failure_path)
+
+        action_values = sorted(
+            cases["action"].dropna().astype(str).unique().tolist()
+        ) if "action" in cases.columns else []
+
+        verdict_values = sorted(
+            cases["verdict"].dropna().astype(str).unique().tolist()
+        ) if "verdict" in cases.columns else []
+
+        phase_values = sorted(
+            cases["phase"].dropna().astype(str).unique().tolist()
+        ) if "phase" in cases.columns else []
+
+        f1, f2, f3, f4 = st.columns(4)
+
+        action_filter = f1.selectbox(
+            "Action",
+            ["ALL"] + action_values,
+            key="case_action_filter",
+        )
+
+        verdict_filter = f2.selectbox(
+            "Verdict",
+            ["ALL"] + verdict_values,
+            key="case_verdict_filter",
+        )
+
+        phase_filter = f3.selectbox(
+            "Phase",
+            ["ALL"] + phase_values,
+            key="case_phase_filter",
+        )
+
+        search_text = f4.text_input(
+            "Sample / station search",
+            key="case_search_filter",
+        ).strip()
+
+        filtered = cases.copy()
+
+        if action_filter != "ALL":
+            filtered = filtered[
+                filtered["action"].astype(str) == action_filter
+            ]
+
+        if verdict_filter != "ALL":
+            filtered = filtered[
+                filtered["verdict"].astype(str) == verdict_filter
+            ]
+
+        if phase_filter != "ALL":
+            filtered = filtered[
+                filtered["phase"].astype(str) == phase_filter
+            ]
+
+        if search_text:
+            mask = pd.Series(False, index=filtered.index)
+            for c in ["sample_id", "station"]:
+                if c in filtered.columns:
+                    mask = mask | filtered[c].astype(str).str.contains(
+                        search_text,
+                        case=False,
+                        na=False,
+                    )
+            filtered = filtered[mask]
+
+        m1, m2, m3, m4, m5 = st.columns(5)
+
+        m1.metric("Cases", len(filtered))
+
+        action_series = (
+            filtered["action"].astype(str)
+            if "action" in filtered.columns
+            else pd.Series(dtype=str)
+        )
+
+        verdict_series = (
+            filtered["verdict"].astype(str)
+            if "verdict" in filtered.columns
+            else pd.Series(dtype=str)
+        )
+
+        m2.metric("FUSE", int((action_series == "FUSE").sum()))
+        m3.metric("ABSTAIN", int((action_series == "ABSTAIN").sum()))
+        m4.metric("ROUTE", int((action_series == "ROUTE").sum()))
+        m5.metric("Wrong", int((verdict_series == "wrong").sum()))
+
+        display_columns = [
+            "sample_id",
+            "phase",
+            "station",
+            "split",
+            "truth_s",
+            "selected_time_s",
+            "action",
+            "risk",
+            "verdict",
+            "snr_db",
+            "gap_ratio",
+            "clipping_ratio",
+            "missing_channels",
+        ]
+
+        display_columns = [
+            c for c in display_columns
+            if c in filtered.columns
+        ]
+
+        st.dataframe(
+            filtered[display_columns],
+            width="stretch",
+            hide_index=True,
+        )
+
+        if not filtered.empty:
+            st.markdown("**Case detail**")
+
+            option_labels = []
+            option_indices = []
+
+            for idx, row in filtered.iterrows():
+                label = (
+                    f"{row.get('sample_id', idx)}"
+                    f" | {row.get('phase', '?')}"
+                    f" | {row.get('action', '?')}"
+                    f" | risk={row.get('risk', 'N/A')}"
+                    f" | {row.get('verdict', '?')}"
+                )
+                option_labels.append(label)
+                option_indices.append(idx)
+
+            selected_label = st.selectbox(
+                "Select case",
+                option_labels,
+                key="case_detail_selector",
+            )
+
+            selected_idx = option_indices[
+                option_labels.index(selected_label)
+            ]
+
+            selected_row = filtered.loc[selected_idx]
+
+            detail = {}
+            for key, value in selected_row.items():
+                if pd.isna(value):
+                    detail[key] = None
+                elif hasattr(value, "item"):
+                    detail[key] = value.item()
+                else:
+                    detail[key] = value
+
+            st.json(detail)
+
+    else:
+        st.warning(
+            "results/failure_raw.csv not found; Case Explorer unavailable."
+        )
+
+
 def main() -> None:
     st.set_page_config(
         page_title="OBS Trust Layer",
