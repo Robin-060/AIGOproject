@@ -273,6 +273,64 @@ def _render_waveform(raw: Dict[str, Any], bundle: WaveformBundle) -> None:
 RISK_COLORS = {"LOW": "#2E7D32", "MEDIUM": "#F57F17", "HIGH": "#C62828"}
 
 
+
+ABSTAIN_EXPLANATIONS = {
+    "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION":
+        "多个模型存在一致性信号，但没有形成满足冻结融合准入条件的候选，因此系统不自动输出，转入人工复核。",
+    "FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR":
+        "模型形成了可比较的融合候选，但校准后的融合置信度低于冻结配置要求，因此不允许自动输出。",
+    "FUSE_RISK_ABOVE_AUTO_THRESHOLD":
+        "融合候选已经形成，但当前风险分高于自动决策阈值，因此系统不自动放行，并转入人工复核。",
+    "FUSION_NOT_ALLOWED":
+        "当前证据或冻结策略条件不允许执行模型融合，因此系统保守地选择人工复核。",
+    "INSUFFICIENT_EVIDENCE_FOR_SELECTION":
+        "当前可用证据不足以支持可靠的自动拾取，因此系统不进行自动选择。",
+    "MODEL_CONSENSUS":
+        "模型之间存在一定共识，但共识本身不代表允许自动输出，最终仍需满足冻结融合和风险规则。",
+    "MODEL_OUTLIER_DETECTED":
+        "模型预测中检测到明显离群结果，模型之间存在异常差异，因此自动决策可靠性不足。",
+    "NO_DECISIVE_EVIDENCE_BETWEEN_MODELS":
+        "多个模型的证据不足以明确支持某一个候选结果，因此系统无法形成确定的自动决策。",
+    "NO_ELIGIBLE_MODELS":
+        "没有模型通过当前数据质量、适用性或输出可比性要求，因此无法进行可靠自动拾取。"
+}
+
+def _render_reason_explanations(decision):
+    codes = decision.get("reason_codes", []) or []
+
+    if not codes:
+        return
+
+    st.write("原因码：" + ", ".join(codes))
+
+    if str(decision.get("action", "")).upper() != "ABSTAIN":
+        return
+
+    st.markdown("**为什么需要人工复核？**")
+
+    for code in codes:
+        text = ABSTAIN_EXPLANATIONS.get(
+            code,
+            "该原因码来自冻结策略结果，目前尚未配置固定自然语言解释。"
+        )
+        st.write(f"- **{code}**：{text}")
+
+    evidence = [f"Risk={decision.get('risk_score', 'N/A')}"]
+
+    for key, label in [
+        ("spread_s", "模型时间差"),
+        ("calibrated_confidence", "校准置信度"),
+        ("fusion_confidence", "融合置信度"),
+        ("eligible_model_count", "可用模型数"),
+        ("valid_model_count", "有效模型数"),
+    ]:
+        value = decision.get(key)
+        if value is not None:
+            evidence.append(f"{label}={value}")
+
+    st.caption("本次实际证据：" + " · ".join(evidence))
+
+
 def _risk_badge(level: str) -> str:
     """彩色风险等级徽标"""
     color = RISK_COLORS.get(level, "#666666")
@@ -298,7 +356,7 @@ def _render_decisions(analysis: Dict[str, Any]) -> None:
                 st.write("融合模型：" + "、".join(contributors))
             elif decision.get("selected_model"):
                 st.write("选定模型：" + decision["selected_model"])
-            st.write("原因码：" + "、".join(decision.get("reason_codes", [])))
+            _render_reason_explanations(decision)
 
 
 def _render_risk(analysis: Dict[str, Any]) -> None:
