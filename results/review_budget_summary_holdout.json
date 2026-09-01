@@ -1,0 +1,47 @@
+{
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "scope": "holdout",
+  "n_units": 260,
+  "total_errors": 161,
+  "table_budgets_pct": [
+    5,
+    10,
+    20,
+    30,
+    50
+  ],
+  "fixed_budget_interception_pct": {
+    "5": {
+      "Random": 5.0,
+      "ModelConf": 8.1,
+      "Disagreement": 5.6,
+      "TrustRisk": 8.1
+    },
+    "10": {
+      "Random": 10.2,
+      "ModelConf": 16.1,
+      "Disagreement": 10.6,
+      "TrustRisk": 16.1
+    },
+    "20": {
+      "Random": 20.0,
+      "ModelConf": 28.6,
+      "Disagreement": 23.0,
+      "TrustRisk": 32.3
+    },
+    "30": {
+      "Random": 30.1,
+      "ModelConf": 38.5,
+      "Disagreement": 36.6,
+      "TrustRisk": 47.8
+    },
+    "50": {
+      "Random": 49.9,
+      "ModelConf": 56.5,
+      "Disagreement": 59.0,
+      "TrustRisk": 80.1
+    }
+  },
+  "trust_operating_point": null
+}

@@ -17,8 +17,12 @@ Review Budget–Error Interception Curve (C 追加分析)
   results/review_budget_curve.csv     (长表: 策略 × 预算点)
   results/review_budget_summary.json  (固定预算对比 + Trust 运行点)
   figures/review_budget_curve.png
+  --holdout 模式: 仅在 holdout 分片 (260 单元, 冻结协议定位"一致性佐证")
+  上重复同一对比, 输出 *_holdout.{csv,json,png} — 最小追加验证 (样本外一致性)
 
-用法: python -m src.experiments.review_budget_curve
+用法:
+  python -m src.experiments.review_budget_curve            # 全量 (1306 单元)
+  python -m src.experiments.review_budget_curve --holdout  # holdout 佐证
 """
 
 import csv
@@ -43,10 +47,6 @@ from src.experiments.phase_evaluation import (  # noqa: E402
     load_records,
 )
 from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
-
-OUT_CSV = ROOT / "results" / "review_budget_curve.csv"
-OUT_SUMMARY = ROOT / "results" / "review_budget_summary.json"
-OUT_FIG = ROOT / "figures" / "review_budget_curve.png"
 
 SWEEP_BUDGETS = list(range(0, 61))          # 1% 步长, 供曲线
 TABLE_BUDGETS = [5, 10, 20, 30, 50]          # 固定预算对比表
@@ -81,8 +81,11 @@ def random_interception_at(is_error, budget_pct, n_seeds=RANDOM_SEEDS):
             np.mean(values) / k * 100 if k else 0.0)
 
 
-def build_signals():
-    """返回 {strategy: suspicion 数组} 与 is_error 数组 (与 units 同序)."""
+def build_signals(split_filter=None):
+    """返回 {strategy: suspicion 数组} 与 is_error 数组 (与 units 同序).
+
+    split_filter: None=全部单元; "main"/"holdout"=仅该分片。
+    """
     frozen = load_frozen_config()
     records = load_records()
     units = [u for u in build_phase_units(records) if u["primary_inclusion"]]
@@ -94,6 +97,11 @@ def build_signals():
                 for r in trust_rows}
     verdict_map = {(r["sample_id"], r["phase"]): r["verdict"]
                    for r in trust_rows}
+    split_map = {(r["sample_id"], r["phase"]): r["split"]
+                 for r in trust_rows}
+    if split_filter:
+        units = [u for u in units
+                 if split_map.get((u["sample_id"], u["phase"])) == split_filter]
 
     trust = np.zeros(len(units))
     conf = np.zeros(len(units))
@@ -119,11 +127,18 @@ def build_signals():
 
 
 def main():
+    split_filter = "holdout" if "--holdout" in sys.argv else None
+    suffix = "_holdout" if split_filter else ""
+    out_csv = ROOT / "results" / f"review_budget_curve{suffix}.csv"
+    out_summary = ROOT / "results" / f"review_budget_summary{suffix}.json"
+    out_fig = ROOT / "figures" / f"review_budget_curve{suffix}.png"
+
     frozen = load_frozen_config()
-    signals, is_error, _frozen = build_signals()
+    signals, is_error, _frozen = build_signals(split_filter)
     n = len(is_error)
     errors_total = int(is_error.sum())
-    print(f"单元 {n} | 错误 (wrong+no_pick) {errors_total} | "
+    scope = split_filter or "all"
+    print(f"单元 {n} | 错误 (wrong+no_pick) {errors_total} | scope={scope} | "
           f"config {frozen.version} ({frozen.sha256[:12]}…)")
 
     rows = []
@@ -142,11 +157,11 @@ def main():
                 "config_version": frozen.version,
                 "config_hash": frozen.sha256,
             })
-    with open(OUT_CSV, "w", newline="", encoding="utf-8") as f:
+    with open(out_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
-    print(f"✓ {OUT_CSV}")
+    print(f"✓ {out_csv}")
 
     # 固定预算对比表
     table = {}
@@ -162,28 +177,33 @@ def main():
     for b, vals in table.items():
         print(f"{b + '%':>8} " + "".join(f"{vals[s]:>17.1f}%" for s in signals))
 
-    # Trust 实际运行点: 主实验 review burden (ceil 点)
-    eq_rows = list(csv.DictReader(
-        open(ROOT / "results" / "equal_coverage_trust.csv", encoding="utf-8")))
-    burden = float(eq_rows[0]["review_burden_pct"])
-    op_inter, op_prec = interception_at(signals["TrustRisk"], is_error, burden)
-    print(f"\nTrust 实际运行点: 复核 {burden:.1f}% → 截获 {op_inter:.1f}% "
-          f"(精确率 {op_prec:.1f}%)")
-
-    summary = {
-        "config_version": frozen.version, "config_hash": frozen.sha256,
-        "n_units": n, "total_errors": errors_total,
-        "table_budgets_pct": TABLE_BUDGETS,
-        "fixed_budget_interception_pct": table,
-        "trust_operating_point": {
+    # Trust 实际运行点 (仅全量模式有意义: burden 来自主实验全单元口径)
+    if split_filter is None:
+        eq_rows = list(csv.DictReader(
+            open(ROOT / "results" / "equal_coverage_trust.csv", encoding="utf-8")))
+        burden = float(eq_rows[0]["review_burden_pct"])
+        op_inter, op_prec = interception_at(signals["TrustRisk"], is_error, burden)
+        print(f"\nTrust 实际运行点: 复核 {burden:.1f}% → 截获 {op_inter:.1f}% "
+              f"(精确率 {op_prec:.1f}%)")
+        op_point = {
             "review_burden_pct": round(burden, 2),
             "interception_rate_pct": round(op_inter, 2),
             "precision_pct": round(op_prec, 2),
-        },
+        }
+    else:
+        burden, op_inter, op_prec = None, None, None
+        op_point = None
+
+    summary = {
+        "config_version": frozen.version, "config_hash": frozen.sha256,
+        "scope": scope, "n_units": n, "total_errors": errors_total,
+        "table_budgets_pct": TABLE_BUDGETS,
+        "fixed_budget_interception_pct": table,
+        "trust_operating_point": op_point,
     }
-    OUT_SUMMARY.write_text(json.dumps(summary, indent=2, ensure_ascii=False),
+    out_summary.write_text(json.dumps(summary, indent=2, ensure_ascii=False),
                            encoding="utf-8")
-    print(f"✓ {OUT_SUMMARY}")
+    print(f"✓ {out_summary}")
 
     # ── 图 ──
     colors = {"Random": "#9E9E9E", "ModelConf": "#FF9800",
@@ -199,19 +219,22 @@ def main():
               if r["strategy"] == strategy]
         ax.plot(SWEEP_BUDGETS, ys, "-", label=labels[strategy],
                 color=colors[strategy], linewidth=2)
-    ax.plot(burden, op_inter, "o", color="#4CAF50", markersize=10,
-            label=f"Trust operating point ({burden:.0f}% review)")
+    if burden is not None:
+        ax.plot(burden, op_inter, "o", color="#4CAF50", markersize=10,
+                label=f"Trust operating point ({burden:.0f}% review)")
     ax.set_xlabel("Review Budget (% of units sent to human review)")
     ax.set_ylabel("Error Interception Rate (% of all errors caught)")
-    ax.set_title(f"Review Budget vs Error Interception ({frozen.version})")
+    scope_label = " (holdout 260 units)" if split_filter else ""
+    ax.set_title(f"Review Budget vs Error Interception "
+                 f"({frozen.version}{scope_label})")
     ax.legend(fontsize=9)
     ax.grid(alpha=0.3)
     ax.set_xlim(0, 60)
     ax.set_ylim(0, 100)
     fig.tight_layout()
-    fig.savefig(OUT_FIG, dpi=150)
+    fig.savefig(out_fig, dpi=150)
     plt.close(fig)
-    print(f"✓ {OUT_FIG}")
+    print(f"✓ {out_fig}")
 
 
 if __name__ == "__main__":
