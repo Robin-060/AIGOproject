@@ -441,6 +441,50 @@ def _render_batch_statistics(items: List[Dict[str, Any]]) -> None:
 def _render_experiments() -> None:
 
     st.divider()
+    # EXP17 / R1 frozen robustness result
+    st.subheader("EXP17 / R1 Robustness")
+
+    import json as _json
+    exp17_path = ROOT / "results" / "exp17_robustness_R1.json"
+
+    if exp17_path.exists():
+        with open(exp17_path, "r", encoding="utf-8") as _f:
+            exp17 = _json.load(_f)
+
+        r1 = exp17.get("result_under_alternative", {})
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Coverage ceiling", f"{r1.get('ceiling_pct', 'N/A')}%")
+        c2.metric("Unsafe @ 50%", f"{r1.get('unsafe_50_pct', 'N/A')}%")
+        c3.metric(
+            "Error Interception @ 50% budget",
+            f"{r1.get('interception_50_budget_pct', 'N/A')}%",
+        )
+
+        bootstrap = r1.get("paired_bootstrap_one_sided_upper95_pp", "N/A")
+        c4.metric(
+            "Paired bootstrap 95% upper",
+            f"+{bootstrap} pp" if bootstrap != "N/A" else "N/A",
+        )
+
+        verdict = str(exp17.get("verdict", ""))
+        if verdict.startswith("PASS"):
+            st.success(
+                "R1 robustness check: PASS — calibrated P=0.34s / S=0.51s "
+                "reproduces the frozen EXP17 conclusion."
+            )
+        else:
+            st.warning(f"R1 robustness verdict: {verdict}")
+
+        st.caption(
+            "Frozen source: results/exp17_robustness_R1.json · "
+            "Displayed separately from the historical Equal-Coverage artifact."
+        )
+    else:
+        st.info("EXP17/R1 frozen result not found.")
+
+    st.divider()
+
     st.subheader("Frozen Feedback & Equal-Coverage")
 
     feedback_source = ROOT / "results" / "equal_coverage_trust.csv"
