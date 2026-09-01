@@ -381,32 +381,219 @@ def _render_batch_statistics(items: List[Dict[str, Any]]) -> None:
 
 
 def _render_experiments() -> None:
-    st.subheader("离线实验证据")
-    st.caption("以下为离线实验固定结果：基于 895 条真实标注数据预先计算，与上传文件无关。")
-    existing = [path for path in (NOISE_CURVE,) + BASELINE_CHARTS if path.exists()]
-    if not existing:
-        st.info("实验图尚未生成。请先运行噪声实验脚本。")
-        return
-    for path in existing:
-        st.image(str(path), caption=path.stem.replace("_", " ").title())
-    if NOISE_SUMMARY.exists():
-        summary = pd.read_csv(NOISE_SUMMARY)
-        columns = [
-            "noise_level", "method", "accuracy_rate", "coverage_rate",
-            "selective_accuracy", "abstention_rate", "unsafe_output_rate",
-            "safe_handling_rate",
+
+    st.divider()
+    st.subheader("Frozen Feedback & Equal-Coverage")
+
+    feedback_source = ROOT / "results" / "equal_coverage_trust.csv"
+    baseline_source = ROOT / "results" / "baseline_results.csv"
+
+    if feedback_source.exists() and baseline_source.exists():
+        trust_feedback = pd.read_csv(feedback_source)
+        baseline_feedback = pd.read_csv(baseline_source)
+
+        st.caption(
+            "Frozen result source: results/equal_coverage_trust.csv + "
+            "results/baseline_results.csv · no frontend metric redefinition"
+        )
+
+        target_options = sorted(
+            set(
+                pd.to_numeric(
+                    baseline_feedback["target_coverage_pct"],
+                    errors="coerce"
+                ).dropna().tolist()
+            )
+        )
+
+        selected_target = st.selectbox(
+            "Equal-Coverage target (%)",
+            target_options,
+            index=0,
+            key="frozen_equal_coverage_target",
+        )
+
+        trust_rows = trust_feedback[
+            pd.to_numeric(
+                trust_feedback["target_coverage_pct"],
+                errors="coerce"
+            ).round(6)
+            == round(float(selected_target), 6)
         ]
-        st.subheader("严格指标拆分")
-        st.dataframe(summary[columns], hide_index=True, use_container_width=True)
-        st.caption("安全处置率必须与覆盖率、拒绝率一起阅读；全部拒绝不会被表述为 100% 准确率。")
-    if STALTA_SUMMARY.exists():
-        st.subheader("STA/LTA 传统基线")
-        st.json(json.loads(STALTA_SUMMARY.read_text(encoding="utf-8")))
-    if CPU_BENCHMARK.exists():
-        benchmark = json.loads(CPU_BENCHMARK.read_text(encoding="utf-8"))
-        st.subheader("CPU 本地运行实测")
-        st.dataframe(pd.DataFrame(benchmark["models"]), hide_index=True, use_container_width=True)
-        st.caption("单机、单样本、热缓存工程测量；不是跨设备性能承诺，也未进行量化或剪枝。")
+
+        if not trust_rows.empty:
+            trust_row = trust_rows.iloc[0]
+
+            coverage = pd.to_numeric(
+                pd.Series([trust_row.get("coverage_pct")]),
+                errors="coerce",
+            ).iloc[0]
+
+            unsafe = pd.to_numeric(
+                pd.Series([trust_row.get("unsafe_output_rate_pct")]),
+                errors="coerce",
+            ).iloc[0]
+
+            review = pd.to_numeric(
+                pd.Series([trust_row.get("review_burden_pct")]),
+                errors="coerce",
+            ).iloc[0]
+
+            interception = pd.to_numeric(
+                pd.Series([trust_row.get("error_interception_rate_pct")]),
+                errors="coerce",
+            ).iloc[0]
+
+            max_coverage = pd.to_numeric(
+                pd.Series([trust_row.get("max_coverage_pct")]),
+                errors="coerce",
+            ).iloc[0]
+
+            status = str(
+                trust_row.get(
+                    "comparison_status",
+                    "UNKNOWN",
+                )
+            )
+
+            metric_cols = st.columns(5)
+
+            metric_cols[0].metric(
+                "Coverage",
+                "N/A" if pd.isna(coverage) else f"{coverage:.2f}%",
+            )
+
+            metric_cols[1].metric(
+                "Unsafe Output",
+                "NOT EVALUABLE"
+                if pd.isna(unsafe)
+                else f"{unsafe:.2f}%",
+            )
+
+            metric_cols[2].metric(
+                "Review Burden",
+                "N/A" if pd.isna(review) else f"{review:.2f}%",
+            )
+
+            metric_cols[3].metric(
+                "Error Interception",
+                "N/A"
+                if pd.isna(interception)
+                else f"{interception:.2f}%",
+            )
+
+            selective_risk = None
+            for selective_col in (
+                "selective_risk_pct",
+                "selective_risk",
+            ):
+                if selective_col in trust_rows.columns:
+                    value = pd.to_numeric(
+                        pd.Series([trust_row.get(selective_col)]),
+                        errors="coerce",
+                    ).iloc[0]
+                    if not pd.isna(value):
+                        selective_risk = value
+                        break
+
+            metric_cols[4].metric(
+                "Selective Risk",
+                "NOT PROVIDED"
+                if selective_risk is None
+                else f"{selective_risk:.2f}%",
+            )
+
+            if status != "COMPARABLE" or pd.isna(unsafe):
+                public_status = "NOT_EVALUABLE"
+                st.warning(
+                    f"Trust Layer @ {selected_target:.0f}%: "
+                    f"{public_status}. "
+                    f"Maximum reachable coverage: "
+                    f"{max_coverage:.2f}%"
+                    if not pd.isna(max_coverage)
+                    else
+                    f"Trust Layer @ {selected_target:.0f}%: "
+                    f"{public_status}."
+                )
+                st.caption(
+                    f"Frozen source status: {status}"
+                )
+            else:
+                st.success(
+                    f"Trust Layer @ {selected_target:.0f}%: COMPARABLE"
+                )
+
+            st.caption(
+                "Selective Risk is displayed only when it is explicitly "
+                "provided by the frozen result source; the frontend does "
+                "not redefine or derive this metric."
+            )
+
+        baseline_rows = baseline_feedback[
+            pd.to_numeric(
+                baseline_feedback["target_coverage_pct"],
+                errors="coerce",
+            ).round(6)
+            == round(float(selected_target), 6)
+        ].copy()
+
+        display_columns = [
+            "strategy",
+            "target_coverage_pct",
+            "coverage_pct",
+            "unsafe_output_rate_pct",
+            "review_burden_pct",
+            "error_interception_rate_pct",
+            "max_coverage_pct",
+            "comparison_status",
+        ]
+
+        available_columns = [
+            c for c in display_columns
+            if c in baseline_rows.columns
+        ]
+
+        st.markdown("**Frozen baseline comparison**")
+        st.dataframe(
+            baseline_rows[available_columns],
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        if not trust_rows.empty:
+            st.markdown("**Trust Layer frozen row**")
+            trust_available = [
+                c for c in display_columns
+                if c in trust_rows.columns
+            ]
+            st.dataframe(
+                trust_rows[trust_available],
+                use_container_width=True,
+                hide_index=True,
+            )
+
+            version = trust_row.get("config_version", "unknown")
+            cfg_hash = str(trust_row.get("config_hash", "unknown"))
+
+            st.caption(
+                f"Result identity · config={version} · "
+                f"hash={cfg_hash[:12]}…"
+            )
+
+    else:
+        st.error(
+            "Frozen Feedback files are missing. "
+            "Expected results/equal_coverage_trust.csv "
+            "and results/baseline_results.csv."
+        )
+
+
+    st.subheader("离线实验证据")
+    st.caption(
+        "Semifinal 页面仅使用上方 frozen Feedback / Equal-Coverage "
+        "结果作为正式比较依据。旧版 n=895 图表和历史实验图已隐藏，"
+        "避免与 semifinal_v1.5.1 冻结口径混用。"
+    )
 
 
 def main() -> None:
