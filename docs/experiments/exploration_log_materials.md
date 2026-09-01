@@ -240,6 +240,12 @@
   但全局上降 floor 确能推开天花板——不过它比 A 更差：floor 0.55 的天花板 53.22%
   < A 的 54.13%，Unsafe 点估计 5.67 > A 的 5.51，截获 93.44 < A 的 94.26。
   A 保持最佳单杠杆；"瓶颈不是 floor"的表述限定为 4.5 步子集口径
+- **R1 robustness check（参数审计红灯 0.30/0.50，预注册后执行）**：
+  静态审计发现运行路径 fusion 容差已读校准共识容差 0.34/0.51，legacy 常量
+  0.30/0.50 仅剩 config=None 兜底（不触发）→ 替代值下 A 结果与冻结 EXP17-A
+  完全一致（天花板 54.13% / 5.51 / 94.26% / 配对上界 +2.24pp）→ **PASS，
+  红灯解除：主 Claim 不依赖 legacy 常量**；fusion 未使用 import 已删、
+  multi_model 常量标注 legacy 兜底
 - **出处**：results/exp17_summary_A.json、results/paired_bootstrap_A.json、
   results/main_results_exp17_A.csv、results/floor_sweep.json、
   results/main_results_floorsweep_*.csv、

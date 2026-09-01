@@ -19,6 +19,8 @@ from .schema import (
 )
 
 
+# legacy: 仅 config=None 兜底 (运行路径用 config.consensus_tolerance_p_s/s
+# = 校准共识容差 0.34/0.51); 见 EXP17-R1 robustness check 记录
 CONSENSUS_TOLERANCE = {
     "P": 0.30,
     "S": 0.50,

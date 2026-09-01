@@ -1,0 +1,19 @@
+{
+  "check": "EXP17-R1 融合容差 robustness check",
+  "pre_registered": "docs/experiments/exp17_preregistration.md (EXP17-R1, 先于结果冻结)",
+  "alternative_value": {"P": 0.34, "S": 0.51},
+  "alternative_source": "既有校准共识容差 (95% 分位, n=674/455), 数据导出",
+  "code_verification": "运行路径 fusion 内聚容差读取 config.consensus_tolerance_p_s/s = 0.34/0.51; CONSENSUS_TOLERANCE 0.30/0.50 仅 config=None 兜底, 运行中不触发",
+  "single_variable": true,
+  "no_other_tolerance_searched": true,
+  "history_unchanged": true,
+  "result_under_alternative": {
+    "ceiling_pct": 54.13,
+    "unsafe_50_pct": 5.51,
+    "interception_50_budget_pct": 94.26,
+    "criteria": {"c1": true, "c2": false, "c3": true, "c4": true},
+    "paired_bootstrap_one_sided_upper95_pp": 2.24,
+    "identical_to_frozen_exp17_A": true
+  },
+  "verdict": "PASS — 主结论在替代值 0.34/0.51 下与冻结 EXP17-A 完全一致 (该值即运行路径实际值); 红灯解除: 主 Claim 不依赖 legacy 常量 0.30/0.50"
+}

@@ -11,7 +11,6 @@ from statistics import median
 from typing import List
 
 from .confidence_calibration import calibrated_prob
-from .multi_model import CONSENSUS_TOLERANCE
 from .schema import (
     ConsensusResult,
     FusedPickCandidate,
