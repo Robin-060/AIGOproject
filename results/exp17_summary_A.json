@@ -17,10 +17,10 @@
     "holdout_unsafe_at_ceiling_pct": 13.04
   },
   "unsafe_delta_bootstrap": {
-    "delta_mean_pp": -1.11,
-    "ci95_lo_pp": -3.32,
-    "ci95_hi_pp": 2.0,
-    "one_sided_upper95_pp": 1.54,
+    "delta_mean_pp": 0.34,
+    "ci95_lo_pp": -1.87,
+    "ci95_hi_pp": 3.45,
+    "one_sided_upper95_pp": 2.99,
     "n_valid_resamples": 660
   },
   "risk_bins": {
@@ -64,11 +64,13 @@
       "pass": true,
       "value_pct": 54.13
     },
-    "c2_unsafe_not_significantly_worse": {
-      "pass": true,
-      "one_sided_upper95_pp": 1.54,
+    "c2_non_inferiority_vs_voting_2pp": {
+      "pass": false,
+      "voting_unsafe_50_pct": 4.59,
+      "point_delta_pp": 0.92,
+      "one_sided_upper95_pp": 2.99,
       "threshold_pp": 2.0,
-      "reference_unsafe_pp": 6.04
+      "green_light_point_le_1pp": true
     },
     "c3_review_curve_preserved": {
       "pass": true,
@@ -80,5 +82,5 @@
       "monotonic": true
     }
   },
-  "verdict": "PASS"
+  "verdict": "FAIL"
 }

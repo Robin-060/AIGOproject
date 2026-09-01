@@ -89,6 +89,13 @@
 
 ## 6. 随机数与可复现性
 
+- **holdout 口径说明（2026-09-01 澄清，同一 split 不换集）**：冻结配置写
+  "holdout_20pct 358 单元"，评估报告写 holdout 260 单元——两者一致，统计
+  口径不同：358 = `data/manifest_phase.csv` 全部 1790 行的 20%（main 1432 +
+  holdout 358）；260 = 其中 N_eval=1306 个 Primary 相位单元的 holdout 部分
+  （main 1046 + holdout 260），其余 484 行为非 Primary 行（见
+  primary_inclusion/exclusion_reason 列）。正式评估一律使用 Primary 口径 260。
+
 - global_seed = 42；随机 baseline 用 0–99 共 100 个种子，报告均值、标准差
   和跨 seed 的 2.5%/97.5% percentile interval，不将其误称为均值置信区间。
 - 所有实验脚本的随机源必须显式记录种子。

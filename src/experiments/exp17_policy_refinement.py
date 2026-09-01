@@ -44,12 +44,23 @@ from src.experiments.run_main_experiment import (  # noqa: E402
 )
 from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
 
-FROZEN_REF_UNSAFE_PP = 6.04     # v1.5.1 天花板点 Unsafe (bootstrap ALL_ceiling_supplementary)
-MAX_DELTA_UPPER_PP = 2.0        # 预注册: 单侧 95% 上界 < +2.0pp 视为不显著恶化
+FROZEN_REF_UNSAFE_PP = 6.04     # v1.5.1 天花板点 Unsafe (留档引用)
+MAX_DELTA_UPPER_PP = 2.0        # C 冻结: 相对 Voting@50% 的单侧 95% 上界 < +2.0pp 视为非劣
+GREEN_LIGHT_POINT_PP = 1.0      # C 内部绿灯: 点估计 ΔUnsafe ≤ +1.0pp
 N_ITER = 1000
 SEED = 42
 ENV_POLICIES = {"A": "consensus_route", "B": "only_usable_survivor",
                 "AB": "consensus_route,only_usable_survivor"}
+
+
+def voting_reference_unsafe50():
+    """C Gate 2 锚点: Voting@50% 的冻结 Unsafe (baseline_results.csv)."""
+    rows = list(csv.DictReader(
+        open(ROOT / "results" / "baseline_results.csv", encoding="utf-8")))
+    for r in rows:
+        if r["strategy"] == "Voting" and r["target_coverage_pct"] == "50":
+            return float(r["unsafe_output_rate_pct"])
+    raise ValueError("Voting@50% 参照缺失于 baseline_results.csv")
 
 
 def chain_rows(env_value):
@@ -115,8 +126,8 @@ def holdout_stats(rows):
             "holdout_unsafe_at_ceiling_pct": round(unsafe, 2)}
 
 
-def bootstrap_unsafe_delta(rows, n_iter=N_ITER, seed=SEED):
-    """60 台站有放回重采样, 每轮算 Unsafe@50%, 返回相对 6.04% 的差值分布."""
+def bootstrap_unsafe_delta(rows, reference_pp, n_iter=N_ITER, seed=SEED):
+    """60 台站有放回重采样, 每轮算 Unsafe@50%, 返回相对参照点的差值分布."""
     stations = sorted({r["station"] for r in rows})
     station_idx = {st: [] for st in stations}
     for i, r in enumerate(rows):
@@ -139,7 +150,7 @@ def bootstrap_unsafe_delta(rows, n_iter=N_ITER, seed=SEED):
         order = out_idx[np.argsort(risk[out_idx], kind="stable")][:k]
         wrong = sum(1 for i in order if rows[i]["verdict"] == "wrong")
         unsafe_boot = wrong / k * 100
-        deltas[it] = unsafe_boot - FROZEN_REF_UNSAFE_PP
+        deltas[it] = unsafe_boot - reference_pp
     valid = deltas[~np.isnan(deltas)]
     return {"delta_mean_pp": round(float(np.nanmean(deltas)), 2),
             "ci95_lo_pp": round(float(np.percentile(valid, 2.5)), 2),
@@ -204,12 +215,15 @@ def run_intervention(tag, env_value, frozen):
 
     m = evaluate(rows)
     ho = holdout_stats(rows)
-    boot = bootstrap_unsafe_delta(rows)
+    voting_ref = voting_reference_unsafe50()
+    boot = bootstrap_unsafe_delta(rows, voting_ref)
     bins = risk_bins_evaluate(rows)
     ref_inter = review_curve_reference()
 
     crit1 = m["ceiling_pct"] >= 50.0
     crit2 = (m["feasible_50"] and boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
+    green_light = (m["unsafe_50_pct"] is not None
+                   and (m["unsafe_50_pct"] - voting_ref) <= GREEN_LIGHT_POINT_PP)
     # 判据 3 (C 指示): Review Budget 曲线保持 — 截获@50%预算不低于 v1.5.1 冻结值
     crit3 = m["interception_50_budget_pct"] >= ref_inter - 1e-9
     # 判据 4 (C 指示): 风险分箱排序保持单调 (可靠箱 n≥10)
@@ -226,11 +240,14 @@ def run_intervention(tag, env_value, frozen):
         "criteria": {
             "c1_ceiling_ge_50": {"pass": bool(crit1),
                                  "value_pct": round(m["ceiling_pct"], 2)},
-            "c2_unsafe_not_significantly_worse": {
+            "c2_non_inferiority_vs_voting_2pp": {
                 "pass": bool(crit2),
+                "voting_unsafe_50_pct": voting_ref,
+                "point_delta_pp": (round(m["unsafe_50_pct"] - voting_ref, 2)
+                                   if m["unsafe_50_pct"] is not None else None),
                 "one_sided_upper95_pp": boot["one_sided_upper95_pp"],
                 "threshold_pp": MAX_DELTA_UPPER_PP,
-                "reference_unsafe_pp": FROZEN_REF_UNSAFE_PP},
+                "green_light_point_le_1pp": bool(green_light)},
             "c3_review_curve_preserved": {
                 "pass": bool(crit3),
                 "interception_50_budget_pct":
