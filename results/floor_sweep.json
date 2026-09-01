@@ -1,0 +1,226 @@
+{
+  "config_version": "semifinal_v1.5.1-bugfix",
+  "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
+  "levels": {
+    "0.7": {
+      "floor": 0.7,
+      "metrics": {
+        "n": 1306,
+        "ceiling_pct": 45.635528330781014,
+        "feasible_50": false,
+        "unsafe_50_pct": null,
+        "review_burden_50_pct": 50.0,
+        "interception_50_budget_pct": 83.51
+      },
+      "risk_bins": {
+        "bins": [
+          {
+            "bin": "0-9",
+            "n": 418,
+            "error_rate_pct": 4.07,
+            "reliable": true
+          },
+          {
+            "bin": "10-19",
+            "n": 163,
+            "error_rate_pct": 9.2,
+            "reliable": true
+          },
+          {
+            "bin": "20-29",
+            "n": 14,
+            "error_rate_pct": 28.57,
+            "reliable": true
+          },
+          {
+            "bin": "30-39",
+            "n": 1,
+            "error_rate_pct": 0.0,
+            "reliable": false
+          },
+          {
+            "bin": "40-50",
+            "n": 0,
+            "error_rate_pct": null,
+            "reliable": false
+          }
+        ],
+        "monotonic_reliable_bins": true
+      },
+      "criteria": {
+        "c1_ceiling_ge_50": false,
+        "c3_review_curve_preserved": false,
+        "c4_risk_bin_ordering_preserved": true
+      }
+    },
+    "0.65": {
+      "floor": 0.65,
+      "metrics": {
+        "n": 1306,
+        "ceiling_pct": 49.846860643185295,
+        "feasible_50": false,
+        "unsafe_50_pct": null,
+        "review_burden_50_pct": 50.0,
+        "interception_50_budget_pct": 87.95
+      },
+      "risk_bins": {
+        "bins": [
+          {
+            "bin": "0-9",
+            "n": 457,
+            "error_rate_pct": 4.16,
+            "reliable": true
+          },
+          {
+            "bin": "10-19",
+            "n": 176,
+            "error_rate_pct": 10.23,
+            "reliable": true
+          },
+          {
+            "bin": "20-29",
+            "n": 17,
+            "error_rate_pct": 29.41,
+            "reliable": true
+          },
+          {
+            "bin": "30-39",
+            "n": 1,
+            "error_rate_pct": 0.0,
+            "reliable": false
+          },
+          {
+            "bin": "40-50",
+            "n": 0,
+            "error_rate_pct": null,
+            "reliable": false
+          }
+        ],
+        "monotonic_reliable_bins": true
+      },
+      "criteria": {
+        "c1_ceiling_ge_50": false,
+        "c3_review_curve_preserved": true,
+        "c4_risk_bin_ordering_preserved": true
+      }
+    },
+    "0.6": {
+      "floor": 0.6,
+      "metrics": {
+        "n": 1306,
+        "ceiling_pct": 51.76110260336907,
+        "feasible_50": true,
+        "unsafe_50_pct": 5.67,
+        "review_burden_50_pct": 50.0,
+        "interception_50_budget_pct": 91.07
+      },
+      "risk_bins": {
+        "bins": [
+          {
+            "bin": "0-9",
+            "n": 479,
+            "error_rate_pct": 3.97,
+            "reliable": true
+          },
+          {
+            "bin": "10-19",
+            "n": 182,
+            "error_rate_pct": 10.44,
+            "reliable": true
+          },
+          {
+            "bin": "20-29",
+            "n": 14,
+            "error_rate_pct": 28.57,
+            "reliable": true
+          },
+          {
+            "bin": "30-39",
+            "n": 1,
+            "error_rate_pct": 0.0,
+            "reliable": false
+          },
+          {
+            "bin": "40-50",
+            "n": 0,
+            "error_rate_pct": null,
+            "reliable": false
+          }
+        ],
+        "monotonic_reliable_bins": true
+      },
+      "criteria": {
+        "c1_ceiling_ge_50": true,
+        "c3_review_curve_preserved": true,
+        "c4_risk_bin_ordering_preserved": true,
+        "c2_non_inferiority_vs_voting_2pp": false
+      },
+      "unsafe_delta_bootstrap": {
+        "delta_mean_pp": 0.34,
+        "ci95_lo_pp": -1.99,
+        "ci95_hi_pp": 3.33,
+        "one_sided_upper95_pp": 2.83,
+        "n_valid_resamples": 559
+      }
+    },
+    "0.55": {
+      "floor": 0.55,
+      "metrics": {
+        "n": 1306,
+        "ceiling_pct": 53.21592649310873,
+        "feasible_50": true,
+        "unsafe_50_pct": 5.67,
+        "review_burden_50_pct": 50.0,
+        "interception_50_budget_pct": 93.44
+      },
+      "risk_bins": {
+        "bins": [
+          {
+            "bin": "0-9",
+            "n": 500,
+            "error_rate_pct": 4.0,
+            "reliable": true
+          },
+          {
+            "bin": "10-19",
+            "n": 180,
+            "error_rate_pct": 11.11,
+            "reliable": true
+          },
+          {
+            "bin": "20-29",
+            "n": 14,
+            "error_rate_pct": 28.57,
+            "reliable": true
+          },
+          {
+            "bin": "30-39",
+            "n": 1,
+            "error_rate_pct": 0.0,
+            "reliable": false
+          },
+          {
+            "bin": "40-50",
+            "n": 0,
+            "error_rate_pct": null,
+            "reliable": false
+          }
+        ],
+        "monotonic_reliable_bins": true
+      },
+      "criteria": {
+        "c1_ceiling_ge_50": true,
+        "c3_review_curve_preserved": true,
+        "c4_risk_bin_ordering_preserved": true,
+        "c2_non_inferiority_vs_voting_2pp": false
+      },
+      "unsafe_delta_bootstrap": {
+        "delta_mean_pp": 0.31,
+        "ci95_lo_pp": -2.28,
+        "ci95_hi_pp": 3.53,
+        "one_sided_upper95_pp": 3.04,
+        "n_valid_resamples": 631
+      }
+    }
+  }
+}

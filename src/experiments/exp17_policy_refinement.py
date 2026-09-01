@@ -63,14 +63,20 @@ def voting_reference_unsafe50():
     raise ValueError("Voting@50% 参照缺失于 baseline_results.csv")
 
 
-def chain_rows(env_value):
-    """跑冻结链, 返回逐单元行 (env_value=None = v1.5.1 默认路径)."""
+def chain_rows(env_value, floor_override=None):
+    """跑冻结链, 返回逐单元行 (env_value=None = v1.5.1 默认路径).
+
+    floor_override: EXP17-C floor sweep 用, 运行时覆盖 fusion_confidence_floor
+    (不改冻结配置本身)。
+    """
     if env_value:
         os.environ["OBS_EXP17_POLICY"] = env_value
     else:
         os.environ.pop("OBS_EXP17_POLICY", None)
     frozen = load_frozen_config()
     config = frozen.trust_config(ranking_mode=True)
+    if floor_override is not None:
+        config.fusion_confidence_floor = float(floor_override)
     profiles = frozen.model_profiles()
     records = load_records()
     quality_map = load_quality()
@@ -279,9 +285,60 @@ def run_intervention(tag, env_value, frozen):
     print(f"✓ {out_summary}")
 
 
+def run_floor_sweep(frozen):
+    """EXP17-C: fusion floor sweep 留档实验 (0.70→0.65→0.60→0.55).
+
+    只改运行时的 fusion_confidence_floor, 不改冻结配置; 逐级完整报告
+    Coverage/Unsafe/截获/分箱; 只有达到 50% 的级别才补 bootstrap
+    (预注册: sweep 为留档实验, 不自动升级任何级别为正式参数)。
+    """
+    levels = [0.70, 0.65, 0.60, 0.55]
+    ref_inter = review_curve_reference()
+    report = {"config_version": frozen.version, "config_hash": frozen.sha256,
+              "levels": {}}
+    print(f"{'floor':>6} {'天花板':>8} {'Unsafe@50':>10} {'截获@50预算':>11} "
+          f"{'分箱单调':>8} {'c1':>4}")
+    for lv in levels:
+        rows, _frozen = chain_rows(None, floor_override=lv)
+        tag = f"floorsweep_{lv}"
+        out_csv = ROOT / "results" / f"main_results_{tag}.csv"
+        with open(out_csv, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+            writer.writeheader()
+            writer.writerows(rows)
+        m = evaluate(rows)
+        bins = risk_bins_evaluate(rows)
+        c1 = m["ceiling_pct"] >= 50.0
+        c3 = m["interception_50_budget_pct"] >= ref_inter - 1e-9
+        c4 = bins["monotonic_reliable_bins"]
+        entry = {
+            "floor": lv, "metrics": m, "risk_bins": bins,
+            "criteria": {"c1_ceiling_ge_50": bool(c1),
+                         "c3_review_curve_preserved": bool(c3),
+                         "c4_risk_bin_ordering_preserved": bool(c4)},
+        }
+        if c1 and m["feasible_50"]:
+            boot = bootstrap_unsafe_delta(rows, voting_reference_unsafe50())
+            entry["unsafe_delta_bootstrap"] = boot
+            entry["criteria"]["c2_non_inferiority_vs_voting_2pp"] = (
+                boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
+        report["levels"][str(lv)] = entry
+        print(f"{lv:>6} {m['ceiling_pct']:>7.2f}% "
+              f"{str(m['unsafe_50_pct']):>10} "
+              f"{m['interception_50_budget_pct']:>10.2f}% "
+              f"{str(bins['monotonic_reliable_bins']):>8} {str(c1):>4}")
+    out = ROOT / "results" / "floor_sweep.json"
+    out.write_text(json.dumps(report, indent=2, ensure_ascii=False),
+                   encoding="utf-8")
+    print(f"✓ {out}")
+    print("结论口径: 留档实验 — 若各级天花板均 <50%, 证明 coverage ceiling "
+          "不是 confidence floor 造成的 (与诊断 101/112 静态证据一致)")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--intervention", choices=["A", "B"], default="A")
+    parser.add_argument("--floor-sweep", action="store_true")
     args = parser.parse_args()
 
     # 0) v1.5.1 默认路径对账 (改动不得影响冻结行为)
@@ -291,6 +348,9 @@ def main():
     print(f"[0] v1.5.1 默认路径对账: {n_ref} 单元, 差异 {diffs} 个 "
           f"{'✓' if diffs == 0 else '✗ FAIL'}")
 
+    if args.floor_sweep:
+        run_floor_sweep(frozen)
+        return
     if args.intervention == "A":
         run_intervention("A", ENV_POLICIES["A"], frozen)
     else:

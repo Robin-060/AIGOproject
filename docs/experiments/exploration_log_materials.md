@@ -233,9 +233,17 @@
   +2pp 非劣界下尚未获得充分统计证据（配对 bootstrap 单侧 95% 上界 +2.24pp）。"
   Review prioritization 明确成立；Automation coverage 明确恢复；
   **安全非劣只写"接近、未确认"，绝不写"持平"或"通过"**
+- **C 完成（floor sweep 留档实验，0.70→0.65→0.60→0.55）**：
+  天花板 45.64 → 49.85（0.65，未过 50%）→ **51.76（0.60）** → **53.22（0.55）**；
+  0.60/0.55 级 c1 ✓ 但 c2 ✗（单侧 95% 上界 +2.83/+3.04pp），按预注册不升级。
+  **结论修正（如实）**：对 4.5 步 112 条而言 floor 不是主因（101 条已满足 0.70），
+  但全局上降 floor 确能推开天花板——不过它比 A 更差：floor 0.55 的天花板 53.22%
+  < A 的 54.13%，Unsafe 点估计 5.67 > A 的 5.51，截获 93.44 < A 的 94.26。
+  A 保持最佳单杠杆；"瓶颈不是 floor"的表述限定为 4.5 步子集口径
 - **出处**：results/exp17_summary_A.json、results/paired_bootstrap_A.json、
-  results/main_results_exp17_A.csv、docs/experiments/exp17_preregistration.md、
-  results/v151_archive/
+  results/main_results_exp17_A.csv、results/floor_sweep.json、
+  results/main_results_floorsweep_*.csv、
+  docs/experiments/exp17_preregistration.md、results/v151_archive/
 
 ## 三、负结果清单（官方明确允许，须如实呈现）
 
