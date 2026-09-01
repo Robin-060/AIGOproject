@@ -9,13 +9,24 @@ Policy Router — 6 步决策：选模型 / 融合 / 拒绝
 """
 
 from typing import List, Optional, Dict
+import os
+
+from src.trust_engine.confidence_calibration import calibrated_prob
 from src.trust_engine.schema import (
     ModelSuitability, PhysicsCheck, ConsensusResult,
     FusedPickCandidate, PhaseDecision, ModelAssessment,
-    Action, TrustConfig, SingleModelEvidence,
+    Action, TrustConfig, SingleModelEvidence, ModelPrediction,
 )
 
 ALL_ENABLED = {"data": True, "single_model": True, "multi_model": True, "physics": True}
+
+# ── EXP17 policy refinement 开关 (预注册: docs/experiments/exp17_preregistration.md) ──
+# 默认关闭 = v1.5.1 冻结行为, 逐字节不变; 仅 EXP17 实验通过环境变量显式开启。
+EXP17_POLICY_ENV = "OBS_EXP17_POLICY"
+
+
+def _exp17_policy() -> str:
+    return os.environ.get(EXP17_POLICY_ENV, "")
 
 
 def route_phase(
@@ -28,6 +39,7 @@ def route_phase(
     config: TrustConfig,
     enable: Optional[Dict[str, bool]] = None,
     phase_risk: float = 0.0,
+    predictions: Optional[List[ModelPrediction]] = None,
 ) -> PhaseDecision:
     """
     对单个 phase (P 或 S) 执行 6 步决策
@@ -35,6 +47,8 @@ def route_phase(
     Args:
         enable: 消融开关。关闭的证据不影响筛选逻辑
         phase_risk: 预先算好的四证据风险分 (0-100)，用于自动阈值约束
+        predictions: 仅 EXP17-A 使用 (共识簇候选的校准置信度排序);
+            默认 None, 不影响 v1.5.1 行为
     """
     if enable is None:
         enable = dict(ALL_ENABLED)
@@ -102,6 +116,34 @@ def route_phase(
             list(fusion_candidate.reasons) if fusion_candidate is not None
             else ["FUSION_CANDIDATE_MISSING"]
         )
+        # EXP17-A (预注册, 仅显式开启): Consensus Route —
+        # 共识簇内校准置信度最高、有真实拾取、风险不超阈的幸存模型 → ROUTE/ACCEPT
+        if _exp17_policy() == "consensus_route":
+            candidates = []
+            for m in consensus.inlier_models:
+                if m not in survivors:
+                    continue
+                ev = next((e for e in single_model_evidences
+                           if e.model_name == m and e.phase == phase), None)
+                if ev is None or "CONFIDENCE_CALIBRATED_AVAILABLE" not in ev.reasons:
+                    continue
+                pred = next((p for p in (predictions or [])
+                             if p.model_name == m and p.phase == phase), None)
+                if pred is None or pred.score is None:
+                    continue
+                candidates.append((calibrated_prob(m, pred.score), m))
+            if candidates:
+                candidates.sort(key=lambda x: (-x[0], x[1]))  # 校准置信度降序, 模型名 tie-break
+                best = candidates[0][1]
+                if not _risk_too_high(phase_risk, config):
+                    decision.action = (Action.ACCEPT.value
+                                       if best == config.primary_model
+                                       else Action.ROUTE.value)
+                    decision.selected_model = best
+                    decision.reason_codes = reasons + candidate_reasons + [
+                        "CONSENSUS_ROUTE_BEST_INLIER"
+                    ]
+                    return decision
         decision.action = Action.ABSTAIN.value
         decision.reason_codes = reasons + candidate_reasons + [
             "CONSENSUS_WITHOUT_ADMISSIBLE_FUSION"

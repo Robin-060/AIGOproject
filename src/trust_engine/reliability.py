@@ -141,6 +141,7 @@ def evaluate_reliability(
             config=config,
             enable=enable,
             phase_risk=breakdown["total"],
+            predictions=predictions,
         )
         result.phase_decisions[phase] = decision
         result.evidence_breakdown[phase] = breakdown

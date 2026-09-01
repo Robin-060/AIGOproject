@@ -1,0 +1,40 @@
+{
+  "intervention": "EXP17-A",
+  "policy": "consensus_route",
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "baseline_parity_diffs": 0,
+  "metrics": {
+    "n": 1306,
+    "ceiling_pct": 54.134762633996935,
+    "feasible_50": true,
+    "unsafe_50_pct": 5.51,
+    "review_burden_50_pct": 50.0,
+    "interception_50_budget_pct": 94.26
+  },
+  "holdout": {
+    "n_holdout": 260,
+    "holdout_ceiling_pct": 53.08,
+    "holdout_unsafe_at_ceiling_pct": 13.04
+  },
+  "unsafe_delta_bootstrap": {
+    "delta_mean_pp": -1.11,
+    "ci95_lo_pp": -3.32,
+    "ci95_hi_pp": 2.0,
+    "one_sided_upper95_pp": 1.54,
+    "n_valid_resamples": 660
+  },
+  "criteria": {
+    "c1_ceiling_ge_50": {
+      "pass": true,
+      "value_pct": 54.13
+    },
+    "c2_unsafe_not_significantly_worse": {
+      "pass": true,
+      "one_sided_upper95_pp": 1.54,
+      "threshold_pp": 2.0,
+      "reference_unsafe_pp": 6.04
+    }
+  },
+  "verdict": "PASS"
+}
