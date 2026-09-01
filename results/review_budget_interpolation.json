@@ -1,0 +1,36 @@
+{
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "target_interception_pct": [
+    50,
+    60,
+    70,
+    80
+  ],
+  "budget_needed_pct": {
+    "50": {
+      "Random": 50,
+      "ModelConf": 40,
+      "Disagreement": 44,
+      "TrustRisk": 30
+    },
+    "60": {
+      "Random": 60,
+      "ModelConf": 51,
+      "Disagreement": 55,
+      "TrustRisk": 36
+    },
+    "70": {
+      "Random": 70,
+      "ModelConf": 61,
+      "Disagreement": 68,
+      "TrustRisk": 41
+    },
+    "80": {
+      "Random": 80,
+      "ModelConf": 73,
+      "Disagreement": 80,
+      "TrustRisk": 47
+    }
+  }
+}

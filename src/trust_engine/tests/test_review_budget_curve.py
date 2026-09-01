@@ -8,6 +8,7 @@
 
 import numpy as np
 
+from src.experiments.review_budget_ci import budget_for_target
 from src.experiments.review_budget_curve import (
     interception_at,
     random_interception_at,
@@ -49,3 +50,17 @@ def test_metrics_in_range():
         inter, prec = interception_at(suspicion, is_error, budget)
         assert 0.0 <= inter <= 100.0
         assert 0.0 <= prec <= 100.0
+
+
+def test_budget_for_target_is_minimal_and_monotone():
+    n = 200
+    is_error = np.zeros(n, dtype=bool)
+    is_error[150:] = True            # 后 25% 是错误
+    suspicion = np.arange(n)         # 越靠后越可疑 → 完美排序
+    budgets = [budget_for_target(suspicion, is_error, t)
+               for t in (50, 60, 70, 80)]
+    # 完美排序 + 25% 错误率: 截获 t% 的错误需要 t% × 25% 的预算
+    # (k=round(b/100*n), 错误都在最高可疑度区 → 首个使 min(k,50)/50 ≥ t/100 的 b)
+    assert budgets == [13, 15, 18, 20], budgets
+    # 目标递增 → 所需预算非递减
+    assert all(a <= b for a, b in zip(budgets, budgets[1:]))

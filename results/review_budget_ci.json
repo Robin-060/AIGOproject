@@ -1,0 +1,230 @@
+{
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "n_units": 1306,
+  "total_errors": 746,
+  "cluster_unit": "station",
+  "n_stations": 60,
+  "n_iterations": 1000,
+  "seed": 42,
+  "random_baseline": "期望值 (全体随机排序的平均 = 预算本身, 对角线)",
+  "budgets_pct": [
+    5,
+    10,
+    20,
+    30,
+    50
+  ],
+  "comparisons": {
+    "5": {
+      "ModelConf_minus_random": {
+        "point_delta_pp": 3.58,
+        "bootstrap_mean_delta_pp": 3.62,
+        "ci95_lo_pp": 1.88,
+        "ci95_hi_pp": 5.94,
+        "one_sided_lower95_pp": 2.03,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "Disagreement_minus_random": {
+        "point_delta_pp": 1.7,
+        "bootstrap_mean_delta_pp": 1.84,
+        "ci95_lo_pp": 0.65,
+        "ci95_hi_pp": 3.36,
+        "one_sided_lower95_pp": 0.85,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "TrustRisk_minus_random": {
+        "point_delta_pp": 3.71,
+        "bootstrap_mean_delta_pp": 3.8,
+        "ci95_lo_pp": 1.96,
+        "ci95_hi_pp": 6.23,
+        "one_sided_lower95_pp": 2.17,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_modelconf": {
+        "point_delta_pp": 0.13,
+        "bootstrap_mean_delta_pp": 0.19,
+        "ci95_lo_pp": 0.0,
+        "ci95_hi_pp": 0.73,
+        "one_sided_lower95_pp": 0.0,
+        "verdict": "INCONCLUSIVE (CI 含 0)"
+      },
+      "trust_minus_disagreement": {
+        "point_delta_pp": 2.01,
+        "bootstrap_mean_delta_pp": 1.96,
+        "ci95_lo_pp": 0.56,
+        "ci95_hi_pp": 3.54,
+        "one_sided_lower95_pp": 0.81,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      }
+    },
+    "10": {
+      "ModelConf_minus_random": {
+        "point_delta_pp": 5.82,
+        "bootstrap_mean_delta_pp": 5.66,
+        "ci95_lo_pp": 3.01,
+        "ci95_hi_pp": 8.95,
+        "one_sided_lower95_pp": 3.39,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "Disagreement_minus_random": {
+        "point_delta_pp": 3.67,
+        "bootstrap_mean_delta_pp": 3.63,
+        "ci95_lo_pp": 1.41,
+        "ci95_hi_pp": 6.36,
+        "one_sided_lower95_pp": 1.62,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "TrustRisk_minus_random": {
+        "point_delta_pp": 7.43,
+        "bootstrap_mean_delta_pp": 7.5,
+        "ci95_lo_pp": 3.92,
+        "ci95_hi_pp": 12.28,
+        "one_sided_lower95_pp": 4.25,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_modelconf": {
+        "point_delta_pp": 1.61,
+        "bootstrap_mean_delta_pp": 1.85,
+        "ci95_lo_pp": 0.25,
+        "ci95_hi_pp": 4.29,
+        "one_sided_lower95_pp": 0.43,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_disagreement": {
+        "point_delta_pp": 3.75,
+        "bootstrap_mean_delta_pp": 3.87,
+        "ci95_lo_pp": 1.12,
+        "ci95_hi_pp": 7.28,
+        "one_sided_lower95_pp": 1.46,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      }
+    },
+    "20": {
+      "ModelConf_minus_random": {
+        "point_delta_pp": 7.75,
+        "bootstrap_mean_delta_pp": 7.99,
+        "ci95_lo_pp": 4.16,
+        "ci95_hi_pp": 12.6,
+        "one_sided_lower95_pp": 4.63,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "Disagreement_minus_random": {
+        "point_delta_pp": 7.75,
+        "bootstrap_mean_delta_pp": 7.63,
+        "ci95_lo_pp": 3.79,
+        "ci95_hi_pp": 12.66,
+        "one_sided_lower95_pp": 4.37,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "TrustRisk_minus_random": {
+        "point_delta_pp": 14.45,
+        "bootstrap_mean_delta_pp": 14.62,
+        "ci95_lo_pp": 7.48,
+        "ci95_hi_pp": 23.94,
+        "one_sided_lower95_pp": 8.28,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_modelconf": {
+        "point_delta_pp": 6.7,
+        "bootstrap_mean_delta_pp": 6.63,
+        "ci95_lo_pp": 2.67,
+        "ci95_hi_pp": 12.37,
+        "one_sided_lower95_pp": 3.03,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_disagreement": {
+        "point_delta_pp": 6.7,
+        "bootstrap_mean_delta_pp": 6.99,
+        "ci95_lo_pp": 2.64,
+        "ci95_hi_pp": 12.59,
+        "one_sided_lower95_pp": 3.08,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      }
+    },
+    "30": {
+      "ModelConf_minus_random": {
+        "point_delta_pp": 9.28,
+        "bootstrap_mean_delta_pp": 9.27,
+        "ci95_lo_pp": 5.12,
+        "ci95_hi_pp": 13.61,
+        "one_sided_lower95_pp": 5.83,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "Disagreement_minus_random": {
+        "point_delta_pp": 7.67,
+        "bootstrap_mean_delta_pp": 7.76,
+        "ci95_lo_pp": 3.87,
+        "ci95_hi_pp": 12.56,
+        "one_sided_lower95_pp": 4.31,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "TrustRisk_minus_random": {
+        "point_delta_pp": 21.21,
+        "bootstrap_mean_delta_pp": 21.59,
+        "ci95_lo_pp": 11.45,
+        "ci95_hi_pp": 35.59,
+        "one_sided_lower95_pp": 12.6,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_modelconf": {
+        "point_delta_pp": 11.93,
+        "bootstrap_mean_delta_pp": 12.33,
+        "ci95_lo_pp": 4.83,
+        "ci95_hi_pp": 24.0,
+        "one_sided_lower95_pp": 5.66,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_disagreement": {
+        "point_delta_pp": 13.54,
+        "bootstrap_mean_delta_pp": 13.83,
+        "ci95_lo_pp": 6.81,
+        "ci95_hi_pp": 24.26,
+        "one_sided_lower95_pp": 7.51,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      }
+    },
+    "50": {
+      "ModelConf_minus_random": {
+        "point_delta_pp": 9.92,
+        "bootstrap_mean_delta_pp": 9.66,
+        "ci95_lo_pp": 4.92,
+        "ci95_hi_pp": 14.14,
+        "one_sided_lower95_pp": 5.42,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "Disagreement_minus_random": {
+        "point_delta_pp": 6.3,
+        "bootstrap_mean_delta_pp": 6.1,
+        "ci95_lo_pp": 1.86,
+        "ci95_hi_pp": 11.11,
+        "one_sided_lower95_pp": 2.41,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "TrustRisk_minus_random": {
+        "point_delta_pp": 33.65,
+        "bootstrap_mean_delta_pp": 30.58,
+        "ci95_lo_pp": 19.0,
+        "ci95_hi_pp": 35.65,
+        "one_sided_lower95_pp": 20.9,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_modelconf": {
+        "point_delta_pp": 23.73,
+        "bootstrap_mean_delta_pp": 20.92,
+        "ci95_lo_pp": 11.42,
+        "ci95_hi_pp": 26.94,
+        "one_sided_lower95_pp": 13.27,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      },
+      "trust_minus_disagreement": {
+        "point_delta_pp": 27.35,
+        "bootstrap_mean_delta_pp": 24.48,
+        "ci95_lo_pp": 15.61,
+        "ci95_hi_pp": 29.88,
+        "one_sided_lower95_pp": 17.2,
+        "verdict": "显著更优 (单侧 95% 下界 > 0)"
+      }
+    }
+  }
+}

@@ -140,10 +140,15 @@ def main():
 
     step("8/8 Review Budget 曲线 (冻结结果上四策略对比)")
     from src.experiments.review_budget_curve import main as review_main
+    from src.experiments.review_budget_ci import main as review_ci_main
     run_log.run_step(8, "review_budget_curve", review_main, [
         "results/review_budget_curve.csv",
         "results/review_budget_summary.json",
         "figures/review_budget_curve.png",
+    ])
+    run_log.run_step(9, "review_budget_ci", review_ci_main, [
+        "results/review_budget_ci.json",
+        "results/review_budget_interpolation.json",
     ])
 
     # ── 复现报告 (NOT_EVALUABLE 纪律: 不可达点位不填 Unsafe) ──
@@ -216,6 +221,8 @@ def main():
         "results/exploration_trajectory.jsonl",
         "results/review_budget_curve.csv",
         "results/review_budget_summary.json",
+        "results/review_budget_ci.json",
+        "results/review_budget_interpolation.json",
         "figures/review_budget_curve.png",
         "figures/coverage_vs_unsafe.png",
         "figures/risk_vs_actual_error.png",

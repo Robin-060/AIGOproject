@@ -198,7 +198,14 @@
   但其风险排序作为"复核优先级"显著优于简单信号（排序质量 ≠ 等覆盖安全率）
 - **边界**：风险分在同评估数据上校准（main 为主），排序优势含样本内成分；
   不作因果声明，仅作为参照系比较报告
+- **统计背书（cluster bootstrap, 60 台站 × 1000 次, seed 42）**：
+  Trust−Random 在 5/10/20/30/50% 各预算点单侧 95% 下界均 > 0（50% 预算
+  Δ=+33.6pp, CI [+19.0,+35.7]）；Trust−Disagreement 全点显著；
+  Trust−ModelConf 在 ≥10% 预算显著、5% 点 INCONCLUSIVE（如实保留）
+- **同截获率所需预算（反查表）**：达到 80% 截获率 Trust 需 47% 复核预算
+  vs ModelConf 73% / Disagreement 80% / Random 80%
 - **出处**：results/review_budget_curve.csv、results/review_budget_summary.json、
+  results/review_budget_ci.json、results/review_budget_interpolation.json、
   results/review_budget_summary_holdout.json、figures/review_budget_curve.png
 
 ## 三、负结果清单（官方明确允许，须如实呈现）
@@ -265,6 +272,8 @@
 | 域门阈值（XO 马氏距离） | 95%=3.94 / 99%=5.27 | results/domain_gate.json |
 | Review Budget @50% 预算 | Trust 83.6% / ModelConf 59.9% / Disagreement 56.3% / Random 50.0%（截获率） | results/review_budget_summary.json |
 | Review Budget @50%（holdout 佐证） | Trust 80.1% / Disagreement 59.0% / ModelConf 56.5% / Random 49.9% | results/review_budget_summary_holdout.json |
+| Review Budget CI @50% (vs Random) | Δ=+33.6pp, CI [+19.0,+35.7], 显著更优（全预算点单侧下界 > 0） | results/review_budget_ci.json |
+| 80% 截获率所需复核预算 | Trust 47% / ModelConf 73% / Disagreement 80% / Random 80% | results/review_budget_interpolation.json |
 | DS5 新标准 | ❌ 未成立（严格引擎下）：coverage 37.8→16.0% ✓ / retained unsafe 25.0% vs 22.5% ✗ | results/domain_gate.json |
 
 ## 六、数字出处规则（C 引用时）
