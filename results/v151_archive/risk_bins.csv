@@ -1,0 +1,6 @@
+risk_bin,n,wrong,error_rate_pct,reliable,config_version,config_hash
+0-9,418,17,4.07,true,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
+10-19,163,15,9.2,true,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
+20-29,14,4,28.57,true,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
+30-39,1,0,,false,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
+40-50,0,0,,false,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea

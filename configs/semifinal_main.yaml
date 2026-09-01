@@ -20,8 +20,13 @@
 #       ⑤ 判据如实留痕: policy_router 第 4.5 步收紧为 fail-closed
 #          (共识但无通过全部门槛的融合候选 → 一律 ABSTAIN, 不再回退主模型);
 #          本数据集上 1306 单元逐一对齐, 0 个单元决策变化。
-config_version: semifinal_v1.5.1
-parent_config: semifinal_v1.5
+# v1.5.1-bugfix 变更 (2026-09-01): ROUTE invalid-pick 明确 bug 修复。
+#       rule: 第 3 步选中模型必须具有该相位有效预测, 否则 ABSTAIN
+#       (ONLY_SURVIVOR_<model>_NO_VALID_PICK); 原 8 条 ROUTE 中 7 条
+#       选中模型无真实拾取, 不得计入 Coverage。修复前 v1.5.1 冻结产物
+#       归档于 results/v151_archive/。不改变数据/模型/阈值/判据口径。
+config_version: semifinal_v1.5.1-bugfix
+parent_config: semifinal_v1.5.1
 selected_profile: hydrophone_v2
 
 experiment:

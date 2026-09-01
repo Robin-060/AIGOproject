@@ -153,3 +153,47 @@ def test_exp17_b_risk_gate_still_applies():
     )
     assert decision.action == Action.ABSTAIN.value
     assert any("RISK_ABOVE" in c for c in decision.reason_codes)
+
+
+def _single_survivor_inputs():
+    """第 3 步场景: 唯一幸存者, 但无该相位拾取 (invalid-route bug 场景)."""
+    args = list(_inputs())
+    args[0] = [ModelSuitability(model_name="PickBlue", eligible=True)]
+    args[2] = ConsensusResult(phase="P", status="INSUFFICIENT",
+                              inlier_models=[], outlier_models=[],
+                              center_time_s=-1, spread_s=-1)
+    args[4] = [SingleModelEvidence(model_name="PickBlue", phase="P",
+                                   score=None,
+                                   reasons=["MODEL_SCORE_UNAVAILABLE"])]
+    args[5] = []   # 无任何 P 相预测
+    return args
+
+
+def test_v151_bugfix_single_survivor_without_pick_abstains():
+    """v1.5.1-bugfix: 唯一幸存者无有效拾取 → 不得 ROUTE, ABSTAIN."""
+    args = _single_survivor_inputs()
+    os.environ.pop(EXP17_POLICY_ENV, None)
+    decision = route_phase(
+        phase="P", suitabilities=args[0], physics_checks=args[1],
+        consensus=args[2], fusion_candidate=args[3],
+        single_model_evidences=args[4], config=args[6],
+        phase_risk=0.0, predictions=args[5],
+    )
+    assert decision.action == Action.ABSTAIN.value
+    assert "ONLY_SURVIVOR_PickBlue_NO_VALID_PICK" in decision.reason_codes
+
+
+def test_v151_bugfix_single_survivor_with_pick_routes():
+    """有有效拾取的唯一幸存者 → 维持原 ROUTE 行为."""
+    args = _single_survivor_inputs()
+    args[5] = [ModelPrediction(model_name="PickBlue", phase="P",
+                               time_s=10.0, score=0.9)]
+    os.environ.pop(EXP17_POLICY_ENV, None)
+    decision = route_phase(
+        phase="P", suitabilities=args[0], physics_checks=args[1],
+        consensus=args[2], fusion_candidate=args[3],
+        single_model_evidences=args[4], config=args[6],
+        phase_risk=0.0, predictions=args[5],
+    )
+    assert decision.action == Action.ROUTE.value
+    assert decision.selected_model == "PickBlue"

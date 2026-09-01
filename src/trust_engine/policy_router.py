@@ -104,6 +104,16 @@ def route_phase(
                    and len(survivors) >= 2 and len(usable_survivors) == 1)
     if single_survivor or only_usable:
         model = usable_survivors[0] if only_usable else survivors[0]
+        # v1.5.1-bugfix: 选中模型必须具有该相位的有效预测, 否则不得成为
+        # selected_model (invalid-route bug: action 有 ROUTE 但无真实 pick)
+        has_pick = (predictions is not None and any(
+            p.model_name == model and p.phase == phase
+            and p.time_s is not None and p.time_s >= 0
+            for p in predictions))
+        if single_survivor and not has_pick:
+            decision.reason_codes = reasons + [
+                f"ONLY_SURVIVOR_{model}_NO_VALID_PICK"]
+            return decision
         if _risk_too_high(phase_risk, config):
             decision.reason_codes = reasons + [f"ONLY_SURVIVOR_{model}_RISK_ABOVE_THRESHOLD"]
             return decision

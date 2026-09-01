@@ -1,20 +1,18 @@
 {
-  "run_id": "formal-20260901T131754Z-f6d0e565",
+  "run_id": "formal-20260831T133520Z-eb2a474d",
   "command": "python.exe -m src.experiments.reproduce_main",
   "git": {
-    "commit": "ae2bc70cc5f2571d58b29f0040f064d3bcf66a9a",
+    "commit": "b31178b9114b032a7fc8a3d2adf5a1db377832c7",
     "branch": "integration",
     "dirty_at_start": true,
     "dirty_paths_at_start": [
       "M configs/semifinal_main.yaml",
-      " M src/trust_engine/policy_router.py",
-      " M src/trust_engine/tests/test_exp17_policy.py",
-      "?? results/v151_archive/"
+      " M src/web/app.py"
     ]
   },
-  "config_version": "semifinal_v1.5.1-bugfix",
-  "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
-  "parent_config": "semifinal_v1.5.1",
+  "config_version": "semifinal_v1.5.1",
+  "config_hash": "cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea",
+  "parent_config": "semifinal_v1.5",
   "selected_profile": "hydrophone_v2",
   "seed": 42,
   "run_controls": {
@@ -80,6 +78,6 @@
     "ceiling_supplementary_delta_pp": 1.17,
     "ceiling_supplementary_verdict": "INCONCLUSIVE (CI 包含 0)"
   },
-  "duration_s": 51.9,
-  "timestamp_utc": "2026-09-01T13:18:46.348218+00:00"
+  "duration_s": 38.4,
+  "timestamp_utc": "2026-08-31T13:35:58.555676+00:00"
 }

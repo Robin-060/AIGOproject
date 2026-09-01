@@ -1,9 +1,9 @@
 strategy,50%_unsafe,60%_unsafe,70%_unsafe,80%_unsafe,90%_unsafe,ceiling_pct,config_version,config_hash
-Single-PhaseNet,,,,,,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-Single-PickBlue,7.7,8.0,9.2,10.2,11.2,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-Single-OBSTransformer,14.2,15.1,16.3,17.8,18.9,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-Single-EQTransformer,7.2,7.4,7.8,9.2,11.6,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-MaxConf,12.6,14.2,15.4,16.3,17.8,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-Voting,4.6,5.9,6.5,7.8,9.5,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-Traditional-STA/LTA,43.5,49.9,55.7,,,,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
-TrustLayer(semifinal_v1.5.1),,,,,,45.64,semifinal_v1.5.1,cba251c80f7c28bef160649aa6bdefdeaed01caa38d881ddd29946162aeb22ea
+Single-PhaseNet,,,,,,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+Single-PickBlue,7.7,8.0,9.2,10.2,11.2,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+Single-OBSTransformer,14.2,15.1,16.3,17.8,18.9,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+Single-EQTransformer,7.2,7.4,7.8,9.2,11.6,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+MaxConf,12.6,14.2,15.4,16.3,17.8,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+Voting,4.6,5.9,6.5,7.8,9.5,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+Traditional-STA/LTA,43.5,49.9,55.7,,,,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
+TrustLayer(semifinal_v1.5.1-bugfix),,,,,,45.64,semifinal_v1.5.1-bugfix,9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d
