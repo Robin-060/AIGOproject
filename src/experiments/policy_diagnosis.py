@@ -39,12 +39,29 @@ from src.experiments.phase_evaluation import (  # noqa: E402
     load_records,
 )
 from src.experiments.run_main_experiment import (  # noqa: E402
+    ADAPTERS,
     load_quality,
     load_split,
-    trust_per_record,
 )
 from src.trust_engine.confidence_calibration import calibrated_prob  # noqa: E402
 from src.trust_engine.config_loader import load_frozen_config  # noqa: E402
+from src.trust_engine.data_evidence import evaluate_data_evidence  # noqa: E402
+from src.trust_engine.fusion import build_fusion_candidates  # noqa: E402
+from src.trust_engine.model_suitability import evaluate_model_suitability  # noqa: E402
+from src.trust_engine.multi_model import analyze_multi_model_consensus  # noqa: E402
+from src.trust_engine.physics import check_model_prediction  # noqa: E402
+from src.trust_engine.policy_router import (  # noqa: E402
+    ALL_ENABLED,
+    _eligible_models,
+    _surviving_models,
+)
+from src.trust_engine.reliability import evaluate_reliability  # noqa: E402
+from src.trust_engine.schema import (  # noqa: E402
+    ModelPrediction,
+    QualityReport,
+    SampleMetadata,
+)
+from src.trust_engine.single_model import evaluate_single_model_evidence  # noqa: E402
 
 OUT_JSON = ROOT / "results" / "policy_diagnosis.json"
 OUT_CSV = ROOT / "results" / "policy_diagnosis.csv"
@@ -78,6 +95,62 @@ def classify(reason_codes):
     return "OTHER_AUTO"
 
 
+def capture_record(record, quality_row, config, profiles):
+    """跑完整 Trust 链并返回 (result, cons_list, suits, physics).
+
+    与 run_main_experiment.trust_per_record 同口径, 额外暴露共识/适用性中间量,
+    供第 5 步细分诊断。
+    """
+    preds = [
+        ModelPrediction(
+            sample_id=record["sample_id"], model_name=m, phase=ph,
+            time_s=v[f"{ph}_pick"], score=v.get("confidence"),
+            adapter_status="OK", preprocessing_version="obs_raw_v1",
+            prediction_source="REAL_MODEL",
+        )
+        for m, v in record["predictions"].items()
+        for ph in ("P", "S") if v.get(f"{ph}_pick") is not None
+    ]
+    if not preds:
+        return None, [], [], []
+
+    available = [c for c in (quality_row["available_channels"] or "").split("|") if c]
+    missing = [c for c in (quality_row["missing_channels"] or "").split("|") if c]
+    meta = SampleMetadata(sample_id=record["sample_id"], data_source="REAL",
+                          preprocessing_version="obs_raw_v1")
+    quality = QualityReport(
+        available_channels=available or ["Z", "N", "E", "H"],
+        missing_channels=missing,
+        sampling_rate_hz=100.0,
+        snr_db=float(quality_row["snr_db"]) if quality_row["snr_db"] else None,
+        gap_ratio=float(quality_row["gap_ratio"]) if quality_row["gap_ratio"] else 0.0,
+        clipping_ratio=float(quality_row["clipping_ratio"]) if quality_row["clipping_ratio"] else 0.0,
+        source="REAL_CALCULATION",
+    )
+    data_ev = evaluate_data_evidence(quality, config.data_penalties)
+    suits = evaluate_model_suitability(meta, quality, profiles, ADAPTERS)
+    singles = evaluate_single_model_evidence(preds, config)
+    physics = []
+    seen = set()
+    for p in preds:
+        if p.model_name in seen:
+            continue
+        seen.add(p.model_name)
+        p_ps = [x for x in preds if x.model_name == p.model_name and x.phase == "P"]
+        s_ps = [x for x in preds if x.model_name == p.model_name and x.phase == "S"]
+        physics.append(check_model_prediction(
+            p_ps[0] if p_ps else None, s_ps[0] if s_ps else None,
+            config, target_id=p.model_name,
+        ))
+    cons = analyze_multi_model_consensus(preds, suits, physics, config)
+    fusions = build_fusion_candidates(preds, cons, config)
+    result = evaluate_reliability(
+        meta, quality, profiles, preds,
+        config, data_ev, suits, singles, physics, cons, fusions,
+    )
+    return result, cons, suits, physics
+
+
 def main():
     frozen = load_frozen_config()
     config = frozen.trust_config(ranking_mode=True)
@@ -93,7 +166,7 @@ def main():
     record_map = {}
     for i, record in enumerate(records):
         record_map[record["sample_id"]] = record
-        per_record[record["sample_id"]] = trust_per_record(
+        per_record[record["sample_id"]] = capture_record(
             record, quality_map[record["sample_id"]], config, profiles)
         if (i + 1) % 300 == 0:
             print(f"  Trust 链进度 {i + 1}/{len(records)}", flush=True)
@@ -107,7 +180,7 @@ def main():
     for u in units:
         sid, phase = u["sample_id"], u["phase"]
         record = record_map[sid]
-        result = per_record[sid]
+        result, cons_list, suits, physics = per_record[sid]
         decision = (result.phase_decisions.get(phase) if result else None)
         action = decision.action if decision else "ABSTAIN"
         reasons = list(decision.reason_codes) if decision else []
@@ -117,6 +190,12 @@ def main():
         correct_picks = [abs(t - u["reference_time_s"]) <= tol for _, t in picks]
         has_correct = any(correct_picks)
         all_correct = bool(picks) and all(correct_picks)
+
+        cons_phase = next((c for c in cons_list if getattr(c, "phase", "") == phase),
+                          None)
+        consensus_status = (cons_phase.status if cons_phase else "NONE")
+        eligible = _eligible_models(suits, physics, ALL_ENABLED)
+        survivors = _surviving_models(eligible, physics, cons_phase, ALL_ENABLED)
 
         cal_confs = []
         for m, _t in picks:
@@ -150,6 +229,9 @@ def main():
             "action": action, "category": category,
             "n_picks": n_picks, "has_correct_pick": has_correct,
             "all_picks_correct": all_correct,
+            "consensus_status": consensus_status,
+            "n_survivors": len(survivors),
+            "n_eligible": len(eligible),
             "min_cal_conf": round(min(cal_confs), 3) if cal_confs else "",
             "max_cal_conf": round(max(cal_confs), 3) if cal_confs else "",
             "reason_codes": "|".join(reasons),

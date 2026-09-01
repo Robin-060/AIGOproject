@@ -78,6 +78,12 @@
   `python -m src.experiments.run_main_experiment --profile-selection` 显式重放，
   其输出只写 `results/profile_selection_exp06.csv`，不覆盖正式产出。
   复现入口同时校验 TrustConfig 参数集与 YAML `parameter_set` 一致，不一致即拒绝运行。
+- **EXP17 预注册（2026-09-01 冻结）**：v1.5.1 之后的任何 policy 改动实验
+  （failure-driven refinement）必须遵守
+  `docs/experiments/exp17_preregistration.md` 的预注册判据——三个干预单变量、
+  顺序 A→B→C、逐干预验收（Coverage ≥50% 且 Unsafe 单侧 95% CI 上界 < +2.0pp
+  vs v1.5.1 天花板点 6.04% + holdout 一致），失败即回退并记负结果，
+  禁止按结果微调干预参数。
 - 确证条件（C 契约 8.4）：cluster paired-bootstrap（station 重采样），
   ΔUnsafe 单侧 95% CI 上界 < 0；P、S 点估计分别报告，双相位声明需 Holm 校正。
 
