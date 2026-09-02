@@ -14,7 +14,7 @@
 - **模型分歧**：两个模型给出相差数秒的拾取，不知道该信谁
 - **物理不可能**：P 波拾取晚于 S 波，荒谬结果流入下游分析
 
-当前实验口径（semifinal_v1.5.1-bugfix，1306 个相位级评估单元，容差 P 0.5s / S 1.0s）：Trust Layer 在严格 FUSE 门槛下覆盖率为 45.64%，风险排序严格单调（DS2 成立）；预声明 50% 点位 NOT_EVALUABLE。修正 cluster bootstrap 后，总体天花板补充比较仍为 INCONCLUSIVE（Δ=+1.17pp，95% CI [−1.09,+2.93]），但 S 相在自身 45.45% 天花板处显著差于 Voting（Δ=+3.39pp，95% CI [+0.90,+5.96]）。这些均为补充结果，不替代预声明点判定。
+历史冻结基线 v1.5.1（1306 个相位级评估单元）在严格 FUSE 门槛下的自动 Coverage 为 45.64%，该负结果及其 Equal-Coverage 判定保持独立，不被后续实验覆盖。在同一数据、模型和评价单元上，EXP16 表明组合风险证据能够提高固定人工复核预算下的错误截获效率；post-hoc、failure-driven 的 EXP17-A 将 Coverage 恢复至 54.13%，Unsafe 为 5.51%，Error Interception 为 94.26%。相对 Voting@50，ΔUnsafe 点估计为 +0.92pp，但配对 station-cluster bootstrap 的单侧 95% 上界为 +2.24pp，超过最终裁决的 +2.0pp 非劣界。因此冻结结论为：**Coverage recovery supported; safety non-inferiority inconclusive**。
 
 ## 系统架构
 
@@ -108,6 +108,8 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | [问题定义文档](docs/problem_definition.md) | 4 页问题定义（比赛主材料） |
 | [最终实验报告](docs/final_report.md) | 完整实验设置、结果与分析 |
 | [复现说明](docs/reproduction.md) | 一键复现入口、环境、核心数字 |
+| [C 部分科研主文档](docs/deliverables/9c%20部分%20GOAI_OBS_科研边界与实验契约_v1.9_AB验收与发布身份对齐版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go |
+| [复赛答辩 PPT](docs/deliverables/8GOAI_OBS_复赛答辩主体_v3.3_AB验收与发布身份对齐版.pptx) | 三分钟成果主线与附录证据链 |
 | [架构与流程图示](docs/architecture_diagrams.md) | 业务流、6 步路由、四证据层、模块调用、复现链、探索闭环、Demo 部署 |
 | [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
