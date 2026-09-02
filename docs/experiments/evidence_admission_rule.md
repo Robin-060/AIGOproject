@@ -13,7 +13,8 @@
 
 ## 执行程序（与现有纪律一致）
 
-- 相关性分析只用 main 分片；增量价值按预注册准则（main 比较、holdout 确认）
+- 相关性分析只用 main 分片；增量价值在 main 上比较，holdout Primary 仅用于方向一致性佐证，
+  不描述为独立 locked confirmation
 - 未通过者不得进入引擎；通过者以版本化参数冻结
 
 ## 首例档案：STA/LTA 支持度证据（Rejected）

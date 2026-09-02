@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-core.txt
 
-      - name: Run A-side smoke test
+      - name: Run core evidence smoke test
         run: bash smoke_test_a.sh
 
   full-test:
@@ -77,3 +77,14 @@ jobs:
 
           cat /tmp/streamlit.log
           exit 1
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build semifinal image
+        run: docker build --tag obs-trust-engine:ci .

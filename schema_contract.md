@@ -137,7 +137,7 @@ The exploration environment should reuse this existing computation chain.
 
 ## 8. Required Demo Output
 
-The B-side Demo expects:
+The final Demo exposes:
 
 - sample
 - predictions
@@ -187,7 +187,7 @@ Confirmed from the current repository:
 
 ## 11. Gate 0 Final Interface Freeze
 
-The B-side interface is frozen against the current backend implementation.
+The final interface is frozen against the current backend implementation.
 
 ### Demo control mapping
 
@@ -258,11 +258,11 @@ backend result rather than hard-coding a version.
 
 The Environment Spec, backend schema contract, control mapping, recalculation entry point, and result mapping are defined from the current repository implementation.
 
-## 12. A-side contract additions (merged 2026-08-28)
+## 12. Final contract additions (merged 2026-08-28)
 
-The following A-owned content was merged from the parallel draft
-`docs/experiments/output_schema.md` (that duplicate file is removed; this is the
-single canonical contract).
+The following content was merged from the former parallel draft
+`docs/experiments/output_schema.md`; that duplicate was removed, and this file is the
+single canonical contract.
 
 ### 12.1 Action values
 
@@ -270,7 +270,7 @@ Confirmed from `src/trust_engine/schema.py` (`class Action`): the router emits
 exactly four values — `ACCEPT`, `ROUTE`, `FUSE`, `ABSTAIN`. `ROUTE` is emitted
 when a single non-primary model is selected (`policy_router.py`).
 
-v1.5 reason codes B may encounter (display as-is, do not reinterpret):
+v1.5 reason codes the interface may encounter (display as-is, do not reinterpret):
 
 - `SEVERE_DISAGREEMENT` / `MINOR_DISAGREEMENT` — 分歧三级 (第二刀)
 - `FUSION_CALIBRATED_CONFIDENCE_BELOW_FLOOR` — FUSE 被校准置信度门槛拦截
@@ -305,7 +305,7 @@ Demo 展示时不得混用。
 
 Coverage / Unsafe Output Rate / Interception / Review Burden are batch
 statistics. They are NOT part of a single `run_pipeline()` return. The Feedback
-panel reads A's batch result files:
+panel reads the frozen batch result files:
 
 - `results/baseline_results.csv` — 8 strategies (含 4 单模型基线) × 5 coverage points
 - `results/main_results.csv` — Trust main experiment per-sample decisions
@@ -317,7 +317,7 @@ Evaluation subset: **N_eval = 1306 phase units (P 657 + S 649)** — 相位级 P
 (成对判定仅作 Secondary)，见 `configs/semifinal_main.yaml`。
 The frontend must not recompute these metrics.
 
-## 13. Reason Code → 确定性解释模板 (A 提供 · B 复制)
+## 13. Reason Code → 确定性解释模板（最终统一）
 
 来源: `src/trust_engine/policy_router.py` 逐字对齐 (config `semifinal_v1.5.1-bugfix`)。
 ABSTAIN 面板按 reason code 渲染自然语言解释，**必须用下表模板 + evidence 字段拼接，

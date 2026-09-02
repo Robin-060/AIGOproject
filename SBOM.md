@@ -17,6 +17,7 @@ Sources of dependency constraints: `requirements-core.txt`, `requirements.txt`, 
 | fastapi | unpinned in Dockerfile | Demo backend | MIT |
 | uvicorn | unpinned in Dockerfile | ASGI server | BSD-3-Clause |
 | python-multipart | unpinned in Dockerfile | Upload parsing | Apache-2.0 |
+| Noto Sans CJK SC Regular | 2.004 | Embedded font in final C report | SIL OFL-1.1 |
 
 ## Project code
 
@@ -34,6 +35,9 @@ Dataset and model/checkpoint provenance are tracked in:
 
 External datasets, pretrained checkpoints, and third-party libraries retain their
 own upstream licenses and redistribution conditions.
+
+The embedded Noto font is licensed separately from the report and project code. Its license text is
+retained in `licenses/OFL-1.1.txt` and summarized in `THIRD_PARTY_NOTICES.md`.
 
 ## Scope note
 

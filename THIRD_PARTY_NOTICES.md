@@ -20,9 +20,13 @@ publications, or trademarks.
 - **EQTransformer architecture** — MIT: <https://github.com/smousavi05/EQTransformer>
 - **ObsPy** — LGPL-3.0: <https://github.com/obspy/obspy>
 - **PyTorch** — BSD-style license and upstream notices: <https://github.com/pytorch/pytorch>
+- **Noto Sans CJK SC** — SIL Open Font License 1.1:
+  <https://github.com/notofonts/noto-cjk>. The regular font is embedded in the final C report
+  solely to preserve Chinese readability across evaluation environments; it remains under OFL-1.1.
 
 Additional direct and transitive dependencies remain subject to the licenses shipped with their
-installed distributions. The final release should include a generated SBOM or license report.
+installed distributions. This release includes the human-readable `SBOM.md`; it is not a claim of
+complete transitive license resolution.
 
 ## Pretrained checkpoints
 

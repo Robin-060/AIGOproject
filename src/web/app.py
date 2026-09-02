@@ -1010,15 +1010,15 @@ def main() -> None:
     st.caption("上传数据组产出的 result.json，或点击下方示例按钮体验完整流程。")
 
 
-        # ---------------------------------------------------------
-    # Exploration Environment - Gate 0 control skeleton
+    # ---------------------------------------------------------
+    # Exploration Environment - frozen control surface
     # ---------------------------------------------------------
     st.divider()
     st.subheader("Exploration Controls")
 
     st.caption(
-        "Gate 0 control skeleton. "
-        "Backend recalculation wiring will use the frozen A-side schema."
+        "Frozen exploration control surface. "
+        "Each permitted change recalculates through the current Trust Engine schema."
     )
 
     control_cols = st.columns(4)

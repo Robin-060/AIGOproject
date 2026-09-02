@@ -1,8 +1,8 @@
 # 复赛评估协议（冻结版 v1.5.1-bugfix）
 
 > 初次冻结 2026-08-28（Gate 0）；当前审计修复版对应
-> `configs/semifinal_main.yaml`（semifinal_v1.5.1，parent=semifinal_v1.5）。
-> 本协议是 A 的冻结交付物：所有 baseline、Trust 主实验、Demo 反馈面板必须使用同一套定义。
+> `configs/semifinal_main.yaml`（semifinal_v1.5.1-bugfix，parent=semifinal_v1.5.1）。
+> 本协议为冻结评价契约：所有 baseline、Trust 主实验、Demo 反馈面板必须使用同一套定义。
 > v1.1 变更：评价单位按 C 契约 v1.2 改为**相位级 Primary**，成对判定降级为 Secondary。
 
 ## 1. 数据与评估子集
@@ -14,14 +14,16 @@
 - **主评估单位 `(sample_id, phase)`：N_eval = 1306**（P 真值 657 + S 真值 649）
 - 真值缺失的相位：**已自查（2026-08-28）**——895 条全部有 source_id（事件目录），均为事件窗口、无噪声窗口；缺失真值 = 该相位在源数据集中无标注（trace_*_status 为空），按 C 契约 Unknown 不进入 primary，排除原因见 manifest 的 exclusion_reason
 - label_source：seisbench OBS 数据集参考拾取（Zenodo 10277799），411 条真值与元数据 arrival_sample 100% 吻合；label_quality：manual / automatic 两档（见 manifest）
-- 留出子集：按 chunk 分层 20%（seed 42，358 个单元）作稳健性交叉检查，不作主结论
+- 留出子集：按 chunk 分层 20%（seed 42）作方向一致性佐证，不作独立 locked test。
+  358 是 manifest 全部 holdout 行，其中 Primary 正式评价分母为 260
 - cluster 重采样单元：station（60 个）——统计检验时避免把同一台站的相关窗口当独立样本
 
 ## 2. 评价单位（v1.1 冻结）
 
 - **Primary**：按 `(sample_id, phase)` 评估 P 和 S，分别报告样本数、错误数与指标；不得只给混合平均（C 契约 4.2）
 - **Secondary**：成对判定（P+S 均 correct 且 final_pair_status 完整）仅用于"事件级完整性"声明，不作主指标
-- **噪声窗口**：expected_event=False 时无拾取计 correct、虚假拾取计 wrong（待数据组确认噪声标签后启用）
+- **噪声窗口**：当前 895 条主评估记录均为事件窗口，不含噪声窗口主指标；
+  若未来引入 expected_event=False 样本，须以新协议版本显式定义无拾取/虚假拾取判定
 
 ## 3. 正确性判定协议（相位级）
 
@@ -44,9 +46,8 @@
 2. **残差双峰分布**：正确拾取误差中位数 P≈0.03–0.07s、S≈0.20–0.31s；
    错误拾取为 20–40s 量级的 gross error。0.5/1.0 档落在两峰之间的空档，
    对判定分类结果不敏感。
-3. **文献惯例**：0.5/1.0 为相拾取评测常用容差档（出处由 C 依据
-   Liu et al. 2025 等文献核实），待 A+C 共同签认后本项由"流程冻结"
-   升级为"科学绑定"。
+3. **当前裁决**：0.5/1.0 已作为本次复赛的流程冻结容差，并由 12 档敏感性结果支撑。
+   本项目不将其扩大为适用于所有数据集的普遍科学常数。
 
 ## 4. 五个核心指标（相位级口径，强制配对报告）
 

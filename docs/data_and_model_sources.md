@@ -68,6 +68,7 @@ checkpoint 的专属许可证。由于当前 registry 尚未取得四组权重�
 | ObsPy | MiniSEED/SEG-Y 与信号处理 | LGPL-3.0 |
 | PyTorch | 模型运行 | BSD-style；保留上游 LICENSE/NOTICE |
 | FastAPI / Uvicorn / python-multipart | Demo 后端 | 以最终安装发行包元数据和 SBOM 为准 |
+| Noto Sans CJK SC Regular 2.004 | 最终 C 报告的跨平台中文显示 | SIL OFL-1.1；仅嵌入 DOCX，许可证全文见 [`licenses/OFL-1.1.txt`](../licenses/OFL-1.1.txt) |
 
 最终直接依赖以 `requirements-core.txt`、`requirements.txt` 和 Dockerfile 为准；完整
 传递依赖及许可证仍应由最终锁定环境生成 SBOM/license report 后归档。

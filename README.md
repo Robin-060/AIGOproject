@@ -5,9 +5,15 @@
 
 **一句话定位**：不再开发新的拾取模型，而是在多个拾取模型之上构建可靠性评估层——检查数据质量、比较多模型结果、验证物理约束，决定自动接受、模型融合还是人工复核。
 
+## 评委快速入口
+
+- 5 分钟验收顺序：[JUDGE_QUICKSTART.md](JUDGE_QUICKSTART.md)
+- 复赛要求—交付物映射：[SUBMISSION_MANIFEST.md](SUBMISSION_MANIFEST.md)
+- 现场陈述：[3 分钟讲稿](docs/defense_script.md) · [1 分钟 Demo](docs/demo_runbook.md) · [高风险问答](docs/qa_cards.md)
+
 ## 为什么需要
 
-深度学习拾取模型（PhaseNet / PickBlue / OBSTransformer）在真实部署中会系统性犯错：
+深度学习拾取模型（PhaseNet / PickBlue / OBSTransformer / EQTransformer）在真实数据上会系统性犯错：
 
 - **数据质量退化**：缺通道、削波、强噪声下模型照常输出高置信结果
 - **领域偏移**：陆地训练的模型部署到新海域，论文性能无法迁移
@@ -45,7 +51,8 @@ python3 -m pip install -r requirements.txt
 
 # 2. 完整链路 (从原始数据到决策)
 python src/data_layer/download_obs_dataset.py            # 下载数据 (可选, ~34GB)
-python src/data_layer/data_layer.py --output result.json # 三模型推理
+python src/data_layer/data_layer.py --output result.json # 核心三 adapter 推理
+python -m src.experiments.run_eqt_batch                 # 可选：第四套 EQT 批处理
 python -m src.trust_engine.pipeline --input result.json  # Trust Engine 决策
 
 # 3. 启动 Demo
@@ -97,7 +104,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | actual run trajectory | `results/run_trajectory.jsonl`（commit/config/seed/逐步状态/输出 hash/干预披露） | `src.experiments.reproduce_main` |
 | result | `results/*.csv` + `bootstrap_ci.json` + `reproduction_report.json` | `bash reproduce_core.sh` |
 | Figure/Table | `figures/*.png` + `results/equal_coverage_table.csv` | 同上 |
-| Scientific Claim | 由 C 按实验冻结（候选口径见 [DS 判定汇总](docs/experiments/ds_findings_v15.md)） | `docs/final_report.md` |
+| Scientific Claim | EXP16 / v1.5.1 / EXP17 分层冻结，c2 保持 NOT ESTABLISHED | `docs/final_report.md` |
 
 探索历史 JSONL 由脚本从历史材料生成，引用缺失会直接失败；真实正式运行另由 `reproduce_main` 逐步写入 `run_trajectory.jsonl`，两者不再混称。
 
@@ -105,11 +112,16 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 
 | 文档 | 内容 |
 |------|------|
-| [问题定义文档](docs/problem_definition.md) | 4 页问题定义（比赛主材料） |
+| [问题定义文档](docs/problem_definition.md) | 最终 RQ1/RQ2、参考框架、主发现与 Scientific Claim |
 | [最终实验报告](docs/final_report.md) | 完整实验设置、结果与分析 |
+| [开放探索日志](docs/exploration_log.md) | EXP01–17、负结果、修订链与真实运行轨迹的导航 |
 | [复现说明](docs/reproduction.md) | 一键复现入口、环境、核心数字 |
-| [C 部分科研主文档](docs/deliverables/9c%20部分%20GOAI_OBS_科研边界与实验契约_v1.9_AB验收与发布身份对齐版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go |
-| [复赛答辩 PPT](docs/deliverables/8GOAI_OBS_复赛答辩主体_v3.3_AB验收与发布身份对齐版.pptx) | 三分钟成果主线与附录证据链 |
+| [3 分钟陈述稿](docs/defense_script.md) | PPT 第 1–9 页逐页计时讲稿与 Demo 转场 |
+| [1 分钟 Demo Runbook](docs/demo_runbook.md) | 现场演示路径与离线故障备案 |
+| [高风险问答卡](docs/qa_cards.md) | c2、post-hoc、holdout、R1 与 bugfix 的回答口径 |
+| [开放探索环境规格](environment_spec.md) | Fixed / Searchable / Feedback、真实后端与已验收状态 |
+| [C 部分科研主文档](docs/deliverables/10c%20部分%20GOAI_OBS_科研边界与实验契约_v1.10_包装验收与发布版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go；已嵌入开源中文字体并完成逐页渲染验收 |
+| [复赛答辩 PPT](docs/deliverables/9GOAI_OBS_复赛答辩主体_v3.4_包装验收与发布版.pptx) | 三分钟成果主线、演示衔接与附录证据链 |
 | [架构与流程图示](docs/architecture_diagrams.md) | 业务流、6 步路由、四证据层、模块调用、复现链、探索闭环、Demo 部署 |
 | [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
@@ -120,12 +132,13 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | [范围与合规](docs/scope_and_compliance.md) | 项目边界与合规说明 |
 | [失败案例分析](docs/experiments/failure_cases.md) | 已知失效模式 |
 | [实验日志模板](docs/experiment_log_template.md) | 实验记录格式 |
+| [贡献指南](CONTRIBUTING.md) | 新证据、新数据域和新实验的版本化贡献纪律 |
 
 ## 代码结构
 
 ```
 src/
-├── data_layer/    # 数据下载 → 三模型推理 → 四合一输出
+├── data_layer/    # 数据下载 → 核心三 adapter；EQT 独立批处理 → 四模型冻结评价
 ├── trust_engine/  # 核心引擎: 证据层 + 路由 + 流水线
 ├── calibrate/     # 参数校准脚本 (差值统计/逻辑回归/故障注入)
 ├── experiments/   # 基线/消融/噪声实验

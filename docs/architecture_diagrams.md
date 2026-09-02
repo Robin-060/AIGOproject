@@ -305,7 +305,7 @@ flowchart TD
 
 1. ✅ **单样本决策时序图** — 见上图 8。
 2. ✅ **Equal-Coverage 协议图** — 见上图 9。
-3. ✅ **Reason Code → 解释模板对应表** — 已写入 [schema_contract.md §13](schema_contract.md)（A 提供、B 复制）。
+3. ✅ **Reason Code → 解释模板对应表** — 已写入 [schema_contract.md §13](../schema_contract.md)，由前端与测试共用。
 4. ✅ **Review Budget 实验设计图** — 见上图 10。
 5. **PNG 导出**：Mermaid 源已可渲染；图片版在 `docs/figures/`（由
    `@mermaid-js/mermaid-cli` 批量导出，10/10 语法校验通过）。答辩最值得入片：

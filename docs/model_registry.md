@@ -1,9 +1,9 @@
 # Model Registry — 冻结预测的真实模型身份
 
-> 状态：A 的事实交付物（2026-08-29），待 C 材料一致性审核（C 契约 3.2 必填字段）。
-> 本文件回答一个问题：冻结预测（records_all.json）三列到底是谁跑出来的。
+> 状态：**FINAL / REVIEWED**（2026-09-02），已与复赛冻结材料、数据来源和许可证披露对齐。
+> 本文件回答一个问题：`records_all_v2.json` 中的四个冻结 checkpoint 输出实际来自哪个架构、训练域和权重身份。
 
-## 1. 总表（冻结数据三列 vs 档案声称）
+## 1. 总表（冻结数据四列 vs 档案声称）
 
 > C 锁死条件：registry 区分 **architecture_origin（架构来源）** 与
 > **checkpoint_training_domain（checkpoint 训练域）** —— 同架构异训练域
@@ -34,7 +34,7 @@ EQTransformer）、跨两个训练域（陆地 + OBS）——新增 EQT 为异�
 | training_domain | 陆地地震数据域（非 OBS） |
 | default_args | P_threshold=0.570, S_threshold=0.073, blinding=[250,250] |
 | score_semantics | max(P_peak, S_peak)，未校准 |
-| eval_overlap_status | 与 OBS 评估集无训练域重叠（陆地训练）；待正式审计确认 |
+| eval_overlap_status | 未发现与 OBS 评估域的直接重叠，但未完成逐事件正式审计；不用于支撑独立泛化主张 |
 
 **证据链**：8 个样本指纹匹配——P 拾取 8/8 完全吻合、置信度 8/8 完全吻合、
 有 S 值的样本精确一致（85.1=85.1）、其余 7 个双方均无 S。
@@ -79,6 +79,21 @@ EQTransformer）、跨两个训练域（陆地 + OBS）——新增 EQT 为异�
 82%（对比 EQTransformer-obs 100%），残差 p90 = 0.38s；缺 E 通道时 S 命中率
 降至 58%（74%→58%）。
 
+### 2.4 冻结 "EQTransformer" 列 = EQT obs
+
+| 字段 | 值 |
+|---|---|
+| class | `seisbench.models.EQTransformer` |
+| weights_name | `obs` |
+| architecture_origin | EQTransformer 架构（Mousavi et al., 2020, doi:10.1038/s41467-020-17591-w） |
+| checkpoint_training_domain | OBS 域 |
+| in_channels / component_order | 3 / ZNE |
+| score_semantics | SeisBench adapter 输出的模型分数；原始值不作为跨模型可比概率 |
+| eval_overlap_status | **UNKNOWN**——训练数据与本评估集的逐事件重叠未完成审计 |
+
+EQT 作为第四套 checkpoint 由独立批处理入口 `src/experiments/run_eqt_batch.py`
+生成，在 `records_all_v2.json` 中与前三个模型列合并；不替换任何旧模型。
+
 ## 3. 代码-行为不一致记录
 
 仓库 `src/data_layer/data_layer.py` 的初始化代码（第 265、284 行）：
@@ -104,10 +119,9 @@ models["PickBlue"] = PickBlue(base="phasenet")          # 实际也加载 obs
 | "PickBlue 需要 4 分量" | 数据组 94% 的缺 E 记录上跑出预测；实测缺 E 时命中 91-93%（不降反升） | semifinal_v1.2：required=[Z,H]，preferred=[N,E] |
 | OBSTransformer 无通道约束问题 | 缺 E 时 S 命中率 74%→58%，显著降级 | 保留 H 必需档案；其 S 缺陷由证据层与辨别度量处理 |
 
-## 5. 待决事项（交 C）
+## 5. 已完成与保留边界
 
-1. `data_layer.py` 初始化代码：改代码 vs 记录在案（C 裁决，见第 3 节）
-2. overlap audit 正式执行（A）——在完成前，涉及 obs/obst2024 的结论按
-   C 契约 "overlap unknown 不入 primary claim" 处理
-3. 置信度未校准的表述统一（连接 future research "单模型置信度校准"）
-4. third_party_and_license.md 的权重来源/许可细化（C 材料）
+1. `data_layer.py` 的 PhaseNet 初始化已改为 `geofon` + ZNE，指纹复核通过；该实现修正不改写冻结预测。
+2. PickBlue/OBSTransformer/EQT 的训练—评估重叠仍为 **UNKNOWN**；这是已披露的研究局限，不是未交付的材料项。
+3. 置信度表述已统一：原始 model score 不是跨模型可比概率；当前 Trust 路径使用版本化校准值作为推理时证据。
+4. 权重来源、checkpoint 不再分发和许可证边界已记录于 `docs/data_and_model_sources.md` 与 `THIRD_PARTY_NOTICES.md`。

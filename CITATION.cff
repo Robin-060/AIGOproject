@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or its evaluation protocol, please cite this repository."
+title: "OBS Trust Engine: Inspectable Reliability Routing for Seismic Phase Picking"
+type: software
+version: "goai-2026-final-v3"
+date-released: 2026-09-02
+license: MIT
+repository-code: "https://github.com/Robin-060/AIGOproject"
+abstract: >-
+  A model-agnostic trust layer for OBS seismic phase picking that combines
+  reliability evidence, selective routing, review prioritization, and
+  failure-driven policy refinement under explicit evidence boundaries.
+keywords:
+  - trustworthy AI
+  - ocean bottom seismometer
+  - seismic phase picking
+  - selective prediction
+  - human review prioritization
+authors:
+  - name: "OBS Trust Engine Team"
