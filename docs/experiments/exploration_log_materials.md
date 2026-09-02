@@ -18,14 +18,14 @@
 | EXP07 | 主实验 v1：DS1 部分成立 + bootstrap | 正/负结果 | S 相显著落后，天花板 46.7% |
 | EXP08 | EQT 第四模型（C 批准，不替换） | 正向发现 | 天花板 46.7→54.2% |
 | EXP09 | STA/LTA 第五证据 12 组合校准 | **负结果（淘汰）** | X=0 胜出，弱相关 46.7% vs 60.9% |
-| EXP10 | DS4 自然罚分重校准 | 正向发现 | v1.4：S 相从显著落后→统计并列 |
+| EXP10 | DS4 自然罚分重校准 | 正向发现 | v1.4：S 相落后改善（⚠️ EXP15 修正后 S 相显著更差，见卡） |
 | EXP11 | DS3 判定：分歧与错误关联 | **负结果** | P 不显著/S rho=0.09；发现"完全一致也会错"（11.3%/8.0%） |
 | EXP12 | DS5 泛化验证（_BLANCO 跨域） | **负结果→修正** | 跨域同降（21.5%）→ ID-only 域门（coverage 54.5→19.5%） |
 | EXP13 | C 五刀落地（v1.5） | 修正 | 校准入证据层 + 分歧单向化 + FUSE 门槛 + 准入制度 |
 | EXP14 | FUSE 门绕过审计 + NOT_EVALUABLE 纪律 | **负结果→修正** | 堵 4.5 步绕过后天花板 54.2→45.6%；50% 点 NOT_EVALUABLE；DS5 域门新标准未成立 |
 | EXP15 | cluster bootstrap 重复权重修正 | **负结果** | S 相在自身 45.45% 天花板处 Δ=+3.39pp，CI [+0.90,+5.96]，显著差于 Voting |
 | EXP16 | Review Budget–Error Interception 曲线（C 追加） | 正向发现 | 固定复核预算下 Trust 风险排序全面领先: 50% 预算截获 83.6% vs Random 50.0% |
-| EXP17 | Policy Refinement（预注册 failure-driven） | **正/负结果** | A 共识路由 PASS (天花板 45.64→54.13%)；B 仅可用幸存者 FAIL (天花板 81.6% 但 ΔUnsafe 上界 +3.42pp 超阈)，A+B 同 FAIL → 采用 A |
+| EXP17 | Policy Refinement（post-hoc failure-driven，判据预注册） | **正/负结果** | A 共识路由采用（45.64→54.13%，c1/c3/c4 PASS，c2 非劣未确认 +2.24pp）；B 仅可用幸存者弃用（81.62% 但 c2 +4.87pp、c3 64.55% 双败）；A+B 留档 FAIL → 采用 A |
 
 ## 二、逐条素材卡
 
@@ -111,6 +111,9 @@
 - **R**：自然罚分候选（B_natural）validation 双线胜
   （main 4.2→3.82%，holdout 12.31→11.54%，方向一致）→ 冻结 v1.4
 - **Result**：50% 点 Unsafe 5.8→5.4%；**bootstrap S 相从显著落后转为统计并列**
+  ⚠️ v1.4 时代结论：后经 EXP15 bootstrap 重复权重修正，S 相判定更新为
+  **显著差于 Voting**（45.45% 天花板 Δ=+3.39pp，CI [+0.90,+5.96]），
+  本卡的"统计并列"不得作为当前口径引用
 - **已知差异留痕（v1.5.1 审计）**：NATURAL_PENALTIES.moderate_signal 冻结值 1.0，
   与 ds4_natural_hazard.json 的 raw 候选分 2.0（30×rate）不一致；差异自 v1.4
   冻结提交即存在，全部实验数字以代码冻结值 1.0 计算，对账由
@@ -146,7 +149,7 @@
 - **R**：① Platt 校准入证据层（PickBlue/OBSTransformer/EQT；geofon 样本
   不足保留 raw）② 分歧粗分三级 + FUSE 门槛 ③ ID-only 域门 ④ Evidence
   Admission Rule 冻结（STA/LTA 结案为被拒首例）
-- **Result**：初版主结果持平（5.5%@50，与 Voting 统计并列），holdout 稳定性改善
+- **Result**：初版主结果点估计接近 Voting（5.5%@50，当时口径），holdout 稳定性改善
   （11.5→10.0%）；置信度获得统计语义（校准后 0.78≈78% 正确）
   ⚠️ 该 5.5%@50 数字后来被 EXP14 取代——当时存在第 4.5 步绕过，50% 点位实为不可达
 - **出处**：results/calibration/、docs/experiments/evidence_admission_rule.md、
@@ -201,7 +204,7 @@
   不作因果声明，仅作为参照系比较报告
 - **统计背书（cluster bootstrap, 60 台站 × 1000 次, seed 42）**：
   Trust−Random 在 5/10/20/30/50% 各预算点单侧 95% 下界均 > 0（50% 预算
-  Δ=+33.6pp, CI [+19.0,+35.7]）；Trust−Disagreement 全点显著；
+  Δ=+33.6pp, CI [+19.0,+35.65]）；Trust−Disagreement 全点显著；
   Trust−ModelConf 在 ≥10% 预算显著、5% 点 INCONCLUSIVE（如实保留）
 - **同截获率所需预算（反查表）**：达到 80% 截获率 Trust 需 47% 复核预算
   vs ModelConf 73% / Disagreement 80% / Random 80%
@@ -209,26 +212,27 @@
   results/review_budget_ci.json、results/review_budget_interpolation.json、
   results/review_budget_summary_holdout.json、figures/review_budget_curve.png
 
-### EXP17 Policy Refinement（预注册 failure-driven，v1.5.1 之后）
+### EXP17 Policy Refinement（post-hoc failure-driven，判据预注册，v1.5.1 之后）
 - **H**：天花板 45.64% 主要来自第 4.5/5 步的保守 ABSTAIN 设计，改决策逻辑
-  即可在不牺牲安全的前提下过 50%（预注册: docs/experiments/exp17_preregistration.md）
+  即可在不牺牲安全的前提下过 50%（判据预注册: docs/experiments/exp17_preregistration.md）
 - **E**：三干预单变量（A Consensus Route / B Only-usable-survivor /
-  C floor sweep），顺序执行逐干预验收；四项判据（预注册 v1.1，C 指示）:
-  c1 Coverage≥50% + c2 Unsafe 单侧 95% 上界 <+2.0pp（vs 6.04%）+
-  c3 Review Budget 截获@50%预算 ≥83.6% + c4 风险分箱单调
-- **O（A PASS，四项全过）**：天花板 45.64→54.13%；Unsafe@50=5.51%；Δ上界
-  +1.54pp < +2.0pp；截获@50%预算 83.6→**94.26%**（排序反而更强）；
+  C floor sweep），顺序执行逐干预验收；最终裁决四判据（C 方案 a，锚点修订留痕）:
+  c1 Coverage≥50% + c2 ΔUnsafe vs Voting@50（4.59%）单侧 95% 上界 <+2.0pp
+  （配对 bootstrap）+ c3 Review Budget 截获@50%预算 ≥83.6% + c4 风险分箱单调
+- **O（A：c1/c3/c4 PASS，c2 未确认）**：天花板 45.64→54.13%；Unsafe@50=5.51%；
+  点估计 +0.92pp（绿灯内）但配对 bootstrap 单侧 95% 上界 +2.24pp 高于 +2.0pp
+  界 0.24pp；截获@50%预算 83.6→**94.26%**（排序反而更强）；
   风险分箱 4.17→9.14→28.57 单调保持；holdout 天花板 43.46→53.08%
-- **O（B FAIL，负结果，c2+c3 双败）**：天花板 81.62% 但 ΔUnsafe 上界 +3.42pp 超阈、
+- **O（B FAIL，负结果，c2+c3 双败）**：天花板 81.62% 但 ΔUnsafe 上界 +4.87pp 超阈、
   **截获@50%预算塌到 64.55%**（risk ranking 被稀释，正是 C 警示的失败模式）；
-  A+B 累加天花板 90.12% 但 c2 上界 +2.55pp 仍超阈 → **弃用 B**。
+  A+B 累加天花板 90.12% 但 c2 上界 +4.0pp 仍超阈 → **弃用 B**。
   纪律生效: 覆盖率好看 ≠ 可接受，判据失败即回退，未做任何参数微调
 - **R**：**最终裁决（2026-09-01，C 方案 a）**：采用 A；v1.5.1 冻结产物零改动
   （默认路径 1306 单元逐一对账零差异；ROUTE invalid-pick bug 已按 v1.5.1-bugfix
   单独修复，前后对照 7 个假输出单元、数值零变化）。
   正式表述口径（C 定稿）：
   "在不增加模型、不重新训练的情况下，failure-driven policy refinement 使
-  自动覆盖率相对提高约 18.5%（45.64%→54.13%，+8.49pp）；同时 Trust 风险排序
+  自动覆盖率相对提高约 18.6%（45.64%→54.13%，+8.49pp）；同时 Trust 风险排序
   显著提高人工复核效率。安全性点估计接近 Voting（+0.92pp，绿灯内），但在预设
   +2pp 非劣界下尚未获得充分统计证据（配对 bootstrap 单侧 95% 上界 +2.24pp）。"
   Review prioritization 明确成立；Automation coverage 明确恢复；
@@ -315,7 +319,7 @@
 | 域门阈值（XO 马氏距离） | 95%=3.94 / 99%=5.27 | results/domain_gate.json |
 | Review Budget @50% 预算 | Trust 83.6% / ModelConf 59.9% / Disagreement 56.3% / Random 50.0%（截获率） | results/review_budget_summary.json |
 | Review Budget @50%（holdout 佐证） | Trust 80.1% / Disagreement 59.0% / ModelConf 56.5% / Random 49.9% | results/review_budget_summary_holdout.json |
-| Review Budget CI @50% (vs Random) | Δ=+33.6pp, CI [+19.0,+35.7], 显著更优（全预算点单侧下界 > 0） | results/review_budget_ci.json |
+| Review Budget CI @50% (vs Random) | Δ=+33.6pp, CI [+19.0,+35.65], 显著更优（全预算点单侧下界 > 0） | results/review_budget_ci.json |
 | 80% 截获率所需复核预算 | Trust 47% / ModelConf 73% / Disagreement 80% / Random 80% | results/review_budget_interpolation.json |
 | DS5 新标准 | ❌ 未成立（严格引擎下）：coverage 37.8→16.0% ✓ / retained unsafe 25.0% vs 22.5% ✗ | results/domain_gate.json |
 

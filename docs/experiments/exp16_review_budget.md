@@ -58,7 +58,7 @@ reviewed_n 列）。
   ModelConf 56.5% / Random 49.9%。
 - 统计背书（cluster bootstrap，60 台站 × 1000 次，seed 42）：
   Trust−Random 全预算点单侧 95% 下界 > 0（50% 预算 Δ=+33.6pp，
-  CI [+19.0,+35.7]）；Trust−Disagreement 全点显著；Trust−ModelConf 在 ≥10%
+  CI [+19.0,+35.65]）；Trust−Disagreement 全点显著；Trust−ModelConf 在 ≥10%
   预算显著、5% 点 INCONCLUSIVE（如实保留）。
 - 同截获率所需预算：80% 截获率 Trust 需 47% 复核 vs Random 80%。
 

@@ -1,6 +1,7 @@
-# EXP17 预注册：Failure-driven Policy Refinement（2026-09-01 冻结）
+# EXP17 判据预注册：post-hoc Failure-driven Policy Refinement（2026-09-01 冻结）
 
-> 本文件是 EXP17 的预注册判据。**先于任何改动实验冻结**，任何偏离即实验作废。
+> 本文件是 EXP17 的**判据预注册**（实验本身为 post-hoc failure-driven，见 §1）。
+> 判据**先于任何改动实验冻结**，任何偏离即实验作废。
 > v1.5.1 为冻结结果，本实验不修改、不覆盖其任何产物；全部输出使用新文件。
 
 ## EXP17-R1 预注册：融合容差 robustness check（2026-09-01，C 裁决后冻结）
@@ -28,7 +29,7 @@
 - B（Only-usable-survivor）**弃用**（负结果）：c2（+4.87pp）+ c3（截获塌至
   64.55%）双败；A+B 累加 c2 亦败。
 - 正式表述口径（C 定稿）："在不增加模型、不重新训练的情况下，failure-driven
-  policy refinement 使自动覆盖率相对提高约 18.5%；同时 Trust 风险排序显著提高
+  policy refinement 使自动覆盖率相对提高约 18.6%；同时 Trust 风险排序显著提高
   人工复核效率。安全性点估计接近 Voting，但在预设 +2pp 非劣界下尚未获得充分
   统计证据。" Review prioritization 明确成立；Automation coverage 明确恢复；
   **安全非劣只写"接近、未确认"，绝不写"持平"或"通过"**。
@@ -37,12 +38,20 @@
 
 - **v1.0（2026-09-01）**：A/B/C 三干预 + 判据 c1/c2（Coverage≥50%、ΔUnsafe 单侧
   95% 上界 <+2.0pp vs 6.04%）+ holdout 辅助。A 验收 PASS。
+  （v1.0 口径：锚点 6.04%、参照点固定 bootstrap；后被最终裁决修订，见下一条。）
 - **v1.1（2026-09-01，C 指示，先于 B 判定复核冻结）**：补充判据 c3/c4——
   政策优化**只针对自动决策路径，不得破坏已获胜的 risk ranking**：
   - c3 Review Budget 曲线保持：截获@50% 复核预算（点估计）≥ v1.5.1 冻结值
     （`results/review_budget_summary.json` 的 83.6%），全曲线一并报告；
   - c4 风险分箱排序保持：可靠箱（n≥10）错误率严格单调不减。
   四项判据**全部**满足才 PASS；任何一项失败即回退并记负结果。
+- **最终裁决修订（2026-09-01，C 方案 a，先于采用决定）**：c2 锚点由"v1.5.1
+  天花板点 6.04%"修订为 **Voting@50% 冻结锚点 4.59%**，bootstrap 由参照点固定
+  改为**配对 station-cluster bootstrap**（EXP 与 Voting 同轮重采样，60 台站 ×
+  1000 次，seed 42）；A 的 c2 结论相应由 v1.0 的"验收 PASS"修正为**未确认**
+  （点估计 +0.92pp，单侧 95% 上界 +2.24pp > +2.0pp 界）。c3/c4（v1.1）不变。
+  留痕产物：`results/paired_bootstrap_A.json`、
+  `results/exp17_summary_A.json`（bootstrap_source 字段）。
 
 ## 1. 实验身份与边界
 
@@ -89,6 +98,10 @@
   **默认值不变**，任一级通过主判据仅作记录，不自动升为正式参数。
 
 ## 4. 验收标准（钉死，逐干预适用）
+
+> ⚠️ 本节为 v1.0/v1.1 判据原文（留档）。**最终生效口径见顶部「最终裁决」与
+> §0 修订记录**：c2 锚点已修订为 Voting@50%（4.59%）+ 配对 bootstrap，
+> A 的 c2 结论为"未确认"而非 v1.0 原文的"验收 PASS"。
 
 **主判据 1（覆盖率可达）**：Trust 覆盖率天花板 ≥ 50%
 （50% 预声明点位 COMPARABLE）。
