@@ -37,6 +37,7 @@
 - `results/v151_archive/` 保留 v1.5.1 冻结产物；
 - EXP17 使用独立后缀结果文件，不改写 v1.5.1；
 - 早期问题定义和失败案例放在 `docs/experiments/legacy/`，显式标注为历史口径；
+- 上一版 DOCX/PPTX 保留在 Git 中的 `docs/deliverables/archive/` 用于审计，并通过 `export-ignore` 排除出评审提交压缩包，避免双版本混淆；
 - ROUTE invalid-pick bugfix 与 EXP17 算法 refinement 分轨。
 
 ## 4. 不包含

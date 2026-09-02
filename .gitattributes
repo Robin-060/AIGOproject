@@ -4,3 +4,6 @@ configs/*.yaml text eol=lf
 
 # shell 脚本强制 LF (Linux 评审环境可直接执行)
 *.sh text eol=lf
+
+# 历史交付件在 Git 中保留审计轨迹，但不进入最终提交压缩包。
+docs/deliverables/archive/ export-ignore
