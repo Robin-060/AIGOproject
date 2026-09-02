@@ -295,6 +295,54 @@ ABSTAIN_EXPLANATIONS = {
         "没有模型通过当前数据质量、适用性或输出可比性要求，因此无法进行可靠自动拾取。"
 }
 
+
+class _AbstainExplanationMap(dict):
+    """Deterministic explanations for exact and prefix-family ABSTAIN reason codes."""
+
+    def get(self, key, default=None):
+        if key in self:
+            return super().get(key, default)
+
+        code = str(key)
+
+        if code == "NO_SURVIVING_MODELS":
+            return (
+                "No models survived validity filtering, so the system abstains "
+                "instead of forcing an automatic decision."
+            )
+
+        prefix = "ONLY_SURVIVOR_"
+        if code.startswith(prefix):
+            body = code[len(prefix):]
+
+            risk_suffix = "_RISK_ABOVE_THRESHOLD"
+            invalid_suffix = "_NO_VALID_PICK"
+
+            if body.endswith(risk_suffix):
+                model = body[:-len(risk_suffix)]
+                return (
+                    f"Only {model} survived validation, but its risk is above "
+                    "the configured threshold; the system abstains."
+                )
+
+            if body.endswith(invalid_suffix):
+                model = body[:-len(invalid_suffix)]
+                return (
+                    f"Only {model} survived filtering, but it has no valid pick; "
+                    "the system abstains."
+                )
+
+            model = body
+            return (
+                f"Only {model} survived validation. A single surviving model is "
+                "insufficient for automatic fusion, so the system abstains."
+            )
+
+        return default
+
+
+ABSTAIN_EXPLANATIONS = _AbstainExplanationMap(ABSTAIN_EXPLANATIONS)
+
 def _render_reason_explanations(decision):
     codes = decision.get("reason_codes", []) or []
 
@@ -579,7 +627,7 @@ def _render_experiments() -> None:
             ).iloc[0]
 
             max_coverage = pd.to_numeric(
-                pd.Series([trust_row.get("max_coverage_pct")]),
+                pd.Series([trust_rows["coverage_pct"].max() if "coverage_pct" in trust_rows.columns else float("nan")]),
                 errors="coerce",
             ).iloc[0]
 
@@ -632,7 +680,7 @@ def _render_experiments() -> None:
 
             metric_cols[4].metric(
                 "Selective Risk",
-                "NOT PROVIDED"
+                "NOT EVALUABLE"
                 if selective_risk is None
                 else f"{selective_risk:.2f}%",
             )
@@ -678,7 +726,6 @@ def _render_experiments() -> None:
             "unsafe_output_rate_pct",
             "review_burden_pct",
             "error_interception_rate_pct",
-            "max_coverage_pct",
             "comparison_status",
         ]
 
@@ -736,6 +783,19 @@ def _render_experiments() -> None:
 
 
     st.subheader("离线实验证据")
+
+    review_budget_fig = ROOT / "figures" / "review_budget_curve.png"
+    if review_budget_fig.exists():
+        st.markdown("**EXP16 Review Budget**")
+        st.image(
+            str(review_budget_fig),
+            caption=(
+                "EXP16 frozen evidence: risk ranking improves error "
+                "interception under a fixed review budget."
+            ),
+            use_container_width=True,
+        )
+
     st.caption(
         "Semifinal 页面仅使用上方 frozen Feedback / Equal-Coverage "
         "结果作为正式比较依据。旧版 n=895 图表和历史实验图已隐藏，"
@@ -1007,12 +1067,12 @@ def main() -> None:
         if waveform_upload is not None:
             st.warning(
                 "边界提示：原始波形文件（SEG-Y/MiniSEED/CSV）不含模型预测，无法直接分析。"
-                "请先在左侧上传数据层产出的 result.json（含三模型 P/S 预测），"
+                "请先在左侧上传数据层产出的 result.json（含四模型 P/S 预测），"
                 "再上传波形用于绘制与拾取位置标注。"
             )
         # 一键示例
         example_cols = st.columns([1, 1, 3])
-        if example_cols[0].button("示例 1：三模型共识 → 融合"):
+        if example_cols[0].button("示例 1：四模型共识 → 融合"):
             st.session_state["example_file"] = "example_1.json"
         if example_cols[1].button("示例 2：模型分歧 → 拒绝"):
             st.session_state["example_file"] = "example_2.json"
