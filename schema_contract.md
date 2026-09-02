@@ -316,3 +316,40 @@ Metric definitions and pairing rules: `docs/experiments/evaluation_protocol.md`.
 Evaluation subset: **N_eval = 1306 phase units (P 657 + S 649)** — 相位级 Primary
 (成对判定仅作 Secondary)，见 `configs/semifinal_main.yaml`。
 The frontend must not recompute these metrics.
+
+## 13. Reason Code → 确定性解释模板 (A 提供 · B 复制)
+
+来源: `src/trust_engine/policy_router.py` 逐字对齐 (config `semifinal_v1.5.1-bugfix`)。
+ABSTAIN 面板按 reason code 渲染自然语言解释，**必须用下表模板 + evidence 字段拼接，
+禁止 LLM 自由生成**（DoD/No-Go）。带 `{model}` 的 code 为前缀族，需要前缀匹配，
+模板里的 `{model}` 替换为实际模型名。
+
+### 13.1 ABSTAIN 族模板（必须全部覆盖）
+
+| reason code | 确定性解释模板 | 状态 |
+|---|---|---|
+| `NO_ELIGIBLE_MODELS` | 没有模型通过当前数据质量、适用性或输出可比性要求，因此无法进行可靠自动拾取。 | 已有 |
+| `NO_SURVIVING_MODELS` | 通过可比性门槛的模型在物理约束或分歧筛查后全部被剔除，没有可供选择的幸存模型，因此转入人工复核。 | **新增** |
+| `FUSE_RISK_ABOVE_AUTO_THRESHOLD` | 融合候选已经形成，但当前风险分高于自动决策阈值，因此系统不自动放行，并转入人工复核。 | 已有 |
+| `ONLY_SURVIVOR_{model}` | 通过全部门槛后仅剩一个幸存模型 {model}，该模型已被选中自动输出；若动作为 ABSTAIN 说明其风险超阈。 | **新增（前缀匹配）** |
+| `ONLY_SURVIVOR_{model}_RISK_ABOVE_THRESHOLD` | 唯一幸存模型 {model} 的当前风险分高于自动决策阈值，即使它是唯一候选也不自动放行，转入人工复核。 | **新增（前缀匹配）** |
+| `ONLY_SURVIVOR_{model}_NO_VALID_PICK` | 唯一幸存模型 {model} 对目标相位没有有效拾取，按 v1.5.1-bugfix 规则不得成为自动输出，转入人工复核。 | **新增（前缀匹配）** |
+| `ONLY_USABLE_SURVIVOR_{model}` | 多个幸存模型中只有 {model} 对该相位有实际拾取（EXP17-B 干预规则），其余均无输出；该规则未通过验收，仅实验性出现。 | **新增（前缀匹配）** |
+| `NO_DECISIVE_EVIDENCE_BETWEEN_MODELS` | 多个模型的证据不足以明确支持某一个候选结果，因此系统无法形成确定的自动决策。 | 已有 |
+| `CONSENSUS_WITHOUT_ADMISSIBLE_FUSION` | 多个模型存在一致性信号，但没有形成满足冻结融合准入条件的候选，因此系统不自动输出，转入人工复核。 | 已有 |
+| `INSUFFICIENT_EVIDENCE_FOR_SELECTION` | 当前可用证据不足以支持可靠的自动拾取，因此系统不进行自动选择。 | 已有 |
+
+### 13.2 非 ABSTAIN 动作的 reason code（面板只解释 ABSTAIN，无需模板）
+
+| reason code | 动作 | 说明 |
+|---|---|---|
+| `FUSE_CONSENSUS_CLUSTER` | FUSE | 融合准入通过后的自动融合输出。 |
+| `CONSENSUS_ROUTE_BEST_INLIER` | ACCEPT / ROUTE | EXP17-A 共识路由：共识簇内校准置信度最高者被选中。 |
+
+### 13.3 前缀匹配实现要求（B）
+
+1. 先按 dict 精确 key 匹配；
+2. 未命中时按 `startswith("ONLY_SURVIVOR_")` 与 `startswith("ONLY_USABLE_SURVIVOR_")`
+   前缀匹配，从 code 中解析 `{model}` 填入模板；
+3. 仍未命中的 code 显示通用兜底（"该原因码来自冻结策略结果，当前无专门解释"），
+   并在日志中记录该 code —— 兜底文案不得编造科学原因。

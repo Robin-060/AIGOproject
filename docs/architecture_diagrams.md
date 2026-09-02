@@ -233,19 +233,98 @@ flowchart TD
 
 ---
 
-## 补充建议（还可画的图，按答辩价值排序）
+## 图 8 · 单样本决策时序图（一次决策经过哪些模块）
 
-1. **单样本决策时序图**（sequence diagram）：数据组 JSON → pipeline →
-   route_phase → PhaseDecision JSON → Demo 展示，适合解释"一次决策经过哪些模块"。
-2. **Equal-Coverage 协议图**：top-k by risk（k=round(budget%×n)）与
-   NOT_EVALUABLE / NOT_COMPARABLE_AT_TARGET 纪律的可视化。
-3. **Reason Code → 解释模板对应表**（B 的 ABSTAIN 面板用，配合 schema_contract.md）。
-4. **Review Budget 实验设计图**：746 错误全集 → 四策略排序 → 固定预算截获对比。
-5. **PNG 导出**：本文件为 Mermaid 源，答辩/材料需要图片时用
-   `npx @mermaid-js/mermaid-cli -i docs/architecture_diagrams.md -o docs/figures/`
-   批量导出（图 1/2/4/6 最值得入片）。
+```mermaid
+sequenceDiagram
+    participant DL as data_layer.py
+    participant JSON as result.json 四合一
+    participant PL as pipeline.run_pipeline
+    participant P1 as P1 证据模块
+    participant P3 as P3 共识与融合
+    participant REL as evaluate_reliability
+    participant RT as route_phase
+    participant D as PhaseDecision
+    participant BE as demo_backend FastAPI
+    participant FE as web Demo
+
+    DL->>JSON: sample_metadata / quality_report / model_profiles / model_predictions
+    JSON->>PL: load_from_data_team / load_from_mapping
+    PL->>P1: evaluate_data_evidence · evaluate_model_suitability · evaluate_single_model_evidence
+    P1-->>PL: data_evidence · suitabilities · single_evidences
+    PL->>P3: analyze_multi_model_consensus · build_fusion_candidates
+    P3-->>PL: consensus_results · fusion_candidates
+    PL->>REL: evaluate_reliability(四证据)
+    REL->>REL: phase_risk = min(数据30+单模型24+多模型37+物理40, 100)
+    REL->>RT: route_phase(phase, 证据, consensus, fusion, phase_risk)
+    RT->>RT: 6 步决策 (truth-blind · EXP17 开关 env-gated)
+    RT-->>D: PhaseDecision(action, reason_codes, risk_score, selected_model, selected_time_s)
+    D->>BE: 批量实验落盘 results 各 CSV 与摘要 JSON
+    BE->>FE: 只读消费冻结结果，参数变更触发真实重算
+    FE-->>FE: 波形 + 四模型拾取 + 证据分解 + 决策与 ABSTAIN 解释
+```
+
+---
+
+## 图 9 · Equal-Coverage 协议图（公平比较与 NOT_EVALUABLE 纪律）
+
+```mermaid
+flowchart TD
+    U["N_eval = 1306 相位单元<br>P 657 + S 649 · 同一容差/GT/模型输出"] --> C["各策略计算排序键<br>Trust 风险分 / 各 baseline 排序键"]
+    C --> K["top-k 接受: k = round(budget% × n)<br>同分 tie: (risk, sample_id, phase) stable"]
+    K --> FEAS{"该策略可达<br>目标 Coverage 点位？"}
+    FEAS -->|"可达 ceiling ≥ target"| OK["点位比较 Unsafe Output Rate<br>Coverage 与 Unsafe 永远同报"]
+    FEAS -->|"不可达 ceiling < target"| NE["NOT_EVALUABLE<br>不填 Unsafe · 不给显著性结论"]
+    NE --> EX["例: Trust 天花板 45.64%<br>→ 50% 声明点位 NOT_EVALUABLE<br>596/1306 < 653"]
+    OK --> SUP["补充比较仅允许在天花板点位<br>且必须标注: 非声明点位"]
+    OK --> BOOT["ΔUnsafe 显著性:<br>配对 station-cluster bootstrap<br>60 stations × 1000 · seed 42"]
+```
+
+---
+
+## 图 10 · Review Budget 实验设计图（EXP16 四策略对比）
+
+```mermaid
+flowchart TD
+    U["冻结预测 · 1306 Primary 单元<br>main 1046 + holdout 260"] --> ERR["错误全集 = 746<br>wrong 36 + no_pick 710"]
+    ERR --> S["四个送审排序策略<br>不重训模型 · 不改 Trust · 不改 DS"]
+    S --> S1["Random<br>100-seed 期望值（对角线）"]
+    S --> S2["ModelConf<br>1 − 最大模型置信度"]
+    S --> S3["Disagreement<br>拾取 spread"]
+    S --> S4["TrustRisk<br>冻结四证据风险分"]
+    S1 & S2 & S3 & S4 --> K["按怀疑分降序 → top-k 送审<br>k = round(budget% × n)"]
+    K --> R["固定预算点 5/10/20/30/50%<br>对比 Error Interception"]
+    R --> T["50% 预算结果:<br>Trust 83.6% · ModelConf 59.9%<br>Disagreement 56.3% · Random 50.0%"]
+    T --> CI["cluster bootstrap CI<br>60 台站 × 1000 · seed 42<br>Trust−Random@50: [19.0, 35.65]"]
+    T --> HO["holdout 佐证 n=260 · errors=161<br>Trust 80.1% vs Random 49.9%"]
+```
+
+---
+
+## 补充建议（按答辩价值排序）
+
+1. ✅ **单样本决策时序图** — 见上图 8。
+2. ✅ **Equal-Coverage 协议图** — 见上图 9。
+3. ✅ **Reason Code → 解释模板对应表** — 已写入 [schema_contract.md §13](schema_contract.md)（A 提供、B 复制）。
+4. ✅ **Review Budget 实验设计图** — 见上图 10。
+5. **PNG 导出**：Mermaid 源已可渲染；图片版在 `docs/figures/`（由
+   `@mermaid-js/mermaid-cli` 批量导出，10/10 语法校验通过）。答辩最值得入片：
+   图 1 / 2 / 4 / 6 / 8 / 9。
+
+   | 文件 | 内容 |
+   |------|------|
+   | 01_business_flow.png | 系统业务流程图 |
+   | 02_router_decision.png | 6 步路由决策流程图 |
+   | 03_evidence_layers.png | 四证据层风险合成 |
+   | 04_module_callgraph.png | 模块结构及调用关系 |
+   | 05_reproduction_chain.png | reproduce_main 九步复现链 |
+   | 06_exploration_loop.png | 开放探索闭环 |
+   | 07_demo_deploy.png | Demo 部署结构 |
+   | 08_decision_sequence.png | 单样本决策时序图 |
+   | 09_equal_coverage.png | Equal-Coverage 协议图 |
+   | 10_review_budget.png | Review Budget 实验设计图 |
 
 > 图 2 的 reason code 与 `src/trust_engine/policy_router.py` 逐字一致；
 > 图 3 的权重与 `configs/semifinal_main.yaml`（data 30 / single 24 / multi 37 /
-> physics 40）及 `reliability.py` 的合成公式一致；图 6 的数字全部来自
+> physics 40）及 `reliability.py` 的合成公式一致；图 6/9/10 的数字全部来自
 > `results/` 冻结产物。
