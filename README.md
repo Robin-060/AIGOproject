@@ -113,6 +113,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
 | [参数溯源表](docs/parameter_provenance.md) | 每个参数的来源与校准方法 |
 | [数据与模型来源](docs/data_and_model_sources.md) | 数据合规声明 |
+| [第三方声明](THIRD_PARTY_NOTICES.md) | 数据、软件、模型权重与许可证边界 |
 | [开源计划](docs/open_source_plan.md) | 开源路线图 |
 | [范围与合规](docs/scope_and_compliance.md) | 项目边界与合规说明 |
 | [失败案例分析](docs/experiments/failure_cases.md) | 已知失效模式 |
@@ -133,10 +134,14 @@ src/
 
 ## 数据与模型合规
 
-- 数据：SeisBench OBS 数据集（Zenodo 公开，Bornstein et al., 2023）
-- 模型：全部公开预训练权重（SeisBench 仓库）
-- 无闭源模型、无受限数据、无第三方商业 API
-- 不接触南海受限或涉密 OBS 数据，不进行海上采集
+- 数据：Zenodo OBS / PickBlue 数据集，DOI `10.5281/zenodo.10277799`，CC BY 4.0；
+  原始波形不随仓库重新分发。
+- 模型：PhaseNet `geofon`、PhaseNet/PickBlue `obs`、OBSTransformer `obst2024`、
+  EQTransformer `obs`；权重由 SeisBench 下载，不随仓库打包。
+- 训练—评估重叠：OBS checkpoint 当前为 UNKNOWN，因此不据此声称独立跨数据集泛化。
+- 未使用闭源模型服务、第三方商业 API、南海受限或涉密 OBS 数据。
+- 顶层 MIT 仅覆盖团队有权许可的原创代码与文档；完整边界见
+  [数据与模型来源](docs/data_and_model_sources.md)和[第三方声明](THIRD_PARTY_NOTICES.md)。
 
 ## License
 
