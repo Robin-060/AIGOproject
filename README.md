@@ -78,7 +78,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | 配对 bootstrap 非劣界 | ΔUnsafe 单侧 95% 上界 **+2.24pp**；点估计 **+0.92pp** |
 | 科研结论 | Coverage 已恢复；Unsafe 点估计与 Voting 接近，但 +2.0pp 非劣界尚未统计确认 |
 | Risk ranking | 保持有效，不因 R1 robustness check 改变 |
-| R1 robustness | **PASS**；运行路径实际使用校准容差 P=0.34s / S=0.51s，结果与冻结 EXP17 一致 |
+| R1 explicit-parameter reproduction | **PASS**；运行路径使用校准容差 P=0.34s / S=0.51s，复算与冻结 EXP17-A 一致；R1 reproduction PASS ≠ EXP17 safety Gate PASS |
 | 参数审计 | 红灯参数 **0**；legacy P0.30/S0.50 不在正式运行路径 |
 | 测试 | **76 tests passed** |
 
@@ -141,3 +141,5 @@ src/
 ## License
 
 [MIT](LICENSE)
+
+MIT 仅覆盖本项目团队自行编写的代码。数据集、SeisBench、预训练模型权重及其他第三方依赖仍分别受其原始许可证和使用条款约束。

@@ -46,6 +46,9 @@ if missing:
 print(f"  {len(required)} 个冻结数据文件齐全")
 PY
 
+echo "[EXP17] evidence consistency check"
+"$PY" scripts/verify_exp17_evidence.py
+
 echo "[4/4] 全仓库单元测试"
 "$PY" -m pytest src/trust_engine/tests/ -q
 

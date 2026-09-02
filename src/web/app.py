@@ -441,47 +441,79 @@ def _render_batch_statistics(items: List[Dict[str, Any]]) -> None:
 def _render_experiments() -> None:
 
     st.divider()
-    # EXP17 / R1 frozen robustness result
-    st.subheader("EXP17 / R1 Robustness")
+    # EXP17 / R1 frozen evidence
+    st.subheader("EXP17 / R1 Evidence")
 
     import json as _json
     exp17_path = ROOT / "results" / "exp17_robustness_R1.json"
+    summary_path = ROOT / "results" / "exp17_summary_A.json"
+    paired_path = ROOT / "results" / "paired_bootstrap_A.json"
 
-    if exp17_path.exists():
+    if exp17_path.exists() and summary_path.exists() and paired_path.exists():
         with open(exp17_path, "r", encoding="utf-8") as _f:
             exp17 = _json.load(_f)
+        with open(summary_path, "r", encoding="utf-8") as _f:
+            summary = _json.load(_f)
+        with open(paired_path, "r", encoding="utf-8") as _f:
+            paired = _json.load(_f)
+
+        criteria = summary.get("criteria", {})
+        c1_data = criteria.get("c1_ceiling_ge_50", {})
+        c2_data = criteria.get("c2_non_inferiority_vs_voting_2pp", {})
+        c3_data = criteria.get("c3_review_curve_preserved", {})
+        c4_data = criteria.get("c4_risk_bin_ordering_preserved", {})
+
+        coverage = c1_data.get("value_pct", "N/A")
+        unsafe = paired.get("point_unsafe_exp_50_pct", "N/A")
+        delta_unsafe = paired.get("point_delta_pp", "N/A")
+        upper95 = paired.get("one_sided_upper95_pp", "N/A")
+        threshold = paired.get("threshold_pp", "N/A")
+        interception = c3_data.get("interception_50_budget_pct", "N/A")
+
+        m1, m2, m3, m4, m5 = st.columns(5)
+        m1.metric("Coverage", f"{coverage}%")
+        m2.metric("Unsafe @ 50%", f"{unsafe}%")
+        m3.metric("ΔUnsafe", f"+{delta_unsafe} pp")
+        m4.metric("Paired 95% upper", f"+{upper95} pp")
+        m5.metric("Safety margin", f"+{threshold} pp")
+
+        st.markdown(
+            f"**c1 Coverage:** {'PASS' if c1_data.get('pass') else 'FAIL'}  ·  "
+            f"**c2 Safety:** {'PASS' if c2_data.get('pass') else 'NOT ESTABLISHED'}  ·  "
+            f"**c3 Review ranking:** {'PASS' if c3_data.get('pass') else 'FAIL'}  ·  "
+            f"**c4 Risk bins:** {'PASS' if c4_data.get('pass') else 'FAIL'}"
+        )
+
+        st.metric("Error Interception @ 50% review budget", f"{interception}%")
+        st.caption("Risk-bin error rates: 4.17% → 9.14% → 28.57%")
 
         r1 = exp17.get("result_under_alternative", {})
+        r1_verdict = str(exp17.get("verdict", ""))
 
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Coverage ceiling", f"{r1.get('ceiling_pct', 'N/A')}%")
-        c2.metric("Unsafe @ 50%", f"{r1.get('unsafe_50_pct', 'N/A')}%")
-        c3.metric(
-            "Error Interception @ 50% budget",
-            f"{r1.get('interception_50_budget_pct', 'N/A')}%",
-        )
-
-        bootstrap = r1.get("paired_bootstrap_one_sided_upper95_pp", "N/A")
-        c4.metric(
-            "Paired bootstrap 95% upper",
-            f"+{bootstrap} pp" if bootstrap != "N/A" else "N/A",
-        )
-
-        verdict = str(exp17.get("verdict", ""))
-        if verdict.startswith("PASS"):
+        if r1_verdict.startswith("PASS"):
             st.success(
-                "R1 robustness check: PASS — calibrated P=0.34s / S=0.51s "
-                "reproduces the frozen EXP17 conclusion."
+                "Explicit-parameter reproduction PASS — P=0.34s / S=0.51s "
+                "exactly reproduces the frozen EXP17-A result."
             )
         else:
-            st.warning(f"R1 robustness verdict: {verdict}")
+            st.warning(f"R1 reproduction verdict: {r1_verdict}")
+
+        st.warning(
+            "R1 reproduction PASS ≠ EXP17 safety Gate PASS. "
+            "Coverage recovery supported; safety non-inferiority inconclusive."
+        )
 
         st.caption(
-            "Frozen source: results/exp17_robustness_R1.json · "
-            "Displayed separately from the historical Equal-Coverage artifact."
+            "A candidate retained for reporting Coverage recovery; "
+            "not a deployment-ready final policy. "
+            "Authoritative c2 source: results/paired_bootstrap_A.json."
+        )
+
+        st.caption(
+            "Historical v1.5.1 Equal-Coverage results remain frozen and are displayed separately below."
         )
     else:
-        st.info("EXP17/R1 frozen result not found.")
+        st.info("EXP17/R1 frozen evidence files not found.")
 
     st.divider()
 
@@ -655,32 +687,45 @@ def _render_experiments() -> None:
             if c in baseline_rows.columns
         ]
 
-        st.markdown("**Frozen baseline comparison**")
-        st.dataframe(
-            baseline_rows[available_columns],
-            use_container_width=True,
-            hide_index=True,
+        comparison_view = st.radio(
+            "Frozen comparison view",
+            ["Trust Layer", "Frozen Baseline"],
+            horizontal=True,
+            key="frozen_feedback_comparison_view",
         )
 
-        if not trust_rows.empty:
+        if comparison_view == "Trust Layer":
             st.markdown("**Trust Layer frozen row**")
-            trust_available = [
-                c for c in display_columns
-                if c in trust_rows.columns
-            ]
-            st.dataframe(
-                trust_rows[trust_available],
-                use_container_width=True,
-                hide_index=True,
-            )
+            if not trust_rows.empty:
+                trust_available = [
+                    c for c in display_columns
+                    if c in trust_rows.columns
+                ]
+                st.dataframe(
+                    trust_rows[trust_available],
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            else:
+                st.info("No Trust Layer frozen row is available for this target.")
+        else:
+            st.markdown("**Frozen baseline comparison**")
+            if not baseline_rows.empty:
+                st.dataframe(
+                    baseline_rows[available_columns],
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            else:
+                st.info("No frozen baseline rows are available for this target.")
 
-            version = trust_row.get("config_version", "unknown")
-            cfg_hash = str(trust_row.get("config_hash", "unknown"))
+        version = trust_row.get("config_version", "unknown")
+        cfg_hash = str(trust_row.get("config_hash", "unknown"))
 
-            st.caption(
-                f"Result identity · config={version} · "
-                f"hash={cfg_hash[:12]}…"
-            )
+        st.caption(
+            f"Result identity · config={version} · "
+            f"hash={cfg_hash[:12]}…"
+        )
 
     else:
         st.error(
@@ -704,6 +749,13 @@ def _render_experiments() -> None:
     # ------------------------------------------------------------
     st.divider()
     st.subheader("Case Explorer")
+    st.info(
+        "Evidence boundary: frozen failure_raw.csv supports real failure cases "
+        "and SNR / gap / clipping quality evidence, but does not provide "
+        "per-case model confidence or disagreement/spread fields. "
+        "High-confidence-error and disagreement classifications are therefore "
+        "not inferred by the frontend."
+    )
     st.caption(
         "Inspect frozen Trust Layer decisions from results/failure_raw.csv. "
         "This panel only reads frozen results and does not recompute metrics."
