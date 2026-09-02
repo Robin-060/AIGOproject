@@ -333,9 +333,12 @@ class _AbstainExplanationMap(dict):
                 )
 
             model = body
+            # 裸 ONLY_SURVIVOR_{model} 是 ACCEPT/ROUTE 动作的原因码
+            # (唯一幸存模型通过全部门槛被选中自动输出), 不是 ABSTAIN 原因;
+            # 面板只对 ABSTAIN 渲染解释, 此分支仅作确定性兜底, 不得写成"拒绝"。
             return (
-                f"Only {model} survived validation. A single surviving model is "
-                "insufficient for automatic fusion, so the system abstains."
+                f"Only {model} survived validity filtering and was selected "
+                "as the automatic output (ACCEPT/ROUTE)."
             )
 
         return default
