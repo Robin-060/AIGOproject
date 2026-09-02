@@ -34,6 +34,9 @@
 
 核心机制：**证据不足时，系统说"我不确定"而不是猜答案。**
 
+> 完整图示（业务流程图 / 6 步路由决策图 / 四证据层 / 模块调用关系 / 复现链 /
+> 探索闭环 / Demo 部署）见 [架构与流程图示](docs/architecture_diagrams.md)。
+
 ## 快速开始
 
 ```bash
@@ -105,6 +108,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | [问题定义文档](docs/problem_definition.md) | 4 页问题定义（比赛主材料） |
 | [最终实验报告](docs/final_report.md) | 完整实验设置、结果与分析 |
 | [复现说明](docs/reproduction.md) | 一键复现入口、环境、核心数字 |
+| [架构与流程图示](docs/architecture_diagrams.md) | 业务流、6 步路由、四证据层、模块调用、复现链、探索闭环、Demo 部署 |
 | [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
 | [参数溯源表](docs/parameter_provenance.md) | 每个参数的来源与校准方法 |
