@@ -17,7 +17,7 @@ bash reproduce_core.sh                   # 一键复现核心数字与三张主�
 shell 入口适用于 Linux/macOS，以及安装了 Git Bash 或 WSL 的 Windows；
 纯 PowerShell 可直接运行等价 Python 命令。
 
-EXP17（post-hoc refinement）的复现命令与预期数字见 **§8**；
+EXP17（post-hoc refinement）的复现命令与预期数字见 **§7**；
 全部关键文件的 sha256 与 c1–c4 裁决见 `results/evidence_manifest.json`。
 
 ## 2. 环境
@@ -85,7 +85,7 @@ INCONCLUSIVE（Δ=−1.33pp，CI [−4.62,+2.13]）；S 相在自身 45.45%
 - EQT 批量：`python -m src.experiments.run_eqt_batch`（断点续跑）
 - 注意：模型推理输出随环境波动（±0.02s 量级），冻结预测为评估唯一口径
 
-## 8. EXP17 复现（post-hoc failure-driven refinement，不覆盖 v1.5.1）
+## 7. EXP17 复现（post-hoc failure-driven refinement，不覆盖 v1.5.1）
 
 前置：先完成 §1 主链复现（EXP17 的 v1.5.1 对账以 `results/main_results.csv` 为参照）。
 EXP17 使用环境变量 `OBS_EXP17_POLICY` 显式开启干预，默认关闭 = v1.5.1 冻结行为；
@@ -97,7 +97,7 @@ EXP17 使用环境变量 `OBS_EXP17_POLICY` 显式开启干预，默认关闭 = 
 bash reproduce_exp17.sh
 ```
 
-### 8.1 命令与输出
+### 7.1 命令与输出
 
 | 步骤 | 命令 | 输出 |
 |---|---|---|
@@ -108,7 +108,7 @@ bash reproduce_exp17.sh
 | 4. EXP17-C floor sweep（留档） | `python -m src.experiments.exp17_policy_refinement --floor-sweep` | `results/floor_sweep.json` + `main_results_floorsweep_*.csv` |
 | 5. R1 核验 | 只读核验（不重算）：`results/exp17_robustness_R1.json` 的 verdict/identical/alternative 字段 + `configs/semifinal_main.yaml` 的 `consensus_tolerance_p_s/s` 必须为 0.34/0.51 | `results/exp17_robustness_R1.json`（冻结裁决记录） |
 
-### 8.2 预期数字（核验标准，以数值对账为准）
+### 7.2 预期数字（核验标准，以数值对账为准）
 
 | 产物 | 预期 |
 |---|---|
@@ -122,13 +122,13 @@ bash reproduce_exp17.sh
 统一结论（全链通过后引用）：
 **Coverage recovery supported; safety non-inferiority inconclusive.**
 
-### 8.3 注意事项
+### 7.3 注意事项
 
 - 核验以数值对账为准，不比较文件字节（行尾规范跨平台）。
 - 任何一步失败即停止并记负结果；禁止为达标调整 +2.0pp 界、bootstrap 口径或干预参数。
 - B/A+B/floor sweep 为负结果与留档实验，复现后仍须保留原裁决（FAIL/弃用），不得改写为通过。
 
-## 9. 已知边界（如实声明）
+## 8. 已知边界（如实声明）
 
 - obs/obst2024 与评估集的训练重叠未审计（overlap UNKNOWN）——按 C 契约
   相关结论降级表述

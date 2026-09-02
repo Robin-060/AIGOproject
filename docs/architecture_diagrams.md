@@ -206,7 +206,7 @@ flowchart LR
     T1["v1.5.1 冻结负结果<br>天花板 45.64%<br>S 相 Δ+3.39pp 更差"] --> T2["Implementation audit<br>执行路径审计"]
     T2 --> T3["ROUTE bugfix 基线<br>7 个 invalid-pick<br>核心数字零变化"]
     T3 --> T4["Failure decomposition<br>703 未自动<br>487 / 112 / 99 / 5"]
-    T4 --> T5["EXP17-A Consensus Route<br>采用：54.13% / 5.51% / 94.26%<br>c2 上界 +2.24pp → 非劣未确认"]
+    T4 --> T5["EXP17-A Consensus Route<br>最佳候选：54.13% / 5.51% / 94.26%<br>c2 上界 +2.24pp → 非劣未确认；不作部署结论"]
     T4 --> T6["EXP17-B 唯一可用幸存者<br>81.62% 但 c2 +4.87 / c3 64.55%<br>双败弃用"]
     T4 --> T7["EXP17-C floor sweep<br>留档：0.60→51.76% 等<br>劣于 A，不升级"]
     T5 --> T8["EXP17-R1 参数来源审计<br>P=0.34/S=0.51 显式重跑<br>完全一致 · 76/76 tests"]

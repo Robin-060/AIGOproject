@@ -2,17 +2,21 @@
 
 This is the human-readable dependency inventory for the OBS Trust Layer release.
 
-Source of dependency constraints: `requirements.txt`.
+Sources of dependency constraints: `requirements-core.txt`, `requirements.txt`, and `Dockerfile`.
 
-| Component | Declared version constraint | Role |
-|---|---|---|
-| streamlit | >=1.35,<2 | Web interface |
-| pandas | >=2.0,<3 | Data processing |
-| matplotlib | >=3.7,<4 | Figures / visualization |
-| scipy | >=1.11,<2 | Scientific computing |
-| pytest | >=7,<9 | Testing |
-| seisbench | >=0.12.3,<0.13 | Seismological datasets/models |
-| PyYAML | >=6.0,<7 | Configuration |
+| Component | Declared version constraint | Role | Upstream license |
+|---|---|---|---|
+| numpy | >=1.23,<3 | Numerical computing | BSD-3-Clause |
+| streamlit | >=1.35,<2 | Web interface | Apache-2.0 |
+| pandas | >=2.0,<3 | Data processing | BSD-3-Clause |
+| matplotlib | >=3.7,<4 | Figures / visualization | Matplotlib/PSF-compatible |
+| scipy | >=1.11,<2 | Scientific computing | BSD-3-Clause |
+| pytest | >=7,<9 | Testing | MIT |
+| seisbench | >=0.12.3,<0.13 | Seismological datasets/models | GPL-3.0 |
+| PyYAML | >=6.0,<7 | Configuration | MIT |
+| fastapi | unpinned in Dockerfile | Demo backend | MIT |
+| uvicorn | unpinned in Dockerfile | ASGI server | BSD-3-Clause |
+| python-multipart | unpinned in Dockerfile | Upload parsing | Apache-2.0 |
 
 ## Project code
 
@@ -33,7 +37,8 @@ own upstream licenses and redistribution conditions.
 
 ## Scope note
 
-This file records declared project components and dependency constraints.
-It is not a claim that every third-party asset is redistributable, and it does not
-replace checkpoint-specific or dataset-specific license verification.
-
+This file records declared direct components and dependency constraints. It is not
+a complete transitive or machine-generated SBOM, does not claim that every third-party
+asset is redistributable, and does not replace checkpoint-specific or dataset-specific
+license verification. The final release archive should retain the lockfile/environment
+export and all upstream LICENSE/NOTICE files required by the resolved dependency graph.

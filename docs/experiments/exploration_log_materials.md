@@ -25,7 +25,7 @@
 | EXP14 | FUSE 门绕过审计 + NOT_EVALUABLE 纪律 | **负结果→修正** | 堵 4.5 步绕过后天花板 54.2→45.6%；50% 点 NOT_EVALUABLE；DS5 域门新标准未成立 |
 | EXP15 | cluster bootstrap 重复权重修正 | **负结果** | S 相在自身 45.45% 天花板处 Δ=+3.39pp，CI [+0.90,+5.96]，显著差于 Voting |
 | EXP16 | Review Budget–Error Interception 曲线（C 追加） | 正向发现 | 固定复核预算下 Trust 风险排序全面领先: 50% 预算截获 83.6% vs Random 50.0% |
-| EXP17 | Policy Refinement（post-hoc failure-driven，判据预注册） | **正/负结果** | A 共识路由采用（45.64→54.13%，c1/c3/c4 PASS，c2 非劣未确认 +2.24pp）；B 仅可用幸存者弃用（81.62% 但 c2 +4.87pp、c3 64.55% 双败）；A+B 留档 FAIL → 采用 A |
+| EXP17 | Policy Refinement（post-hoc failure-driven，判据版本及修订留痕） | **正/负结果** | A 共识路由保留为最佳候选（45.64→54.13%，c1/c3/c4 PASS，c2 非劣未确认 +2.24pp）；B 仅可用幸存者弃用（81.62% 但 c2 +4.87pp、c3 64.55% 双败）；A+B 留档 FAIL |
 
 ## 二、逐条素材卡
 
@@ -212,9 +212,9 @@
   results/review_budget_ci.json、results/review_budget_interpolation.json、
   results/review_budget_summary_holdout.json、figures/review_budget_curve.png
 
-### EXP17 Policy Refinement（post-hoc failure-driven，判据预注册，v1.5.1 之后）
+### EXP17 Policy Refinement（post-hoc failure-driven，判据版本及修订留痕，v1.5.1 之后）
 - **H**：天花板 45.64% 主要来自第 4.5/5 步的保守 ABSTAIN 设计，改决策逻辑
-  即可在不牺牲安全的前提下过 50%（判据预注册: docs/experiments/exp17_preregistration.md）
+  即可检验在安全边界约束下恢复至 50% 以上的可行性（判据版本及修订记录：docs/experiments/exp17_preregistration.md）
 - **E**：三干预单变量（A Consensus Route / B Only-usable-survivor /
   C floor sweep），顺序执行逐干预验收；最终裁决四判据（C 方案 a，锚点修订留痕）:
   c1 Coverage≥50% + c2 ΔUnsafe vs Voting@50（4.59%）单侧 95% 上界 <+2.0pp
@@ -227,13 +227,14 @@
   **截获@50%预算塌到 64.55%**（risk ranking 被稀释，正是 C 警示的失败模式）；
   A+B 累加天花板 90.12% 但 c2 上界 +4.0pp 仍超阈 → **弃用 B**。
   纪律生效: 覆盖率好看 ≠ 可接受，判据失败即回退，未做任何参数微调
-- **R**：**最终裁决（2026-09-01，C 方案 a）**：采用 A；v1.5.1 冻结产物零改动
+- **R**：**最终裁决（2026-09-01，C 方案 a）**：A 保留为 Coverage/ranking 最佳候选，
+  但不视为通过安全非劣 Gate 的部署策略；v1.5.1 冻结产物零改动
   （默认路径 1306 单元逐一对账零差异；ROUTE invalid-pick bug 已按 v1.5.1-bugfix
   单独修复，前后对照 7 个假输出单元、数值零变化）。
   正式表述口径（C 定稿）：
   "在不增加模型、不重新训练的情况下，failure-driven policy refinement 使
   自动覆盖率相对提高约 18.6%（45.64%→54.13%，+8.49pp）；同时 Trust 风险排序
-  显著提高人工复核效率。安全性点估计接近 Voting（+0.92pp，绿灯内），但在预设
+  显著提高人工复核效率。安全性点估计接近 Voting（+0.92pp，绿灯内），但在最终裁决
   +2pp 非劣界下尚未获得充分统计证据（配对 bootstrap 单侧 95% 上界 +2.24pp）。"
   Review prioritization 明确成立；Automation coverage 明确恢复；
   **安全非劣只写"接近、未确认"，绝不写"持平"或"通过"**
@@ -248,7 +249,8 @@
   静态审计发现运行路径 fusion 容差已读校准共识容差 0.34/0.51，legacy 常量
   0.30/0.50 仅剩 config=None 兜底（不触发）→ 替代值下 A 结果与冻结 EXP17-A
   完全一致（天花板 54.13% / 5.51 / 94.26% / 配对上界 +2.24pp）→ **PASS，
-  红灯解除：主 Claim 不依赖 legacy 常量**；fusion 未使用 import 已删、
+  仅表示复现一致性，不代表 c2 或 EXP17 总体 Gate PASS**；参数来源红灯解除，
+  主 Claim 不依赖 legacy 常量；fusion 未使用 import 已删、
   multi_model 常量标注 legacy 兜底
 - **出处**：results/exp17_summary_A.json、results/paired_bootstrap_A.json、
   results/main_results_exp17_A.csv、results/floor_sweep.json、

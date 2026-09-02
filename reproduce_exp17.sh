@@ -41,7 +41,7 @@ PYEOF
 
 echo ""
 echo "=================================================="
-echo "[1] EXP17-A Consensus Route (最终采用路径)"
+echo "[1] EXP17-A Consensus Route (Coverage/ranking 最佳候选；c2 未确认)"
 echo "=================================================="
 "$PY" -m src.experiments.exp17_policy_refinement --intervention A
 

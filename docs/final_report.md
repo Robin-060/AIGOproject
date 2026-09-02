@@ -53,7 +53,7 @@
 
 ### 5.1 身份与边界
 
-EXP17 是 v1.5.1 之后的 **post-hoc failure-driven refinement**，不是原始预声明实验；判据预注册于 `docs/experiments/exp17_preregistration.md`（先于干预执行冻结，修订记录留痕）。实验不修改数据、模型、GT、容差、seed、Voting 参照与 +2.0pp 界；routing rule 只使用推理时可见证据（truth-blind），禁止使用 evaluation truth。
+EXP17 是 v1.5.1 之后的 **post-hoc failure-driven refinement**，不是原始预声明实验。数据、模型、评价单元与 truth-blind 边界保持冻结；初版判据及后续修订均在 `docs/experiments/exp17_preregistration.md` 留痕。当前四判据按最终裁决协议执行，其中 c2 的 Voting@50 配对 bootstrap 口径在探索过程中完成修订，因此不构成严格预注册确证。routing rule 只使用推理时可见证据，禁止使用 evaluation truth。
 
 ### 5.2 bugfix 与 refinement 分轨
 
@@ -68,7 +68,7 @@ EXP17 是 v1.5.1 之后的 **post-hoc failure-driven refinement**，不是原始
 
 | 方案 | c1 Coverage | c2 Safety | c3 Review @50% | c4 分箱 | 裁决 |
 |---|---|---|---|---|---|
-| A Consensus Route | 54.13% ✓ | 点估计 +0.92pp；上界 +2.24pp ✗ | 94.26% ✓ | 4.17→9.14→28.57 ✓ | **采用**（c2 未确认，不宣称整体 PASS） |
+| A Consensus Route | 54.13% ✓ | 点估计 +0.92pp；上界 +2.24pp ✗ | 94.26% ✓ | 4.17→9.14→28.57 ✓ | **保留为最佳候选 refinement**（用于报告 Coverage recovery；c2 未确认，不作部署结论） |
 | B Only-usable-survivor | 81.62% ✓ | 上界 +4.87pp ✗ | 64.55% ✗ | PASS | **弃用**（safety+ranking 双败，负结果保留） |
 | A+B 累加 | 90.12% ✓ | 上界 +4.0pp ✗ | 84.96% | — | **弃用组合**（留档） |
 | C floor sweep | 0.60→51.76%；0.55→53.22% | 各档 c2 均 ✗ | — | — | 留档实验，不升级；均劣于 A |
@@ -137,10 +137,10 @@ Streamlit Demo（`src/web/`）消费冻结结果与真实 Trust Engine：Fixed�
 ## 11. 复现
 
 - 主链一键复现：`bash reproduce_core.sh`（等价 `python -m src.experiments.reproduce_main`，九步，含冻结物 sha256 校验）。
-- EXP17 复现命令与预期数字：见 `docs/reproduction.md` §8。
+- EXP17 复现命令与预期数字：见 `docs/reproduction.md` §7。
 - 测试：`python -m pytest -q` → 76 passed。
 - 证据交接包：`results/evidence_manifest.json`。
 
 ## 12. 结论
 
-Trust Layer 的组合风险证据可用于人工复核优先级排序（EXP16 正结果）；failure decomposition 证明 45.64% 天花板来自 policy 保守而非模型无候选；truth-blind EXP17-A 将 Coverage 恢复至 54.13%（Unsafe 5.51%，截获 94.26%），且结果不依赖 legacy 参数——但相对 Voting 的 CI 级安全非劣尚未建立。所有负结果、bugfix 与 refinement 分轨留痕，全部数字可沿 data → config → script → raw result → figure/table 追溯。
+Trust Layer 的组合风险证据可用于人工复核优先级排序（EXP16 正结果）；failure decomposition 支持 45.64% 天花板主要来自 policy 保守而非模型普遍无候选；truth-blind EXP17-A 将 Coverage 恢复至 54.13%（Unsafe 5.51%，截获 94.26%），且结果不依赖 legacy 参数——但相对 Voting 的 CI 级安全非劣尚未建立。所有负结果、bugfix 与 refinement 分轨留痕，全部数字可沿 data → config → script → raw result → figure/table 追溯。
