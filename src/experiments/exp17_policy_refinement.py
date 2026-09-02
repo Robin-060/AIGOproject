@@ -6,12 +6,14 @@ exp17_policy_refinement.py — EXP17 第二阶段干预执行器 (预注册判�
   --intervention B  only_usable_survivor (预留, 尚未实现)
 每个干预独立验收, 输出全部使用 _exp17 后缀新文件, 不覆盖 v1.5.1 产物。
 
-验收判据 (钉死):
+验收判据 (钉死, 最终裁决口径):
   1) 覆盖率天花板 ≥ 50%
-  2) Unsafe@50% 与 v1.5.1 天花板点 6.04% 的差值, cluster paired bootstrap
-     (60 台站 × 1000 次, seed 42) 单侧 95% 上界 < +2.0pp
-  3) holdout 一致性 (覆盖率不下降, Unsafe 方向不矛盾) — 辅助报告
-  4) Error Interception@50% 复核预算 — 仅报告
+  2) Unsafe@50% 相对 Voting@50% 冻结锚点 (4.59%) 的差值, 配对 cluster
+     bootstrap (60 台站 × 1000 次, seed 42) 单侧 95% 上界 < +2.0pp
+     (配对产物 paired_bootstrap_{tag}.json 存在时以其为准; 内置非配对版只作留存)
+  3) Review Budget 曲线保持 (截获@50%预算 ≥ v1.5.1 冻结值)
+  4) 风险分箱排序保持单调 (可靠箱 n≥10)
+  另: holdout 一致性仅作辅助报告, 不参与 PASS/FAIL
 
 用法:
   python -m src.experiments.exp17_policy_refinement --intervention A
@@ -211,6 +213,18 @@ def review_curve_reference():
     return float(ref)
 
 
+def paired_bootstrap_reference(tag):
+    """C Gate 2 最终裁定口径: 读配对 cluster bootstrap 冻结产物.
+
+    paired_bootstrap_{tag}.json 若存在, 以其单侧 95% 上界作为 c2 门禁数值;
+    内置 bootstrap_unsafe_delta (参照点固定) 只作诊断留存, 不参与门禁。
+    """
+    p = ROOT / "results" / f"paired_bootstrap_{tag}.json"
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 def run_intervention(tag, env_value, frozen):
     rows, _frozen = chain_rows(env_value)
     out_csv = ROOT / "results" / f"main_results_exp17_{tag}.csv"
@@ -223,11 +237,16 @@ def run_intervention(tag, env_value, frozen):
     ho = holdout_stats(rows)
     voting_ref = voting_reference_unsafe50()
     boot = bootstrap_unsafe_delta(rows, voting_ref)
+    paired = paired_bootstrap_reference(tag)
+    gate_boot = paired if paired is not None else boot
+    bootstrap_source = (f"paired_bootstrap_{tag}.json"
+                        if paired is not None else "in-runner non-paired")
     bins = risk_bins_evaluate(rows)
     ref_inter = review_curve_reference()
 
     crit1 = m["ceiling_pct"] >= 50.0
-    crit2 = (m["feasible_50"] and boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
+    crit2 = (m["feasible_50"]
+             and gate_boot["one_sided_upper95_pp"] < MAX_DELTA_UPPER_PP)
     green_light = (m["unsafe_50_pct"] is not None
                    and (m["unsafe_50_pct"] - voting_ref) <= GREEN_LIGHT_POINT_PP)
     # 判据 3 (C 指示): Review Budget 曲线保持 — 截获@50%预算不低于 v1.5.1 冻结值
@@ -241,6 +260,7 @@ def run_intervention(tag, env_value, frozen):
         "policy": env_value,
         "config_version": frozen.version, "config_hash": frozen.sha256,
         "metrics": m, "holdout": ho, "unsafe_delta_bootstrap": boot,
+        "unsafe_delta_bootstrap_paired": paired,
         "risk_bins": bins,
         "review_curve_reference_interception_50_pct": ref_inter,
         "criteria": {
@@ -251,7 +271,8 @@ def run_intervention(tag, env_value, frozen):
                 "voting_unsafe_50_pct": voting_ref,
                 "point_delta_pp": (round(m["unsafe_50_pct"] - voting_ref, 2)
                                    if m["unsafe_50_pct"] is not None else None),
-                "one_sided_upper95_pp": boot["one_sided_upper95_pp"],
+                "one_sided_upper95_pp": gate_boot["one_sided_upper95_pp"],
+                "bootstrap_source": bootstrap_source,
                 "threshold_pp": MAX_DELTA_UPPER_PP,
                 "green_light_point_le_1pp": bool(green_light)},
             "c3_review_curve_preserved": {
@@ -272,9 +293,10 @@ def run_intervention(tag, env_value, frozen):
     print(f"[{tag}] 天花板 {m['ceiling_pct']:.2f}% | "
           f"50% 点 Unsafe {m['unsafe_50_pct']} (feasible={m['feasible_50']}) | "
           f"截获@50%预算 {m['interception_50_budget_pct']}%")
-    print(f"      ΔUnsafe 单侧95%上界 {boot['one_sided_upper95_pp']:+.2f}pp "
-          f"(阈值 +{MAX_DELTA_UPPER_PP}pp) | CI[{boot['ci95_lo_pp']:+.2f}, "
-          f"{boot['ci95_hi_pp']:+.2f}]")
+    print(f"      ΔUnsafe 单侧95%上界 {gate_boot['one_sided_upper95_pp']:+.2f}pp "
+          f"(阈值 +{MAX_DELTA_UPPER_PP}pp, 来源 {bootstrap_source}) | "
+          f"CI[{gate_boot['ci95_lo_pp']:+.2f}, "
+          f"{gate_boot['ci95_hi_pp']:+.2f}]")
     print(f"      holdout 天花板 {ho['holdout_ceiling_pct']}% | Unsafe@天花板 "
           f"{ho['holdout_unsafe_at_ceiling_pct']}%")
     print(f"      风险分箱: {[b['error_rate_pct'] for b in bins['bins'] if b['reliable']]} "

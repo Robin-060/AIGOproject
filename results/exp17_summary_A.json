@@ -23,6 +23,25 @@
     "one_sided_upper95_pp": 2.99,
     "n_valid_resamples": 660
   },
+  "unsafe_delta_bootstrap_paired": {
+    "tag": "EXP17-A",
+    "config_version": "semifinal_v1.5.1-bugfix",
+    "config_hash": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
+    "n_units": 1306,
+    "n_stations": 60,
+    "n_iterations": 1000,
+    "seed": 42,
+    "n_valid_resamples": 660,
+    "point_unsafe_exp_50_pct": 5.51,
+    "point_unsafe_voting_50_pct": 4.59,
+    "point_delta_pp": 0.92,
+    "bootstrap_mean_delta_pp": 0.44,
+    "ci95_lo_pp": -1.4,
+    "ci95_hi_pp": 2.58,
+    "one_sided_upper95_pp": 2.24,
+    "threshold_pp": 2.0,
+    "verdict": "NOT_NON-INFERIOR (单侧95%上界 ≥ +2.0pp)"
+  },
   "risk_bins": {
     "bins": [
       {
@@ -68,7 +87,8 @@
       "pass": false,
       "voting_unsafe_50_pct": 4.59,
       "point_delta_pp": 0.92,
-      "one_sided_upper95_pp": 2.99,
+      "one_sided_upper95_pp": 2.24,
+      "bootstrap_source": "paired_bootstrap_A.json",
       "threshold_pp": 2.0,
       "green_light_point_le_1pp": true
     },
