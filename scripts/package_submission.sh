@@ -12,54 +12,87 @@ mkdir -p "${output_dir}"
 git archive --format=zip --prefix="OBS_Trust_Engine/" \
   --output="${archive_path}" "${release_tag}"
 
-unzip -t "${archive_path}" >/dev/null
+python3 - "${archive_path}" <<'PY'
+import io
+import re
+import sys
+import zipfile
 
-if unzip -Z1 "${archive_path}" | grep -E \
-  '(^|/)(\.git|\.pytest_cache|__pycache__|\.DS_Store)(/|$)' >/dev/null; then
-  echo "ERROR: archive contains excluded development files" >&2
-  exit 1
-fi
+archive_path = sys.argv[1]
+root = "OBS_Trust_Engine/"
+required = {
+    root + "README.md",
+    root + "JUDGE_QUICKSTART.md",
+    root + "SUBMISSION_MANIFEST.md",
+    root + "environment_spec.md",
+    root + "THIRD_PARTY_NOTICES.md",
+}
+patterns = (
+    re.compile(b"/" + b"Users/"),
+    re.compile(b"/" + b"home/" + b"[^/]+/"),
+    re.compile(b"AK" + b"IA" + b"[0-9A-Z]{16}"),
+    re.compile(b"gh" + b"p_" + b"[A-Za-z0-9]{20,}"),
+)
 
-mac_user_prefix="/""Users/"
-sensitive_pattern="(${mac_user_prefix}|/home/[^/]+/|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{20,})"
-if unzip -p "${archive_path}" | strings | grep -E \
-  "${sensitive_pattern}" >/dev/null; then
-  echo "ERROR: archive contains a local path or token-like string" >&2
-  exit 1
-fi
 
-# DOCX/PPTX 是嵌套 ZIP：再扫描其内部 XML，避免个人路径隐藏在讲者备注或文档属性中。
-nested_dir="$(mktemp -d)"
-trap 'rm -rf "${nested_dir}"' EXIT
-while IFS= read -r office_entry; do
-  [ -n "${office_entry}" ] || continue
-  unzip -p "${archive_path}" "${office_entry}" > "${nested_dir}/office.zip"
-  if unzip -p "${nested_dir}/office.zip" | strings | grep -E \
-    "${sensitive_pattern}" >/dev/null; then
-    echo "ERROR: ${office_entry} contains a local path or token-like string" >&2
-    exit 1
-  fi
-done < <(unzip -Z1 "${archive_path}" | grep -Ei '\.(docx|pptx)$' || true)
+def scan_blob(label: str, blob: bytes) -> None:
+    for pattern in patterns:
+        if pattern.search(blob):
+            raise SystemExit(f"ERROR: sensitive path/token pattern in {label}")
 
-# 提交包只保留一套最终交付件，并确保评委入口齐全。
-for required_entry in \
-  OBS_Trust_Engine/README.md \
-  OBS_Trust_Engine/JUDGE_QUICKSTART.md \
-  OBS_Trust_Engine/SUBMISSION_MANIFEST.md \
-  OBS_Trust_Engine/environment_spec.md \
-  OBS_Trust_Engine/THIRD_PARTY_NOTICES.md; do
-  if ! unzip -Z1 "${archive_path}" | grep -Fx "${required_entry}" >/dev/null; then
-    echo "ERROR: archive is missing ${required_entry}" >&2
-    exit 1
-  fi
-done
 
-docx_count="$(unzip -Z1 "${archive_path}" | grep -Ec '^OBS_Trust_Engine/docs/deliverables/[^/]+\.docx$' || true)"
-pptx_count="$(unzip -Z1 "${archive_path}" | grep -Ec '^OBS_Trust_Engine/docs/deliverables/[^/]+\.pptx$' || true)"
-if [ "${docx_count}" -ne 1 ] || [ "${pptx_count}" -ne 1 ]; then
-  echo "ERROR: expected one final DOCX and one final PPTX (found ${docx_count}/${pptx_count})" >&2
-  exit 1
-fi
+with zipfile.ZipFile(archive_path) as outer:
+    corrupt = outer.testzip()
+    if corrupt:
+        raise SystemExit(f"ERROR: corrupt archive entry: {corrupt}")
+
+    names = outer.namelist()
+    missing = sorted(required.difference(names))
+    if missing:
+        raise SystemExit("ERROR: missing required entries: " + ", ".join(missing))
+
+    excluded_parts = {".git", ".pytest_cache", "__pycache__", ".DS_Store"}
+    for name in names:
+        if excluded_parts.intersection(name.rstrip("/").split("/")):
+            raise SystemExit(f"ERROR: excluded development entry: {name}")
+
+    docx = [
+        name for name in names
+        if name.startswith(root + "docs/deliverables/")
+        and "/" not in name[len(root + "docs/deliverables/"):]
+        and name.lower().endswith(".docx")
+    ]
+    pptx = [
+        name for name in names
+        if name.startswith(root + "docs/deliverables/")
+        and "/" not in name[len(root + "docs/deliverables/"):]
+        and name.lower().endswith(".pptx")
+    ]
+    if len(docx) != 1 or len(pptx) != 1:
+        raise SystemExit(
+            f"ERROR: expected one final DOCX and one final PPTX; found {len(docx)}/{len(pptx)}"
+        )
+
+    for name in names:
+        if name.endswith("/"):
+            continue
+        blob = outer.read(name)
+        if name.lower().endswith((".docx", ".pptx")):
+            try:
+                with zipfile.ZipFile(io.BytesIO(blob)) as office:
+                    corrupt = office.testzip()
+                    if corrupt:
+                        raise SystemExit(f"ERROR: corrupt Office entry: {name}!{corrupt}")
+                    for inner_name in office.namelist():
+                        if not inner_name.endswith("/"):
+                            scan_blob(f"{name}!{inner_name}", office.read(inner_name))
+            except zipfile.BadZipFile as exc:
+                raise SystemExit(f"ERROR: invalid Office artifact: {name}: {exc}") from exc
+        else:
+            scan_blob(name, blob)
+
+print(f"Archive audit OK: {len(names)} entries; one DOCX; one PPTX; deep scan clean")
+PY
 
 if command -v shasum >/dev/null 2>&1; then
   shasum -a 256 "${archive_path}" > "${archive_path}.sha256"
