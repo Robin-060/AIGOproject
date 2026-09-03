@@ -122,7 +122,7 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 
 ### 7.4 人工干预、post-hoc refinement、多次运行与选择规则
 
-- **人工干预（探索期真实裁决，逐条留痕）**：最终裁决（C 方案 a：采用 A / 弃用 B，c2 锚点修订为 Voting@50 4.59% 配对 bootstrap，`exp17_preregistration.md` §最终裁决与§0）；EXP17-R1 预注册（替代值 0.34/0.51 先于结果冻结）；c2 数字对齐（`e5ff41c`）。最终运行过程本身无人工干预。
+- **人工干预（探索期真实裁决，逐条留痕）**：最终裁决（C 方案 a：保留 A 为表现最佳的候选 refinement，仅用于报告 Coverage recovery；B 弃用；A 不视为通过安全非劣 Gate 的部署策略。c2 锚点修订为 Voting@50 4.59% 配对 bootstrap，见 `exp17_preregistration.md` §最终裁决与§0）；EXP17-R1 判据冻结（替代值 0.34/0.51 先于结果运行）；c2 数字对齐（`e5ff41c`）。最终运行过程本身无人工干预。
 - **post-hoc 身份**：EXP17 是 post-hoc、failure-driven refinement，不是原始预注册确证实验；判据修订均留痕。
 - **多次运行与 A/B 选择规则**：干预单变量、顺序 A→B→C、逐干预验收；四判据全部满足才 PASS，任一失败回退记负结果；禁止为达标微调干预参数、界值或 bootstrap 口径；点估计 ≤+1.0pp 仅为内部绿灯。（运行清单见 `results/exp17_final_runlog.jsonl` 的 meta_multi_runs_selection_rules 记录。）
 

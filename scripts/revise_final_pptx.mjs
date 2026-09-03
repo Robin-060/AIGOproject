@@ -11,7 +11,7 @@ if (path.resolve(inputPath) === path.resolve(outputPath)) {
 }
 
 const deck = await PresentationFile.importPptx(await FileBlob.load(inputPath));
-const evidenceDoc = "docs/deliverables/10c 部分 GOAI_OBS_科研边界与实验契约_v1.10_包装验收与发布版.docx";
+const evidenceDoc = "docs/deliverables/12c 部分 GOAI_OBS_科研边界与实验契约_v1.11_最终提交版.docx";
 const common = [
   "[Sources]",
   `- ${evidenceDoc}`,
@@ -47,16 +47,17 @@ for (const [index, slide] of deck.slides.items.entries()) {
 
 const before = await deck.inspect({
   kind: "textbox,shape",
-  search: "goai-2026-final-v2",
+  search: "goai-2026-final-v2|goai-2026-final-v3|goai-2026-final-v4",
   maxChars: 12000,
 });
 const records = before.ndjson.trim().split("\n").filter(Boolean).map((line) => JSON.parse(line));
-const targetRecord = records.find((record) => record.id && JSON.stringify(record).includes("goai-2026-final-v2"));
+const targetRecord = records.find((record) => record.id && JSON.stringify(record).includes("goai-2026-final-v"));
 if (!targetRecord) {
   throw new Error("Could not locate the visible release tag on slide 15");
 }
 const target = deck.resolve(targetRecord.id);
-target.text.replace("goai-2026-final-v2", "goai-2026-final-v3");
+target.text.replace("goai-2026-final-v2", "goai-2026-final-v4");
+target.text.replace("goai-2026-final-v3", "goai-2026-final-v4");
 
 const internalLabels = await deck.inspect({
   kind: "textbox,shape",
@@ -92,7 +93,7 @@ await exported.save(outputPath);
 
 const verify = await deck.inspect({
   kind: "textbox,shape,notes",
-  search: "goai-2026-final-v3|/" + "Users/|Desktop/",
+  search: "goai-2026-final-v4|/" + "Users/|Desktop/",
   maxChars: 20000,
 });
 await fs.writeFile("/private/tmp/goai-ppt-packaging-inspect.ndjson", verify.ndjson);

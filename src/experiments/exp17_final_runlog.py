@@ -249,7 +249,7 @@ def main() -> int:
         "type": "meta_human_interventions",
         "run_id": run_id, "seq": seq, "timestamp_utc": utc_now(), "commit": commit,
         "human_interventions": [
-            {"event": "最终裁决 (C 方案 a): 采用 A / 弃用 B; c2 锚点修订为 Voting@50 4.59% 配对 bootstrap",
+            {"event": "最终裁决 (C 方案 a): 保留 A 为表现最佳的候选 refinement, 仅报告 Coverage recovery, 不视为通过安全非劣 Gate 的部署策略; B 弃用; c2 锚点修订为 Voting@50 4.59% 配对 bootstrap",
              "evidence": "docs/experiments/exp17_preregistration.md §最终裁决与§0; commit 4793878"},
             {"event": "EXP17-R1 预注册: 替代值 P=0.34/S=0.51 先于结果冻结",
              "evidence": "docs/experiments/exp17_preregistration.md EXP17-R1 节"},
@@ -270,7 +270,7 @@ def main() -> int:
             {"run": "EXP17-R1 (显式 0.34/0.51 重跑)", "verdict": "与冻结 EXP17-A 完全一致"},
         ],
         "selection_rules": [
-            "干预单变量, 顺序 A→B→C, 逐干预验收 (预注册)",
+            "干预单变量, 顺序 A→B→C, 按冻结判据版本逐干预验收 (版本与修订均留痕)",
             "四判据全部满足才 PASS; 任一失败即回退并记负结果",
             "禁止为达标微调干预参数、+2.0pp 界或 bootstrap 口径",
             "点估计 ≤+1.0pp 仅为内部绿灯, 不替代 c2 正式门禁",

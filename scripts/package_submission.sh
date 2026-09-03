@@ -187,6 +187,7 @@ code_required = {
     roots["code"] + "docs/reproduction.md",
     roots["code"] + "results/exploration_trajectory.jsonl",
     roots["code"] + "results/run_trajectory.jsonl",
+    roots["code"] + "results/exp17_final_runlog.jsonl",
     roots["code"] + "results/baseline_results.csv",
 }
 noncode_required = {
@@ -197,6 +198,7 @@ noncode_required = {
     roots["noncode"] + "docs/exploration_log.md",
     roots["noncode"] + "results/exploration_trajectory.jsonl",
     roots["noncode"] + "results/run_trajectory.jsonl",
+    roots["noncode"] + "results/exp17_final_runlog.jsonl",
     roots["noncode"] + "results/baseline_results.csv",
     roots["noncode"] + "results/evidence_manifest.json",
     roots["noncode"] + "THIRD_PARTY_NOTICES.md",

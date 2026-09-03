@@ -132,8 +132,8 @@ GPU 或商业 API。正式运行日志记录的 `reproduce_main` 用时为 **51.
 | [1 分钟 Demo Runbook](docs/demo_runbook.md) | 现场演示路径与离线故障备案 |
 | [高风险问答卡](docs/qa_cards.md) | c2、post-hoc、holdout、R1 与 bugfix 的回答口径 |
 | [开放探索环境规格](environment_spec.md) | Fixed / Searchable / Feedback、真实后端与已验收状态 |
-| [C 部分科研主文档](docs/deliverables/10c%20部分%20GOAI_OBS_科研边界与实验契约_v1.10_包装验收与发布版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go；已嵌入开源中文字体并完成逐页渲染验收 |
-| [复赛答辩 PPT](docs/deliverables/11GOAI_OBS_复赛答辩主体_v3.5_终审提交版.pptx) | 三分钟成果主线、探索环境、演示衔接与附录证据链 |
+| [C 部分科研主文档](docs/deliverables/12c%20部分%20GOAI_OBS_科研边界与实验契约_v1.11_最终提交版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go；已嵌入开源中文字体并完成逐页渲染验收 |
+| [复赛答辩 PPT](docs/deliverables/12GOAI_OBS_复赛答辩主体_v3.6_最终提交版.pptx) | 三分钟成果主线、探索环境、演示衔接与附录证据链 |
 | [架构与流程图示](docs/architecture_diagrams.md) | 业务流、6 步路由、四证据层、模块调用、复现链、探索闭环、Demo 部署 |
 | [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |

@@ -11,14 +11,14 @@
 |---|---|---|
 | 研究问题、过程与意义 | `docs/problem_definition.md`、`docs/final_report.md` | COMPLETE |
 | 最小可运行探索环境 | `environment_spec.md`、`src/web/`、`src/demo_backend/` | COMPLETE |
-| 完整探索日志 | `docs/exploration_log.md`、`docs/experiments/exploration_log_materials.md` | COMPLETE |
+| 完整探索日志 | `results/exp17_final_runlog.jsonl`（正式 EXP17-A/R1 运行）、`results/exploration_trajectory.jsonl`（EXP01–15 retrospective）、`docs/exploration_log.md` | COMPLETE |
 | 参考框架与 baselines | `docs/architecture_diagrams.md`、`src/experiments/run_baselines.py` | COMPLETE |
 | README / 安装 / 配置 / 预期输出 | `README.md`、`docs/reproduction.md`、`JUDGE_QUICKSTART.md` | COMPLETE |
 | 代码和自动验证 | `smoke_test*.sh`、`reproduce_*.sh`、`.github/workflows/ci.yml` | COMPLETE |
 | 可交互 Demo | `scripts/run_demo.sh`、`docker-compose.yml` | COMPLETE |
 | 现场陈述与问答 | `docs/defense_script.md`、`docs/demo_runbook.md`、`docs/qa_cards.md` | COMPLETE |
-| 答辩 PPT | `docs/deliverables/` 中标注“包装验收版”的 PPTX | COMPLETE |
-| C 部分 Scientific Discovery Report | `docs/deliverables/` 中标注“包装验收版”的 DOCX | COMPLETE |
+| 答辩 PPT | `docs/deliverables/12GOAI_OBS_复赛答辩主体_v3.6_最终提交版.pptx` | COMPLETE |
+| C 部分 Scientific Discovery Report | `docs/deliverables/12c 部分 GOAI_OBS_科研边界与实验契约_v1.11_最终提交版.docx` | COMPLETE |
 | 数据/模型/许可证披露 | `THIRD_PARTY_NOTICES.md`、`docs/data_and_model_sources.md`、`SBOM.md` | COMPLETE |
 
 ## 2. 核心科研身份
@@ -50,14 +50,14 @@
 ## 5. 包装与命名
 
 ```bash
-bash scripts/package_submission.sh FINAL_RELEASE_TAG 实际队伍名 OBS_Trust_Layer dist
+bash scripts/package_submission.sh goai-2026-final-v4 AbyssGuard "OBS Trust Engine" dist-final
 ```
 
 脚本生成并逐包深度扫描：
 
-- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_代码材料.zip`
-- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_非代码材料.zip`
-- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_非代码材料_PPT.zip`
+- `AI4R_OPEN_AbyssGuard_OBS_Trust_Engine_代码材料.zip`
+- `AI4R_OPEN_AbyssGuard_OBS_Trust_Engine_非代码材料.zip`
+- `AI4R_OPEN_AbyssGuard_OBS_Trust_Engine_非代码材料_PPT.zip`
 - 对应 SHA-256 文件和总校验清单
 
 ## 6. 包装验收

@@ -15,10 +15,16 @@ REPLACEMENTS = {
     "Source Han Sans CN": "Noto Sans CJK SC",
     "Scientific Discovery Report v1.9 · A/B 验收与发布身份对齐版":
         "Scientific Discovery Report v1.10 · 包装验收与发布版",
+    "Scientific Discovery Report v1.10 · 包装验收与发布版":
+        "Scientific Discovery Report v1.11 · 最终提交版",
     "OBS Trust Layer · EXP17 · v1.9": "OBS Trust Layer · EXP17 · v1.10",
+    "OBS Trust Layer · EXP17 · v1.10": "OBS Trust Layer · EXP17 · v1.11",
     "goai-2026-final-v2": "goai-2026-final-v3",
+    "goai-2026-final-v3": "goai-2026-final-v4",
     "OBS 可信 AI 调度层 — Scientific Discovery Report v1.9":
         "OBS 可信 AI 调度层 — Scientific Discovery Report v1.10",
+    "OBS 可信 AI 调度层 — Scientific Discovery Report v1.10":
+        "OBS 可信 AI 调度层 — Scientific Discovery Report v1.11",
     "A/B delivery acceptance, final EXP17 adjudication language, and release identity":
         "Packaging-verified EXP17 scientific report and release identity",
     "<cp:lastModifiedBy>Qiyue Wu</cp:lastModifiedBy>":
@@ -86,6 +92,11 @@ def mark_table_headers(document_xml: bytes) -> bytes:
 
 
 def add_embedded_font(parts: dict[str, bytes], font_path: Path) -> None:
+    # A previously packaged report already contains the verified embedded font.
+    # Preserve that OOXML part byte-for-byte when producing a later release-only
+    # revision instead of obfuscating an already-obfuscated font again.
+    if FONT_PART in parts:
+        return
     if not font_path.is_file():
         raise SystemExit(f"Embedded font not found: {font_path}")
 
