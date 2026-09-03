@@ -72,6 +72,16 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def normalize_csv_lf(path: Path) -> bool:
+    """Keep reproduced CSV bytes stable across Windows and POSIX runners."""
+    raw = path.read_bytes()
+    normalized = raw.replace(b"\r\n", b"\n")
+    if normalized == raw:
+        return False
+    path.write_bytes(normalized)
+    return True
+
+
 def git_state() -> dict:
     def run(*args: str) -> str:
         try:
@@ -188,8 +198,15 @@ def main() -> int:
                   records, "semifinal_v1.5.1-bugfix", frozen_hash, commit)
     if rc != 0:
         print("exp17 A step failed"); return 1
+    csv_normalized = normalize_csv_lf(ROOT / "results" / "main_results_exp17_A.csv")
     a_summary = json.loads((ROOT / "results" / "exp17_summary_A.json").read_text(
         encoding="utf-8"))
+    records[-1]["artifact_normalization"] = {
+        "path": "results/main_results_exp17_A.csv",
+        "line_endings": "LF",
+        "changed_from_platform_default": csv_normalized,
+        "reason": "repository-stable byte identity; numeric rows unchanged",
+    }
     records[-1]["output"] = {
         "ceiling_pct": a_summary["metrics"]["ceiling_pct"],
         "unsafe_50_pct": a_summary["metrics"]["unsafe_50_pct"],
