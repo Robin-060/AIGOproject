@@ -1,9 +1,12 @@
 {
-  "manifest_version": "1.0",
+  "manifest_version": "1.1",
   "purpose": "EXP17 最终证据基线 — 供 B (Demo) 与 C (文档/PPT) 统一引用的唯一可信来源",
-  "head_commit": "005bfb3ec061559357904ecaeaaab85d5460d1dd",
+  "head_commit": "73bf7c0f2d3221c8541c032bdd9b8dc8521a5457",
+  "formal_run_execution_commit": "78e4eb642f4d92b7d2d1e584a2e48a7a0207b0f1",
+  "formal_runlog_commit": "73bf7c0f2d3221c8541c032bdd9b8dc8521a5457",
+  "hash_identity": "SHA-256 of repository/package bytes after Git LF normalization",
   "final_experiment_commit": "e5ff41c",
-  "final_experiment_commit_note": "e5ff41c 之后仅有 docs/figures 提交，不含任何实验代码或结果改动",
+  "final_experiment_commit_note": "e5ff41c 之后未改动核心算法或冻结结果；后续仅补充文档、交付脚本与可移植的正式运行日志生成器",
   "config": {
     "path": "configs/semifinal_main.yaml",
     "sha256": "9727570d238aa4925add04bf363f7611e85e83ea4914f5cf5f8a976c58202b6d",
@@ -114,8 +117,8 @@
   "R1_scope_note": "R1 = 显式固定 P=0.34s/S=0.51s 重跑与冻结 EXP17-A 完全一致；仅表示执行路径不依赖 legacy 0.30/0.50 常量，不代表 EXP17 总体安全 Gate PASS。",
   "tests": {
     "command": "python -m pytest -q",
-    "result": "76 passed in 3.09s",
-    "run_at": "2026-09-02 冻结审计 (head 3db0120)",
+    "result": "76 passed in 3.97s",
+    "run_at": "2026-09-03 最终提交审计 (candidate 73bf7c0)",
     "expected": "76 passed"
   },
   "artifact_hashes": {
@@ -127,38 +130,38 @@
     ],
     "v151_archive": [
       {
-        "path": "results\\v151_archive\\README.md",
+        "path": "results/v151_archive/README.md",
         "sha256": "9273430bbead7dfd79e72e6e9c25c063c977f07e0638e069a0e689ba801a77a3"
       },
       {
-        "path": "results\\v151_archive\\bootstrap_ci.json",
-        "sha256": "a29d7aba4723fd5d132363f3280f9cf03641c4f83a25e5f6e1fc888e17c98f83"
+        "path": "results/v151_archive/bootstrap_ci.json",
+        "sha256": "ef1f568cc64812c8cce778ad6e881dd1f24c3fc1d24f6ca26235bc2158cb69d8"
       },
       {
-        "path": "results\\v151_archive\\coverage_vs_unsafe.png",
+        "path": "results/v151_archive/coverage_vs_unsafe.png",
         "sha256": "8e1d124583273c7c0c60b62b91b581b07d639c6c252d1bd3cf18eac6a9717c88"
       },
       {
-        "path": "results\\v151_archive\\equal_coverage_trust.csv",
-        "sha256": "dc04616695500e1be821ff712f8a9041ae060b1416e4de975df536fe1f6428c1"
+        "path": "results/v151_archive/equal_coverage_trust.csv",
+        "sha256": "85e1a2be4232b454c30340f3b3c0ca2bc4e6b0afbc8494ff95c189a8fc2e8234"
       },
       {
-        "path": "results\\v151_archive\\main_results.csv",
-        "sha256": "cc7530275857efa313cf9b1753d49b0c5c16efcbcf75bbb18b6761cb180959bd"
+        "path": "results/v151_archive/main_results.csv",
+        "sha256": "72711b666504580fa747f0c9d7c4cc9dbe3fa21f1a43d2672599074576d5ac24"
       },
       {
-        "path": "results\\v151_archive\\reproduction_report.json",
-        "sha256": "79d8ba8d1ce1d34b85f72ac070f4b0ab04b4500068ef5e8f5eecd3ff3832972a"
+        "path": "results/v151_archive/reproduction_report.json",
+        "sha256": "208bbf81a1acc70c227cbb702364dd7be25f0d40e50f7288cc518db147eb5ee5"
       },
       {
-        "path": "results\\v151_archive\\risk_bins.csv",
-        "sha256": "aceca1161bb0256772496971d5e90eb519c928c9e3cbda1626d20ba35d449bb7"
+        "path": "results/v151_archive/risk_bins.csv",
+        "sha256": "63091a67c41fe5f890e73376184d4cbaddb3db9faf5974ebf302e6e3e63389b1"
       }
     ],
     "bugfix_baseline": [
       {
         "path": "results/main_results.csv",
-        "sha256": "8e037415622deb375460d42d1e43e23bddebd4c23a4ed61c2e2cf63abd4d34de"
+        "sha256": "0e7dcb21954bbb57df92b6209e16a4de465fdb6fc98347d08d5ade7ae0b78ac1"
       },
       {
         "path": "results/equal_coverage_trust.csv",
@@ -166,67 +169,67 @@
       },
       {
         "path": "results/risk_bins.csv",
-        "sha256": "31501b0ff7d79d7d4e0d4c07d2490cfbd03e3205fefcae0430ac5da5ba7bf9e1"
+        "sha256": "eb628c28bfba8b295bdcfa1879e84f51c62a390a118bf71d263a4aae591687c4"
       },
       {
         "path": "results/bootstrap_ci.json",
-        "sha256": "40d8720cc21e174390f9cee142543788aa104e97644b02d314ce8c84b2cbabb7"
+        "sha256": "c074104cfa31ebcfe4850d007491eb2f180d4e86d02021585f4185907b963cb0"
       }
     ],
     "exp16_review": [
       {
         "path": "results/review_budget_curve.csv",
-        "sha256": "19dc4e34eb266927746ff3c925e322ffabd9bc84135560a69859f88013d253bb"
+        "sha256": "2b2728bf720438466be73de7e5c92f30b103060ed2ad2e616f2cd09b67e43aa2"
       },
       {
         "path": "results/review_budget_summary.json",
-        "sha256": "07e6a8ca20cd3253302f449f189ab2f5c3c4aa4cb71f047736618229e70ee136"
+        "sha256": "eb413b1fc2099cd24e01d02a7aa674e271adf2619b365795ca94efb0abef6aa7"
       },
       {
         "path": "results/review_budget_ci.json",
-        "sha256": "c15871ab56e30025538e5801f3e48b142ea62e8f4b252d2bbca53a6ee0bd8500"
+        "sha256": "7b70762a8dd5770cc2379c7448f9198100be07ce42c10f72247e5840d2f88b76"
       },
       {
         "path": "results/review_budget_interpolation.json",
-        "sha256": "6e481b69b0a924ff25adc7b0c27116fb5271ea5df6ff5958f63fda2394b4cb54"
+        "sha256": "adc0d95c76b0cf4ae21b0da7da1107b92247d41ecdf9d79291b096e6e6d9c8de"
       },
       {
         "path": "results/review_budget_curve_holdout.csv",
-        "sha256": "29207d92e0ca6e6e28cc58d035386921c2b0ba66cc8d2146c3f6ce6cfece560c"
+        "sha256": "0ce34302ddc40ebf7bb68649fe0e7c5aef30f5e6e6bc994e9e6d18f9a4a2219c"
       },
       {
         "path": "results/review_budget_summary_holdout.json",
-        "sha256": "b2b9c6274f9a79d5e5e23f73d6296cab0eac596fa53d013d95a31828eb173063"
+        "sha256": "0e13db9ad8cc2f94cdad2df452064769346e562128095ce642ecfd4cbcc2c8ff"
       }
     ],
     "exp17_A": [
       {
         "path": "results/main_results_exp17_A.csv",
-        "sha256": "c9790bd1b77e4db7bd4476e3a1f6e21cc6f71697292c538682fe0db1e02965f1"
+        "sha256": "863921ed035c11ebd8649dd68610b10f3f13bfe725d91c195ad15e19c177cd00"
       },
       {
         "path": "results/exp17_summary_A.json",
-        "sha256": "c85b5ee42e3f0561ed8161099ce30b3f30f170108f1ff0d88e62f6b962c8b0df"
+        "sha256": "9a52e1ad355c9c478158c29b17fa9a31432638d334492fcd06b084851ab36eb9"
       }
     ],
     "exp17_B": [
       {
         "path": "results/main_results_exp17_B.csv",
-        "sha256": "1364e67c52ce4d80c490ffc7c41e476902fc799053d484744acdffd117e3a5f2"
+        "sha256": "4ac8cfbd08e17a4b0b35d206cab48d4425192189319102ba4385b4b164d95adb"
       },
       {
         "path": "results/exp17_summary_B.json",
-        "sha256": "a0f6adbe8c1d2119f943191e953969c9c437a37f3b063f89d720ae437c5c5edd"
+        "sha256": "fd2a93368f96806ddbed8c56f6e6e410fcbc6a6d86be2f3c045d7ed8d708894c"
       }
     ],
     "exp17_AB": [
       {
         "path": "results/main_results_exp17_AB.csv",
-        "sha256": "4ebae74d58b97668a357337ea893450f23dd5830d415f33bad44011c880bf5b9"
+        "sha256": "8585a394580ab6720cabf6d7c2a3aac86131f32169c8fa4cc62f8e66d435e5fa"
       },
       {
         "path": "results/exp17_summary_AB.json",
-        "sha256": "8bfed1be62fc736ecdd28890bd6326d7a140324295ff08b9c16e3e96b05a8084"
+        "sha256": "5c10a64a3de908624b8197a7bb18c5a00b85d631c8f2902f6b0209f3de613438"
       }
     ],
     "exp17_R1": [
@@ -238,35 +241,45 @@
     "paired_bootstrap": [
       {
         "path": "results/paired_bootstrap_A.json",
-        "sha256": "92b2c785352d0eb0baa7bd029ab1566bf88cb9fd940ef1e30b8c57802eaef235"
+        "sha256": "3d55d034ca3f7208e5f805fc1420d305a531d039e3635e9db2fcd0fe77fb0f3d"
       }
     ],
     "floor_sweep": [
       {
         "path": "results/floor_sweep.json",
-        "sha256": "72c3383a417735fda7dfc5399681d26281aa0bb52a824f0251e066a415d87170"
+        "sha256": "8e4d63c6ee578e80d6ed334d33fc656d6d50b71f5261170ab5d89ae0d75db5b3"
       },
       {
-        "path": "results\\main_results_floorsweep_0.55.csv",
-        "sha256": "13f9fa55d04d2383cb53f3b5e45a1c5e306ef8908526e32632812e4f7fb6d257"
+        "path": "results/main_results_floorsweep_0.55.csv",
+        "sha256": "1b1b8f1a4e0ecc62648ddeb5e8d4ae2d999226a945070affb429d9b543583f94"
       },
       {
-        "path": "results\\main_results_floorsweep_0.6.csv",
-        "sha256": "f36deb6a87320a9680e7b298d428dbf2c13a2fdb99c5f2a0eec66bb092cc67f6"
+        "path": "results/main_results_floorsweep_0.6.csv",
+        "sha256": "36333a2dfd647ec568d6b10701d8529ab98d5ea75ddcee9c1355eff9de530247"
       },
       {
-        "path": "results\\main_results_floorsweep_0.65.csv",
-        "sha256": "3a2b04ff374d0b2ba5d5063bf530f82a39e417969f9651fc71ecfd72510d07c0"
+        "path": "results/main_results_floorsweep_0.65.csv",
+        "sha256": "6c015b7603ad2258c14bb7d4a5b7fb96845a7e8b1363e0bcb21d65b3db0f54ef"
       },
       {
-        "path": "results\\main_results_floorsweep_0.7.csv",
-        "sha256": "3fbe30854a13bafa8604b43febc92be370bbd583ed6fb87a93c28d6c8407a089"
+        "path": "results/main_results_floorsweep_0.7.csv",
+        "sha256": "b50991106a4d3a17e104180b43031efc4a6d3bed2b3ca7cd9ffc35bf9f852c23"
       }
     ],
     "exp17_final_runlog": [
       {
         "path": "results/exp17_final_runlog.jsonl",
-        "sha256": "af5cc84b9a77753c9ef4eb4ba6c5ee71a06266179479a590027e3dbbd747d623"
+        "sha256": "f0e4925b07cf41f8d023f76e60b1231325a3934ffdb7761782b4c2a9627e17e3"
+      }
+    ],
+    "release_materials": [
+      {
+        "path": "docs/deliverables/12c 部分 GOAI_OBS_科研边界与实验契约_v1.11_最终提交版.docx",
+        "sha256": "6659b04a3d19f43a705663d33f56ecfa322f7c8ee69c9f56e62c36a77e029fc5"
+      },
+      {
+        "path": "docs/deliverables/12GOAI_OBS_复赛答辩主体_v3.6_最终提交版.pptx",
+        "sha256": "b5c7b440e51faca1149512d9f99cfe3fa46504fea8b5c64493cf72a7b4e83410"
       }
     ]
   },
@@ -298,18 +311,20 @@
       "results/exp17_robustness_R1.json",
       "results/paired_bootstrap_A.json",
       "results/floor_sweep.json",
-      "results\\main_results_floorsweep_0.55.csv",
-      "results\\main_results_floorsweep_0.6.csv",
-      "results\\main_results_floorsweep_0.65.csv",
-      "results\\main_results_floorsweep_0.7.csv",
+      "results/main_results_floorsweep_0.55.csv",
+      "results/main_results_floorsweep_0.6.csv",
+      "results/main_results_floorsweep_0.65.csv",
+      "results/main_results_floorsweep_0.7.csv",
       "results/exp17_final_runlog.jsonl"
     ],
     "later_revision_notes": {
       "results/exp17_summary_A.json": "e5ff41c: c2 对齐 paired_bootstrap_A.json (+2.24pp) 并新增 bootstrap_source 字段; 其余字段与首次生成一致 (对账 0 差异)",
       "src/experiments/exp17_policy_refinement.py": "e5ff41c: run_intervention 优先读取配对冻结产物作为 c2 门禁数值",
       "docs/final_report.md": "本轮: 统一结论中英双语 + §7 可检查性与实验治理 (Fixed/Searchable/Feedback, Observation/Action/Tools, Verifier/Ground Truth, Agent 可见边界, 人工干预与多运行规则, 三轨分轨, 证据链) + 章节重编号",
-      "docs/deliverables/11A 部分 GOAI_OBS_最终科学报告_v1.0_证据线版.docx": "本轮新增: 由 docs/final_report.md 生成的科学报告 DOCX"
+      "docs/deliverables/12c 部分 GOAI_OBS_科研边界与实验契约_v1.11_最终提交版.docx": "最终主报告；跨平台嵌入中文字体，12/12 页完成渲染验收；发布身份更新为 goai-2026-final-v4",
+      "docs/deliverables/12GOAI_OBS_复赛答辩主体_v3.6_最终提交版.pptx": "最终答辩 PPT；16/16 页完成渲染与溢出验收；每页含可追溯 Sources notes",
+      "docs/deliverables/archive/11A 部分 GOAI_OBS_最终科学报告_v1.0_证据线版.docx": "证据线草稿；因跨平台中文字体缺失移入 archive，不进入评审提交包"
     }
   },
-  "head_commit_note": "head_commit = 本 manifest 生成时的基线父提交 (005bfb3, 仍存在于历史); 本证据线提交 (EXP17-A/R1 运行日志 + final_report 可检查性章节 + 科学报告 DOCX) 为其直接后继, 见 later_revision_notes"
+  "head_commit_note": "head_commit = 本 manifest 更新前的最终候选提交；formal_run_execution_commit 是 dirty_at_start=none 的实际运行身份，formal_runlog_commit 冻结该九步 JSONL。最终 release 只允许在此后追加 manifest/验收记录，不得改动核心算法或冻结结果。"
 }
