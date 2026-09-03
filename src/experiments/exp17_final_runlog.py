@@ -82,6 +82,11 @@ def normalize_csv_lf(path: Path) -> bool:
     return True
 
 
+def portable_log_text(value: str) -> str:
+    """Remove machine-local prefixes while preserving the executed operation."""
+    return value.replace(str(ROOT), ".").replace(sys.executable, "python3")
+
+
 def git_state() -> dict:
     def run(*args: str) -> str:
         try:
@@ -106,8 +111,11 @@ def run_step(run_id: str, seq: int, name: str, command: list[str],
     proc = subprocess.run(command, cwd=ROOT, capture_output=True, text=True,
                           timeout=1800)
     duration = round(time.monotonic() - started, 2)
-    stdout = (proc.stdout or "").strip().splitlines()
-    stderr = (proc.stderr or "").strip().splitlines()
+    stdout = [portable_log_text(line) for line in
+              (proc.stdout or "").strip().splitlines()]
+    stderr = [portable_log_text(line) for line in
+              (proc.stderr or "").strip().splitlines()]
+    portable_command = " ".join(portable_log_text(part) for part in command)
     records.append({
         "type": "step",
         "run_id": run_id,
@@ -118,12 +126,13 @@ def run_step(run_id: str, seq: int, name: str, command: list[str],
         "config_version": config_version,
         "config_hash": config_hash,
         "tool_call": {
-            "command": " ".join(command),
+            "command": portable_command,
+            "runtime_resolution": "python3 resolved from the submitted environment",
             "exit_code": proc.returncode,
             "duration_s": duration,
         },
         "agent_input": agent_input,
-        "action": f"execute: {' '.join(command)}",
+        "action": f"execute: {portable_command}",
         "environment_feedback": {
             "stdout_tail": stdout[-8:],
             "stderr_tail": stderr[-3:],
