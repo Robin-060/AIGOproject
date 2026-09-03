@@ -3,6 +3,7 @@
 > 版本基线：`semifinal_v1.5.1-bugfix`（config hash `9727570d…602b6d`，parent `semifinal_v1.5.1`）
 > 证据基线：`results/evidence_manifest.json`（全部关键文件 sha256、c1–c4 裁决、文件分类）
 > 统一结论（全材料口径）：**Coverage recovery supported; safety non-inferiority inconclusive.**
+> 中文：**覆盖率恢复获得支持；安全非劣性尚未建立。**
 
 ## 1. 摘要
 
@@ -82,6 +83,7 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 ### 5.6 统一结论
 
 > **Coverage recovery supported; safety non-inferiority inconclusive.**
+> **覆盖率恢复获得支持；安全非劣性尚未建立。**
 > c1/c3/c4 PASS，c2 NOT ESTABLISHED；R1 PASS 仅表示参数路径复现一致，不代表 EXP17 总体通过。
 
 ## 6. 失败结果与负结果（如实保留）
@@ -97,7 +99,49 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 9. 22 个漏检反例（含 15 个 wrong 输出中至少一个单模型正确、7 个 >30s 错误全部为 S 相）见 `results/failure_raw.csv`。
 10. 历史小样本校准、故障注入、非单调 risk curve 等早期方法保留于 `docs/experiments/legacy/`。
 
-## 7. Limitations
+## 7. 可检查性与实验治理
+
+### 7.1 Fixed / Searchable / Feedback
+
+- **Fixed（冻结事实）**：数据、四套 checkpoint、GT 容差、seed、相位级协议、Voting 参照、+2.0pp 非劣界——冻结后不因结果改动；Demo 中为只读展示（EXP17/R1 Evidence、Equal-Coverage 面板、45.64% 天花板）。
+- **Searchable（可探索假设）**：风险阈值、P/S 容差、数据证据权重四个入口可调；每次改动经真实 Trust Engine 重算（`run_pipeline`），并在界面标注偏离冻结默认。
+- **Feedback（成对反馈）**：Coverage 永远与 Unsafe 同报；Error Interception 永远与 Review Burden 同报；Selective Risk 空值显示 NOT EVALUABLE。
+
+### 7.2 Observation / Action / Tools
+
+- **Observation**：四证据风险分解（数据 30 / 单模型 24 / 多模型 37 / 物理 40）、模型评估状态、P/S 决策与原因码、批量统计——全部来自冻结结果文件或真实重算。
+- **Action**：ACCEPT / ROUTE / FUSE / ABSTAIN 四类动作，每个动作携带 reason_codes 与选中模型/时间。
+- **Tools**：Demo（Streamlit + FastAPI 双服务）；复现工具链 `reproduce_core.sh`、`reproduce_exp17.sh`、`python -m src.experiments.exp17_final_runlog`（最终 EXP17-A/R1 运行日志）、`scripts/verify_exp17_evidence.py`（只读终检）。
+
+### 7.3 Verifier / Ground Truth / Agent 可见边界
+
+- **Verifier**：正确性判定协议（P ±0.5s / S ±1.0s，逐单元对账）、冻结物 sha256 校验（reproduce 第 1 步）、v1.5.1 对账（必须 0 差异）、配对 bootstrap、76 项测试、`verify_exp17_evidence.py`。
+- **Ground Truth**：`data/manifest_phase.csv` 的 1306 个相位单元真值——**只用于验证（Verifier），永不进入 routing rule**。
+- **Agent 可见信息**：推理时可用的共识结构、幸存者计数、spread、校准置信度、模型适用性、相位、冻结历史可靠性。
+- **Agent 不可见信息**：当前 evaluation truth、未来样本标签——EXP17 所有干预均为 truth-blind。
+
+### 7.4 人工干预、post-hoc refinement、多次运行与选择规则
+
+- **人工干预（探索期真实裁决，逐条留痕）**：最终裁决（C 方案 a：采用 A / 弃用 B，c2 锚点修订为 Voting@50 4.59% 配对 bootstrap，`exp17_preregistration.md` §最终裁决与§0）；EXP17-R1 预注册（替代值 0.34/0.51 先于结果冻结）；c2 数字对齐（`e5ff41c`）。最终运行过程本身无人工干预。
+- **post-hoc 身份**：EXP17 是 post-hoc、failure-driven refinement，不是原始预注册确证实验；判据修订均留痕。
+- **多次运行与 A/B 选择规则**：干预单变量、顺序 A→B→C、逐干预验收；四判据全部满足才 PASS，任一失败回退记负结果；禁止为达标微调干预参数、界值或 bootstrap 口径；点估计 ≤+1.0pp 仅为内部绿灯。（运行清单见 `results/exp17_final_runlog.jsonl` 的 meta_multi_runs_selection_rules 记录。）
+
+### 7.5 三条实验轨道的分轨关系
+
+| 轨道 | 身份 | 状态 |
+|---|---|---|
+| v1.5.1 | 原正式结果（45.64% 天花板 + 负结果） | 冻结于 `results/v151_archive/`，不被覆盖 |
+| EXP16 | Review Budget–Error Interception（风险排序） | 明确正结果，独立于 automation safety |
+| EXP17 | Failure-driven refinement（A 保留为最佳候选 / B 弃用 / C 留档 / R1 审计） | 覆盖恢复成立；安全非劣未确认 |
+
+### 7.6 证据链（主要结果 → 配置 / 数据 / 轨迹 / 结果文件）
+
+- 45.64% → `configs/semifinal_main.yaml`（hash 9727570d…）→ `data/manifest_phase.csv` → `src/experiments/run_main_experiment.py` → `results/main_results.csv` / `results/v151_archive/`。
+- 83.6% / holdout 80.1% → 同上冻结预测 → `src/experiments/review_budget_curve.py` / `review_budget_ci.py` → `results/review_budget_*`。
+- 54.13% / 5.51% / 94.26% / +0.92pp / +2.24pp → `src/experiments/exp17_policy_refinement.py`（OBS_EXP17_POLICY=consensus_route）→ `results/exp17_summary_A.json` + `results/paired_bootstrap_A.json`。
+- 运行轨迹：`results/exp17_final_runlog.jsonl`（最终 EXP17-A/R1 九步运行日志）、`results/run_trajectory.jsonl`（主链）、`results/exploration_trajectory.jsonl`（EXP01–15 retrospective，不冒充最终日志）。
+
+## 8. Limitations
 
 1. EXP17 为 post-hoc failure-driven 验证，不是独立 blind confirmatory test；判据预注册不等于原始预声明实验。
 2. c2 的 CI 级安全非劣未建立（+2.24pp > +2.0pp 界），需要更大样本进一步确认。
@@ -107,7 +151,7 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 6. 结果不等价于 production deployment safety；未做真实专家工时、成本或下游 catalog 影响实验。
 7. 数据/模型训练重叠未审计（overlap UNKNOWN），相关结论按 C 契约降级表述。
 
-## 8. No-Go 与表述纪律
+## 9. No-Go 与表述纪律
 
 - 不写 EXP17-A"整体通过""与 Voting 持平""非劣成立"或"证明安全"；不把 c2 未通过写成"算法已证明劣化"。
 - 不把 legacy P=0.30/S=0.50 误写为冻结运行参数；不把 post-hoc EXP17 描述为原始预声明实验。
@@ -115,7 +159,7 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 - 不把 risk 称为概率；不把 review ordering 称为替代专家或已降低实际人工成本。
 - 不写跨数据集泛化、严格独立 locked test、production deployment 或全面安全自动化。
 
-## 9. 补充实验：SeisBench 20 条噪声鲁棒性
+## 10. 补充实验：SeisBench 20 条噪声鲁棒性
 
 > 本节为早期小样本补充实验（非主结果），降级保留作 Demo 与边界证据。
 
@@ -130,17 +174,21 @@ c2 判据：ΔUnsafe = Unsafe_EXP17@50 − Voting@50（冻结锚点 4.59%），�
 
 解读（如实）：Trust Layer 四档均未放行错误 P/S 对，但其 L1–L3 覆盖率是 0——结论是"高噪下不乱给答案"，不是"高噪下仍能准确拾取"。20/20 对应 Wilson 95% 区间约 83.9%–100%，不宣称外推。结果文件：`noise_predictions_seisbench.json`、`noise_records_seisbench.csv`、`noise_summary_seisbench.csv`。
 
-## 10. Demo 与工程
+## 11. Demo 与工程
 
 Streamlit Demo（`src/web/`）消费冻结结果与真实 Trust Engine：Fixed（冻结反馈/Equal-Coverage/R1 面板）、Searchable（risk threshold、P/S tolerance、evidence weight 可调）、Feedback（Coverage+Unsafe、Interception+Review 成对展示）、Case Explorer（真实失败样本 + ABSTAIN 确定性解释，reason code 模板见 `schema_contract.md` §13）。Docker Compose 双服务（FastAPI :8000 + Streamlit :8501）。架构与调用关系见 `docs/architecture_diagrams.md`（含 PNG 图）。
 
-## 11. 复现
+## 12. 复现
 
 - 主链一键复现：`bash reproduce_core.sh`（等价 `python -m src.experiments.reproduce_main`，九步，含冻结物 sha256 校验）。
-- EXP17 复现命令与预期数字：见 `docs/reproduction.md` §7。
+- EXP17 复现命令与预期数字：见 `docs/reproduction.md` §7；一键入口 `bash reproduce_exp17.sh`。
+- 最终 EXP17-A/R1 运行日志（机器可读 JSONL）：`python -m src.experiments.exp17_final_runlog` → `results/exp17_final_runlog.jsonl`。
 - 测试：`python -m pytest -q` → 76 passed。
 - 证据交接包：`results/evidence_manifest.json`。
 
-## 12. 结论
+## 13. 结论
 
 Trust Layer 的组合风险证据可用于人工复核优先级排序（EXP16 正结果）；failure decomposition 支持 45.64% 天花板主要来自 policy 保守而非模型普遍无候选；truth-blind EXP17-A 将 Coverage 恢复至 54.13%（Unsafe 5.51%，截获 94.26%），且结果不依赖 legacy 参数——但相对 Voting 的 CI 级安全非劣尚未建立。所有负结果、bugfix 与 refinement 分轨留痕，全部数字可沿 data → config → script → raw result → figure/table 追溯。
+
+**Coverage recovery supported; safety non-inferiority inconclusive.**
+**覆盖率恢复获得支持；安全非劣性尚未建立。**

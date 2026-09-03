@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
   "purpose": "EXP17 最终证据基线 — 供 B (Demo) 与 C (文档/PPT) 统一引用的唯一可信来源",
-  "head_commit": "3db0120ad176cd7544d284c3d93e9c79b365a4ea",
+  "head_commit": "005bfb3ec061559357904ecaeaaab85d5460d1dd",
   "final_experiment_commit": "e5ff41c",
   "final_experiment_commit_note": "e5ff41c 之后仅有 docs/figures 提交，不含任何实验代码或结果改动",
   "config": {
@@ -262,6 +262,12 @@
         "path": "results\\main_results_floorsweep_0.7.csv",
         "sha256": "3fbe30854a13bafa8604b43febc92be370bbd583ed6fb87a93c28d6c8407a089"
       }
+    ],
+    "exp17_final_runlog": [
+      {
+        "path": "results/exp17_final_runlog.jsonl",
+        "sha256": "af5cc84b9a77753c9ef4eb4ba6c5ee71a06266179479a590027e3dbbd747d623"
+      }
     ]
   },
   "file_classification": {
@@ -295,11 +301,15 @@
       "results\\main_results_floorsweep_0.55.csv",
       "results\\main_results_floorsweep_0.6.csv",
       "results\\main_results_floorsweep_0.65.csv",
-      "results\\main_results_floorsweep_0.7.csv"
+      "results\\main_results_floorsweep_0.7.csv",
+      "results/exp17_final_runlog.jsonl"
     ],
     "later_revision_notes": {
       "results/exp17_summary_A.json": "e5ff41c: c2 对齐 paired_bootstrap_A.json (+2.24pp) 并新增 bootstrap_source 字段; 其余字段与首次生成一致 (对账 0 差异)",
-      "src/experiments/exp17_policy_refinement.py": "e5ff41c: run_intervention 优先读取配对冻结产物作为 c2 门禁数值"
+      "src/experiments/exp17_policy_refinement.py": "e5ff41c: run_intervention 优先读取配对冻结产物作为 c2 门禁数值",
+      "docs/final_report.md": "本轮: 统一结论中英双语 + §7 可检查性与实验治理 (Fixed/Searchable/Feedback, Observation/Action/Tools, Verifier/Ground Truth, Agent 可见边界, 人工干预与多运行规则, 三轨分轨, 证据链) + 章节重编号",
+      "docs/deliverables/11A 部分 GOAI_OBS_最终科学报告_v1.0_证据线版.docx": "本轮新增: 由 docs/final_report.md 生成的科学报告 DOCX"
     }
-  }
+  },
+  "head_commit_note": "head_commit = 本 manifest 生成时的基线父提交 (005bfb3, 仍存在于历史); 本证据线提交 (EXP17-A/R1 运行日志 + final_report 可检查性章节 + 科学报告 DOCX) 为其直接后继, 见 later_revision_notes"
 }
