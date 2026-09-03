@@ -3,6 +3,10 @@
 > 对应复赛交付"README 与复现说明"及 C 契约复现要求
 > （运行入口、依赖安装、配置方法、随机种子、raw results 可检查）。
 
+公开仓库：<https://github.com/Robin-060/AIGOproject>。正式提交以包内
+`SUBMISSION_MANIFEST.md` 记录的不可变 release tag 与 commit 为准，不以评审期间的
+分支最新状态替代冻结身份。
+
 ## 1. 一键入口
 
 ```bash
@@ -27,6 +31,17 @@ EXP17（post-hoc refinement）的复现命令与预期数字见 **§7**；
 | A 核心复现 | 见 requirements-core.txt；不加载模型权重 |
 | 完整推理参考环境 | seisbench 0.12.3 / torch 2.13.0+cpu / obspy 1.5.0 |
 | 已验证 clean 环境 | seisbench 0.12.5 / torch 2.13.0 / obspy 1.5.1（冻结预测结果一致） |
+
+### 2.1 计算资源、运行时间与成本
+
+| 路径 | 计算要求 | 已记录时间/成本 |
+|---|---|---|
+| 核心重放（必需） | CPU-only；无需 GPU、模型权重或商业 API | 正式日志 `reproduce_main` 为 51.9 秒；评审建议预留 1–5 分钟；API 费用 0 |
+| Streamlit Demo（可选） | CPU 即可；读取仓库示例与冻结证据 | 启动时间依本机依赖缓存而异；无按次 API 费用 |
+| 四模型重新推理（可选） | 约 35 GB 数据；GPU 推荐但非核心复现条件 | 未形成跨硬件冻结 benchmark，不声明未经验证的时长或云成本 |
+
+核心路径的目标是复核报告数字而不是重新训练模型；项目没有模型训练成本，也未调用商业
+推理服务。完整推理的硬件、网络和存储成本由复现者环境决定。
 
 ## 3. 数据来源与冻结物
 
@@ -106,7 +121,7 @@ bash reproduce_exp17.sh
 | 2. EXP17-B + A+B | `python -m src.experiments.exp17_policy_refinement --intervention B` | `results/exp17_summary_B.json`、`results/exp17_summary_AB.json` + 对应 CSV |
 | 3. 配对 bootstrap（c2 唯一数字源） | `python -m src.experiments.paired_bootstrap --tag A` | `results/paired_bootstrap_A.json` |
 | 4. EXP17-C floor sweep（留档） | `python -m src.experiments.exp17_policy_refinement --floor-sweep` | `results/floor_sweep.json` + `main_results_floorsweep_*.csv` |
-| 5. R1 核验 | 只读核验（不重算）：`results/exp17_robustness_R1.json` 的 verdict/identical/alternative 字段 + `configs/semifinal_main.yaml` 的 `consensus_tolerance_p_s/s` 必须为 0.34/0.51 | `results/exp17_robustness_R1.json`（冻结裁决记录） |
+| 5. R1 显式参数复现与核验 | `bash reproduce_exp17.sh` 读取配置中显式 P=0.34/S=0.51，重新运行 EXP17-A，再核验冻结 R1 verdict/identical/alternative 字段 | 重跑的 A 结果与 `results/exp17_robustness_R1.json`（冻结裁决记录） |
 
 ### 7.2 预期数字（核验标准，以数值对账为准）
 
@@ -127,6 +142,22 @@ bash reproduce_exp17.sh
 - 核验以数值对账为准，不比较文件字节（行尾规范跨平台）。
 - 任何一步失败即停止并记负结果；禁止为达标调整 +2.0pp 界、bootstrap 口径或干预参数。
 - B/A+B/floor sweep 为负结果与留档实验，复现后仍须保留原裁决（FAIL/弃用），不得改写为通过。
+
+### 7.4 EXP17-A、paired bootstrap 与 R1 的可拆分命令
+
+需要逐步审计时，可执行：
+
+```bash
+# 显式参数已冻结在 configs/semifinal_main.yaml：P=0.34s / S=0.51s
+python3 -m src.experiments.exp17_policy_refinement --intervention A
+python3 -m src.experiments.paired_bootstrap --tag A
+python3 scripts/verify_exp17_evidence.py
+```
+
+预期：EXP17-A 输出 Coverage 54.13%、Unsafe 5.51%、Error Interception 94.26%；
+`paired_bootstrap_A.json` 输出 ΔUnsafe +0.92pp、单侧 95% 上界 +2.24pp；终检显示
+c1/c3/c4 通过、c2 `NOT ESTABLISHED`。R1 的 PASS 仅表示上述显式参数运行与冻结
+EXP17-A 一致，不是 EXP17 safety Gate PASS。
 
 ## 8. 已知边界（如实声明）
 

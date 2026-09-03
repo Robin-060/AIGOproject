@@ -7,6 +7,7 @@
 
 ## 评委快速入口
 
+- 公开仓库：<https://github.com/Robin-060/AIGOproject>
 - 5 分钟验收顺序：[JUDGE_QUICKSTART.md](JUDGE_QUICKSTART.md)
 - 复赛要求—交付物映射：[SUBMISSION_MANIFEST.md](SUBMISSION_MANIFEST.md)
 - 现场陈述：[3 分钟讲稿](docs/defense_script.md) · [1 分钟 Demo](docs/demo_runbook.md) · [高风险问答](docs/qa_cards.md)
@@ -74,6 +75,17 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 
 复现范围（全程使用冻结预测，不运行模型推理）：冻结数据 sha256 校验 → 8 策略基线 → 主实验 → 全方法对比 → cluster paired-bootstrap → 三张主图 → 探索轨迹 JSONL。核心数字落在 `results/reproduction_report.json`，详细口径见 [复现说明](docs/reproduction.md)。
 
+### 计算资源、时间与成本
+
+核心复现是 **CPU-only 的冻结预测重放**，不下载原始波形、不加载模型权重，也不需要
+GPU 或商业 API。正式运行日志记录的 `reproduce_main` 用时为 **51.9 秒**；不同机器的
+安装和运行时间会变化，评审可按 **1–5 分钟**预留核心验收时间。该路径除现有计算机、
+网络和存储外没有按次付费成本，API 费用为 **0**。
+
+完整模型推理是可选路径，需要下载约 35 GB OBS 数据和四组公开 checkpoint；GPU 可缩短
+推理时间，但不是报告核心结果的复现条件。本项目未冻结不同硬件上的完整推理时长或云算力
+费用，因此不对该部分给出未经验证的成本数字。
+
 ## 实验结论摘要
 
 | 指标 | 结果 |
@@ -121,7 +133,7 @@ bash reproduce_core.sh                    # 一键复现核心数字与三张主
 | [高风险问答卡](docs/qa_cards.md) | c2、post-hoc、holdout、R1 与 bugfix 的回答口径 |
 | [开放探索环境规格](environment_spec.md) | Fixed / Searchable / Feedback、真实后端与已验收状态 |
 | [C 部分科研主文档](docs/deliverables/10c%20部分%20GOAI_OBS_科研边界与实验契约_v1.10_包装验收与发布版.docx) | 最终 Scientific Discovery Report、证据契约与 No-Go；已嵌入开源中文字体并完成逐页渲染验收 |
-| [复赛答辩 PPT](docs/deliverables/9GOAI_OBS_复赛答辩主体_v3.4_包装验收与发布版.pptx) | 三分钟成果主线、演示衔接与附录证据链 |
+| [复赛答辩 PPT](docs/deliverables/11GOAI_OBS_复赛答辩主体_v3.5_终审提交版.pptx) | 三分钟成果主线、探索环境、演示衔接与附录证据链 |
 | [架构与流程图示](docs/architecture_diagrams.md) | 业务流、6 步路由、四证据层、模块调用、复现链、探索闭环、Demo 部署 |
 | [DS 判定汇总](docs/experiments/ds_findings_v15.md) | 五个研究问题的最终判定与依据 |
 | [评估协议](docs/experiments/evaluation_protocol.md) | Equal-Coverage 与 NOT_EVALUABLE 纪律 |
