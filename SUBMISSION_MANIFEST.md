@@ -2,7 +2,8 @@
 
 > 赛道：赛道三·前沿探索 AI for Research  
 > 项目：OBS Trust Engine / OBS Trust Layer  
-> 发布身份：`goai-2026-final-v3`（包装验收完成后创建的不可变标签）
+> 发布身份：以最终提交包内 `PACKAGE_IDENTITY.json` 记录的 release tag 与 commit 为准；
+> 仅在全部验收完成后创建新的不可变标签，不移动历史标签。
 
 ## 1. 必要材料对应
 
@@ -46,8 +47,21 @@
 - 虚拟环境、临时渲染文件、个人绝对路径、密钥或 token；
 - 无法核实来源或再分发权限的第三方权重/代码。
 
-## 5. 包装验收
+## 5. 包装与命名
+
+```bash
+bash scripts/package_submission.sh FINAL_RELEASE_TAG 实际队伍名 OBS_Trust_Layer dist
+```
+
+脚本生成并逐包深度扫描：
+
+- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_代码材料.zip`
+- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_非代码材料.zip`
+- `AI4R_OPEN_<队伍名>_OBS_Trust_Layer_非代码材料_PPT.zip`
+- 对应 SHA-256 文件和总校验清单
+
+## 6. 包装验收
 
 最终压缩包应通过：解压完整性、重要文件存在、私密/个人路径扫描、
 冻结证据校验、核心复现和 76 项测试。只有完成这些验收后，
-`goai-2026-final-v3` 才可作为提交身份。
+新的最终 release tag 才可作为提交身份；历史 v3 标签保持不变。

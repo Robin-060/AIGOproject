@@ -1,5 +1,7 @@
 # 开源发布与复赛冻结计划
 
+公开仓库：<https://github.com/Robin-060/AIGOproject>。
+
 ## 1. 许可证状态
 
 仓库顶层 [`LICENSE`](../LICENSE) 已采用 MIT License，仅覆盖团队有权许可的原创代码

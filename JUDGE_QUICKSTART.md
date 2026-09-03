@@ -2,6 +2,9 @@
 
 > 建议阅读时间：5 分钟；核心复现不需下载原始波形或模型权重。
 
+公开仓库：<https://github.com/Robin-060/AIGOproject>。正式结果身份以提交包内
+`PACKAGE_IDENTITY.json` 记录的不可变 release tag / commit 为准。
+
 ## 1. 一句话成果
 
 OBS Trust Layer 用组合风险证据优先排序有限人工复核，并在保留科研边界的前提下探索自动化覆盖恢复。
